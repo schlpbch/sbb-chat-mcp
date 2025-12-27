@@ -18,6 +18,14 @@ interface BoardCardProps {
 
 export default function BoardCard({ data }: BoardCardProps) {
  const { station, type = 'departures', connections = [] } = data;
+  // Handle raw MCP format
+  const rawData = data as any;
+  const extractedConnections = rawData.departures || rawData.arrivals || rawData.events || connections;
+  const extractedType = rawData.departures ? "departures" : rawData.arrivals ? "arrivals" : type;
+  const extractedStation = rawData.stationName || station;
+  const finalConnections = Array.isArray(extractedConnections) ? extractedConnections : connections;
+  const finalType = extractedType;
+  const finalStation = extractedStation;
 
  const formatTime = (time?: string) => {
  if (!time) return '--:--';
@@ -38,13 +46,13 @@ export default function BoardCard({ data }: BoardCardProps) {
  return '🚂';
  };
 
- const isDeparture = type === 'departures';
+ const isDeparture = finalType === 'departures';
 
  return (
  <article
  className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
  data-testid="board-card"
- aria-label={`${isDeparture ? 'Departures' : 'Arrivals'} board for ${station || 'station'}`}
+ aria-label={`${isDeparture ? 'Departures' : 'Arrivals'} board for ${finalStation || 'station'}`}
  >
  {/* Compact Header */}
  <div className={`px-4 py-2 ${isDeparture ? 'bg-linear-to-r from-purple-600 to-purple-700' : 'bg-linear-to-r from-blue-600 to-blue-700'}`}>
@@ -58,7 +66,7 @@ export default function BoardCard({ data }: BoardCardProps) {
  </svg>
  <div>
  <h3 className="text-lg font-bold">{isDeparture ? 'Departures' : 'Arrivals'}</h3>
- <p className="text-xs text-purple-100">{station || 'Station'}</p>
+ <p className="text-xs text-purple-100">{finalStation || 'Station'}</p>
  </div>
  </div>
  </div>
@@ -66,7 +74,7 @@ export default function BoardCard({ data }: BoardCardProps) {
  {/* Compact Connections List */}
  <div className="divide-y divide-gray-200">
  {connections.length > 0 ? (
- connections.slice(0, 5).map((conn, idx) => (
+ finalConnections.slice(0, 5).map((conn, idx) => (
  <div
  key={idx}
  className="p-2 hover:bg-gray-50 transition-colors"
@@ -124,10 +132,10 @@ export default function BoardCard({ data }: BoardCardProps) {
  </div>
 
  {/* Compact Footer */}
- {connections.length > 5 && (
+ {finalConnections.length > 5 && (
  <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
  <p className="text-xs text-gray-600 text-center">
- +{connections.length - 5} more
+ +{finalConnections.length - 5} more
  </p>
  </div>
  )}
