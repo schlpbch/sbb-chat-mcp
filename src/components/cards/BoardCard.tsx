@@ -52,7 +52,18 @@ export default function BoardCard({ data }: BoardCardProps) {
       '';
   }
   
-  const finalConnections = Array.isArray(extractedConnections) ? extractedConnections : [];
+  const finalConnections = Array.isArray(extractedConnections) 
+    ? extractedConnections.map((conn: any) => ({
+        // Map MCP fields to expected format
+        time: conn.time || conn.departureTime || conn.arrivalTime,
+        destination: conn.destination,
+        origin: conn.origin,
+        platform: conn.platform,
+        line: conn.line || conn.serviceProduct?.sbbServiceProduct?.name || conn.serviceProduct?.name,
+        delay: conn.delay !== undefined && conn.delay > 0 ? `+${conn.delay}'` : undefined,
+        type: conn.type || conn.serviceProduct?.sbbServiceProduct?.vehicleMode?.name,
+      }))
+    : [];
   const finalType = extractedType;
   const finalStation = extractedStation;
   

@@ -239,6 +239,8 @@ export async function sendOrchestratedChatMessage(
           params: {},
           result: r.data,
         }));
+      console.log("[sendOrchestratedChatMessage] Plan results:", planResult.results);
+      console.log("[sendOrchestratedChatMessage] Tool calls to return:", toolCalls);
 
       const modelConfig: any = {
         model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
