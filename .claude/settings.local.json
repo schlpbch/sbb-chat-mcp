@@ -6,7 +6,8 @@
       "Bash(taskkill:*)",
       "Bash(rm:*)",
       "Bash(git add:*)",
-      "Bash(pnpm run test:*)"
+      "Bash(pnpm run test:*)",
+      "Bash(pkill:*)"
     ]
   }
 }
