@@ -76,11 +76,7 @@ export default function WelcomeSection({ onSendMessage }: WelcomeSectionProps) {
     <div className="h-full flex flex-col items-center justify-center space-y-8 sm:space-y-12 px-4 py-8">
       {/* Welcome Section - Enhanced */}
       <div className="text-center space-y-4 sm:space-y-6 max-w-3xl">
-        <div className="inline-flex items-center space-x-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-red-50 dark:bg-red-900/20 rounded-full border border-red-200 dark:border-red-800">
-          <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          <span className="text-xs sm:text-sm font-semibold text-red-700 dark:text-red-300">AI-Powered Travel Assistant</span>
-        </div>
-        
+
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
           Your Swiss Travel
           <span className="block bg-linear-to-r from-sbb-red via-red-600 to-red-700 bg-clip-text text-transparent">

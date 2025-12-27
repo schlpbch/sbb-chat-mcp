@@ -38,7 +38,7 @@ export default function Home() {
         language={language}
       />
 
-      <main className="flex-1 overflow-hidden">
+      <main className="flex-1 overflow-hidden pt-4">
         <div className="h-full flex flex-col">
           {/* Chat Container */}
           <div className="flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-2xl overflow-hidden">

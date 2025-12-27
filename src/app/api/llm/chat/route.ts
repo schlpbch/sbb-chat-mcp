@@ -6,9 +6,35 @@ import {
   ChatContext,
   ChatResponse,
 } from '@/lib/llm/geminiService';
+import { checkRateLimit } from '@/lib/llm/rateLimiter';
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limiting check
+    const userId =
+      request.headers.get('x-session-id') ||
+      request.headers.get('x-forwarded-for') ||
+      'anonymous';
+
+    const rateLimit = checkRateLimit(userId);
+
+    if (!rateLimit.allowed) {
+      const headers = new Headers();
+      headers.set('X-RateLimit-Limit', '10');
+      headers.set('X-RateLimit-Remaining', '0');
+      headers.set('X-RateLimit-Reset', rateLimit.resetAt.toString());
+      headers.set('Retry-After', (rateLimit.retryAfter || 60).toString());
+      
+      return NextResponse.json(
+        {
+          error: 'Too many requests',
+          message: `Rate limit exceeded. Please try again in ${rateLimit.retryAfter} seconds.`,
+          retryAfter: rateLimit.retryAfter,
+        },
+        { status: 429, headers }
+      );
+    }
+
     const body = await request.json();
     const {
       message,

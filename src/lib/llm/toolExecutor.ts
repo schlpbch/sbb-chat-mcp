@@ -3,6 +3,7 @@
  */
 
 import type { FunctionCallParams } from './functionDefinitions';
+import { withRetry } from './retryHandler';
 
 export interface ToolExecutionResult {
   success: boolean;
@@ -89,29 +90,43 @@ export async function executeTool(
         : '';
     const url = `${baseUrl}/api/mcp-proxy/tools/${toolName}`;
 
-    // Call the MCP proxy endpoint
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params),
-    });
+    // Call the MCP proxy endpoint with retry logic
+    const retryResult = await withRetry(
+      async () => {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(params),
+        });
 
-    if (!response.ok) {
-      const errorText = await response.text();
-      let errorData;
-      try {
-        errorData = JSON.parse(errorText);
-      } catch {
-        errorData = { error: errorText };
-      }
-      throw new Error(
-        errorData.error || `Tool execution failed: ${response.statusText}`
-      );
+        if (!response.ok) {
+          const errorText = await response.text();
+          let errorData;
+          try {
+            errorData = JSON.parse(errorText);
+          } catch {
+            errorData = { error: errorText };
+          }
+          const error: any = new Error(
+            errorData.error || `Tool execution failed: ${response.statusText}`
+          );
+          error.status = response.status;
+          throw error;
+        }
+
+        return response.json();
+      },
+      `mcp-tool-${toolName}`,
+      { maxAttempts: 3 }
+    );
+
+    if (!retryResult.success) {
+      throw new Error(retryResult.error || 'Tool execution failed after retries');
     }
 
-    const data = await response.json();
+    const data = retryResult.data;
 
     const parsedData = data.content?.[0]?.text
       ? JSON.parse(data.content[0].text)
