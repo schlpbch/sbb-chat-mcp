@@ -16,60 +16,60 @@ interface WelcomeSectionProps {
 }
 
 const quickActions: QuickAction[] = [
- { 
- icon: '🚂', 
- label: 'Find Connections', 
+ {
+ icon: '🚂',
+ label: 'Find Connections',
  description: 'Search train routes',
- query: 'Find next connections from Zurich HB to Bern',
+ query: 'Find connections from Zurich HB to Bern tomorrow at 9am',
  color: 'from-blue-500 to-blue-600'
  },
- { 
- icon: '🌤️', 
- label: 'Weather Forecast', 
- description: 'Europe-wide conditions',
- query: 'What is the weather in Paris?',
- color: 'from-yellow-500 to-orange-500'
- },
- { 
- icon: '🌱', 
- label: 'Eco Impact', 
- description: 'Carbon footprint',
- query: 'What is the environmental impact of a trip to Geneva?',
- color: 'from-green-500 to-green-600'
- },
- { 
- icon: '🚀', 
- label: 'Live Departures', 
+ {
+ icon: '🚀',
+ label: 'Live Departures',
  description: 'Real-time info',
- query: 'Show me departures from Basel SBB',
+ query: 'Show me the next departures from Basel SBB',
  color: 'from-orange-500 to-orange-600'
  },
- { 
- icon: '📍', 
- label: 'Nearby Stations', 
- description: 'Find stations',
- query: 'Find stations near Lausanne',
+ {
+ icon: '⚡',
+ label: 'Fastest Route',
+ description: 'Compare options',
+ query: 'What is the fastest way from Lausanne to Geneva?',
  color: 'from-purple-500 to-purple-600'
  },
- { 
- icon: '⏱️', 
- label: 'Trip Planning', 
- description: 'Plan journey',
- query: 'Plan a day trip from Zurich to Lucerne with scenic route',
+ {
+ icon: '🔄',
+ label: 'Transfer Analysis',
+ description: 'Connection times',
+ query: 'Can I make a 5-minute transfer at Zurich HB?',
  color: 'from-indigo-500 to-indigo-600'
  },
- { 
- icon: '❄️', 
- label: 'Snow Conditions', 
- description: 'Ski resorts',
- query: 'What are the snow conditions in Zermatt?',
+ {
+ icon: '🌱',
+ label: 'Eco Comparison',
+ description: 'Train vs car vs flight',
+ query: 'Compare the environmental impact of train vs car from Bern to Milan',
+ color: 'from-green-500 to-green-600'
+ },
+ {
+ icon: '❄️',
+ label: 'Snow Report',
+ description: 'Ski conditions',
+ query: 'What are the current snow conditions in St. Moritz?',
  color: 'from-cyan-500 to-blue-500'
  },
- { 
- icon: '🎫', 
- label: 'Station Info', 
- description: 'Facilities & access',
- query: 'Tell me about Bern station facilities and accessibility',
+ {
+ icon: '🌤️',
+ label: 'Weather Check',
+ description: 'Destination forecast',
+ query: 'What is the weather forecast for Lugano this weekend?',
+ color: 'from-yellow-500 to-orange-500'
+ },
+ {
+ icon: '📍',
+ label: 'Find Stations',
+ description: 'Near location',
+ query: 'Find train stations near the Matterhorn',
  color: 'from-pink-500 to-rose-500'
  }
 ];
