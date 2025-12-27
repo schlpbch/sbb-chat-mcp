@@ -9,8 +9,8 @@
   --sbb-red: #EB0000;
   --sbb-red-125: #C60018;
   --sbb-red-150: #A20013;
-  
-  /* Light Mode Colors */
+
+  /* Colors */
   --color-background: #FFFFFF;
   --color-surface: #F6F6F6;
   --color-surface-elevated: #FFFFFF;
@@ -18,27 +18,14 @@
   --color-text-primary: #151515;
   --color-text-secondary: #5A5A5A;
   --color-text-tertiary: #8D8D8D;
-  
+
   /* Spacing */
   --spacing-unit: 0.25rem;
-  
+
   /* Transitions */
   --transition-fast: 150ms ease-in-out;
   --transition-base: 200ms ease-in-out;
   --transition-slow: 300ms ease-in-out;
-}
-
-.dark {
-  /* Dark Mode Colors using SBB Grayscale */
-  --color-background: #151515;
-  --color-surface: #212121;
-  --color-surface-elevated: #2A2A2A;
-  --color-border: #444444;
-  --color-text-primary: #F6F6F6;
-  --color-text-secondary: #B7B7B7;
-  --color-text-tertiary: #8D8D8D;
-  
-  color-scheme: dark;
 }
 
 /* Base styles */
@@ -77,23 +64,6 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(0, 0, 0, 0.3);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.3);
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: var(--sbb-red);
-  border: 2px solid var(--color-surface);
-}
-
-.dark ::-webkit-scrollbar-thumb:hover {
-  background: var(--sbb-red-125);
 }
 
 /* Firefox Scrollbar */
@@ -190,11 +160,6 @@ body * {
   border: 1px solid rgba(255, 255, 255, 0.3);
 }
 
-.dark .glass {
-  background: rgba(21, 21, 21, 0.7);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
 /* Animations */
 @keyframes sbb-fade-in {
   from {
@@ -222,12 +187,5 @@ body * {
 
 .animate-sbb-slide-up {
   animation: sbb-slide-up 0.4s ease-out;
-}
-
-/* Dark mode support */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
 }
 

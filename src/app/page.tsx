@@ -84,7 +84,7 @@ export default function Home() {
  disabled={isLoading}
  rows={1}
  className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
- style={{ minHeight: '52px', maxHeight: '120px', color: '#000000', backgroundColor: '#ffffff', WebkitTextFillColor: '#000000', opacity: 1 }}
+ style={{ minHeight: '52px', maxHeight: '120px' }}
  />
  </div>
  <button
