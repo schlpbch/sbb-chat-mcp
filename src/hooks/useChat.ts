@@ -53,16 +53,19 @@ export function useChat(language: Language) {
     setIsLoading(true);
 
     try {
+      const requestBody = {
+        message: userMessage.content,
+        history: messages.map((m) => ({ role: m.role, content: m.content })),
+        context: { language },
+        sessionId,
+        useOrchestration: true,
+      };
+      console.log('[useChat] Sending request:', requestBody);
+      
       const response = await fetch('/api/llm/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          message: userMessage.content,
-          history: messages.map((m) => ({ role: m.role, content: m.content })),
-          context: { language },
-          sessionId,
-          useOrchestration: true,
-        }),
+        body: JSON.stringify(requestBody),
       });
 
       if (!response.ok) {
