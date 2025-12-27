@@ -12,11 +12,14 @@ Playwright.
 - `context-manager.spec.ts` - Tests for session handling and context management
 - `orchestrator.spec.ts` - Tests for LLM orchestration and tool execution
 - `mcp-prompts.spec.ts` - Tests for MCP prompt execution and inspector
+- `25-questions.spec.ts` - 25-question evaluation framework for LLM quality assurance
+- `quick-wins.spec.ts` - Tests for quick wins features
 
 ### Component Tests (`components/`)
 
 - `board-card.spec.ts` - Tests for BoardCard component (departures/arrivals)
 - `ui-cards.spec.ts` - Tests for TripCard, WeatherCard, StationCard, EcoCard, ItineraryCard
+- `filters.spec.ts` - Tests for filter components
 
 ### API Tests (`api/`)
 

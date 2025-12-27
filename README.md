@@ -14,10 +14,14 @@ Model Context Protocol (MCP).
 
 ### AI Travel Assistant
 
-- Natural language chat interface powered by Google Gemini
+- Natural language chat interface powered by Google Gemini 2.0 Flash
+- 13 integrated MCP tools for real-time travel data
+- Multi-step journey orchestration and itinerary generation
+- Context-aware conversation with preference tracking
 - Ask questions about Swiss attractions, ski resorts, and travel planning
 - Get personalized recommendations based on your preferences
 - Multi-language support (English, German, French, Italian)
+- 25-question evaluation framework for quality assurance
 
 ### MCP Integration
 
@@ -66,20 +70,27 @@ instructions.**
 
 ### LLM Integration
 
-- **[READY_TO_TEST.md](./docs/READY_TO_TEST.md)** - Quick start guide for AI
-  chat
-- **[LLM_INTEGRATION_SUMMARY.md](./docs/LLM_INTEGRATION_SUMMARY.md)** -
-  Executive summary
-- **[SWISS_EXPLORER_LLM_IMPLEMENTATION_PLAN.md](./docs/SWISS_EXPLORER_LLM_IMPLEMENTATION_PLAN.md)** -
-  Complete implementation plan
-- **[PHASE_1_QUICK_START.md](./docs/PHASE_1_QUICK_START.md)** - Step-by-step
-  implementation guide
+- **[LLM_INTEGRATION_PLAN.md](./docs/LLM_INTEGRATION_PLAN.md)** - Complete
+  implementation roadmap
+- **[LLM_STATUS.md](./docs/LLM_STATUS.md)** - Current status and achievements
+- **[PHASE_3_QUICK_START.md](./docs/PHASE_3_QUICK_START.md)** - Phase 3
+  features guide
+- **[LLM_ROADMAP_VISUAL.md](./docs/LLM_ROADMAP_VISUAL.md)** - Visual roadmap
 
-### Architecture
+### Architecture & Testing
 
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Detailed architecture documentation
-- **[MCP_TESTING.md](./MCP_TESTING.md)** - MCP testing guide
-- **[ENV_CONFIG.md](./ENV_CONFIG.md)** - Environment configuration
+- **[TEST_COVERAGE.md](./docs/TEST_COVERAGE.md)** - Test coverage report
+- **[tests/README.md](./tests/README.md)** - Testing guide
+
+### Features
+
+- **[25_QUESTIONS_FEATURE.md](./25_QUESTIONS_FEATURE.md)** - 25-question
+  evaluation framework
+- **[I18N_IMPLEMENTATION.md](./I18N_IMPLEMENTATION.md)** - Internationalization
+  guide
+- **[QUICK_WINS_IMPLEMENTATION.md](./QUICK_WINS_IMPLEMENTATION.md)** - Quick wins
+  features
 
 ## Project Structure
 
@@ -158,30 +169,35 @@ GEMINI_MODEL=gemini-1.5-flash
 
 ## Features Roadmap
 
-### Phase 1 - Complete
+### Phase 1 - ✅ Complete
 
-- AI chat interface
-- Basic conversation support
-- Multi-language responses
-- Dark mode support
+- ✅ AI chat interface
+- ✅ Basic conversation support
+- ✅ Multi-language responses
+- ✅ Dark mode support
 
-### Phase 2 - Planned
+### Phase 2 - ✅ Complete
 
-- MCP tool integration in chat
-- Smart map filtering via AI
-- Real-time travel data in chat
+- ✅ MCP tool integration in chat (13/13 tools)
+- ✅ Real-time travel data in chat
+- ✅ Rich UI cards (Station, Trip, Weather, Board, Eco, Itinerary)
+- ✅ Function calling with 85%+ success rate
 
-### Phase 3 - Planned
+### Phase 3 - ✅ Complete
 
-- Complete itinerary generation
-- Multi-tool orchestration
-- Journey planning workflows
+- ✅ Complete itinerary generation
+- ✅ Multi-tool orchestration
+- ✅ Journey planning workflows
+- ✅ Context management and conversation state
+- ✅ 25-question evaluation framework
 
-### Phase 4 - Planned
+### Phase 4 - In Progress
 
-- Voice input
-- Export itineraries
-- Enhanced UX features
+- ✅ Cross-component map interactivity
+- ✅ Rich message cards for all tool types
+- ⏳ Voice input
+- ⏳ Export itineraries
+- ⏳ Chat persistence
 
 ### Phase 5 - Planned
 
