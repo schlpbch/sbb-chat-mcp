@@ -1,29 +1,29 @@
-# SBB Chat MCP 🏔️
+# SBB Chat MCP
 
 An intelligent travel discovery platform for Switzerland, powered by AI and the
 Model Context Protocol (MCP).
 
 ## Features
 
-### 🗺️ Interactive Map Discovery
+### Interactive Map Discovery
 
 - Explore Swiss tourist attractions on an interactive Leaflet map
 - Filter by type, category, vibe tags, and text search
 - View detailed information for each attraction
 - Find nearby public transport stations
 
-### 🤖 AI Travel Assistant (NEW!)
+### AI Travel Assistant
 
-- **Natural language chat interface** powered by Google Gemini
+- Natural language chat interface powered by Google Gemini
 - Ask questions about Swiss attractions, ski resorts, and travel planning
 - Get personalized recommendations based on your preferences
 - Multi-language support (English, German, French, Italian)
 
-### 🚂 MCP Integration
+### MCP Integration
 
 - Connect to Journey Service MCP for real-time travel data
-- Access 13 tools for journey planning and location services
-- 12 pre-built prompts for common travel scenarios
+- Access tools for journey planning and location services
+- Pre-built prompts for common travel scenarios
 - Switch between dev and staging MCP servers
 
 ## Quick Start
@@ -56,7 +56,7 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
    [Google AI Studio](https://makersuite.google.com/app/apikey)
 2. Add it to `.env.local`: `GEMINI_API_KEY=your_key_here`
 3. Restart the dev server
-4. Click the 💬 chat icon in the navbar
+4. Click the chat icon in the navbar or navigate to `/chat`
 5. Start chatting!
 
 **See [docs/READY_TO_TEST.md](./docs/READY_TO_TEST.md) for detailed setup
@@ -83,16 +83,17 @@ instructions.**
 
 ## Project Structure
 
-```
-swiss-explorer-next/
+```text
+sbb-chat-mcp/
 ├── src/
 │   ├── app/                    # Next.js app router pages
 │   │   ├── api/               # API routes
 │   │   │   ├── llm/          # LLM chat endpoints
-│   │   │   └── mcp/          # MCP proxy endpoints
+│   │   │   └── mcp-proxy/    # MCP proxy endpoints
+│   │   ├── chat/             # AI chat page
 │   │   ├── health/           # Health check page
 │   │   ├── mcp-test/         # MCP inspector
-│   │   └── page.tsx          # Main application
+│   │   └── page.tsx          # Main map application
 │   ├── components/            # React components
 │   │   ├── chat/             # AI chat components
 │   │   ├── filters/          # Filter components
@@ -157,31 +158,32 @@ GEMINI_MODEL=gemini-1.5-flash
 
 ## Features Roadmap
 
-### ✅ Phase 1 - Complete
+### Phase 1 - Complete
 
 - AI chat interface
 - Basic conversation support
 - Multi-language responses
+- Dark mode support
 
-### 🚧 Phase 2 - Planned
+### Phase 2 - Planned
 
 - MCP tool integration in chat
 - Smart map filtering via AI
 - Real-time travel data in chat
 
-### 📋 Phase 3 - Planned
+### Phase 3 - Planned
 
 - Complete itinerary generation
 - Multi-tool orchestration
 - Journey planning workflows
 
-### 📋 Phase 4 - Planned
+### Phase 4 - Planned
 
 - Voice input
 - Export itineraries
 - Enhanced UX features
 
-### 📋 Phase 5 - Planned
+### Phase 5 - Planned
 
 - Performance optimization
 - Analytics and monitoring
