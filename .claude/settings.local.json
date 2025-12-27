@@ -16,7 +16,8 @@
       "Bash(pnpm run build:*)",
       "Bash(curl:*)",
       "Bash(wc:*)",
-      "Bash(npm run build:*)"
+      "Bash(npm run build:*)",
+      "Bash(git push:*)"
     ]
   }
 }

@@ -80,6 +80,15 @@ export default function CompareCard({ data }: CompareCardProps) {
 
   const bestRoute = getBestRoute();
 
+  // Safety check: ensure routes is defined and is an array
+  if (!routes || !Array.isArray(routes) || routes.length === 0) {
+    return (
+      <div className="bg-white rounded-lg border border-gray-200 p-4">
+        <p className="text-gray-500 text-center">No routes available for comparison</p>
+      </div>
+    );
+  }
+
   // Calculate max values for visualization
   const maxDuration = routes.reduce((max, r) => {
     const mins = parseDurationToMinutes(r.duration);

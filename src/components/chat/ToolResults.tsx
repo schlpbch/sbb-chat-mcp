@@ -31,6 +31,7 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   
   // Station results
   if (toolName === 'findStopPlacesByName' || toolName === 'findStopPlacesByCoordinates') {
+  if (!result) return null;
   const stations = Array.isArray(result) ? result : (result.stations || [result]);
   return Array.isArray(stations) && stations.slice(0, 3).map((station, i) => (
   <StationCard key={`${idx}-${i}`} data={station} language={language} />
@@ -39,6 +40,7 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   
   // Trip results - skip if eco comparison is present
   if (toolName === 'findTrips' && !hasEcoComparison) {
+  if (!result) return null;
   const trips = Array.isArray(result) ? result : (result.trips || [result]);
   return Array.isArray(trips) && trips.slice(0, 3).map((trip, i) => (
   <TripCard key={`${idx}-${i}`} data={trip} language={language} />
@@ -46,16 +48,17 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   }
   
   // Weather results
-  if (toolName === 'getWeather') return <WeatherCard key={idx} data={result} language={language} />;
+  if (toolName === 'getWeather') return result ? <WeatherCard key={idx} data={result} language={language} /> : null;
   
   // Departures/Arrivals
-  if (toolName === 'getPlaceEvents') return <BoardCard key={idx} data={result} />;
+  if (toolName === 'getPlaceEvents') return result ? <BoardCard key={idx} data={result} /> : null;
   
   // Eco comparison
-  if (toolName === 'getEcoComparison') return <EcoCard key={idx} data={result} />;
+  if (toolName === 'getEcoComparison') return result ? <EcoCard key={idx} data={result} /> : null;
   
   // Route comparison
   if (toolName === 'compareRoutes' || toolName === 'journeyRanking') {
+    if (!result) return null;
     console.log('[ToolResults] Route comparison data:', result);
     
     // Extract routes from various possible locations
