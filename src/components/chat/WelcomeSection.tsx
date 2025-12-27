@@ -1,5 +1,8 @@
 'use client';
 
+import FavoritesSection from './FavoritesSection';
+import RecentSearches from './RecentSearches';
+
 interface QuickAction {
  icon: string;
  label: string;
@@ -87,6 +90,12 @@ export default function WelcomeSection({ onSendMessage }: WelcomeSectionProps) {
  <p className="text-base sm:text-xl lg:text-2xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed px-4">
  Discover connections, check weather across Europe, explore stations, and plan eco-friendly journeys.
  </p>
+ </div>
+
+ {/* Favorites Section */}
+ <div className="w-full max-w-4xl">
+ <FavoritesSection onSendMessage={onSendMessage} />
+ <RecentSearches onSelectSearch={onSendMessage} />
  </div>
 
  {/* Quick Actions Grid - Enhanced */}

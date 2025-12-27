@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import ShareMenu from '@/components/ui/ShareMenu';
+import type { ShareableTrip } from '@/lib/shareUtils';
 
 interface TripCardProps {
  data: any;
@@ -101,6 +103,16 @@ export default function TripCard({ data }: TripCardProps) {
  return '🚂';
  };
 
+ // Prepare shareable trip data
+ const shareableTrip: ShareableTrip = {
+ from: origin.name,
+ to: destination.name,
+ departure: origin.time ? formatTime(origin.time) : undefined,
+ arrival: destination.time ? formatTime(destination.time) : undefined,
+ duration: durationStr !== 'N/A' ? durationStr : undefined,
+ transfers: transfers > 0 ? transfers : undefined,
+ };
+
  return (
  <article
  className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500"
@@ -123,6 +135,7 @@ export default function TripCard({ data }: TripCardProps) {
  </span>
  )}
  <span className="text-xs opacity-80">{legs.length} {legs.length === 1 ? 'leg' : 'legs'}</span>
+ <ShareMenu trip={shareableTrip} />
  </div>
  </div>
  </div>

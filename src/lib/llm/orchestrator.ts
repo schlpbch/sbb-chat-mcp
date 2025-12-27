@@ -187,11 +187,24 @@ function createStationEventsPlan(context: ConversationContext): ExecutionPlan {
   
   // Actually, context.location.origin is often used as the "target" for single-location queries in our current logic
   const stationName = context.location.origin?.name || 'Switzerland';
+  
+  // Detect if user wants arrivals or departures
+  // Check the current intent's extracted entities or fall back to keyword detection
+  let eventType: 'arrivals' | 'departures' = 'departures';
+  
+  // If we have access to the original message through intent history, check it
+  if (context.intentHistory.length > 0) {
+    const latestIntent = context.intentHistory[context.intentHistory.length - 1];
+    // Check if the intent has any metadata about event type
+    if (latestIntent.extractedEntities?.eventType) {
+      eventType = latestIntent.extractedEntities.eventType;
+    }
+  }
 
   return {
     id: `events-${Date.now()}`,
     name: 'Station Events',
-    description: `Get departures/arrivals for ${stationName}`,
+    description: `Get ${eventType} for ${stationName}`,
     steps: [
       {
         id: 'find-station',
@@ -205,7 +218,7 @@ function createStationEventsPlan(context: ConversationContext): ExecutionPlan {
           const station = results.get('find-station')?.data?.[0];
           return {
             placeId: station?.id || '',
-            eventType: 'departures', // Default to departures
+            eventType: eventType,
             limit: 10,
           };
         },

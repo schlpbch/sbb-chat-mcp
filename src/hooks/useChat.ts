@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import type { Language } from '@/lib/i18n';
+import { useRecentSearches } from './useRecentSearches';
 
 export interface Message {
   id: string;
@@ -22,6 +23,7 @@ export function useChat(language: Language) {
   const [toolsExecuting, setToolsExecuting] = useState<string[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const { addSearch } = useRecentSearches();
 
   const [sessionId] = useState(
     () => `session-${Date.now()}-${Math.random().toString(36).slice(2)}`
@@ -35,6 +37,9 @@ export function useChat(language: Language) {
   const handleSendMessage = async (text?: string) => {
     const messageContent = text || input.trim();
     if (!messageContent || isLoading) return;
+
+    // Track in recent searches
+    addSearch(messageContent);
 
     const userMessage: Message = {
       id: Date.now().toString(),

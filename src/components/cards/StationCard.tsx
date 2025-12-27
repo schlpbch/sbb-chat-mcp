@@ -1,5 +1,8 @@
 'use client';
 
+import { useFavoriteStations } from '@/hooks/useFavoriteStations';
+import { useToast } from '@/components/ui/Toast';
+
 interface StationCardProps {
  data: {
  id?: string;
@@ -22,6 +25,29 @@ interface StationCardProps {
 
 export default function StationCard({ data }: StationCardProps) {
  const { name, id, location, majorHub, platforms, countryCode, services, accessibility } = data;
+ const { isFavorite, addFavorite, removeFavorite } = useFavoriteStations();
+ const { showToast } = useToast();
+
+ const isStationFavorited = id ? isFavorite(id) : false;
+
+ const handleToggleFavorite = () => {
+ if (!id || !name) {
+ showToast('Cannot favorite station without ID or name', 'error');
+ return;
+ }
+
+ if (isStationFavorited) {
+ removeFavorite(id);
+ showToast(`Removed ${name} from favorites`, 'success');
+ } else {
+ const success = addFavorite({ id, name });
+ if (success) {
+ showToast(`Added ${name} to favorites`, 'success');
+ } else {
+ showToast('Maximum 10 favorites reached', 'error');
+ }
+ }
+ };
 
  const mapUrl =
  location?.latitude && location?.longitude
@@ -63,7 +89,25 @@ export default function StationCard({ data }: StationCardProps) {
  <p className="text-xs text-blue-100 font-mono">{id}</p>
  )}
  </div>
- <span className="text-2xl ml-2">{getCountryFlag(countryCode)}</span>
+ <div className="flex items-center space-x-2 ml-2">
+ <button
+ onClick={handleToggleFavorite}
+ className="p-1 hover:scale-110 transition-transform duration-200"
+ aria-label={isStationFavorited ? 'Remove from favorites' : 'Add to favorites'}
+ data-testid="favorite-toggle"
+ >
+ {isStationFavorited ? (
+ <svg className="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 24 24">
+ <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+ </svg>
+ ) : (
+ <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+ </svg>
+ )}
+ </button>
+ <span className="text-2xl">{getCountryFlag(countryCode)}</span>
+ </div>
  </div>
  </div>
 

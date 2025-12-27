@@ -348,6 +348,18 @@ export function extractIntent(message: string): Intent {
   const extractedEntities: any = {};
   if (fromMatch) extractedEntities.origin = fromMatch[1].trim();
   if (toMatch) extractedEntities.destination = toMatch[1].trim();
+  
+  // Extract event type for station queries
+  if (type === 'station_search') {
+    if (lowerMessage.includes('arrival')) {
+      extractedEntities.eventType = 'arrivals';
+    } else if (lowerMessage.includes('departure')) {
+      extractedEntities.eventType = 'departures';
+    } else {
+      // Default to departures if not specified
+      extractedEntities.eventType = 'departures';
+    }
+  }
 
   return {
     type,
