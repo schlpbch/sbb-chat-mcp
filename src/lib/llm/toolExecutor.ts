@@ -62,9 +62,23 @@ export async function executeTool(
 
     const data = await response.json();
 
+    console.log(
+      `[toolExecutor] Raw response for ${toolName}:`,
+      JSON.stringify(data, null, 2)
+    );
+
+    const parsedData = data.content?.[0]?.text
+      ? JSON.parse(data.content[0].text)
+      : data;
+
+    console.log(
+      `[toolExecutor] Parsed data for ${toolName}:`,
+      JSON.stringify(parsedData, null, 2)
+    );
+
     return {
       success: true,
-      data: data.content?.[0]?.text ? JSON.parse(data.content[0].text) : data,
+      data: parsedData,
       toolName,
       params,
     };

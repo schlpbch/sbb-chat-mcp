@@ -9,6 +9,7 @@ import TripCard from '@/components/cards/TripCard';
 import WeatherCard from '@/components/cards/WeatherCard';
 import BoardCard from '@/components/cards/BoardCard';
 import EcoCard from '@/components/cards/EcoCard';
+import ItineraryCard from '@/components/cards/ItineraryCard';
 
 interface Message {
   id: string;
@@ -32,7 +33,9 @@ export default function ChatPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Generate a stable session ID for orchestration context
-  const [sessionId] = useState(() => `session-${Date.now()}-${Math.random().toString(36).slice(2)}`);
+  const [sessionId] = useState(
+    () => `session-${Date.now()}-${Math.random().toString(36).slice(2)}`
+  );
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -131,7 +134,11 @@ export default function ChatPage() {
       />
 
       {/* Chat Container */}
-      <main className="flex-1 overflow-hidden" role="main" aria-label="Chat interface">
+      <main
+        className="flex-1 overflow-hidden"
+        role="main"
+        aria-label="Chat interface"
+      >
         <div className="max-w-4xl mx-auto h-full flex flex-col">
           {/* Page Title */}
           <header className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
@@ -159,56 +166,86 @@ export default function ChatPage() {
                   Ask me anything about Swiss travel
                 </p>
 
-                <nav aria-label="Quick start suggestions" className="space-y-3 max-w-md mx-auto">
+                <nav
+                  aria-label="Quick start suggestions"
+                  className="grid grid-cols-1 md:grid-cols-2 gap-3 max-w-3xl mx-auto"
+                >
                   <button
                     type="button"
-                    onClick={() =>
-                      setInput('What are the best ski resorts in Switzerland?')
-                    }
-                    className="w-full p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
-                    data-testid="quick-start-ski"
+                    onClick={() => setInput('Plan a day trip to Lucerne')}
+                    className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    data-testid="quick-start-lucerne"
                   >
-                    <span aria-hidden="true">💬 </span>What are the best ski resorts?
+                    <span aria-hidden="true">🗺️ </span>Plan a day trip to
+                    Lucerne
                   </button>
                   <button
                     type="button"
                     onClick={() =>
-                      setInput('Tell me about attractions in Zürich')
+                      setInput('Find an eco-friendly route to Geneva')
                     }
-                    className="w-full p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
-                    data-testid="quick-start-zurich"
+                    className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    data-testid="quick-start-eco"
                   >
-                    <span aria-hidden="true">🏛️ </span>Tell me about Zürich attractions
+                    <span aria-hidden="true">🌱 </span>Eco-friendly route to
+                    Geneva
                   </button>
                   <button
                     type="button"
                     onClick={() =>
-                      setInput('How can I plan a sustainable trip?')
+                      setInput('I need a wheelchair-accessible route to Bern')
                     }
-                    className="w-full p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
-                    data-testid="quick-start-sustainable"
+                    className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    data-testid="quick-start-accessible"
                   >
-                    <span aria-hidden="true">🌱 </span>Plan a sustainable trip
+                    <span aria-hidden="true">♿ </span>Accessible route to Bern
                   </button>
                   <button
                     type="button"
-                    onClick={() =>
-                      setInput('Recommend family-friendly activities')
-                    }
-                    className="w-full p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    onClick={() => setInput('Plan a family trip to Interlaken')}
+                    className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
                     data-testid="quick-start-family"
                   >
-                    <span aria-hidden="true">👨‍👩‍👧‍👦 </span>Family-friendly activities
+                    <span aria-hidden="true">👨‍👩‍👧‍👦 </span>Family trip to Interlaken
                   </button>
                   <button
                     type="button"
                     onClick={() =>
-                      setInput('Plan a day trip to Zermatt from Zurich')
+                      setInput('How can I get to Lugano with my bike?')
                     }
-                    className="w-full p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
-                    data-testid="quick-start-zermatt"
+                    className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    data-testid="quick-start-bike"
                   >
-                    <span aria-hidden="true">🗺️ </span>Plan a day trip to Zermatt
+                    <span aria-hidden="true">🚴 </span>Get to Lugano with my
+                    bike
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInput('what trains arrive in thun now')}
+                    className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    data-testid="quick-start-arrivals"
+                  >
+                    <span aria-hidden="true">🛬 </span>Trains arriving in Thun
+                    now
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setInput('show me departures from bern')}
+                    className="p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    data-testid="quick-start-departures"
+                  >
+                    <span aria-hidden="true">🚀 </span>Departures from Bern
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() =>
+                      setInput('when is the next train to zurich from basel')
+                    }
+                    className="md:col-span-2 p-4 bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-blue-500 dark:hover:border-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-colors text-sm text-left"
+                    data-testid="quick-start-next-train"
+                  >
+                    <span aria-hidden="true">🚂 </span>Next train to Zürich from
+                    Basel
                   </button>
                 </nav>
               </div>
@@ -220,7 +257,11 @@ export default function ChatPage() {
                 className={`flex ${
                   message.role === 'user' ? 'justify-end' : 'justify-start'
                 }`}
-                aria-label={`${message.role === 'user' ? 'Your message' : 'Assistant response'}`}
+                aria-label={`${
+                  message.role === 'user'
+                    ? 'Your message'
+                    : 'Assistant response'
+                }`}
                 data-testid={`message-${message.role}`}
               >
                 <div
@@ -282,6 +323,11 @@ export default function ChatPage() {
                             return <EcoCard key={idx} data={result} />;
                           }
 
+                          // Check for compiled itinerary data
+                          if (result?.destination && result?.activities) {
+                            return <ItineraryCard key={idx} data={result} />;
+                          }
+
                           return null;
                         })}
                       </div>
@@ -340,7 +386,10 @@ export default function ChatPage() {
                       </span>
                     </div>
                   ) : (
-                    <div className="flex items-center space-x-2 text-gray-500" aria-hidden="true">
+                    <div
+                      className="flex items-center space-x-2 text-gray-500"
+                      aria-hidden="true"
+                    >
                       <div className="animate-pulse">●</div>
                       <div className="animate-pulse delay-100">●</div>
                       <div className="animate-pulse delay-200">●</div>
@@ -396,7 +445,10 @@ export default function ChatPage() {
                 {isLoading ? 'Sending...' : 'Send'}
               </button>
             </form>
-            <p id="chat-hint" className="text-xs text-gray-500 dark:text-gray-400 mt-2">
+            <p
+              id="chat-hint"
+              className="text-xs text-gray-500 dark:text-gray-400 mt-2"
+            >
               Press Enter to send
             </p>
           </footer>

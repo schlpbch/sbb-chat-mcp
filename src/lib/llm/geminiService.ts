@@ -1,4 +1,4 @@
-import { GoogleGenerativeAI } from '@google/generative-ai';
+﻿import { GoogleGenerativeAI } from '@google/generative-ai';
 import { MCP_FUNCTION_DEFINITIONS } from './functionDefinitions';
 import {
   executeTool,
@@ -115,7 +115,7 @@ CAPABILITIES:
 AVAILABLE TOOLS:
 ${
   enableFunctionCalling
-    ? '- findStopPlacesByName: Search for train stations and stops\n- findPlaces: Search for places and POIs\n- findTrips: Find public transport connections\n- getWeather: Get weather forecasts\n- getSnowConditions: Get ski resort conditions\n- searchAttractions: Filter attractions by category/region'
+    ? '- findStopPlacesByName: Search for train stations and stops\n- findPlaces: Search for places and POIs\n- findTrips: Find public transport connections\n- getPlaceEvents: Get arrivals/departures (needs station ID)\n- getWeather: Get weather forecasts\n- getSnowConditions: Get ski resort conditions\n- searchAttractions: Filter attractions by category/region\n\nSTATION IDS: Zurich HB=8503000, Bern=8507000, Geneva=8501008, Basel=8500010, Lausanne=8501120, Lucerne=8505000, Thun=8507100, Interlaken=8507492\n\nFor arrivals/departures use: getPlaceEvents({placeId: "8507100", eventType: "arrivals"})'
     : 'No tools available in this mode'
 }
 

@@ -203,27 +203,30 @@ export const MCP_FUNCTION_DEFINITIONS = [
   {
     name: 'getPlaceEvents',
     description:
-      'Get arrivals and departures (events) at a specific station or place.',
+      'Get real-time arrivals and departures at a station. REQUIRES a station ID (UIC code). You MUST call findStopPlacesByName first to get the ID.',
     parameters: {
       type: 'object',
       properties: {
         placeId: {
           type: 'string',
-          description: 'Station/stop ID or name (e.g., "8503000" or "Bern").',
+          description:
+            'Station ID (UIC code). Get this from findStopPlacesByName result. Example: "8507100" for Thun.',
         },
         eventType: {
           type: 'string',
           enum: ['arrivals', 'departures', 'both'],
           default: 'departures',
-          description: 'Type of events (arrivals, departures, or both).',
+          description:
+            'Type of events to retrieve: "arrivals" for incoming trains, "departures" for outgoing trains, or "both".',
         },
         dateTime: {
           type: 'string',
-          description: 'Start date and time (ISO 8601 format).',
+          description:
+            'Start date and time in ISO 8601 format (e.g., "2025-12-27T11:22:00"). If omitted, uses current time.',
         },
         limit: {
           type: 'number',
-          description: 'Maximum number of events to return.',
+          description: 'Maximum number of events to return (default: 20).',
           default: 20,
         },
       },
