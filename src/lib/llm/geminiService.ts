@@ -225,8 +225,13 @@ export async function sendOrchestratedChatMessage(
   });
   sessionContexts.set(sessionId, updatedContext);
 
+  console.log("[sendOrchestratedChatMessage] requiresOrchestration:", requiresOrchestration(message));
+  console.log("[sendOrchestratedChatMessage] intent.confidence:", intent.confidence);
+  console.log("[sendOrchestratedChatMessage] Checking orchestration conditions...");
   if (requiresOrchestration(message) && intent.confidence >= 0.7) {
     const plan = createExecutionPlan(intent, updatedContext);
+      console.log("[sendOrchestratedChatMessage] Plan execution completed. Success:", planResult.success);
+      console.log("[sendOrchestratedChatMessage] Number of results:", planResult.results.length);
 
     if (plan && plan.steps.length > 0) {
       const planResult = await executePlan(plan, updatedContext);
@@ -240,6 +245,7 @@ export async function sendOrchestratedChatMessage(
           result: r.data,
         }));
       console.log("[sendOrchestratedChatMessage] Plan results:", planResult.results);
+      console.log("[sendOrchestratedChatMessage] Filtered tool calls:", toolCalls.map(tc => ({ name: tc.toolName, hasData: !!tc.result })));
       console.log("[sendOrchestratedChatMessage] Tool calls to return:", toolCalls);
 
       const modelConfig: any = {
