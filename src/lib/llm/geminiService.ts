@@ -266,3 +266,113 @@ Please provide a helpful, conversational response that summarizes the key inform
 
   return sendChatMessage(message, history, context, true);
 }
+
+/**
+ * Streaming chat with SSE support
+ */
+export async function* sendStreamingChatMessage(
+  message: string,
+  sessionId: string,
+  history: ChatMessage[] = [],
+  context: ChatContext = { language: 'en' }
+): AsyncGenerator<any, void, unknown> {
+  try {
+    const sessionContext = getSessionContext(sessionId, context.language);
+    
+    const modelConfig: any = {
+      model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+      tools: [
+        {
+          functionDeclarations: MCP_FUNCTION_DEFINITIONS,
+        },
+      ],
+    };
+
+    const model = genAI.getGenerativeModel(modelConfig);
+
+    const systemPrompt = `You are a helpful Swiss travel assistant.
+
+CONTEXT:
+- User's language: ${context.language}
+- Current time: ${new Date().toISOString()}
+
+GUIDELINES:
+- Always respond in ${
+      context.language === 'de'
+        ? 'German'
+        : context.language === 'fr'
+        ? 'French'
+        : context.language === 'it'
+        ? 'Italian'
+        : 'English'
+    }
+- Be concise and professional`;
+
+    const chatHistory = history.map((msg) => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.content }],
+    }));
+
+    const chat = model.startChat({
+      history: [
+        { role: 'user', parts: [{ text: systemPrompt }] },
+        {
+          role: 'model',
+          parts: [{ text: "Ready to help!" }],
+        },
+        ...chatHistory,
+      ],
+    });
+
+    const result = await chat.sendMessageStream(message);
+
+    let fullText = '';
+    const toolCalls: Array<{ toolName: string; params: any; result: any }> = [];
+
+    for await (const chunk of result.stream) {
+      const chunkText = chunk.text();
+      
+      if (chunkText) {
+        fullText += chunkText;
+        yield {
+          type: 'chunk',
+          data: { text: chunkText },
+        };
+      }
+
+      const functionCalls = chunk.functionCalls();
+      if (functionCalls && functionCalls.length > 0) {
+        for (const call of functionCalls) {
+          yield {
+            type: 'tool_call',
+            data: { toolName: call.name, params: call.args },
+          };
+
+          const toolResult = await executeTool(call.name, call.args as FunctionCallParams);
+
+          toolCalls.push({
+            toolName: call.name,
+            params: call.args,
+            result: toolResult.data,
+          });
+
+          yield {
+            type: 'tool_result',
+            data: { toolName: call.name, result: toolResult.data, success: toolResult.success },
+          };
+        }
+      }
+    }
+
+    yield {
+      type: 'complete',
+      data: { fullText, toolCalls: toolCalls.length > 0 ? toolCalls : undefined },
+    };
+  } catch (error) {
+    console.error('Streaming error:', error);
+    yield {
+      type: 'error',
+      data: { error: error instanceof Error ? error.message : 'Streaming failed' },
+    };
+  }
+}
