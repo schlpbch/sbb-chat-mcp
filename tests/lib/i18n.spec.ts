@@ -37,8 +37,8 @@ test.describe('i18n - Translation Functions', () => {
 
     // Check that common elements are present
     // These should be translated based on the current language
-    const navbar = page.getByRole('banner');
-    await expect(navbar).toBeVisible();
+    const nav = page.locator('nav').first();
+    await expect(nav).toBeVisible();
   });
 
   test('should handle missing translations gracefully', async ({ page }) => {

@@ -188,10 +188,10 @@ test.describe('Context Manager - Message History', () => {
 
 test.describe('Context Manager - Quick Start Buttons', () => {
   const quickStartButtons = [
-    { text: 'Connections to Bern', expected: 'Find next connections from Zurich HB to Bern' },
-    { text: 'Eco Impact: Geneva', expected: 'What is the environmental impact of a trip to Geneva?' },
-    { text: 'Basel Departures', expected: 'Show me departures from Basel SBB' },
-    { text: 'Nearby Stations', expected: 'Stations near my current location' },
+    { text: 'Zurich to Bern', expected: 'Find connections from Zurich to Bern' },
+    { text: 'Sustainable travel', expected: 'How can I travel sustainably in Switzerland?' },
+    { text: 'Family activities', expected: 'What are good family activities in Switzerland?' },
+    { text: 'Zermatt day trip', expected: 'Plan a day trip to Zermatt from Zurich' },
   ];
 
   for (const button of quickStartButtons) {
@@ -199,7 +199,10 @@ test.describe('Context Manager - Quick Start Buttons', () => {
       await page.goto('/chat');
       await page.waitForLoadState('networkidle');
 
-      await page.locator(`button:has-text("${button.text}")`).click();
+      // Find button by its text content
+      const quickButton = page.locator(`button:has-text("${button.text}")`);
+      await expect(quickButton).toBeVisible({ timeout: 10000 });
+      await quickButton.click();
 
       const input = page.locator(
         'input[placeholder="Ask me about Swiss public transport..."]'

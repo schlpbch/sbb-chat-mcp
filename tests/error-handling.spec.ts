@@ -291,9 +291,9 @@ test.describe('Error Handling', () => {
       await page.goto('/');
       await page.waitForLoadState('networkidle');
 
-      // Page should still render
-      const navbar = page.getByRole('banner');
-      await expect(navbar).toBeVisible();
+      // Page should still render - check for nav element or main content
+      const nav = page.locator('nav').first();
+      await expect(nav).toBeVisible();
     });
 
     test('should handle missing fonts gracefully', async ({ page }) => {
@@ -302,9 +302,9 @@ test.describe('Error Handling', () => {
       await page.goto('/');
       await page.waitForLoadState('networkidle');
 
-      // Page should still render with fallback fonts
-      const navbar = page.getByRole('banner');
-      await expect(navbar).toBeVisible();
+      // Page should still render with fallback fonts - check for nav element or main content
+      const nav = page.locator('nav').first();
+      await expect(nav).toBeVisible();
     });
   });
 
