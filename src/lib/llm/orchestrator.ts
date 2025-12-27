@@ -336,6 +336,10 @@ function compilePlanSummary(plan: ExecutionPlan, results: StepResults): any {
   summary.ecoComparison = results.get('eco-comparison')?.data;
   summary.origin = results.get('find-origin')?.data?.[0];
   summary.destination = results.get('find-destination')?.data?.[0];
+  
+  // Station events (departures/arrivals)
+  summary.station = results.get('find-station')?.data?.[0];
+  summary.events = results.get('get-events')?.data;
 
   return summary;
 }
@@ -366,6 +370,16 @@ export function formatPlanResults(
   if (summary.ecoComparison) {
     parts.push(
       `\n**Eco Impact:** Sustainability data included in the response.`
+    );
+  }
+
+  // Station events (departures/arrivals)
+  if (summary.events) {
+    parts.push(
+      `\n## ${summary.station?.name || 'Station'} - Live Board`
+    );
+    parts.push(
+      `\nShowing live departure/arrival information.`
     );
   }
 
