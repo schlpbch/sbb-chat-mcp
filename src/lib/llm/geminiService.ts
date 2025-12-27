@@ -5,9 +5,41 @@ import {
   searchAttractions,
   formatToolResult,
 } from './toolExecutor';
+import {
+  ConversationContext,
+  createContext,
+  updateContextFromMessage,
+  extractIntent,
+  buildContextualPrompt,
+  cacheToolResult,
+} from './contextManager';
+import {
+  createExecutionPlan,
+  executePlan,
+  formatPlanResults,
+  requiresOrchestration,
+} from './orchestrator';
 import type { FunctionCallParams } from './functionDefinitions';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
+// Session contexts (in production, use Redis or database)
+const sessionContexts = new Map<string, ConversationContext>();
+
+/**
+ * Get or create a conversation context for a session
+ */
+export function getSessionContext(
+  sessionId: string,
+  language: string = 'en'
+): ConversationContext {
+  if (!sessionContexts.has(sessionId)) {
+    sessionContexts.set(sessionId, createContext(sessionId, language));
+  }
+  const ctx = sessionContexts.get(sessionId)!;
+  ctx.language = language;
+  return ctx;
+}
 
 export interface ChatMessage {
   role: 'user' | 'assistant';
@@ -217,4 +249,92 @@ export async function sendSimpleChatMessage(
 ): Promise<string> {
   const result = await sendChatMessage(message, history, context, false);
   return result.response;
+}
+
+/**
+ * Enhanced chat with orchestration support for complex queries
+ * Automatically uses multi-tool planning for itinerary requests
+ */
+export async function sendOrchestratedChatMessage(
+  message: string,
+  sessionId: string,
+  history: ChatMessage[] = [],
+  context: ChatContext = { language: 'en' }
+): Promise<ChatResponse> {
+  console.log('[geminiService] === ORCHESTRATED CHAT START ===');
+
+  // Get or create session context
+  const sessionContext = getSessionContext(sessionId, context.language);
+
+  // Extract intent from message
+  const intent = extractIntent(message);
+  console.log('[geminiService] Detected intent:', intent.type, 'confidence:', intent.confidence);
+
+  // Update context with any extracted information
+  const updatedContext = updateContextFromMessage(sessionContext, message, {
+    intent,
+  });
+  sessionContexts.set(sessionId, updatedContext);
+
+  // Check if this requires orchestration
+  if (requiresOrchestration(message) && intent.confidence >= 0.7) {
+    console.log('[geminiService] Using orchestrated execution');
+
+    // Create and execute a multi-step plan
+    const plan = createExecutionPlan(intent, updatedContext);
+
+    if (plan && plan.steps.length > 0) {
+      console.log('[geminiService] Executing plan:', plan.name, 'with', plan.steps.length, 'steps');
+
+      const planResult = await executePlan(plan, updatedContext);
+      console.log('[geminiService] Plan execution complete:', planResult.success);
+
+      // Format the results
+      const formattedResults = formatPlanResults(planResult, context.language);
+
+      // Build tool calls array from plan results
+      const toolCalls = planResult.results
+        .filter((r) => r.success && r.data)
+        .map((r) => ({
+          toolName: r.toolName,
+          params: {},
+          result: r.data,
+        }));
+
+      // Send to Gemini with the gathered context for natural language response
+      const modelConfig: any = {
+        model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
+      };
+      const model = genAI.getGenerativeModel(modelConfig);
+
+      const summaryPrompt = `You are a Swiss travel assistant. The user asked: "${message}"
+
+I have gathered the following information for you:
+
+${formattedResults}
+
+Raw data summary:
+${JSON.stringify(planResult.summary, null, 2)}
+
+Please provide a helpful, conversational response that:
+1. Summarizes the key information clearly
+2. Provides specific recommendations
+3. Mentions any important details like weather or timing
+4. Responds in ${context.language === 'de' ? 'German' : context.language === 'fr' ? 'French' : context.language === 'it' ? 'Italian' : 'English'}
+
+Be concise but complete.`;
+
+      const result = await model.generateContent(summaryPrompt);
+      const response = result.response.text();
+
+      return {
+        response,
+        toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+      };
+    }
+  }
+
+  // Fall back to standard function-calling flow
+  console.log('[geminiService] Using standard function calling');
+  return sendChatMessage(message, history, context, true);
 }

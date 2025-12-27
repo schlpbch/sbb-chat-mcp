@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import {
   sendChatMessage,
+  sendOrchestratedChatMessage,
   ChatMessage,
   ChatContext,
   ChatResponse,
@@ -14,11 +15,15 @@ export async function POST(request: NextRequest) {
       history,
       context,
       enableFunctionCalling = true,
+      sessionId,
+      useOrchestration = true,
     } = body as {
       message: string;
       history?: ChatMessage[];
       context?: ChatContext;
       enableFunctionCalling?: boolean;
+      sessionId?: string;
+      useOrchestration?: boolean;
     };
 
     // Validate input
@@ -47,12 +52,26 @@ export async function POST(request: NextRequest) {
     }
 
     // Call Gemini API with function calling support
-    const result: ChatResponse = await sendChatMessage(
-      message,
-      history,
-      context,
-      enableFunctionCalling
-    );
+    // Use orchestrated chat for complex queries when sessionId is provided
+    let result: ChatResponse;
+
+    if (useOrchestration && sessionId) {
+      console.log('[chat/route] Using orchestrated chat with session:', sessionId);
+      result = await sendOrchestratedChatMessage(
+        message,
+        sessionId,
+        history,
+        context
+      );
+    } else {
+      console.log('[chat/route] Using standard chat');
+      result = await sendChatMessage(
+        message,
+        history,
+        context,
+        enableFunctionCalling
+      );
+    }
 
     return NextResponse.json({
       response: result.response,
