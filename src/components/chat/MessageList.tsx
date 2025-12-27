@@ -16,7 +16,7 @@ export default function MessageList({ messages, messagesEndRef }: MessageListPro
  <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
  <div className={`max-w-[85%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
  {message.role === 'user' ? (
- <div className="bg-sbb-red text-white rounded-2xl px-5 py-3 shadow-md">
+ <div className="bg-[#EB0000] text-white rounded-2xl px-5 py-3 shadow-md">
  <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
  {message.content}
  </p>
