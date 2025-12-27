@@ -33,13 +33,13 @@ interface RateLimitMetrics {
 // Configuration
 const RATE_LIMITS = {
   perUser: {
-    capacity: parseInt(process.env.RATE_LIMIT_PER_USER_CAPACITY || '10'),
-    refillRate: parseInt(process.env.RATE_LIMIT_PER_USER_REFILL_RATE || '1'),
+    capacity: parseInt(process.env.RATE_LIMIT_PER_USER_CAPACITY || '50'),
+    refillRate: parseInt(process.env.RATE_LIMIT_PER_USER_REFILL_RATE || '10'),
     refillInterval: 60000, // 1 minute
   },
   global: {
-    capacity: parseInt(process.env.RATE_LIMIT_GLOBAL_CAPACITY || '100'),
-    refillRate: parseInt(process.env.RATE_LIMIT_GLOBAL_REFILL_RATE || '10'),
+    capacity: parseInt(process.env.RATE_LIMIT_GLOBAL_CAPACITY || '500'),
+    refillRate: parseInt(process.env.RATE_LIMIT_GLOBAL_REFILL_RATE || '50'),
     refillInterval: 60000, // 1 minute
   },
 };
