@@ -2,6 +2,7 @@
 
 import { useFavoriteStations } from '@/hooks/useFavoriteStations';
 import { useToast } from '@/components/ui/Toast';
+import type { Language } from '@/lib/i18n';
 
 interface StationCardProps {
  data: {
@@ -21,9 +22,10 @@ interface StationCardProps {
  elevator?: boolean;
  };
  };
+  language: Language;
 }
 
-export default function StationCard({ data }: StationCardProps) {
+export default function StationCard({ data, language }: StationCardProps) {
  const { name, id, location, majorHub, platforms, countryCode, services, accessibility } = data;
  const { isFavorite, addFavorite, removeFavorite } = useFavoriteStations();
  const { showToast } = useToast();

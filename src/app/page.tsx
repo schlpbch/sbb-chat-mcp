@@ -8,6 +8,7 @@ import WelcomeSection from '@/components/chat/WelcomeSection';
 import MessageList from '@/components/chat/MessageList';
 import VoiceButton from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';
+import { translations } from '@/lib/i18n';
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>('en');
@@ -26,6 +27,8 @@ export default function Home() {
     handleSendMessage,
     handleKeyPress,
   } = useChat(language);
+  
+  const t = translations[language];
 
   return (
     <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100">
@@ -82,6 +85,7 @@ export default function Home() {
                   messages={messages}
                   messagesEndRef={messagesEndRef}
                   textOnlyMode={textOnlyMode}
+                  language={language}
                 />
               )}
             </div>
@@ -93,26 +97,26 @@ export default function Home() {
                 <button
                   onClick={() => setTextOnlyMode(!textOnlyMode)}
                   className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-gray-200"
-                  aria-label={textOnlyMode ? 'Switch to rich mode' : 'Switch to text-only mode'}
+                  aria-label={textOnlyMode ? t.chat.switchToRich : t.chat.switchToText}
                 >
                   {textOnlyMode ? (
                     <>
                       <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                       </svg>
-                      <span className="text-gray-700">Text Only</span>
+                      <span className="text-gray-700">{t.chat.textOnly}</span>
                     </>
                   ) : (
                     <>
                       <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
                       </svg>
-                      <span className="text-purple-700">Rich Mode</span>
+                      <span className="text-purple-700">{t.chat.richMode}</span>
                     </>
                   )}
                 </button>
                 <span className="text-xs text-gray-500">
-                  {textOnlyMode ? 'Streaming text responses' : 'Interactive cards & tools'}
+                  {textOnlyMode ? t.chat.textOnlyDesc : t.chat.richModeDesc}
                 </span>
               </div>
               
@@ -132,7 +136,7 @@ export default function Home() {
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     onKeyPress={handleKeyPress}
-                    placeholder="Ask about connections, stations, or travel info..."
+                    placeholder={t.chat.inputPlaceholder}
                     disabled={isLoading}
                     rows={1}
                     aria-label="Chat message input"
@@ -169,12 +173,12 @@ export default function Home() {
                           d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
                         ></path>
                       </svg>
-                      <span className="hidden sm:inline">Thinking...</span>
+                      <span className="hidden sm:inline">{t.chat.thinking}</span>
                       <span className="sm:hidden">...</span>
                     </>
                   ) : (
                     <>
-                      <span>Send</span>
+                      <span>{t.chat.send}</span>
                       <svg
                         className="w-5 h-5"
                         fill="none"
@@ -192,8 +196,8 @@ export default function Home() {
                   )}
                 </button>
               </div>
-              <p id="chat-hint" className="text-xs text-gray-500 mt-2 hidden sm:block">
-                Press Enter to send, Shift+Enter for new line
+              <p className="text-xs text-gray-500 mt-2 hidden sm:block">
+                {t.chat.pressEnter}
               </p>
             </div>
           </div>

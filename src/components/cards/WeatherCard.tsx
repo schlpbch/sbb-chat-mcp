@@ -1,10 +1,13 @@
 'use client';
 
+import type { Language } from '@/lib/i18n';
+
 interface WeatherCardProps {
- data: any; // Using any since the structure varies
+  data: any; // Using any since the structure varies
+  language: Language;
 }
 
-export default function WeatherCard({ data }: WeatherCardProps) {
+export default function WeatherCard({ data, language }: WeatherCardProps) {
  // Extract current weather from hourly data (first index)
  const hourly = data?.hourly || {};
  const daily = data?.daily || {};

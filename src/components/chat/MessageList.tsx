@@ -3,14 +3,16 @@
 import MarkdownCard from '@/components/cards/MarkdownCard';
 import ToolResults from './ToolResults';
 import type { Message } from '@/hooks/useChat';
+import type { Language } from '@/lib/i18n';
 
 interface MessageListProps {
  messages: Message[];
  messagesEndRef: React.RefObject<HTMLDivElement | null>;
  textOnlyMode?: boolean;
+ language: Language;
 }
 
-export default function MessageList({ messages, messagesEndRef, textOnlyMode = false }: MessageListProps) {
+export default function MessageList({ messages, messagesEndRef, textOnlyMode = false, language }: MessageListProps) {
  return (
  <>
  {messages.map((message) => (
@@ -29,7 +31,7 @@ export default function MessageList({ messages, messagesEndRef, textOnlyMode = f
  <div className="space-y-3">
  {/* Tool Results - hide in text-only mode */}
  {!textOnlyMode && message.toolCalls && message.toolCalls.length > 0 && (
- <ToolResults toolCalls={message.toolCalls} />
+ <ToolResults toolCalls={message.toolCalls} language={language} />
  )}
  
  {/* Text Response */}

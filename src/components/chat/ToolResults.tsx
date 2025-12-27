@@ -7,6 +7,7 @@ import BoardCard from '@/components/cards/BoardCard';
 import EcoCard from '@/components/cards/EcoCard';
 import ItineraryCard from '@/components/cards/ItineraryCard';
 import CompareCard from '@/components/cards/CompareCard';
+import type { Language } from '@/lib/i18n';
 
 interface ToolCall {
  toolName: string;
@@ -16,9 +17,10 @@ interface ToolCall {
 
 interface ToolResultsProps {
  toolCalls: ToolCall[];
+ language: Language;
 }
 
-export default function ToolResults({ toolCalls }: ToolResultsProps) {
+export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   // Check if eco comparison is present
   const hasEcoComparison = toolCalls.some(tc => tc.toolName === 'getEcoComparison');
   
@@ -31,7 +33,7 @@ export default function ToolResults({ toolCalls }: ToolResultsProps) {
   if (toolName === 'findStopPlacesByName' || toolName === 'findStopPlacesByCoordinates') {
   const stations = Array.isArray(result) ? result : (result.stations || [result]);
   return Array.isArray(stations) && stations.slice(0, 3).map((station, i) => (
-  <StationCard key={`${idx}-${i}`} data={station} />
+  <StationCard key={`${idx}-${i}`} data={station} language={language} />
   ));
   }
   
@@ -39,12 +41,12 @@ export default function ToolResults({ toolCalls }: ToolResultsProps) {
   if (toolName === 'findTrips' && !hasEcoComparison) {
   const trips = Array.isArray(result) ? result : (result.trips || [result]);
   return Array.isArray(trips) && trips.slice(0, 3).map((trip, i) => (
-  <TripCard key={`${idx}-${i}`} data={trip} />
+  <TripCard key={`${idx}-${i}`} data={trip} language={language} />
   ));
   }
   
   // Weather results
-  if (toolName === 'getWeather') return <WeatherCard key={idx} data={result} />;
+  if (toolName === 'getWeather') return <WeatherCard key={idx} data={result} language={language} />;
   
   // Departures/Arrivals
   if (toolName === 'getPlaceEvents') return <BoardCard key={idx} data={result} />;

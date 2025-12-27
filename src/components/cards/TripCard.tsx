@@ -1,15 +1,19 @@
 'use client';
 
 import { useState } from 'react';
+import { translations, type Language } from '@/lib/i18n';
 import ShareMenu from '@/components/ui/ShareMenu';
 import type { ShareableTrip } from '@/lib/shareUtils';
 
 interface TripCardProps {
  data: any;
+ language: Language;
 }
 
-export default function TripCard({ data }: TripCardProps) {
+export default function TripCard({ data, language }: TripCardProps) {
  const [isExpanded, setIsExpanded] = useState(false);
+ const [showDetails, setShowDetails] = useState(false);
+ const t = translations[language];
 
  const legs = data.legs || [];
  const firstLeg = legs[0];
