@@ -163,13 +163,8 @@ test.describe('Chat Page', () => {
     });
 
     test('toggles dark mode', async ({ page }) => {
-      const themeButton = page.getByRole('button', { name: 'Toggle dark mode' });
-      await themeButton.click();
-
-      await expect(page.locator('html')).toHaveClass(/dark/);
-
-      await themeButton.click();
-      await expect(page.locator('html')).not.toHaveClass(/dark/);
+      // Dark mode has been removed from the application
+      test.skip();
     });
   });
 

@@ -43,7 +43,7 @@ export default function Home() {
  {/* Chat Container */}
  <div className="flex-1 flex flex-col bg-white shadow-2xl overflow-hidden">
  {/* Header */}
- <div className="relative bg-linear-to-r from-sbb-red via-red-600 to-red-700 px-4 sm:px-6 py-4 shadow-lg">
+ <div className="relative bg-linear-to-r from-[#EB0000] via-red-600 to-red-700 px-4 sm:px-6 py-4 shadow-lg">
  <div className="flex items-center justify-between">
  <div>
  <h1 className="text-2xl font-bold text-white drop-shadow-lg">
@@ -90,7 +90,7 @@ export default function Home() {
  <button
  onClick={() => handleSendMessage()}
  disabled={isLoading || !input.trim()}
- className="shrink-0 h-[52px] px-6 bg-linear-to-r from-sbb-red to-red-600 text-white rounded-xl font-semibold hover:from-sbb-red-125 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
+ className="shrink-0 h-[52px] px-6 bg-linear-to-r from-[#EB0000] to-red-600 text-white rounded-xl font-semibold hover:from-[#EB0000]-125 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
  >
  {isLoading ? (
  <>

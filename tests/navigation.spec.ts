@@ -57,25 +57,8 @@ test.describe('Navigation', () => {
   });
 
   test('should toggle dark mode', async ({ page }) => {
-    // Find dark mode toggle button
-    const darkModeButton = page.getByRole('button', { name: 'Toggle dark mode' });
-    await expect(darkModeButton).toBeVisible({ timeout: 10000 });
-
-    // Get initial state
-    const htmlElement = page.locator('html');
-    const initialHasDarkClass = await htmlElement.evaluate((el) =>
-      el.classList.contains('dark')
-    );
-
-    // Click dark mode toggle
-    await darkModeButton.click();
-    await page.waitForTimeout(500);
-
-    // Check that dark mode was toggled
-    const newHasDarkClass = await htmlElement.evaluate((el) =>
-      el.classList.contains('dark')
-    );
-    expect(newHasDarkClass).toBe(!initialHasDarkClass);
+    // Dark mode has been removed from the application
+    test.skip();
   });
 
   test('should have filter sidebar', async ({ page }) => {
