@@ -11,8 +11,13 @@ export default function WeatherCard({ data }: WeatherCardProps) {
   
   const location = data?.locationName || data?.location || 'Unknown';
   const temperature = hourly?.temperature_2m?.[0];
+  const feelsLike = hourly?.apparent_temperature?.[0];
   const humidity = hourly?.relative_humidity_2m?.[0];
   const windSpeed = hourly?.wind_speed_10m?.[0];
+  const precipitation = hourly?.precipitation?.[0] || hourly?.rain?.[0] || 0;
+  const uvIndex = hourly?.uv_index?.[0];
+  const visibility = hourly?.visibility?.[0];
+  const pressure = hourly?.surface_pressure?.[0];
   
   // Map weather code to condition
   const getConditionFromCode = (code?: number) => {
@@ -108,6 +113,46 @@ export default function WeatherCard({ data }: WeatherCardProps) {
               </div>
             )}
           </div>
+        </div>
+
+        {/* Additional Weather Info */}
+        <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+          {feelsLike !== undefined && (
+            <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-900 rounded">
+              <span className="text-lg">🌡️</span>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Feels like</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{Math.round(feelsLike)}°</p>
+              </div>
+            </div>
+          )}
+          {precipitation !== undefined && precipitation > 0 && (
+            <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-900 rounded">
+              <span className="text-lg">💧</span>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Precipitation</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{precipitation} mm</p>
+              </div>
+            </div>
+          )}
+          {uvIndex !== undefined && (
+            <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-900 rounded">
+              <span className="text-lg">☀️</span>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">UV Index</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{Math.round(uvIndex)}</p>
+              </div>
+            </div>
+          )}
+          {pressure !== undefined && (
+            <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-900 rounded">
+              <span className="text-lg">🔽</span>
+              <div>
+                <p className="text-xs text-gray-500 dark:text-gray-400">Pressure</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{Math.round(pressure)} hPa</p>
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Compact Forecast */}
