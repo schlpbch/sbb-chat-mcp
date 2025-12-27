@@ -14,7 +14,9 @@
       "Bash(grep:*)",
       "Bash(ls:*)",
       "Bash(pnpm run build:*)",
-      "Bash(curl:*)"
+      "Bash(curl:*)",
+      "Bash(wc:*)",
+      "Bash(npm run build:*)"
     ]
   }
 }
