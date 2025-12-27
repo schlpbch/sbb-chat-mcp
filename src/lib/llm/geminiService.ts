@@ -1,9 +1,7 @@
 ﻿import { GoogleGenerativeAI } from '@google/generative-ai';
 import { MCP_FUNCTION_DEFINITIONS } from './functionDefinitions';
-import {
-  executeTool,
-  formatToolResult,
-} from './toolExecutor';
+import { executeTool, formatToolResult } from './toolExecutor';
+import { generateSystemPrompt } from './systemPromptHelper';
 import {
   ConversationContext,
   createContext,
@@ -70,7 +68,7 @@ export async function sendChatMessage(
 ): Promise<ChatResponse> {
   try {
     console.log('[geminiService] === CHAT REQUEST START ===');
-    
+
     const modelConfig: any = {
       model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
     };
@@ -152,8 +150,8 @@ GUIDELINES:
     if (functionCalls && functionCalls.length > 0) {
       for (const call of functionCalls) {
         const toolResult = await executeTool(
-            call.name,
-            call.args as FunctionCallParams
+          call.name,
+          call.args as FunctionCallParams
         );
 
         toolCalls.push({
@@ -217,7 +215,7 @@ export async function sendOrchestratedChatMessage(
 ): Promise<ChatResponse> {
   const sessionContext = getSessionContext(sessionId, context.language);
   const intent = extractIntent(message);
-  
+
   const updatedContext = updateContextFromMessage(sessionContext, message, {
     intent,
     origin: intent.extractedEntities?.origin,
@@ -225,16 +223,30 @@ export async function sendOrchestratedChatMessage(
   });
   sessionContexts.set(sessionId, updatedContext);
 
-  console.log("[sendOrchestratedChatMessage] requiresOrchestration:", requiresOrchestration(message));
-  console.log("[sendOrchestratedChatMessage] intent.confidence:", intent.confidence);
-  console.log("[sendOrchestratedChatMessage] Checking orchestration conditions...");
+  console.log(
+    '[sendOrchestratedChatMessage] requiresOrchestration:',
+    requiresOrchestration(message)
+  );
+  console.log(
+    '[sendOrchestratedChatMessage] intent.confidence:',
+    intent.confidence
+  );
+  console.log(
+    '[sendOrchestratedChatMessage] Checking orchestration conditions...'
+  );
   if (requiresOrchestration(message) && intent.confidence >= 0.7) {
     const plan = createExecutionPlan(intent, updatedContext);
 
     if (plan && plan.steps.length > 0) {
       const planResult = await executePlan(plan, updatedContext);
-      console.log("[sendOrchestratedChatMessage] Plan execution completed. Success:", planResult.success);
-      console.log("[sendOrchestratedChatMessage] Number of results:", planResult.results.length);
+      console.log(
+        '[sendOrchestratedChatMessage] Plan execution completed. Success:',
+        planResult.success
+      );
+      console.log(
+        '[sendOrchestratedChatMessage] Number of results:',
+        planResult.results.length
+      );
       const formattedResults = formatPlanResults(planResult, context.language);
 
       const toolCalls = planResult.results
@@ -244,9 +256,18 @@ export async function sendOrchestratedChatMessage(
           params: {},
           result: r.data,
         }));
-      console.log("[sendOrchestratedChatMessage] Plan results:", planResult.results);
-      console.log("[sendOrchestratedChatMessage] Filtered tool calls:", toolCalls.map(tc => ({ name: tc.toolName, hasData: !!tc.result })));
-      console.log("[sendOrchestratedChatMessage] Tool calls to return:", toolCalls);
+      console.log(
+        '[sendOrchestratedChatMessage] Plan results:',
+        planResult.results
+      );
+      console.log(
+        '[sendOrchestratedChatMessage] Filtered tool calls:',
+        toolCalls.map((tc) => ({ name: tc.toolName, hasData: !!tc.result }))
+      );
+      console.log(
+        '[sendOrchestratedChatMessage] Tool calls to return:',
+        toolCalls
+      );
 
       const modelConfig: any = {
         model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
@@ -262,7 +283,15 @@ ${formattedResults}
 Raw data summary:
 ${JSON.stringify(planResult.summary, null, 2)}
 
-Please provide a helpful, conversational response that summarizes the key information clearly and provides transport recommendations. Responds in ${context.language === 'de' ? 'German' : context.language === 'fr' ? 'French' : context.language === 'it' ? 'Italian' : 'English'}.`;
+Please provide a helpful, conversational response that summarizes the key information clearly and provides transport recommendations. Responds in ${
+        context.language === 'de'
+          ? 'German'
+          : context.language === 'fr'
+          ? 'French'
+          : context.language === 'it'
+          ? 'Italian'
+          : 'English'
+      }.`;
 
       const result = await model.generateContent(summaryPrompt);
       const response = result.response.text();
@@ -288,7 +317,7 @@ export async function* sendStreamingChatMessage(
 ): AsyncGenerator<any, void, unknown> {
   try {
     const sessionContext = getSessionContext(sessionId, context.language);
-    
+
     const modelConfig: any = {
       model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
       tools: [
@@ -328,7 +357,7 @@ GUIDELINES:
         { role: 'user', parts: [{ text: systemPrompt }] },
         {
           role: 'model',
-          parts: [{ text: "Ready to help!" }],
+          parts: [{ text: 'Ready to help!' }],
         },
         ...chatHistory,
       ],
@@ -341,7 +370,7 @@ GUIDELINES:
 
     for await (const chunk of result.stream) {
       const chunkText = chunk.text();
-      
+
       if (chunkText) {
         fullText += chunkText;
         yield {
@@ -358,7 +387,10 @@ GUIDELINES:
             data: { toolName: call.name, params: call.args },
           };
 
-          const toolResult = await executeTool(call.name, call.args as FunctionCallParams);
+          const toolResult = await executeTool(
+            call.name,
+            call.args as FunctionCallParams
+          );
 
           toolCalls.push({
             toolName: call.name,
@@ -368,7 +400,11 @@ GUIDELINES:
 
           yield {
             type: 'tool_result',
-            data: { toolName: call.name, result: toolResult.data, success: toolResult.success },
+            data: {
+              toolName: call.name,
+              result: toolResult.data,
+              success: toolResult.success,
+            },
           };
         }
       }
@@ -376,13 +412,18 @@ GUIDELINES:
 
     yield {
       type: 'complete',
-      data: { fullText, toolCalls: toolCalls.length > 0 ? toolCalls : undefined },
+      data: {
+        fullText,
+        toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+      },
     };
   } catch (error) {
     console.error('Streaming error:', error);
     yield {
       type: 'error',
-      data: { error: error instanceof Error ? error.message : 'Streaming failed' },
+      data: {
+        error: error instanceof Error ? error.message : 'Streaming failed',
+      },
     };
   }
 }

@@ -8,14 +8,14 @@ export const MCP_FUNCTION_DEFINITIONS = [
   {
     name: 'findStopPlacesByName',
     description:
-      'Search for train stations, bus stops, and other public transport locations in Switzerland by name',
+      'Search for train stations and stops by name. USE THIS TOOL when users ask about: (1) Finding stations ("What stations are in Zurich?", "Find stations near Matterhorn"), (2) Real-time information ("Show departures from Bern", "Arrivals at Basel"), (3) Platform information. This tool returns station IDs needed for getPlaceEvents.',
     parameters: {
       type: 'object',
       properties: {
         query: {
           type: 'string',
           description:
-            'Name of the station or stop to search for (e.g., "Zürich HB", "Bern", "Interlaken Ost")',
+            'Station name to search for. Examples: "Zürich HB", "Bern", "Basel SBB", "Interlaken", "Thun"',
         },
         limit: {
           type: 'number',
@@ -50,28 +50,28 @@ export const MCP_FUNCTION_DEFINITIONS = [
   {
     name: 'findTrips',
     description:
-      'Find public transport connections between two locations in Switzerland. Use this for all journey planning requests.',
+      'Find journey connections between two locations. USE THIS TOOL for: "How do I get from X to Y", "Find connections to X", "Train from X to Y", "Fastest route", "Trip planning". Works for domestic AND international destinations (e.g., Zurich to Milan, Geneva to Paris).',
     parameters: {
       type: 'object',
       properties: {
         origin: {
           type: 'string',
           description:
-            'Starting location or station name (e.g., "Zürich HB", "Bern")',
+            'Starting location. Can be station name, city, or address. Examples: "Zürich HB", "Bern", "Geneva", "Basel"',
         },
         destination: {
           type: 'string',
           description:
-            'Destination location or station name (e.g., "Geneva", "Lausanne")',
+            'Destination. Can be station, city, or international location. Examples: "Lausanne", "Interlaken", "Milan", "Paris"',
         },
         dateTime: {
           type: 'string',
           description:
-            'Date and time for the journey in ISO 8601 format (e.g., "2025-01-15T09:00:00"). Defaults to current time if omitted.',
+            'Journey time in ISO 8601 format. For "tomorrow at 7am" use tomorrow\'s date. Omit for "now" / "next" queries.',
         },
         limit: {
           type: 'number',
-          description: 'Maximum number of trips to return (default: 5)',
+          description: 'Number of trip options (default: 5)',
           default: 5,
         },
       },
@@ -87,15 +87,18 @@ export const MCP_FUNCTION_DEFINITIONS = [
       properties: {
         latitude: {
           type: 'number',
-          description: 'Latitude of the location (optional if locationName is provided)',
+          description:
+            'Latitude of the location (optional if locationName is provided)',
         },
         longitude: {
           type: 'number',
-          description: 'Longitude of the location (optional if locationName is provided)',
+          description:
+            'Longitude of the location (optional if locationName is provided)',
         },
         locationName: {
           type: 'string',
-          description: 'Name of the location (e.g., "Zurich", "Bern"). Will be automatically resolved to coordinates if lat/lon not provided.',
+          description:
+            'Name of the location (e.g., "Zurich", "Bern"). Will be automatically resolved to coordinates if lat/lon not provided.',
         },
       },
       required: [],
@@ -174,30 +177,30 @@ export const MCP_FUNCTION_DEFINITIONS = [
   {
     name: 'getPlaceEvents',
     description:
-      'Get real-time arrivals and departures at a station. REQUIRES a station ID (UIC code). You MUST call findStopPlacesByName first to get the ID.',
+      'Get real-time departure and arrival boards for a station. USE THIS TOOL when users ask: "Show departures from X", "What trains arrive at X", "Next trains from X", "Platform info at X". WORKFLOW: (1) Call findStopPlacesByName to get station ID, (2) Use that ID here to get live board.',
     parameters: {
       type: 'object',
       properties: {
         placeId: {
           type: 'string',
           description:
-            'Station ID (UIC code). Get this from findStopPlacesByName result. Example: "8507100" for Thun.',
+            'Station ID (UIC code) from findStopPlacesByName. Example: "8507100" for Thun, "8503000" for Zürich HB.',
         },
         eventType: {
           type: 'string',
           enum: ['arrivals', 'departures', 'both'],
           default: 'departures',
           description:
-            'Type of events to retrieve: "arrivals" for incoming trains, "departures" for outgoing trains, or "both".',
+            'Use "departures" for outgoing trains, "arrivals" for incoming trains, "both" for complete board.',
         },
         dateTime: {
           type: 'string',
           description:
-            'Start date and time in ISO 8601 format (e.g., "2025-12-27T11:22:00"). If omitted, uses current time.',
+            'Start time in ISO 8601 format. Omit for "now" / "next" queries.',
         },
         limit: {
           type: 'number',
-          description: 'Maximum number of events to return (default: 20).',
+          description: 'Number of events (default: 20).',
           default: 20,
         },
       },
