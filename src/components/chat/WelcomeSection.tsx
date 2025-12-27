@@ -23,8 +23,8 @@ const quickActions: QuickAction[] = [
   { 
     icon: '🌤️', 
     label: 'Weather Forecast', 
-    description: 'Check conditions',
-    query: 'What is the weather in Interlaken?',
+    description: 'Europe-wide conditions',
+    query: 'What is the weather in Paris?',
     color: 'from-yellow-500 to-orange-500'
   },
   { 
@@ -85,7 +85,7 @@ export default function WelcomeSection({ onSendMessage }: WelcomeSectionProps) {
         </h1>
         
         <p className="text-base sm:text-xl lg:text-2xl text-gray-600 dark:text-gray-300 font-light max-w-2xl mx-auto leading-relaxed px-4">
-          Discover connections, check weather, explore stations, and plan eco-friendly journeys across Switzerland.
+          Discover connections, check weather across Europe, explore stations, and plan eco-friendly journeys.
         </p>
       </div>
 
