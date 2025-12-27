@@ -81,6 +81,7 @@ export async function POST(request: NextRequest) {
     // Use orchestrated chat for complex queries when sessionId is provided
     let result: ChatResponse;
 
+    console.log('[chat/route] useOrchestration:', useOrchestration, 'sessionId:', sessionId);
     if (useOrchestration && sessionId) {
       console.log('[chat/route] Using orchestrated chat with session:', sessionId);
       result = await sendOrchestratedChatMessage(
