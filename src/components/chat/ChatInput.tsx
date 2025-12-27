@@ -25,30 +25,43 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="p-4 border-t border-gray-200 dark:border-gray-700">
-      <div className="flex space-x-2">
-        <input
-          type="text"
-          value={input}
-          onChange={(e) => setInput(e.target.value)}
-          onKeyPress={handleKeyPress}
-          placeholder="Ask me anything..."
-          disabled={disabled}
-          className="flex-1 px-4 py-2 border border-gray-300 dark:border-gray-600 rounded-lg 
-                     focus:outline-none focus:ring-2 focus:ring-blue-500
-                     bg-white dark:bg-gray-700 text-gray-900 dark:text-white
-                     disabled:opacity-50 disabled:cursor-not-allowed"
-        />
+    <div className="p-6 bg-white dark:bg-charcoal border-t border-cloud dark:border-iron shadow-lg">
+      <div className="flex space-x-3 items-center">
+        <div className="relative flex-1 group">
+          <input
+            type="text"
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Search for connections, stations or help..."
+            disabled={disabled}
+            className="w-full pl-5 pr-12 py-3.5 bg-milk dark:bg-midnight/30 border-2 border-cloud dark:border-iron rounded-sbb-xl 
+                       focus:outline-none focus:border-sbb-red dark:focus:border-sbb-red
+                       text-midnight dark:text-milk text-sm font-bold placeholder:text-smoke dark:placeholder:text-graphite
+                       disabled:opacity-50 disabled:cursor-not-allowed
+                       transition-all duration-200 shadow-sbb-sm focus:shadow-sbb-red/20"
+          />
+          <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+            <span className="text-xs font-black text-cloud dark:text-iron select-none group-focus-within:text-sbb-red/40 transition-colors">
+              ↵
+            </span>
+          </div>
+        </div>
         <button
           onClick={handleSend}
           disabled={disabled || !input.trim()}
-          className="px-6 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 
-                     disabled:opacity-50 disabled:cursor-not-allowed
-                     transition-colors"
+          className="px-8 py-3.5 bg-sbb-red text-white text-sm font-black uppercase tracking-widest rounded-sbb-xl
+                     hover:bg-sbb-red-125 active:scale-95
+                     disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100
+                     transition-all duration-200 shadow-sbb hover:shadow-sbb-red/40 flex items-center gap-2"
         >
           Send
+          <span className="text-lg">➔</span>
         </button>
       </div>
+      <p className="mt-3 text-[10px] text-center text-smoke dark:text-graphite font-black uppercase tracking-[0.2em]">
+        Experience Swiss Mobility with AI
+      </p>
     </div>
   );
 }

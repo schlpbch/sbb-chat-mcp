@@ -14,19 +14,19 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  default: 'bg-neutral-100 text-neutral-700 dark:bg-neutral-800 dark:text-neutral-300',
-  primary: 'bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300',
-  secondary: 'bg-secondary-100 text-secondary-700 dark:bg-secondary-900 dark:text-secondary-300',
-  success: 'bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300',
-  warning: 'bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300',
-  error: 'bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300',
-  info: 'bg-blue-100 text-blue-700 dark:bg-blue-900 dark:text-blue-300',
+  default: 'bg-milk dark:bg-iron text-anthracite dark:text-graphite border border-cloud dark:border-granite',
+  primary: 'bg-sbb-red text-white shadow-sbb-red',
+  secondary: 'bg-charcoal dark:bg-milk text-white dark:text-midnight',
+  success: 'bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-400 border border-success-200 dark:border-success-800',
+  warning: 'bg-warning-100 text-warning-800 dark:bg-warning-900/30 dark:text-warning-400 border border-warning-200 dark:border-warning-800',
+  error: 'bg-error-100 text-error-800 dark:bg-error-900/30 dark:text-error-400 border border-error-200 dark:border-error-800',
+  info: 'bg-cloud dark:bg-midnight/50 text-midnight dark:text-milk border border-silver/30',
 };
 
 const sizeClasses: Record<BadgeSize, string> = {
-  sm: 'px-2 py-0.5 text-xs rounded-md',
-  md: 'px-2.5 py-1 text-sm rounded-lg',
-  lg: 'px-3 py-1.5 text-base rounded-lg',
+  sm: 'px-2 py-0.5 text-[10px] rounded-sbb',
+  md: 'px-2.5 py-1 text-xs rounded-sbb',
+  lg: 'px-3 py-1.5 text-sm rounded-sbb-lg',
 };
 
 export const Badge: React.FC<BadgeProps> = ({
@@ -39,7 +39,7 @@ export const Badge: React.FC<BadgeProps> = ({
   onRemove,
 }) => {
   const classes = [
-    'inline-flex items-center justify-center font-medium transition-colors',
+    'inline-flex items-center justify-center font-black uppercase tracking-widest transition-all duration-200',
     variantClasses[variant],
     sizeClasses[size],
     className,

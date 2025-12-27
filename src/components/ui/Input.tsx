@@ -28,17 +28,17 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
     const hasError = !!error;
 
     const inputClasses = [
-      'px-4 py-2 border rounded-lg transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+      'px-4 py-2.5 border-2 rounded-sbb-xl transition-all duration-200',
+      'focus:outline-none focus:border-sbb-red dark:focus:border-sbb-red focus:shadow-sbb-red/20',
       'disabled:opacity-50 disabled:cursor-not-allowed',
       hasError
-        ? 'border-error focus:ring-error'
-        : 'border-neutral-300 dark:border-neutral-700',
-      'bg-white dark:bg-neutral-900',
-      'text-neutral-900 dark:text-neutral-100',
-      'placeholder:text-neutral-400 dark:placeholder:text-neutral-600',
-      leftIcon ? 'pl-10' : '',
-      rightIcon ? 'pr-10' : '',
+        ? 'border-sbb-red'
+        : 'border-cloud dark:border-iron hover:border-silver dark:hover:border-storm',
+      'bg-milk dark:bg-charcoal',
+      'text-midnight dark:text-milk font-bold text-sm',
+      'placeholder:text-smoke dark:placeholder:text-graphite',
+      leftIcon ? 'pl-11' : '',
+      rightIcon ? 'pr-11' : '',
       fullWidth ? 'w-full' : '',
       className,
     ].filter(Boolean).join(' ');
@@ -48,7 +48,7 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
         {label && (
           <label
             htmlFor={inputId}
-            className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
+            className="block text-xs font-black text-midnight dark:text-milk mb-1.5 uppercase tracking-widest"
           >
             {label}
           </label>

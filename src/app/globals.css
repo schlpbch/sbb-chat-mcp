@@ -3,6 +3,44 @@
 
 @variant dark (&:where(.dark, .dark *));
 
+/* SBB Design System CSS Variables */
+:root {
+  /* SBB Brand Colors */
+  --sbb-red: #EB0000;
+  --sbb-red-125: #C60018;
+  --sbb-red-150: #A20013;
+  
+  /* Light Mode Colors */
+  --color-background: #FFFFFF;
+  --color-surface: #F6F6F6;
+  --color-surface-elevated: #FFFFFF;
+  --color-border: #E5E5E5;
+  --color-text-primary: #151515;
+  --color-text-secondary: #5A5A5A;
+  --color-text-tertiary: #8D8D8D;
+  
+  /* Spacing */
+  --spacing-unit: 0.25rem;
+  
+  /* Transitions */
+  --transition-fast: 150ms ease-in-out;
+  --transition-base: 200ms ease-in-out;
+  --transition-slow: 300ms ease-in-out;
+}
+
+.dark {
+  /* Dark Mode Colors using SBB Grayscale */
+  --color-background: #151515;
+  --color-surface: #212121;
+  --color-surface-elevated: #2A2A2A;
+  --color-border: #444444;
+  --color-text-primary: #F6F6F6;
+  --color-text-secondary: #B7B7B7;
+  --color-text-tertiary: #8D8D8D;
+  
+  color-scheme: dark;
+}
+
 /* Base styles */
 * {
   box-sizing: border-box;
@@ -11,25 +49,178 @@
 html {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
 }
 
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--color-background);
+  color: var(--color-text-primary);
+  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
-/* Dark mode support - minimal CSS for Tailwind's dark: prefix to work */
-@media (prefers-color-scheme: dark) {
-  :root {
-    color-scheme: dark;
-  }
+/* Custom Scrollbar - SBB Themed */
+::-webkit-scrollbar {
+  width: 12px;
+  height: 12px;
 }
 
-.dark {
-  color-scheme: dark;
+::-webkit-scrollbar-track {
+  background: var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--sbb-red);
+  border-radius: 6px;
+  border: 2px solid var(--color-surface);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--sbb-red-125);
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: var(--sbb-red);
+  border: 2px solid var(--color-surface);
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: var(--sbb-red-125);
+}
+
+/* Firefox Scrollbar */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--sbb-red) var(--color-surface);
+}
+
+/* Focus Styles - SBB Accessibility */
+:focus-visible {
+  outline: 2px solid var(--sbb-red);
+  outline-offset: 2px;
+}
+
+/* Selection Colors */
+::selection {
+  background-color: var(--sbb-red);
+  color: white;
+}
+
+::-moz-selection {
+  background-color: var(--sbb-red);
+  color: white;
+}
+
+/* Smooth Transitions for Theme Changes */
+body,
+body * {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-duration: var(--transition-base);
+  transition-timing-function: ease-in-out;
+}
+
+/* Disable transitions on page load */
+.preload * {
+  transition: none !important;
 }
 
 /* Leaflet marker icon fix */
 .leaflet-default-icon-path {
   background-image: url(https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png);
 }
+
+/* SBB Custom Utilities */
+.sbb-container {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.5rem;
+  padding-right: 1.5rem;
+}
+
+.sbb-card {
+  background: var(--color-surface-elevated);
+  border: 1px solid var(--color-border);
+  border-radius: 1.5rem;
+  padding: 2rem;
+  transition: all var(--transition-base);
+  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
+}
+
+.sbb-card:hover {
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  transform: translateY(-4px) scale(1.01);
+}
+
+.sbb-button-primary {
+  background-color: var(--sbb-red);
+  color: white;
+  padding: 0.875rem 2rem;
+  border-radius: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.025em;
+  transition: all var(--transition-base);
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(235, 0, 0, 0.2);
+}
+
+.sbb-button-primary:hover {
+  background-color: var(--sbb-red-125);
+  box-shadow: 0 8px 20px rgba(235, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+
+.sbb-button-primary:active {
+  transform: translateY(0) scale(0.96);
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.dark .glass {
+  background: rgba(21, 21, 21, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Animations */
+@keyframes sbb-fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes sbb-slide-up {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-sbb-fade-in {
+  animation: sbb-fade-in 0.3s ease-in-out;
+}
+
+.animate-sbb-slide-up {
+  animation: sbb-slide-up 0.4s ease-out;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+  }
+}
+

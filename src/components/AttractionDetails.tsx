@@ -19,15 +19,15 @@ export default function AttractionDetails({
 
   return (
     <aside
-      className={`fixed top-0 right-0 w-full sm:w-96 h-full bg-white dark:bg-gray-800 shadow-2xl transform transition-transform duration-300 z-20 border-l border-gray-200 dark:border-gray-700 flex flex-col ${
-        attraction ? 'translate-x-0' : 'translate-x-full'
+      className={`fixed top-24 right-6 w-full sm:w-[480px] h-[calc(100vh-8rem)] glass rounded-sbb-xl shadow-sbb-xl transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) z-40 border border-cloud/30 dark:border-iron/30 flex flex-col ${
+        attraction ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0 pointer-events-none'
       }`}
     >
       {/* Close Button */}
-      <div className="absolute top-4 right-4 z-10">
+      <div className="absolute top-6 right-6 z-10">
         <button
           onClick={onClose}
-          className="p-2 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-full transition-colors"
+          className="w-10 h-10 flex items-center justify-center text-smoke dark:text-graphite hover:bg-milk dark:hover:bg-midnight rounded-full transition-all duration-200 shadow-sbb-sm hover:shadow-sbb active:scale-90 bg-white dark:bg-charcoal"
           aria-label={t.closeDetails}
         >
           <svg
@@ -37,7 +37,7 @@ export default function AttractionDetails({
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
@@ -48,10 +48,10 @@ export default function AttractionDetails({
       </div>
 
       {/* Content */}
-      <div className="h-full overflow-y-auto p-6 space-y-6 pt-16">
+      <div className="h-full overflow-y-auto p-10 space-y-8 pt-12 custom-scrollbar">
         {/* Image */}
         {attraction.media?.imageUrl && (
-          <figure className="w-full aspect-video rounded-xl overflow-hidden shadow-sm">
+          <figure className="w-full aspect-16/10 rounded-sbb-xl overflow-hidden shadow-sbb ring-4 ring-white/50 dark:ring-charcoal/50">
             <img
               src={attraction.media.imageUrl}
               alt={
@@ -59,7 +59,7 @@ export default function AttractionDetails({
                 attraction.title?.en ||
                 'Attraction'
               }
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
               onError={(e) => {
                 e.currentTarget.style.display = 'none';
               }}
@@ -68,21 +68,21 @@ export default function AttractionDetails({
         )}
 
         {/* Title and Tags */}
-        <div>
-          <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+        <div className="animate-sbb-slide-up">
+          <p className="text-[10px] font-black text-sbb-red uppercase tracking-[0.3em] mb-3">
+             {attraction.type?.toUpperCase() || 'DISCOVER'}
+          </p>
+          <h3 className="text-3xl font-black text-midnight dark:text-milk mb-4 tracking-tighter leading-tight">
             {attraction.title?.[language] || attraction.title?.en || 'Unknown'}
           </h3>
-          <div className="flex flex-wrap gap-2 mb-2">
-            <span className="px-2 py-0.5 rounded text-xs font-semibold border bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200 border-blue-200 dark:border-blue-800">
-              {attraction.type?.toUpperCase() || 'ATTRACTION'}
-            </span>
+          <div className="flex flex-wrap gap-2.5">
             {attraction.category && (
-              <span className="px-2 py-0.5 rounded text-xs font-semibold border bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600">
+              <span className="px-3 py-1.5 rounded-sbb text-[10px] font-black uppercase tracking-widest border bg-milk/80 dark:bg-iron/30 text-anthracite dark:text-graphite border-cloud dark:border-granite shadow-sbb-sm">
                 {attraction.category}
               </span>
             )}
             {attraction.region && (
-              <span className="px-2 py-0.5 rounded text-xs font-semibold border bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-200 dark:border-gray-600">
+              <span className="px-3 py-1.5 rounded-sbb text-[10px] font-black uppercase tracking-widest border bg-milk/80 dark:bg-iron/30 text-anthracite dark:text-graphite border-cloud dark:border-granite shadow-sbb-sm">
                 {attraction.region?.[language] ||
                   attraction.region?.en ||
                   'Unknown'}
@@ -93,24 +93,26 @@ export default function AttractionDetails({
 
         {/* Description */}
         {attraction.description && (
-          <p className="text-base leading-relaxed text-gray-700 dark:text-gray-300">
-            {attraction.description?.[language] ||
-              attraction.description?.en ||
-              ''}
-          </p>
+          <div className="animate-sbb-slide-up [animation-delay:100ms]">
+            <p className="text-base leading-relaxed text-anthracite dark:text-graphite font-medium">
+              {attraction.description?.[language] ||
+                attraction.description?.en ||
+                ''}
+            </p>
+          </div>
         )}
 
         {/* Vibe Tags */}
         {attraction.vibe_tags && attraction.vibe_tags.length > 0 && (
-          <div>
-            <label className="block text-xs font-semibold uppercase tracking-wider text-gray-700 dark:text-gray-300 mb-2">
+          <div className="animate-sbb-slide-up [animation-delay:200ms]">
+            <label className="block text-[10px] font-black uppercase tracking-[0.2em] text-smoke dark:text-graphite mb-4">
               {t.vibeTags}
             </label>
-            <div className="flex flex-wrap gap-2">
+            <div className="flex flex-wrap gap-2.5">
               {attraction.vibe_tags.map((tag) => (
                 <span
                   key={tag}
-                  className="px-2 py-1 rounded-md bg-gray-50 dark:bg-gray-700 text-xs text-gray-700 dark:text-gray-300 border border-gray-200 dark:border-gray-600 font-medium"
+                  className="px-4 py-2 rounded-full bg-white dark:bg-charcoal text-[10px] text-midnight dark:text-milk border border-cloud dark:border-iron font-black uppercase tracking-wider shadow-sbb-sm hover:shadow-sbb hover:border-sbb-red transition-all cursor-default"
                 >
                   {tag}
                 </span>
@@ -121,37 +123,46 @@ export default function AttractionDetails({
 
         {/* Location Info */}
         {attraction.location?.nearestStation && (
-          <div className="bg-gray-50 dark:bg-gray-700 rounded-lg p-4 border border-gray-200 dark:border-gray-600">
-            <p className="text-sm text-gray-700 dark:text-gray-300">
-              <strong className="text-gray-900 dark:text-white">
-                {t.nearestStation}:
-              </strong>{' '}
-              {attraction.location.nearestStation.stopName}{' '}
-              {attraction.location.nearestStation.uicCode &&
-                `(${attraction.location.nearestStation.uicCode})`}
-            </p>
-            {attraction.visitorSupport?.ageSuitability?.bestFor && (
-              <p className="text-sm text-gray-700 dark:text-gray-300 mt-2">
-                <strong className="text-gray-900 dark:text-white">
-                  {t.bestFor}:
-                </strong>{' '}
-                {attraction.visitorSupport.ageSuitability.bestFor.join(', ')}
-              </p>
-            )}
+          <div className="bg-milk/50 dark:bg-iron/20 rounded-sbb-xl p-6 border border-cloud/50 dark:border-iron/30 animate-sbb-slide-up [animation-delay:300ms]">
+            <div className="flex items-start gap-4">
+              <div className="w-10 h-10 bg-sbb-red rounded-sbb-lg flex items-center justify-center shadow-sbb-red shrink-0">
+                <span className="text-xl">🚉</span>
+              </div>
+              <div className="space-y-3">
+                <p className="text-sm text-anthracite dark:text-graphite leading-tight">
+                  <strong className="text-xs font-black uppercase tracking-widest text-midnight dark:text-milk block mb-1">
+                    {t.nearestStation}
+                  </strong>
+                  {attraction.location.nearestStation.stopName}{' '}
+                  <span className="text-[10px] font-bold text-smoke ml-1">
+                    {attraction.location.nearestStation.uicCode &&
+                      `UIC ${attraction.location.nearestStation.uicCode}`}
+                  </span>
+                </p>
+                {attraction.visitorSupport?.ageSuitability?.bestFor && (
+                  <p className="text-sm text-anthracite dark:text-graphite leading-tight">
+                    <strong className="text-xs font-black uppercase tracking-widest text-midnight dark:text-milk block mb-1">
+                      {t.bestFor}
+                    </strong>
+                    {attraction.visitorSupport.ageSuitability.bestFor.join(', ')}
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
         )}
 
         {/* Website Link */}
         {attraction.media?.homepageUrl && (
-          <div className="mt-8">
+          <div className="mt-4 pt-4 animate-sbb-slide-up [animation-delay:400ms]">
             <a
               href={attraction.media.homepageUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center justify-center w-full px-4 py-3 text-sm font-semibold text-white bg-blue-600 rounded-lg hover:bg-blue-700 shadow-lg transition-all hover:-translate-y-0.5"
+              className="sbb-button-primary w-full flex items-center justify-between group"
             >
               <span>{t.officialWebsite}</span>
-              <span className="ml-2">→</span>
+              <span className="text-xl group-hover:translate-x-1 transition-transform">➔</span>
             </a>
           </div>
         )}

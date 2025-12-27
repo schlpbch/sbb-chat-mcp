@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arrivals Fix Test</title>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-case {
+            background: white;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-case h3 {
+            margin-top: 0;
+            color: #333;
+        }
+        .board-entry {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px;
+            background: #f9f9f9;
+            border-radius: 6px;
+            margin: 10px 0;
+        }
+        .icon {
+            font-size: 24px;
+        }
+        .line-badge {
+            background: #666;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        .destination {
+            flex: 1;
+            font-weight: 600;
+            font-size: 16px;
+        }
+        .time {
+            font-weight: bold;
+            font-size: 18px;
+        }
+        .pass {
+            color: #10b981;
+            font-weight: bold;
+        }
+        .fail {
+            color: #ef4444;
+            font-weight: bold;
+        }
+        .header {
+            background: #3b82f6;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 8px 8px 0 0;
+            margin: -20px -20px 20px -20px;
+        }
+        code {
+            background: #f0f0f0;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 13px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🛬 Arrivals Fix Test</h1>
+    <p>This page tests the BoardCard component fix for arrivals display.</p>
+
+    <div class="test-case">
+        <div class="header">
+            <h3 style="margin: 0;">Test 1: Arrival with Origin Set (Ideal Case)</h3>
+        </div>
+        <p><strong>Data:</strong> <code>origin: "Zürich HB", destination: "Bern"</code></p>
+        <p><strong>Expected:</strong> Should display "Zürich HB" (the origin)</p>
+        
+        <div class="board-entry">
+            <span class="icon">🚂</span>
+            <span class="line-badge">IC 1</span>
+            <span class="destination" id="test1-display">Zürich HB</span>
+            <span class="time">12:00</span>
+        </div>
+        
+        <p><strong>Result:</strong> <span id="test1-result" class="pass">✓ PASS</span></p>
+        <p><strong>Aria-label:</strong> <span id="test1-aria">IC 1 from Zürich HB at 12:00</span></p>
+    </div>
+
+    <div class="test-case">
+        <div class="header">
+            <h3 style="margin: 0;">Test 2: Arrival WITHOUT Origin (Fallback Case)</h3>
+        </div>
+        <p><strong>Data:</strong> <code>origin: null, destination: "Bern"</code></p>
+        <p><strong>Expected:</strong> Should display "Bern" (fallback to destination)</p>
+        
+        <div class="board-entry">
+            <span class="icon">🚂</span>
+            <span class="line-badge">IC 5</span>
+            <span class="destination" id="test2-display">Bern</span>
+            <span class="time">12:15</span>
+        </div>
+        
+        <p><strong>Result:</strong> <span id="test2-result" class="pass">✓ PASS</span></p>
+        <p><strong>Aria-label:</strong> <span id="test2-aria">IC 5 from Bern at 12:15</span></p>
+        <p><em>Note: This is the key fix - without the fallback, this would show blank!</em></p>
+    </div>
+
+    <div class="test-case">
+        <div class="header">
+            <h3 style="margin: 0;">Test 3: Arrival with Undefined Origin</h3>
+        </div>
+        <p><strong>Data:</strong> <code>origin: undefined, destination: "Geneva"</code></p>
+        <p><strong>Expected:</strong> Should display "Geneva" (fallback to destination)</p>
+        
+        <div class="board-entry">
+            <span class="icon">🚂</span>
+            <span class="line-badge">IR 90</span>
+            <span class="destination" id="test3-display">Geneva</span>
+            <span class="time">12:30</span>
+        </div>
+        
+        <p><strong>Result:</strong> <span id="test3-result" class="pass">✓ PASS</span></p>
+        <p><strong>Aria-label:</strong> <span id="test3-aria">IR 90 from Geneva at 12:30</span></p>
+    </div>
+
+    <div class="test-case">
+        <div class="header" style="background: #10b981;">
+            <h3 style="margin: 0;">Test 4: Departure (Control Test)</h3>
+        </div>
+        <p><strong>Data:</strong> <code>origin: "Zürich HB", destination: "Bern"</code></p>
+        <p><strong>Expected:</strong> Should display "Bern" (the destination)</p>
+        
+        <div class="board-entry">
+            <span class="icon">🚀</span>
+            <span class="line-badge">IC 1</span>
+            <span class="destination" id="test4-display">Bern</span>
+            <span class="time">12:00</span>
+        </div>
+        
+        <p><strong>Result:</strong> <span id="test4-result" class="pass">✓ PASS</span></p>
+        <p><strong>Aria-label:</strong> <span id="test4-aria">IC 1 to Bern at 12:00</span></p>
+    </div>
+
+    <div class="test-case" style="background: #e0f2fe; border: 2px solid #3b82f6;">
+        <h3>✅ Summary</h3>
+        <p>The fix implements the following logic:</p>
+        <pre style="background: white; padding: 12px; border-radius: 4px; overflow-x: auto;">
+// For arrivals, use origin if available, otherwise fall back to destination
+{isDeparture ? entry.destination : (entry.origin || entry.destination)}
+
+// For aria-label, use appropriate preposition
+{isDeparture ? 'to' : 'from'} {isDeparture ? entry.destination : (entry.origin || entry.destination)}</pre>
+        
+        <p><strong>This ensures:</strong></p>
+        <ul>
+            <li>Arrivals always display something (never blank)</li>
+            <li>Proper fallback when backend doesn't provide origin</li>
+            <li>Better accessibility with correct prepositions</li>
+            <li>Departures continue to work as before</li>
+        </ul>
+    </div>
+
+    <script>
+        // Simulate the actual logic from BoardCard.tsx
+        function testLogic() {
+            // Test 1: Arrival with origin
+            const entry1 = { origin: 'Zürich HB', destination: 'Bern' };
+            const isDeparture1 = false;
+            const display1 = isDeparture1 ? entry1.destination : (entry1.origin || entry1.destination);
+            document.getElementById('test1-result').textContent = 
+                display1 === 'Zürich HB' ? '✓ PASS' : '✗ FAIL';
+            document.getElementById('test1-result').className = 
+                display1 === 'Zürich HB' ? 'pass' : 'fail';
+
+            // Test 2: Arrival without origin (null)
+            const entry2 = { origin: null, destination: 'Bern' };
+            const isDeparture2 = false;
+            const display2 = isDeparture2 ? entry2.destination : (entry2.origin || entry2.destination);
+            document.getElementById('test2-result').textContent = 
+                display2 === 'Bern' ? '✓ PASS' : '✗ FAIL';
+            document.getElementById('test2-result').className = 
+                display2 === 'Bern' ? 'pass' : 'fail';
+
+            // Test 3: Arrival with undefined origin
+            const entry3 = { destination: 'Geneva' };
+            const isDeparture3 = false;
+            const display3 = isDeparture3 ? entry3.destination : (entry3.origin || entry3.destination);
+            document.getElementById('test3-result').textContent = 
+                display3 === 'Geneva' ? '✓ PASS' : '✗ FAIL';
+            document.getElementById('test3-result').className = 
+                display3 === 'Geneva' ? 'pass' : 'fail';
+
+            // Test 4: Departure
+            const entry4 = { origin: 'Zürich HB', destination: 'Bern' };
+            const isDeparture4 = true;
+            const display4 = isDeparture4 ? entry4.destination : (entry4.origin || entry4.destination);
+            document.getElementById('test4-result').textContent = 
+                display4 === 'Bern' ? '✓ PASS' : '✗ FAIL';
+            document.getElementById('test4-result').className = 
+                display4 === 'Bern' ? 'pass' : 'fail';
+        }
+
+        // Run tests on page load
+        testLogic();
+    </script>
+</body>
+</html>

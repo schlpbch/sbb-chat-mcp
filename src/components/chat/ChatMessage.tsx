@@ -8,21 +8,26 @@ export default function ChatMessage({ message }: ChatMessageProps) {
   const isUser = message.role === 'user';
 
   return (
-    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'}`}>
+    <div className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-sbb-slide-up`}>
       <div
-        className={`max-w-[80%] rounded-lg px-4 py-2 ${
+        className={`max-w-[85%] rounded-sbb-xl px-4 py-3 shadow-sbb ${
           isUser
-            ? 'bg-blue-500 text-white'
-            : 'bg-gray-100 dark:bg-gray-700 text-gray-900 dark:text-white'
+            ? 'bg-sbb-red text-white rounded-tr-none'
+            : 'bg-milk dark:bg-iron text-midnight dark:text-milk border border-cloud dark:border-granite rounded-tl-none'
         }`}
       >
-        <p className="text-sm whitespace-pre-wrap">{message.content}</p>
-        <p className="text-xs opacity-70 mt-1">
+        <div className="flex items-center gap-2 mb-1.5 opacity-60">
+          <span className="text-[10px] font-black uppercase tracking-widest">
+            {isUser ? 'You' : 'Assistant'}
+          </span>
+        </div>
+        <p className="text-sm font-medium whitespace-pre-wrap leading-relaxed">{message.content}</p>
+        <div className={`text-[10px] mt-2 font-bold uppercase tracking-tighter opacity-70 flex items-center ${isUser ? 'justify-end' : 'justify-start'}`}>
           {message.timestamp.toLocaleTimeString([], { 
             hour: '2-digit', 
             minute: '2-digit' 
           })}
-        </p>
+        </div>
       </div>
     </div>
   );

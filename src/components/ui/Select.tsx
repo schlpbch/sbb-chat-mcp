@@ -26,15 +26,15 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
     const hasError = !!error;
 
     const selectClasses = [
-      'px-4 py-2 pr-10 border rounded-lg transition-all duration-200',
-      'focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent',
+      'px-4 py-2.5 pr-12 border-2 rounded-sbb-xl transition-all duration-200',
+      'focus:outline-none focus:border-sbb-red dark:focus:border-sbb-red focus:shadow-sbb-red/20',
       'disabled:opacity-50 disabled:cursor-not-allowed',
       'appearance-none cursor-pointer',
       hasError
-        ? 'border-error focus:ring-error'
-        : 'border-neutral-300 dark:border-neutral-700',
-      'bg-white dark:bg-neutral-900',
-      'text-neutral-900 dark:text-neutral-100',
+        ? 'border-sbb-red'
+        : 'border-cloud dark:border-iron hover:border-silver dark:hover:border-storm',
+      'bg-milk dark:bg-charcoal',
+      'text-midnight dark:text-milk font-bold text-sm',
       fullWidth ? 'w-full' : '',
       className,
     ].filter(Boolean).join(' ');
@@ -44,7 +44,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-sm font-medium text-neutral-700 dark:text-neutral-300 mb-1"
+            className="block text-xs font-black text-midnight dark:text-milk mb-1.5 uppercase tracking-widest"
           >
             {label}
           </label>

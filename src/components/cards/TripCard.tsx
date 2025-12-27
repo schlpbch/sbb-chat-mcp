@@ -142,23 +142,23 @@ export default function TripCard({ data }: TripCardProps) {
 
   return (
     <article
-      className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 overflow-hidden my-2 shadow-sm hover:shadow-lg transition-all duration-300"
+      className="bg-white dark:bg-charcoal rounded-sbb-xl border border-cloud dark:border-iron overflow-hidden my-2 shadow-sbb hover:shadow-sbb-lg transition-all duration-300"
       data-testid="trip-card"
       aria-label={`Trip from ${origin.name} to ${destination.name}, duration ${durationStr}`}
     >
       {/* Header */}
-      <div className="bg-gray-100 dark:bg-gray-700 px-4 py-3 flex items-center justify-between border-b border-gray-200 dark:border-gray-600">
+      <div className="bg-milk dark:bg-iron px-4 py-3 flex items-center justify-between border-b border-cloud dark:border-granite">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 bg-gray-200 dark:bg-gray-600 rounded-lg flex items-center justify-center">
+          <div className="w-8 h-8 bg-sbb-red rounded-sbb-lg flex items-center justify-center shadow-sbb-red">
             <span className="text-lg" aria-hidden="true">
               🚂
             </span>
           </div>
           <div>
-            <h3 className="text-gray-900 dark:text-white font-semibold text-base leading-tight">
+            <h3 className="text-midnight dark:text-milk font-bold text-base leading-tight">
               {origin.name} → {destination.name}
             </h3>
-            <p className="text-gray-500 dark:text-gray-400 text-sm">
+            <p className="text-anthracite dark:text-graphite text-sm">
               {durationStr} •{' '}
               {transfers > 0
                 ? `${transfers} transfer${transfers > 1 ? 's' : ''}`
@@ -167,64 +167,66 @@ export default function TripCard({ data }: TripCardProps) {
           </div>
         </div>
         <div className="text-right">
-          <span className="text-gray-400 dark:text-gray-500 text-xs font-medium uppercase tracking-wide">
+          <span className="text-smoke dark:text-graphite text-xs font-bold uppercase tracking-widest px-2 py-0.5 bg-silver/50 dark:bg-charcoal rounded-sbb">
             SBB
           </span>
         </div>
       </div>
 
       {/* Time summary */}
-      <div className="px-4 py-4">
+      <div className="px-4 py-6 bg-white dark:bg-charcoal">
         <div className="flex items-center justify-between gap-4">
           <div className="text-center" data-testid="trip-departure">
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">
+            <p className="text-xs text-smoke dark:text-graphite font-bold uppercase tracking-wider">
               Depart
             </p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+            <p className="text-2xl font-black text-midnight dark:text-milk mt-1">
               {formatTime(origin.time)}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs text-anthracite dark:text-graphite mt-0.5">
               {formatDate(origin.time)}
             </p>
             {origin.platform && (
-              <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded">
+              <span className="inline-block mt-2 px-2 py-0.5 text-xs font-bold bg-cloud dark:bg-iron text-anthracite dark:text-milk rounded-sbb">
                 Plat. {origin.platform}
               </span>
             )}
           </div>
 
-          <div className="flex-1 flex flex-col items-center px-2">
-            <div className="w-full flex items-center gap-1">
-              <div className="h-0.5 flex-1 bg-gray-300 dark:bg-gray-600 rounded" />
-              {serviceLegs.slice(0, 4).map((leg: any, idx: number) => (
-                <span key={idx} className="text-lg" aria-hidden="true">
-                  {getTransportIcon(leg)}
-                </span>
-              ))}
+          <div className="flex-1 flex flex-col items-center px-4">
+            <div className="w-full flex items-center gap-2">
+              <div className="h-0.5 flex-1 bg-cloud dark:bg-iron rounded-full" />
+              <div className="flex gap-1">
+                {serviceLegs.slice(0, 4).map((leg: any, idx: number) => (
+                  <span key={idx} className="text-xl filter drop-shadow-sm" aria-hidden="true">
+                    {getTransportIcon(leg)}
+                  </span>
+                ))}
+              </div>
               {serviceLegs.length > 4 && (
-                <span className="text-xs text-gray-500">
+                <span className="text-xs font-bold text-anthracite bg-cloud dark:bg-iron px-1.5 py-0.5 rounded-full">
                   +{serviceLegs.length - 4}
                 </span>
               )}
-              <div className="h-0.5 flex-1 bg-gray-300 dark:bg-gray-600 rounded" />
+              <div className="h-0.5 flex-1 bg-cloud dark:bg-iron rounded-full" />
             </div>
-            <span className="text-xs text-gray-500 dark:text-gray-400 mt-2 font-medium">
+            <span className="text-xs text-anthracite dark:text-graphite mt-3 font-bold uppercase tracking-wide">
               {durationStr}
             </span>
           </div>
 
           <div className="text-center" data-testid="trip-arrival">
-            <p className="text-xs text-gray-500 dark:text-gray-400 font-medium uppercase tracking-wide">
+            <p className="text-xs text-smoke dark:text-graphite font-bold uppercase tracking-wider">
               Arrive
             </p>
-            <p className="text-2xl font-bold text-gray-900 dark:text-white mt-1">
+            <p className="text-2xl font-black text-midnight dark:text-milk mt-1">
               {formatTime(destination.time)}
             </p>
-            <p className="text-xs text-gray-500 dark:text-gray-400 mt-0.5">
+            <p className="text-xs text-anthracite dark:text-graphite mt-0.5">
               {formatDate(destination.time)}
             </p>
             {destination.platform && (
-              <span className="inline-block mt-1 px-2 py-0.5 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 rounded">
+              <span className="inline-block mt-2 px-2 py-0.5 text-xs font-bold bg-cloud dark:bg-iron text-anthracite dark:text-milk rounded-sbb">
                 Plat. {destination.platform}
               </span>
             )}
@@ -234,44 +236,38 @@ export default function TripCard({ data }: TripCardProps) {
 
       {/* Expandable Timeline */}
       {legs.length > 0 && (
-        <div className="border-t border-gray-100 dark:border-gray-700">
+        <div className="border-t border-cloud dark:border-iron">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="w-full px-4 py-3 flex items-center justify-between text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-50 dark:hover:bg-gray-700/50 transition-colors"
+            className="w-full px-4 py-4 flex items-center justify-between text-sm text-anthracite dark:text-graphite hover:bg-milk dark:hover:bg-iron/30 transition-colors font-bold"
             aria-expanded={isExpanded}
             aria-controls="trip-timeline"
             data-testid="trip-expand-button"
           >
-            <span className="font-medium">
-              {isExpanded ? 'Hide' : 'Show'} journey details ({legs.length} leg
-              {legs.length > 1 ? 's' : ''})
+            <span className="flex items-center gap-2">
+              <svg 
+                className={`w-4 h-4 text-sbb-red transition-transform duration-200 ${isExpanded ? 'rotate-90' : ''}`} 
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor"
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+              </svg>
+              {isExpanded ? 'Hide' : 'Show'} journey details ({legs.length} leg{legs.length !== 1 ? 's' : ''})
             </span>
-            <svg
-              className={`w-5 h-5 transition-transform duration-200 ${
-                isExpanded ? 'rotate-180' : ''
-              }`}
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              aria-hidden="true"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M19 9l-7 7-7-7"
-              />
-            </svg>
+            <span className="text-xs opacity-60">
+              {isExpanded ? '▲' : '▼'}
+            </span>
           </button>
 
           <div
             id="trip-timeline"
             className={`overflow-hidden transition-all duration-300 ease-in-out ${
-              isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0'
+              isExpanded ? 'max-h-[1000px] opacity-100' : 'max-h-0 opacity-0'
             }`}
             aria-hidden={!isExpanded}
           >
-            <div className="px-4 pb-4 space-y-0">
+            <div className="px-4 pb-6 space-y-0 bg-milk/30 dark:bg-midnight/20">
               {legs.map((leg: any, idx: number) => {
                 const legOrigin = getStopInfo(leg, true);
                 const legDest = getStopInfo(leg, false);
@@ -283,61 +279,61 @@ export default function TripCard({ data }: TripCardProps) {
                 return (
                   <div
                     key={idx}
-                    className="flex gap-3"
+                    className="flex gap-4"
                     data-testid={`trip-leg-${idx}`}
                   >
                     {/* Timeline indicator */}
                     <div className="flex flex-col items-center w-6">
                       <div
-                        className={`w-3 h-3 rounded-full ${
+                        className={`w-3.5 h-3.5 rounded-full border-2 ${
                           isWalk
-                            ? 'bg-gray-300 dark:bg-gray-500'
-                            : 'bg-gray-500 dark:bg-gray-400'
-                        } ring-2 ring-white dark:ring-gray-800 z-10`}
+                            ? 'bg-white dark:bg-charcoal border-silver dark:border-iron'
+                            : 'bg-sbb-red border-sbb-red shadow-sbb-red'
+                        } z-10 mt-1`}
                       />
                       {idx < legs.length - 1 && (
                         <div
-                          className={`w-0.5 flex-1 ${
+                          className={`w-1 flex-1 ${
                             isWalk
-                              ? 'bg-gray-300 border-dashed'
-                              : 'bg-gray-300 dark:bg-gray-600'
+                              ? 'bg-silver dark:bg-iron border-l-2 border-dashed border-silver dark:border-iron bg-transparent'
+                              : 'bg-cloud dark:bg-iron'
                           }`}
-                          style={{ minHeight: '40px' }}
+                          style={{ minHeight: '60px' }}
                         />
                       )}
                     </div>
 
                     {/* Leg content */}
-                    <div className="flex-1 pb-4">
+                    <div className="flex-1 pb-6">
                       <div className="flex items-start justify-between">
                         <div>
-                          <p className="font-semibold text-gray-900 dark:text-white">
+                          <p className="font-bold text-midnight dark:text-milk">
                             {legOrigin.name}
                           </p>
                           {legOrigin.platform && (
-                            <span className="text-xs text-gray-500">
+                            <span className="text-xs font-medium text-anthracite dark:text-graphite bg-cloud/50 dark:bg-iron/50 px-1.5 py-0.5 rounded-sbb mt-1 inline-block">
                               Platform {legOrigin.platform}
                             </span>
                           )}
                         </div>
-                        <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                        <span className="text-sm font-black text-midnight dark:text-milk">
                           {formatTime(legOrigin.time)}
                         </span>
                       </div>
 
                       {/* Transport badge */}
-                      <div className="my-2 flex items-center gap-2">
-                        <span className="text-lg" aria-hidden="true">
+                      <div className="my-3 flex items-center gap-3">
+                        <span className="text-xl filter drop-shadow-sm" aria-hidden="true">
                           {getTransportIcon(leg)}
                         </span>
                         {isWalk ? (
-                          <span className="px-2 py-1 text-xs font-medium bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 rounded">
-                            Walk
+                          <span className="px-2.5 py-1 text-xs font-bold bg-silver/40 dark:bg-iron text-anthracite dark:text-graphite rounded-sbb border border-silver/20">
+                            WALK
                           </span>
                         ) : (
                           line && (
                             <span
-                              className={`px-2 py-1 text-xs font-bold rounded ${getLineBadgeColor(
+                              className={`px-2.5 py-1 text-xs font-black rounded-sbb shadow-sm ${getLineBadgeColor(
                                 leg
                               )}`}
                             >
@@ -346,26 +342,26 @@ export default function TripCard({ data }: TripCardProps) {
                           )
                         )}
                         {leg.serviceJourney?.direction && (
-                          <span className="text-xs text-gray-500 dark:text-gray-400">
-                            → {leg.serviceJourney.direction}
+                          <span className="text-xs text-anthracite dark:text-graphite font-medium">
+                            dir. {leg.serviceJourney.direction}
                           </span>
                         )}
                       </div>
 
                       {/* Final destination for last leg */}
                       {idx === legs.length - 1 && (
-                        <div className="flex items-start justify-between mt-2 pt-2 border-t border-gray-100 dark:border-gray-700">
+                        <div className="flex items-start justify-between mt-4 pt-4 border-t border-cloud dark:border-iron">
                           <div>
-                            <p className="font-semibold text-gray-900 dark:text-white">
+                            <p className="font-bold text-midnight dark:text-milk">
                               {legDest.name}
                             </p>
                             {legDest.platform && (
-                              <span className="text-xs text-gray-500">
+                              <span className="text-xs font-medium text-anthracite dark:text-graphite bg-cloud/50 dark:bg-iron/50 px-1.5 py-0.5 rounded-sbb mt-1 inline-block">
                                 Platform {legDest.platform}
                               </span>
                             )}
                           </div>
-                          <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
+                          <span className="text-sm font-black text-midnight dark:text-milk">
                             {formatTime(legDest.time)}
                           </span>
                         </div>

@@ -45,7 +45,7 @@ export default function Home() {
 
   return (
     <FilterProvider value={{ ...filters, language }}>
-      <div className="flex flex-col h-screen w-screen overflow-hidden bg-gray-50 dark:bg-gray-900">
+      <div className="flex flex-col h-screen w-screen overflow-hidden bg-milk dark:bg-midnight">
         {/* Skip Navigation Links */}
         <a
           href="#main-content"
@@ -82,34 +82,36 @@ export default function Home() {
           onClose={() => setIsChatOpen(false)}
         />
 
-        <div className="flex flex-1 overflow-hidden">
-          {/* Sidebar with Filters */}
-          <div id="filters">
-            <FilterSidebar
-              language={language}
-              filteredCount={filters.filteredAttractions.length}
-              loading={loading}
-            />
+        <div className="flex flex-1 overflow-hidden p-6 gap-6">
+          <div className="flex flex-1 overflow-hidden bg-white dark:bg-charcoal rounded-4xl shadow-sbb-xl border border-cloud/30 dark:border-iron/30 relative">
+            {/* Sidebar with Filters */}
+            <div id="filters">
+              <FilterSidebar
+                language={language}
+                filteredCount={filters.filteredAttractions.length}
+                loading={loading}
+              />
+            </div>
+
+            {/* Main Map Area */}
+            <main id="main-content" className="flex-1 relative">
+              {loading && <LoadingOverlay language={language} />}
+              {error && <ErrorNotification message={error} />}
+
+              <Map
+                attractions={filters.filteredAttractions}
+                onMarkerClick={handleMarkerClick}
+                selectedAttraction={selectedAttraction}
+              />
+
+              {/* Details Panel */}
+              <AttractionDetails
+                attraction={selectedAttraction}
+                language={language}
+                onClose={closeDetails}
+              />
+            </main>
           </div>
-
-          {/* Main Map Area */}
-          <main id="main-content" className="flex-1 relative">
-            {loading && <LoadingOverlay language={language} />}
-            {error && <ErrorNotification message={error} />}
-
-            <Map
-              attractions={filters.filteredAttractions}
-              onMarkerClick={handleMarkerClick}
-              selectedAttraction={selectedAttraction}
-            />
-
-            {/* Details Panel */}
-            <AttractionDetails
-              attraction={selectedAttraction}
-              language={language}
-              onClose={closeDetails}
-            />
-          </main>
         </div>
       </div>
     </FilterProvider>

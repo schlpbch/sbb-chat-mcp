@@ -62,7 +62,7 @@ export default function Navbar({
   };
 
   return (
-    <nav className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-b border-gray-200/50 dark:border-gray-700/50 sticky top-0 z-50 px-6 py-4">
+    <nav className="glass sticky top-0 z-50 px-8 py-5 border-b border-cloud/30 dark:border-iron/30 shadow-sbb">
       <div className="max-w-screen-2xl mx-auto flex items-center justify-between">
         {/* Left Section: Hamburger Menu + URL */}
         <div className="flex items-center gap-4">
@@ -70,7 +70,7 @@ export default function Navbar({
           {onMenuToggle && (
             <button
               onClick={onMenuToggle}
-              className="p-2.5 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md group"
+              className="p-2.5 text-anthracite dark:text-graphite hover:text-sbb-red dark:hover:text-sbb-red hover:bg-milk dark:hover:bg-charcoal rounded-sbb-lg transition-all duration-200 shadow-sbb-sm hover:shadow-sbb-md group"
               aria-label="Toggle menu"
             >
               <svg
@@ -90,9 +90,9 @@ export default function Navbar({
           )}
 
           {/* Current URL/Path */}
-          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg bg-neutral-100 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700">
+          <div className="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-sbb-lg bg-milk dark:bg-charcoal border border-cloud dark:border-iron">
             <svg
-              className="w-4 h-4 text-neutral-500 dark:text-neutral-400"
+              className="w-4 h-4 text-smoke dark:text-graphite"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -104,7 +104,7 @@ export default function Navbar({
                 d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"
               />
             </svg>
-            <span className="text-xs font-mono text-neutral-600 dark:text-neutral-400">
+            <span className="text-xs font-mono text-anthracite dark:text-graphite">
               {currentPath}
             </span>
           </div>
@@ -114,21 +114,21 @@ export default function Navbar({
         <div className="flex items-center gap-3">
           <div className="flex items-center gap-2">
             {/* SBB Logo */}
-            <div className="w-10 h-10 rounded-lg bg-[#eb0000] flex items-center justify-center shadow-lg">
+            <div className="w-10 h-10 rounded-sbb-lg bg-sbb-red flex items-center justify-center shadow-sbb-red">
               <span className="text-white font-bold text-sm tracking-tight">SBB</span>
             </div>
             <h1 className="text-2xl font-bold">
-              <span className="text-[#eb0000]">
+              <span className="text-sbb-red">
                 SBB
               </span>
-              <span className="text-neutral-900 dark:text-neutral-100">
+              <span className="text-midnight dark:text-milk">
                 {' '}Chat MCP
               </span>
             </h1>
           </div>
-          <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-neutral-100 dark:bg-neutral-800">
-            <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-xs font-medium text-neutral-600 dark:text-neutral-400">
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1 rounded-full bg-milk dark:bg-charcoal border border-cloud dark:border-iron">
+            <div className="w-2 h-2 rounded-full bg-success-500 animate-pulse-subtle" />
+            <span className="text-xs font-medium text-anthracite dark:text-graphite">
               {t.version}
             </span>
           </div>
@@ -145,7 +145,7 @@ export default function Navbar({
               id="mcp-server-select"
               value={mcpServerUrl}
               onChange={(e) => handleMcpServerChange(e.target.value)}
-              className="appearance-none bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-neutral-100 text-sm font-medium rounded-xl px-4 py-2.5 pr-10 hover:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md"
+              className="appearance-none bg-white dark:bg-charcoal border border-cloud dark:border-iron text-midnight dark:text-milk text-sm font-medium rounded-sbb-xl px-4 py-2.5 pr-10 hover:border-sbb-red focus:ring-2 focus:ring-sbb-red focus:border-transparent outline-none cursor-pointer transition-all duration-200 shadow-sbb-sm hover:shadow-sbb-md"
               aria-label="Select MCP Server Connection"
             >
               {mcpServers.map((server) => (
@@ -155,7 +155,7 @@ export default function Navbar({
               ))}
             </select>
             <div
-              className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neutral-500 dark:text-neutral-400"
+              className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-smoke dark:text-graphite"
               aria-hidden="true"
             >
               <svg
@@ -184,7 +184,7 @@ export default function Navbar({
               id="language-select"
               value={language}
               onChange={(e) => onLanguageChange(e.target.value as Language)}
-              className="appearance-none bg-white dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 text-neutral-900 dark:text-neutral-100 text-sm font-medium rounded-xl px-4 py-2.5 pr-10 hover:border-primary-500 focus:ring-2 focus:ring-primary-500 focus:border-transparent outline-none cursor-pointer transition-all duration-200 shadow-sm hover:shadow-md"
+              className="appearance-none bg-white dark:bg-charcoal border border-cloud dark:border-iron text-midnight dark:text-milk text-sm font-medium rounded-sbb-xl px-4 py-2.5 pr-10 hover:border-sbb-red focus:ring-2 focus:ring-sbb-red focus:border-transparent outline-none cursor-pointer transition-all duration-200 shadow-sbb-sm hover:shadow-sbb-md"
               aria-label="Select application language"
             >
               {languages.map((lang) => (
@@ -194,7 +194,7 @@ export default function Navbar({
               ))}
             </select>
             <div
-              className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-neutral-500 dark:text-neutral-400"
+              className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-3 text-smoke dark:text-graphite"
               aria-hidden="true"
             >
               <svg
@@ -214,32 +214,55 @@ export default function Navbar({
             </div>
           </div>
 
-          {/* Chat Link */}
-          <a
-            href="/chat"
-            className="p-2.5 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md group"
-            aria-label="Open AI Travel Assistant"
-            title="Open AI Travel Assistant"
-          >
-            <svg
-              className="w-5 h-5 transition-transform group-hover:scale-110"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
+          {/* Chat Toggle/Link */}
+          {onChatToggle ? (
+            <button
+              onClick={onChatToggle}
+              className="p-2.5 text-anthracite dark:text-graphite hover:text-sbb-red dark:hover:text-sbb-red hover:bg-milk dark:hover:bg-charcoal rounded-sbb-xl transition-all duration-200 shadow-sbb-sm hover:shadow-sbb-md group bg-milk dark:bg-charcoal border border-cloud dark:border-iron"
+              aria-label="Open AI Travel Assistant"
+              title="Open AI Travel Assistant"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-              />
-            </svg>
-          </a>
+              <svg
+                className="w-5 h-5 transition-transform group-hover:scale-110"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+            </button>
+          ) : (
+            <a
+              href="/chat"
+              className="p-2.5 text-anthracite dark:text-graphite hover:text-sbb-red dark:hover:text-sbb-red hover:bg-milk dark:hover:bg-charcoal rounded-sbb-xl transition-all duration-200 shadow-sbb-sm hover:shadow-sbb-md group bg-milk dark:bg-charcoal border border-cloud dark:border-iron"
+              aria-label="Open AI Travel Assistant"
+              title="Open AI Travel Assistant"
+            >
+              <svg
+                className="w-5 h-5 transition-transform group-hover:scale-110"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
+                />
+              </svg>
+            </a>
+          )}
 
           {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
-            className="p-2.5 text-neutral-600 dark:text-neutral-400 hover:text-primary-600 dark:hover:text-primary-400 hover:bg-neutral-100 dark:hover:bg-neutral-800 rounded-xl transition-all duration-200 shadow-sm hover:shadow-md group"
+            className="p-2.5 text-anthracite dark:text-graphite hover:text-sbb-red dark:hover:text-sbb-red hover:bg-milk dark:hover:bg-charcoal rounded-sbb-xl transition-all duration-200 shadow-sbb-sm hover:shadow-sbb-md group"
             aria-label="Toggle dark mode"
             title={isDark ? 'Switch to light mode' : 'Switch to dark mode'}
           >
