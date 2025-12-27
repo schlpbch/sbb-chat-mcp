@@ -6,7 +6,7 @@ import type { Message } from '@/hooks/useChat';
 
 interface MessageListProps {
   messages: Message[];
-  messagesEndRef: React.RefObject<HTMLDivElement>;
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
 }
 
 export default function MessageList({ messages, messagesEndRef }: MessageListProps) {
