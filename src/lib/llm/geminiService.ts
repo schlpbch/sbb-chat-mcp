@@ -230,11 +230,11 @@ export async function sendOrchestratedChatMessage(
   console.log("[sendOrchestratedChatMessage] Checking orchestration conditions...");
   if (requiresOrchestration(message) && intent.confidence >= 0.7) {
     const plan = createExecutionPlan(intent, updatedContext);
-      console.log("[sendOrchestratedChatMessage] Plan execution completed. Success:", planResult.success);
-      console.log("[sendOrchestratedChatMessage] Number of results:", planResult.results.length);
 
     if (plan && plan.steps.length > 0) {
       const planResult = await executePlan(plan, updatedContext);
+      console.log("[sendOrchestratedChatMessage] Plan execution completed. Success:", planResult.success);
+      console.log("[sendOrchestratedChatMessage] Number of results:", planResult.results.length);
       const formattedResults = formatPlanResults(planResult, context.language);
 
       const toolCalls = planResult.results
