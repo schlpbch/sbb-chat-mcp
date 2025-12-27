@@ -124,6 +124,13 @@ export default function Home() {
       color: 'from-blue-500 to-blue-600'
     },
     { 
+      icon: '🌤️', 
+      label: 'Weather Forecast', 
+      description: 'Check conditions',
+      query: 'What is the weather in Interlaken?',
+      color: 'from-yellow-500 to-orange-500'
+    },
+    { 
       icon: '🌱', 
       label: 'Eco Impact', 
       description: 'Carbon footprint',
@@ -131,18 +138,39 @@ export default function Home() {
       color: 'from-green-500 to-green-600'
     },
     { 
-      icon: '📍', 
-      label: 'Nearby Stations', 
-      description: 'Find stations',
-      query: 'Stations near my current location',
-      color: 'from-purple-500 to-purple-600'
-    },
-    { 
       icon: '🚀', 
       label: 'Live Departures', 
       description: 'Real-time info',
       query: 'Show me departures from Basel SBB',
       color: 'from-orange-500 to-orange-600'
+    },
+    { 
+      icon: '📍', 
+      label: 'Nearby Stations', 
+      description: 'Find stations',
+      query: 'Find stations near Lausanne',
+      color: 'from-purple-500 to-purple-600'
+    },
+    { 
+      icon: '⏱️', 
+      label: 'Trip Planning', 
+      description: 'Plan journey',
+      query: 'Plan a day trip from Zurich to Lucerne with scenic route',
+      color: 'from-indigo-500 to-indigo-600'
+    },
+    { 
+      icon: '❄️', 
+      label: 'Snow Conditions', 
+      description: 'Ski resorts',
+      query: 'What are the snow conditions in Zermatt?',
+      color: 'from-cyan-500 to-blue-500'
+    },
+    { 
+      icon: '🎫', 
+      label: 'Station Info', 
+      description: 'Facilities & access',
+      query: 'Tell me about Bern station facilities and accessibility',
+      color: 'from-pink-500 to-rose-500'
     }
   ];
 
