@@ -152,6 +152,7 @@ export default function Navbar({
 
             {/* Theme Toggle */}
             <button
+              type="button"
               onClick={toggleTheme}
               className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
               aria-label="Toggle dark mode"
