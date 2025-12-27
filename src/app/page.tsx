@@ -216,7 +216,7 @@ export default function Home() {
                               <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-sbb-red transition-colors">
                                 {action.label}
                               </h3>
-                              <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                              <p className="mt-1 text-sm text-gray-600 dark:text-gray-300 font-medium">
                                 {action.description}
                               </p>
                             </div>

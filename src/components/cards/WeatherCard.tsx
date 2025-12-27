@@ -1,33 +1,53 @@
 'use client';
 
 interface WeatherCardProps {
-  data: {
-    location?: string;
-    temperature?: number;
-    condition?: string;
-    humidity?: number;
-    windSpeed?: number;
-    forecast?: Array<{
-      day?: string;
-      high?: number;
-      low?: number;
-      condition?: string;
-    }>;
-  };
+  data: any; // Using any since the structure varies
 }
 
 export default function WeatherCard({ data }: WeatherCardProps) {
-  const { location, temperature, condition, humidity, windSpeed, forecast } = data;
+  // Extract current weather from hourly data (first index)
+  const hourly = data?.hourly || {};
+  const daily = data?.daily || {};
+  
+  const location = data?.locationName || data?.location || 'Unknown';
+  const temperature = hourly?.temperature_2m?.[0];
+  const humidity = hourly?.relative_humidity_2m?.[0];
+  const windSpeed = hourly?.wind_speed_10m?.[0];
+  
+  // Map weather code to condition
+  const getConditionFromCode = (code?: number) => {
+    if (code === undefined) return 'Unknown';
+    if (code === 0) return 'Clear sky';
+    if (code <= 3) return 'Partly cloudy';
+    if (code <= 48) return 'Foggy';
+    if (code <= 67) return 'Rainy';
+    if (code <= 77) return 'Snowy';
+    if (code <= 82) return 'Rain showers';
+    if (code <= 86) return 'Snow showers';
+    if (code <= 99) return 'Thunderstorm';
+    return 'Unknown';
+  };
+  
+  const weatherCode = hourly?.weather_code?.[0];
+  const condition = getConditionFromCode(weatherCode);
+
+  // Build forecast from daily data
+  const forecast = daily?.time?.slice(0, 3).map((date: string, idx: number) => ({
+    day: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
+    high: daily.temperature_2m_max?.[idx],
+    low: daily.temperature_2m_min?.[idx],
+    condition: getConditionFromCode(daily.weather_code?.[idx])
+  })) || [];
 
   const getWeatherIcon = (cond?: string) => {
     if (!cond) return '☁️';
     const c = cond.toLowerCase();
-    if (c.includes('sun') || c.includes('clear')) return '☀️';
-    if (c.includes('cloud')) return '☁️';
+    if (c.includes('clear')) return '☀️';
+    if (c.includes('cloud') || c.includes('partly')) return '☁️';
     if (c.includes('rain')) return '🌧️';
     if (c.includes('snow')) return '❄️';
-    if (c.includes('storm') || c.includes('thunder')) return '⛈️';
-    if (c.includes('fog') || c.includes('mist')) return '🌫️';
+    if (c.includes('thunder')) return '⛈️';
+    if (c.includes('fog')) return '🌫️';
     return '☁️';
   };
 
@@ -35,7 +55,7 @@ export default function WeatherCard({ data }: WeatherCardProps) {
     <article
       className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-yellow-500 dark:hover:border-yellow-500"
       data-testid="weather-card"
-      aria-label={`Weather for ${location || 'Unknown location'}`}
+      aria-label={`Weather for ${location}`}
     >
       {/* Compact Header */}
       <div className="bg-linear-to-r from-yellow-500 to-orange-500 px-4 py-2">
@@ -46,7 +66,7 @@ export default function WeatherCard({ data }: WeatherCardProps) {
             </svg>
             <div>
               <h3 className="text-lg font-bold">Weather</h3>
-              <p className="text-xs text-yellow-100">{location || 'Unknown'}</p>
+              <p className="text-xs text-yellow-100">{location}</p>
             </div>
           </div>
           <div className="text-3xl">{getWeatherIcon(condition)}</div>
@@ -61,7 +81,7 @@ export default function WeatherCard({ data }: WeatherCardProps) {
               {temperature !== undefined ? `${Math.round(temperature)}°` : '--°'}
             </p>
             <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-              {condition || 'Unknown'}
+              {condition}
             </p>
           </div>
           <div className="space-y-2">
@@ -83,7 +103,7 @@ export default function WeatherCard({ data }: WeatherCardProps) {
                 </svg>
                 <div>
                   <p className="text-xs text-gray-500 dark:text-gray-400">Wind</p>
-                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{windSpeed} km/h</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{Math.round(windSpeed)} km/h</p>
                 </div>
               </div>
             )}
@@ -97,13 +117,13 @@ export default function WeatherCard({ data }: WeatherCardProps) {
               Forecast
             </p>
             <div className="grid grid-cols-3 gap-2">
-              {forecast.slice(0, 3).map((day, idx) => (
+              {forecast.map((day: any, idx: number) => (
                 <div
                   key={idx}
                   className="text-center p-2 bg-gray-50 dark:bg-gray-900 rounded-lg"
                 >
                   <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
-                    {day.day || 'Day'}
+                    {day.day}
                   </p>
                   <div className="text-xl mb-1">{getWeatherIcon(day.condition)}</div>
                   <div className="flex items-center justify-center space-x-1 text-xs">

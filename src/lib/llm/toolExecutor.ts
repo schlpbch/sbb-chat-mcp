@@ -51,6 +51,37 @@ export async function executeTool(
       }
     }
 
+    // Special handling for getWeather and getSnowConditions - resolve location name to lat/lon if needed
+    if ((toolName === 'getWeather' || toolName === 'getSnowConditions') && 'locationName' in params) {
+      const hasLatLon = 'latitude' in params && 'longitude' in params;
+      
+      if (!hasLatLon) {
+        const locationName = (params as any).locationName;
+        console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
+        
+        // Try to find the location using findStopPlacesByName first (for cities/stations)
+        const resolveResult = await executeTool('findStopPlacesByName', {
+          query: locationName,
+          limit: 1
+        } as any);
+
+        if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
+          const place = resolveResult.data[0];
+          const lat = place.location?.latitude;
+          const lon = place.location?.longitude;
+          
+          if (lat !== undefined && lon !== undefined) {
+            console.log(`[toolExecutor] Resolved "${locationName}" to coordinates: ${lat}, ${lon}`);
+            params = { ...params, latitude: lat, longitude: lon } as any;
+          } else {
+            console.warn(`[toolExecutor] Could not find coordinates for "${locationName}"`);
+          }
+        } else {
+          console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`);
+        }
+      }
+    }
+
     // Construct absolute URL for server-side fetch
     const baseUrl =
       typeof window === 'undefined'

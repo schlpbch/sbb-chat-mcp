@@ -81,24 +81,24 @@ export const MCP_FUNCTION_DEFINITIONS = [
   {
     name: 'getWeather',
     description:
-      'Get current weather conditions and forecast for a location in Switzerland',
+      'Get current weather conditions and forecast for a location in Switzerland. You can provide either coordinates OR a location name (city, station) which will be automatically resolved.',
     parameters: {
       type: 'object',
       properties: {
         latitude: {
           type: 'number',
-          description: 'Latitude of the location',
+          description: 'Latitude of the location (optional if locationName is provided)',
         },
         longitude: {
           type: 'number',
-          description: 'Longitude of the location',
+          description: 'Longitude of the location (optional if locationName is provided)',
         },
         locationName: {
           type: 'string',
-          description: 'Name of the location (for display purposes)',
+          description: 'Name of the location (e.g., "Zurich", "Bern"). Will be automatically resolved to coordinates if lat/lon not provided.',
         },
       },
-      required: ['latitude', 'longitude'],
+      required: [],
     },
   },
   {
