@@ -101,28 +101,28 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
         aria-modal="true"
         aria-labelledby="menu-title"
         tabIndex={-1}
-        className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow-2xl z-50 transform transition-transform duration-300 ${
+        className={`fixed left-0 top-0 h-full w-80 bg-white border-r border-gray-200 shadow-2xl z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+          <div className="px-6 py-5 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-3">
                 <div className="w-10 h-10 rounded-lg bg-linear-to-br from-red-600 to-red-700 flex items-center justify-center shadow-lg">
                   <span className="text-white font-bold text-lg">SBB</span>
                 </div>
                 <div>
-                  <h2 id="menu-title" className="text-lg font-bold text-gray-900 dark:text-white">
+                  <h2 id="menu-title" className="text-lg font-bold text-gray-900">
                     Menu
                   </h2>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Navigation</p>
+                  <p className="text-xs text-gray-500">Navigation</p>
                 </div>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
                 aria-label="Close menu"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -141,16 +141,16 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
                     href={item.href}
                     onClick={onClose}
                     aria-label={item.label}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 group"
+                    className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-200 group"
                   >
-                    <span className="text-gray-500 dark:text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
+                    <span className="text-gray-500 group-hover:text-red-600 transition-colors">
                       {item.icon}
                     </span>
                     <div className="flex-1">
                       <div className="font-semibold">{item.label}</div>
-                      <div className="text-xs text-gray-500 dark:text-gray-400">{item.description}</div>
+                      <div className="text-xs text-gray-500">{item.description}</div>
                     </div>
-                    <svg className="w-5 h-5 text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <svg className="w-5 h-5 text-gray-400 group-hover:text-red-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                     </svg>
                   </a>
@@ -160,11 +160,11 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
           </nav>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
-            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+          <div className="px-6 py-4 border-t border-gray-200">
+            <p className="text-xs text-gray-500 text-center">
               {t.version || 'v2.0.0'}
             </p>
-            <p className="text-xs text-gray-400 dark:text-gray-600 text-center mt-1">
+            <p className="text-xs text-gray-400 text-center mt-1">
               © 2024 SBB Chat MCP
             </p>
           </div>

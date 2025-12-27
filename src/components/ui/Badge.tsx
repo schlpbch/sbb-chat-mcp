@@ -14,13 +14,13 @@ interface BadgeProps {
 }
 
 const variantClasses: Record<BadgeVariant, string> = {
-  default: 'bg-milk dark:bg-iron text-anthracite dark:text-graphite border border-cloud dark:border-granite',
+  default: 'bg-milk text-anthracite border border-cloud',
   primary: 'bg-sbb-red text-white shadow-sbb-red',
-  secondary: 'bg-charcoal dark:bg-milk text-white dark:text-midnight',
-  success: 'bg-success-100 text-success-800 dark:bg-success-900/30 dark:text-success-400 border border-success-200 dark:border-success-800',
-  warning: 'bg-warning-100 text-warning-800 dark:bg-warning-900/30 dark:text-warning-400 border border-warning-200 dark:border-warning-800',
-  error: 'bg-error-100 text-error-800 dark:bg-error-900/30 dark:text-error-400 border border-error-200 dark:border-error-800',
-  info: 'bg-cloud dark:bg-midnight/50 text-midnight dark:text-milk border border-silver/30',
+  secondary: 'bg-charcoal text-white',
+  success: 'bg-success-100 text-success-800 border border-success-200',
+  warning: 'bg-warning-100 text-warning-800 border border-warning-200',
+  error: 'bg-error-100 text-error-800 border border-error-200',
+  info: 'bg-cloud text-midnight border border-silver/30',
 };
 
 const sizeClasses: Record<BadgeSize, string> = {

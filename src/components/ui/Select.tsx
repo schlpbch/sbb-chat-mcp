@@ -27,14 +27,14 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
 
     const selectClasses = [
       'px-4 py-2.5 pr-12 border-2 rounded-sbb transition-all duration-200',
-      'focus:outline-none focus:border-sbb-red dark:focus:border-sbb-red focus:shadow-sbb-red/20',
+      'focus:outline-none focus:border-sbb-red focus:shadow-sbb-red/20',
       'disabled:opacity-50 disabled:cursor-not-allowed',
       'appearance-none cursor-pointer',
       hasError
         ? 'border-sbb-red'
-        : 'border-cloud dark:border-iron hover:border-silver dark:hover:border-storm',
-      'bg-milk dark:bg-charcoal',
-      'text-midnight dark:text-milk font-bold text-sm',
+        : 'border-cloud hover:border-silver',
+      'bg-milk',
+      'text-midnight font-bold text-sm',
       fullWidth ? 'w-full' : '',
       className,
     ].filter(Boolean).join(' ');
@@ -44,7 +44,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
         {label && (
           <label
             htmlFor={selectId}
-            className="block text-xs font-black text-midnight dark:text-milk mb-1.5 uppercase tracking-widest"
+            className="block text-xs font-black text-midnight mb-1.5 uppercase tracking-widest"
           >
             {label}
           </label>
@@ -72,7 +72,7 @@ export const Select = React.forwardRef<HTMLSelectElement, SelectProps>(
           <p className="mt-1 text-sm text-error">{error}</p>
         )}
         {helperText && !error && (
-          <p className="mt-1 text-sm text-neutral-500 dark:text-neutral-400">{helperText}</p>
+          <p className="mt-1 text-sm text-neutral-500">{helperText}</p>
         )}
       </div>
     );
