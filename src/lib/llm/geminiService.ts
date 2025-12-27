@@ -97,10 +97,10 @@ CONTEXT:
     }
 
 CAPABILITIES:
-- You can find public transport connections using SBB data
+- You can find public transport connections using SBB data (including international connections)
 - You can check station details, arrivals, and departures
-- You can check weather conditions
-- You can help plan travel routes across Switzerland
+- You can check weather conditions **for any location in Europe**
+- You can help plan travel routes across Switzerland and Europe
 
 AVAILABLE TOOLS:
 ${
