@@ -32,7 +32,7 @@ export const Card: React.FC<CardProps> = ({
   padding = 'md',
   shadow = 'md',
 }) => {
-  const baseClasses = 'bg-white dark:bg-charcoal rounded-sbb-xl border border-cloud dark:border-iron transition-all duration-200';
+  const baseClasses = 'bg-white dark:bg-charcoal rounded-sbb border border-cloud dark:border-iron transition-all duration-200';
   const hoverClasses = hover ? 'hover:shadow-sbb-lg hover:-translate-y-0.5 cursor-pointer' : '';
   const clickableClasses = onClick ? 'cursor-pointer' : '';
 

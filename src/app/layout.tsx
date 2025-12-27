@@ -9,9 +9,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'SBB Chat MCP | Interactive Tourist Discovery',
+  title: 'SBB Travel Assistant',
   description:
-    'Discover Swiss tourist attractions and alpine resorts with real-time MCP data',
+    'Your intelligent companion for Swiss public transport journeys and station information',
 };
 
 export default function RootLayout({

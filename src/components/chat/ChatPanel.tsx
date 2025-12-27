@@ -118,11 +118,11 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
       aria-modal="true"
       aria-labelledby="chat-title"
       tabIndex={-1}
-      className={`fixed right-6 top-24 h-[calc(100vh-8rem)] w-[420px] glass rounded-sbb-xl shadow-sbb-xl z-50 flex flex-col border border-cloud/30 dark:border-iron/30 
+      className={`fixed right-6 top-24 h-[calc(100vh-8rem)] w-[420px] glass rounded-sbb-lg shadow-sbb-xl z-50 flex flex-col border border-cloud/30 dark:border-iron/30 
                  transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) transform ${isOpen ? 'translate-x-0 opacity-100' : 'translate-x-12 opacity-0 pointer-events-none'}`}
     >
       {/* Header */}
-      <div className="bg-linear-to-br from-sbb-red to-sbb-red-125 px-8 py-5 flex items-center justify-between shadow-md relative overflow-hidden rounded-t-sbb-xl">
+      <div className="bg-linear-to-br from-sbb-red to-sbb-red-125 px-8 py-5 flex items-center justify-between shadow-md relative overflow-hidden rounded-t-sbb-lg">
         {/* Decorative pattern */}
         <div className="absolute inset-0 opacity-10 pointer-events-none">
           <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_1px_1px,rgba(255,255,255,0.1)_1px,transparent_0)] bg-size-[20px_20px]" />
@@ -142,7 +142,7 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
         
         <button
           onClick={onClose}
-          className="w-8 h-8 rounded-full bg-white/20 text-white hover:bg-white/30 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50 relative z-10"
+          className="w-8 h-8 rounded-sbb bg-white/20 text-white hover:bg-white/30 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50 relative z-10"
           aria-label="Close chat"
         >
           <span className="text-xl leading-none">✕</span>
@@ -159,16 +159,16 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
       >
         {messages.length === 0 && (
           <div className="flex flex-col items-center justify-center h-full text-center p-8 animate-sbb-fade-in">
-            <div className="w-20 h-20 bg-milk dark:bg-iron rounded-full flex items-center justify-center text-4xl mb-6 shadow-sbb-sm">
+            <div className="w-20 h-20 bg-milk dark:bg-iron rounded-sbb flex items-center justify-center text-4xl mb-6 shadow-sbb-sm">
               👋
             </div>
             <h3 className="text-midnight dark:text-milk font-black text-xl mb-2 tracking-tight">Grüezi!</h3>
             <p className="text-anthracite dark:text-graphite text-sm font-medium leading-relaxed max-w-[240px]">
-              How can I help you discover Switzerland today? I can suggest trips, check station details or help with connections.
+              How can I help you plan your Swiss travel today? I can suggest trips, check station details or help with connections.
             </p>
             
             <div className="mt-10 grid grid-cols-1 gap-3 w-full">
-              {['Show next trips to Zurich', 'Station info for Bern', 'Environmental impact of my trip'].map((suggestion, i) => (
+              {['Show next trips to Zurich HB', 'Station info for Bern', 'Environmental impact of my trip'].map((suggestion, i) => (
                 <button
                   key={i}
                   onClick={() => handleSendMessage(suggestion)}
@@ -185,11 +185,11 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
           <ChatMessage key={message.id} message={message} />
         ))}
         {isLoading && (
-          <div className="flex items-center gap-2 p-4 bg-milk/50 dark:bg-midnight/20 rounded-sbb-xl w-fit" aria-label="Loading response">
+          <div className="flex items-center gap-2 p-4 bg-milk/50 dark:bg-midnight/20 rounded-sbb-lg w-fit" aria-label="Loading response">
             <div className="flex gap-1.5">
-              <div className="w-2 h-2 bg-sbb-red rounded-full animate-bounce [animation-delay:-0.3s]" />
-              <div className="w-2 h-2 bg-sbb-red rounded-full animate-bounce [animation-delay:-0.15s]" />
-              <div className="w-2 h-2 bg-sbb-red rounded-full animate-bounce" />
+              <div className="w-2 h-2 bg-sbb-red rounded-sbb animate-bounce [animation-delay:-0.3s]" />
+              <div className="w-2 h-2 bg-sbb-red rounded-sbb-minimal animate-bounce [animation-delay:-0.15s]" />
+              <div className="w-2 h-2 bg-sbb-red rounded-sbb-minimal animate-bounce" />
             </div>
             <span className="text-[10px] font-black uppercase tracking-widest text-smoke dark:text-graphite">Thinking</span>
           </div>

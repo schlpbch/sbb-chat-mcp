@@ -2,7 +2,6 @@
  * Tool Executor - Executes MCP tools based on Gemini function calls
  */
 
-import { getMcpServerUrl } from '@/config/env';
 import type { FunctionCallParams } from './functionDefinitions';
 
 export interface ToolExecutionResult {
@@ -23,15 +22,41 @@ export async function executeTool(
   try {
     console.log(`Executing tool: ${toolName}`, params);
 
+    // Special handling for getPlaceEvents - resolve station name to UIC code if needed
+    if (toolName === 'getPlaceEvents' && 'placeId' in params) {
+      const placeId = params.placeId as string;
+      // Check if placeId is NOT a UIC code (UIC codes are typically 7-8 digits)
+      if (!/^\d{7,8}$/.test(placeId)) {
+        console.log(`[toolExecutor] Resolving station name "${placeId}" to UIC code...`);
+        
+        // Call findStopPlacesByName to get the UIC code
+        const resolveResult = await executeTool('findStopPlacesByName', {
+          query: placeId,
+          limit: 1
+        } as any);
+
+        if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
+          const station = resolveResult.data[0];
+          const uicCode = station.id || station.uicCode;
+          
+          if (uicCode) {
+            console.log(`[toolExecutor] Resolved "${placeId}" to UIC code: ${uicCode}`);
+            params = { ...params, placeId: uicCode } as any;
+          } else {
+            console.warn(`[toolExecutor] Could not find UIC code for "${placeId}"`);
+          }
+        } else {
+          console.warn(`[toolExecutor] Failed to resolve station name "${placeId}"`);
+        }
+      }
+    }
+
     // Construct absolute URL for server-side fetch
-    // In server context, we need the full URL including protocol and host
     const baseUrl =
       typeof window === 'undefined'
         ? `http://localhost:${process.env.PORT || 3000}`
         : '';
     const url = `${baseUrl}/api/mcp-proxy/tools/${toolName}`;
-
-    console.log(`[toolExecutor] Calling MCP proxy at: ${url}`);
 
     // Call the MCP proxy endpoint
     const response = await fetch(url, {
@@ -44,11 +69,6 @@ export async function executeTool(
 
     if (!response.ok) {
       const errorText = await response.text();
-      console.error(`[toolExecutor] Proxy failed for ${toolName}:`, {
-        status: response.status,
-        statusText: response.statusText,
-        body: errorText,
-      });
       let errorData;
       try {
         errorData = JSON.parse(errorText);
@@ -62,19 +82,9 @@ export async function executeTool(
 
     const data = await response.json();
 
-    console.log(
-      `[toolExecutor] Raw response for ${toolName}:`,
-      JSON.stringify(data, null, 2)
-    );
-
     const parsedData = data.content?.[0]?.text
       ? JSON.parse(data.content[0].text)
       : data;
-
-    console.log(
-      `[toolExecutor] Parsed data for ${toolName}:`,
-      JSON.stringify(parsedData, null, 2)
-    );
 
     return {
       success: true,
@@ -103,93 +113,6 @@ export async function executeTools(
     executeTool(name, params)
   );
   return Promise.all(promises);
-}
-
-/**
- * Search attractions from the tourist-sights resource
- */
-export async function searchAttractions(params: {
-  category?: string;
-  region?: string;
-  vibes?: string[];
-  limit?: number;
-}): Promise<ToolExecutionResult> {
-  try {
-    const baseUrl =
-      typeof window === 'undefined'
-        ? `http://localhost:${process.env.PORT || 3000}`
-        : '';
-    const resourceUri = 'tourist-sights://all';
-    const url = `${baseUrl}/api/mcp-proxy/resources/read?uri=${encodeURIComponent(
-      resourceUri
-    )}`;
-
-    // Fetch all attractions from the resource
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        Accept: 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to fetch attractions');
-    }
-
-    const data = await response.json();
-    let attractions = data.contents?.[0]?.text
-      ? JSON.parse(data.contents[0].text)
-      : [];
-
-    // Apply filters
-    if (params.category) {
-      attractions = attractions.filter(
-        (a: any) => a.category?.toLowerCase() === params.category?.toLowerCase()
-      );
-    }
-
-    if (params.region) {
-      attractions = attractions.filter(
-        (a: any) =>
-          a.region
-            ?.toLowerCase()
-            .includes(params.region?.toLowerCase() || '') ||
-          a.location?.city
-            ?.toLowerCase()
-            .includes(params.region?.toLowerCase() || '')
-      );
-    }
-
-    if (params.vibes && params.vibes.length > 0) {
-      attractions = attractions.filter((a: any) =>
-        params.vibes?.some((vibe) =>
-          a.vibes?.some((v: string) =>
-            v.toLowerCase().includes(vibe.toLowerCase())
-          )
-        )
-      );
-    }
-
-    // Limit results
-    if (params.limit) {
-      attractions = attractions.slice(0, params.limit);
-    }
-
-    return {
-      success: true,
-      data: attractions,
-      toolName: 'searchAttractions',
-      params,
-    };
-  } catch (error) {
-    console.error('Attraction search error:', error);
-    return {
-      success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
-      toolName: 'searchAttractions',
-      params,
-    };
-  }
 }
 
 /**
@@ -232,12 +155,6 @@ export function formatToolResult(result: ToolExecutionResult): string {
         return `🌡️ ${result.data.temperature || 'N/A'}°C | ${
           result.data.condition || 'N/A'
         }`;
-      }
-      break;
-
-    case 'searchAttractions':
-      if (Array.isArray(result.data)) {
-        return `Found ${result.data.length} attractions`;
       }
       break;
   }

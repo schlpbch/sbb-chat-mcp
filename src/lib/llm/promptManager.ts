@@ -32,7 +32,7 @@ Please provide:
 2. Total travel duration and number of transfers
 3. Ticket pricing information
 4. Weather conditions at destination
-5. Nearby attractions and points of interest
+5. Map guidance and station information
 6. Practical travel tips
 
 Focus on {{travelStyle}} options and ensure all information is accurate and up-to-date.`,
@@ -62,7 +62,7 @@ For this journey:
 2. Identify any required reservations
 3. Note any time restrictions or peak hour limitations
 4. Provide alternative routes if bike transport is limited
-5. Include bike-friendly destinations and routes at {{destination}}
+5. Provide transit options for cyclists at {{destination}}
 
 Departure: {{departureTime}}`,
     variables: ['origin', 'destination', 'departureTime'],
@@ -145,7 +145,7 @@ For this journey:
 1. Recommend the most sustainable route
 2. Calculate CO2 savings vs. car travel
 3. Highlight any particularly eco-friendly features (e.g., 100% renewable energy)
-4. Suggest sustainable activities at destination
+4. Suggest eco-friendly transit connections at destination
 5. Provide tips for reducing environmental impact
 
 Departure: {{departureTime}}
@@ -181,7 +181,7 @@ FAMILY TRAVEL CONSIDERATIONS:
 For this journey:
 1. Recommend family-friendly connections
 2. Identify trains with family compartments
-3. Suggest child-friendly activities at destination
+3. Suggest family-friendly stations and facilities
 4. Provide tips for traveling with children
 5. Note facilities (changing tables, play areas at stations)
 

@@ -15,7 +15,7 @@ test.describe('Context Manager - Session Handling', () => {
 
     // Get session ID from network request when sending a message
     const input = page.locator(
-      'input[placeholder="Ask me anything about Swiss travel..."]'
+      'input[placeholder="Ask me about Swiss public transport..."]'
     );
     await input.fill('Hello');
 
@@ -59,7 +59,7 @@ test.describe('Context Manager - Session Handling', () => {
     await page.waitForLoadState('networkidle');
 
     const input = page.locator(
-      'input[placeholder="Ask me anything about Swiss travel..."]'
+      'input[placeholder="Ask me about Swiss public transport..."]'
     );
 
     // Send first message
@@ -99,7 +99,7 @@ test.describe('Context Manager - Orchestration Flag', () => {
     await page.waitForLoadState('networkidle');
 
     const input = page.locator(
-      'input[placeholder="Ask me anything about Swiss travel..."]'
+      'input[placeholder="Ask me about Swiss public transport..."]'
     );
     await input.fill('Test message');
 
@@ -120,7 +120,7 @@ test.describe('Context Manager - Orchestration Flag', () => {
     await page.waitForLoadState('networkidle');
 
     const input = page.locator(
-      'input[placeholder="Ask me anything about Swiss travel..."]'
+      'input[placeholder="Ask me about Swiss public transport..."]'
     );
     await input.fill('Test message');
 
@@ -144,7 +144,7 @@ test.describe('Context Manager - Message History', () => {
     await page.waitForLoadState('networkidle');
 
     const input = page.locator(
-      'input[placeholder="Ask me anything about Swiss travel..."]'
+      'input[placeholder="Ask me about Swiss public transport..."]'
     );
 
     // Send first message
@@ -188,14 +188,10 @@ test.describe('Context Manager - Message History', () => {
 
 test.describe('Context Manager - Quick Start Buttons', () => {
   const quickStartButtons = [
-    { text: 'ski resorts', expected: 'What are the best ski resorts in Switzerland?' },
-    { text: 'Zürich attractions', expected: 'Tell me about attractions in Zürich' },
-    { text: 'sustainable trip', expected: 'How can I plan a sustainable trip?' },
-    { text: 'Family-friendly', expected: 'Recommend family-friendly activities' },
-    {
-      text: 'day trip to Zermatt',
-      expected: 'Plan a day trip to Zermatt from Zurich',
-    },
+    { text: 'Connections to Bern', expected: 'Find next connections from Zurich HB to Bern' },
+    { text: 'Eco Impact: Geneva', expected: 'What is the environmental impact of a trip to Geneva?' },
+    { text: 'Basel Departures', expected: 'Show me departures from Basel SBB' },
+    { text: 'Nearby Stations', expected: 'Stations near my current location' },
   ];
 
   for (const button of quickStartButtons) {
@@ -206,7 +202,7 @@ test.describe('Context Manager - Quick Start Buttons', () => {
       await page.locator(`button:has-text("${button.text}")`).click();
 
       const input = page.locator(
-        'input[placeholder="Ask me anything about Swiss travel..."]'
+        'input[placeholder="Ask me about Swiss public transport..."]'
       );
       await expect(input).toHaveValue(button.expected);
     });
@@ -222,7 +218,7 @@ test.describe('Context Manager - Language Support', () => {
 
     // Send a message and check language context is included
     const input = page.locator(
-      'input[placeholder="Ask me anything about Swiss travel..."]'
+      'input[placeholder="Ask me about Swiss public transport..."]'
     );
     await input.fill('Test');
 

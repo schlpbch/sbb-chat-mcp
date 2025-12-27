@@ -2,7 +2,6 @@
 import { MCP_FUNCTION_DEFINITIONS } from './functionDefinitions';
 import {
   executeTool,
-  searchAttractions,
   formatToolResult,
 } from './toolExecutor';
 import {
@@ -23,7 +22,7 @@ import type { FunctionCallParams } from './functionDefinitions';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-// Session contexts (in production, use Redis or database)
+// Session contexts
 const sessionContexts = new Map<string, ConversationContext>();
 
 /**
@@ -49,7 +48,6 @@ export interface ChatMessage {
 export interface ChatContext {
   language: string;
   currentLocation?: { lat: number; lon: number };
-  visibleAttractions?: number;
 }
 
 export interface ChatResponse {
@@ -72,17 +70,11 @@ export async function sendChatMessage(
 ): Promise<ChatResponse> {
   try {
     console.log('[geminiService] === CHAT REQUEST START ===');
-    console.log('[geminiService] Message:', message);
-    console.log(
-      '[geminiService] Function calling enabled:',
-      enableFunctionCalling
-    );
-
+    
     const modelConfig: any = {
       model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
     };
 
-    // Add function declarations if enabled
     if (enableFunctionCalling) {
       modelConfig.tools = [
         {
@@ -93,7 +85,6 @@ export async function sendChatMessage(
 
     const model = genAI.getGenerativeModel(modelConfig);
 
-    // Build enhanced system prompt
     const systemPrompt = `You are a helpful Swiss travel assistant integrated into the SBB Chat MCP app.
 
 CONTEXT:
@@ -104,18 +95,17 @@ CONTEXT:
         ? `${context.currentLocation.lat}, ${context.currentLocation.lon}`
         : 'Unknown'
     }
-- Attractions visible on map: ${context.visibleAttractions || 0}
 
 CAPABILITIES:
-- You can search for tourist attractions, ski resorts, and landmarks
 - You can find public transport connections using SBB data
-- You can check weather and snow conditions
-- You can help plan complete itineraries
+- You can check station details, arrivals, and departures
+- You can check weather conditions
+- You can help plan travel routes across Switzerland
 
 AVAILABLE TOOLS:
 ${
   enableFunctionCalling
-    ? '- findStopPlacesByName: Search for train stations and stops\n- findPlaces: Search for places and POIs\n- findTrips: Find public transport connections\n- getPlaceEvents: Get arrivals/departures (needs station ID)\n- getWeather: Get weather forecasts\n- getSnowConditions: Get ski resort conditions\n- searchAttractions: Filter attractions by category/region\n\nSTATION IDS: Zurich HB=8503000, Bern=8507000, Geneva=8501008, Basel=8500010, Lausanne=8501120, Lucerne=8505000, Thun=8507100, Interlaken=8507492\n\nFor arrivals/departures use: getPlaceEvents({placeId: "8507100", eventType: "arrivals"})'
+    ? '- findStopPlacesByName: Search for train stations and stops\n- findPlaces: Search for places and POIs\n- findTrips: Find public transport connections\n- getPlaceEvents: Get arrivals/departures (needs station ID)\n- getWeather: Get weather forecasts\n- getSnowConditions: Get ski resort conditions\n\nSTATION IDS: Zurich HB=8503000, Bern=8507000, Geneva=8501008, Basel=8500010, Lausanne=8501120, Lucerne=8505000, Thun=8507100, Interlaken=8507492\n\nFor arrivals/departures use: getPlaceEvents({placeId: "8507100", eventType: "arrivals"})'
     : 'No tools available in this mode'
 }
 
@@ -129,18 +119,15 @@ GUIDELINES:
         ? 'Italian'
         : 'English'
     }
-- Be concise and helpful
+- Be concise and professional
 - Use tools when you need real-time data
-- Provide specific, actionable recommendations
 - Prioritize sustainable travel options`;
 
-    // Build conversation history
     const chatHistory = history.map((msg) => ({
       role: msg.role === 'user' ? 'user' : 'model',
       parts: [{ text: msg.content }],
     }));
 
-    // Start chat with history
     const chat = model.startChat({
       history: [
         { role: 'user', parts: [{ text: systemPrompt }] },
@@ -148,7 +135,7 @@ GUIDELINES:
           role: 'model',
           parts: [
             {
-              text: "Understood. I'm ready to help with Swiss travel planning!",
+              text: "Understood. I'm ready to help with Swiss public transport planning!",
             },
           ],
         },
@@ -156,46 +143,18 @@ GUIDELINES:
       ],
     });
 
-    // Send message and get response
-    console.log('[geminiService] Sending message to Gemini...');
     const result = await chat.sendMessage(message);
     const response = result.response;
 
-    console.log('[geminiService] Gemini response received');
-    console.log(
-      '[geminiService] Response candidates:',
-      JSON.stringify(response.candidates, null, 2)
-    );
-
-    // Check for function calls
     const functionCalls = response.functionCalls();
-    console.log(
-      '[geminiService] Function calls detected:',
-      functionCalls ? functionCalls.length : 0
-    );
-    if (functionCalls && functionCalls.length > 0) {
-      console.log(
-        '[geminiService] Function calls:',
-        JSON.stringify(functionCalls, null, 2)
-      );
-    }
     const toolCalls: Array<{ toolName: string; params: any; result: any }> = [];
 
     if (functionCalls && functionCalls.length > 0) {
-      // The new logs already cover this: console.log('Function calls requested:', functionCalls);
-
-      // Execute each function call
       for (const call of functionCalls) {
-        let toolResult;
-
-        if (call.name === 'searchAttractions') {
-          toolResult = await searchAttractions(call.args as any);
-        } else {
-          toolResult = await executeTool(
+        const toolResult = await executeTool(
             call.name,
             call.args as FunctionCallParams
-          );
-        }
+        );
 
         toolCalls.push({
           toolName: call.name,
@@ -203,7 +162,6 @@ GUIDELINES:
           result: toolResult.data,
         });
 
-        // Send function response back to the model
         const functionResponse = {
           functionResponse: {
             name: call.name,
@@ -215,12 +173,10 @@ GUIDELINES:
           },
         };
 
-        // Continue the conversation with the function result
         const followUpResult = await chat.sendMessage([
           functionResponse as any,
         ]);
 
-        // Return the final response after processing function results
         return {
           response: followUpResult.response.text(),
           toolCalls,
@@ -228,7 +184,6 @@ GUIDELINES:
       }
     }
 
-    // No function calls, return the direct response
     return {
       response: response.text(),
       toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
@@ -240,7 +195,7 @@ GUIDELINES:
 }
 
 /**
- * Simple chat without function calling (for basic queries)
+ * Simple chat without function calling
  */
 export async function sendSimpleChatMessage(
   message: string,
@@ -252,8 +207,7 @@ export async function sendSimpleChatMessage(
 }
 
 /**
- * Enhanced chat with orchestration support for complex queries
- * Automatically uses multi-tool planning for itinerary requests
+ * Enhanced chat with orchestration support
  */
 export async function sendOrchestratedChatMessage(
   message: string,
@@ -261,38 +215,21 @@ export async function sendOrchestratedChatMessage(
   history: ChatMessage[] = [],
   context: ChatContext = { language: 'en' }
 ): Promise<ChatResponse> {
-  console.log('[geminiService] === ORCHESTRATED CHAT START ===');
-
-  // Get or create session context
   const sessionContext = getSessionContext(sessionId, context.language);
-
-  // Extract intent from message
   const intent = extractIntent(message);
-  console.log('[geminiService] Detected intent:', intent.type, 'confidence:', intent.confidence);
-
-  // Update context with any extracted information
+  
   const updatedContext = updateContextFromMessage(sessionContext, message, {
     intent,
   });
   sessionContexts.set(sessionId, updatedContext);
 
-  // Check if this requires orchestration
   if (requiresOrchestration(message) && intent.confidence >= 0.7) {
-    console.log('[geminiService] Using orchestrated execution');
-
-    // Create and execute a multi-step plan
     const plan = createExecutionPlan(intent, updatedContext);
 
     if (plan && plan.steps.length > 0) {
-      console.log('[geminiService] Executing plan:', plan.name, 'with', plan.steps.length, 'steps');
-
       const planResult = await executePlan(plan, updatedContext);
-      console.log('[geminiService] Plan execution complete:', planResult.success);
-
-      // Format the results
       const formattedResults = formatPlanResults(planResult, context.language);
 
-      // Build tool calls array from plan results
       const toolCalls = planResult.results
         .filter((r) => r.success && r.data)
         .map((r) => ({
@@ -301,7 +238,6 @@ export async function sendOrchestratedChatMessage(
           result: r.data,
         }));
 
-      // Send to Gemini with the gathered context for natural language response
       const modelConfig: any = {
         model: process.env.GEMINI_MODEL || 'gemini-2.0-flash',
       };
@@ -316,13 +252,7 @@ ${formattedResults}
 Raw data summary:
 ${JSON.stringify(planResult.summary, null, 2)}
 
-Please provide a helpful, conversational response that:
-1. Summarizes the key information clearly
-2. Provides specific recommendations
-3. Mentions any important details like weather or timing
-4. Responds in ${context.language === 'de' ? 'German' : context.language === 'fr' ? 'French' : context.language === 'it' ? 'Italian' : 'English'}
-
-Be concise but complete.`;
+Please provide a helpful, conversational response that summarizes the key information clearly and provides transport recommendations. Responds in ${context.language === 'de' ? 'German' : context.language === 'fr' ? 'French' : context.language === 'it' ? 'Italian' : 'English'}.`;
 
       const result = await model.generateContent(summaryPrompt);
       const response = result.response.text();
@@ -334,7 +264,5 @@ Be concise but complete.`;
     }
   }
 
-  // Fall back to standard function-calling flow
-  console.log('[geminiService] Using standard function calling');
   return sendChatMessage(message, history, context, true);
 }

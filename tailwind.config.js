@@ -116,9 +116,9 @@ export default {
         '128': '32rem',
       },
       borderRadius: {
-        'sbb': '0.5rem',
-        'sbb-lg': '1rem',
-        'sbb-xl': '1.5rem',
+        'sbb': '2px',
+        'sbb-lg': '4px',
+        'sbb-xl': '6px',
       },
       boxShadow: {
         'sbb-sm': '0 2px 4px 0 rgba(0, 0, 0, 0.03)',

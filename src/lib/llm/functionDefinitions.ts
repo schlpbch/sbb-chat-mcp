@@ -124,36 +124,7 @@ export const MCP_FUNCTION_DEFINITIONS = [
       required: ['latitude', 'longitude'],
     },
   },
-  {
-    name: 'searchAttractions',
-    description:
-      'Search and filter Swiss tourist attractions by category, region, or other criteria',
-    parameters: {
-      type: 'object',
-      properties: {
-        category: {
-          type: 'string',
-          description:
-            'Category filter (e.g., "ski_resort", "museum", "mountain", "castle")',
-        },
-        region: {
-          type: 'string',
-          description: 'Region filter (e.g., "Zürich", "Bern", "Valais")',
-        },
-        vibes: {
-          type: 'array',
-          items: { type: 'string' },
-          description:
-            'Vibe tags to filter by (e.g., ["family-friendly", "adventure", "romantic"])',
-        },
-        limit: {
-          type: 'number',
-          description: 'Maximum number of attractions to return (default: 20)',
-          default: 20,
-        },
-      },
-    },
-  },
+
   {
     name: 'optimizeTransfers',
     description:
@@ -376,17 +347,9 @@ export interface GetSnowConditionsParams {
   locationName?: string;
 }
 
-export interface SearchAttractionsParams {
-  category?: string;
-  region?: string;
-  vibes?: string[];
-  limit?: number;
-}
-
 export type FunctionCallParams =
   | FindStopPlacesParams
   | FindPlacesParams
   | FindTripsParams
   | GetWeatherParams
-  | GetSnowConditionsParams
-  | SearchAttractionsParams;
+  | GetSnowConditionsParams;

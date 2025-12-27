@@ -35,7 +35,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             onKeyPress={handleKeyPress}
             placeholder="Search for connections, stations or help..."
             disabled={disabled}
-            className="w-full pl-5 pr-12 py-3.5 bg-milk dark:bg-midnight/30 border-2 border-cloud dark:border-iron rounded-sbb-xl 
+            className="w-full pl-5 pr-12 py-3.5 bg-milk dark:bg-midnight/30 border-2 border-cloud dark:border-iron rounded-sbb 
                        focus:outline-none focus:border-sbb-red dark:focus:border-sbb-red
                        text-midnight dark:text-milk text-sm font-bold placeholder:text-smoke dark:placeholder:text-graphite
                        disabled:opacity-50 disabled:cursor-not-allowed
@@ -50,7 +50,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
         <button
           onClick={handleSend}
           disabled={disabled || !input.trim()}
-          className="px-8 py-3.5 bg-sbb-red text-white text-sm font-black uppercase tracking-widest rounded-sbb-xl
+          className="px-8 py-3.5 bg-sbb-red text-white text-sm font-black uppercase tracking-widest rounded-sbb
                      hover:bg-sbb-red-125 active:scale-95
                      disabled:opacity-30 disabled:cursor-not-allowed disabled:active:scale-100
                      transition-all duration-200 shadow-sbb hover:shadow-sbb-red/40 flex items-center gap-2"

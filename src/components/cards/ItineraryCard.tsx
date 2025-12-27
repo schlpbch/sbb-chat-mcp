@@ -1,205 +1,153 @@
 'use client';
 
-import React from 'react';
-import {
-  Clock,
-  MapPin,
-  Train,
-  Utensils,
-  Camera,
-  Sun,
-  CloudRain,
-} from 'lucide-react';
-
-interface ItineraryActivity {
-  time: string;
-  type: 'travel' | 'attraction' | 'meal' | 'free';
-  title: string;
-  location?: string;
-  duration?: string;
-  description?: string;
-  weather?: {
-    condition: string;
-    temperature: number;
-  };
-}
-
-interface ItineraryData {
-  destination: string;
-  date: string;
-  activities: ItineraryActivity[];
-  summary?: {
-    totalTravelTime?: string;
-    totalCost?: string;
-    weatherOverview?: string;
-  };
-}
-
 interface ItineraryCardProps {
-  data: ItineraryData;
+  data: {
+    destination?: string;
+    duration?: string;
+    activities?: Array<{
+      time?: string;
+      title?: string;
+      description?: string;
+      location?: string;
+      type?: string;
+    }>;
+    transportation?: string;
+    budget?: {
+      total?: number;
+      currency?: string;
+    };
+  };
 }
 
 export default function ItineraryCard({ data }: ItineraryCardProps) {
-  const getActivityIcon = (type: string) => {
-    switch (type) {
-      case 'travel':
-        return <Train className="w-5 h-5" />;
-      case 'attraction':
-        return <Camera className="w-5 h-5" />;
-      case 'meal':
-        return <Utensils className="w-5 h-5" />;
-      default:
-        return <Clock className="w-5 h-5" />;
-    }
-  };
+  const { destination, duration, activities = [], transportation, budget } = data;
 
-  const getActivityColor = (type: string) => {
-    switch (type) {
-      case 'travel':
-        return 'bg-cloud dark:bg-iron text-sbb-red';
-      case 'attraction':
-        return 'bg-cloud dark:bg-iron text-anthracite dark:text-graphite';
-      case 'meal':
-        return 'bg-cloud dark:bg-iron text-anthracite dark:text-graphite'; // SBB usually uses gray for these unless active
-      default:
-        return 'bg-cloud dark:bg-iron text-anthracite dark:text-graphite';
-    }
-  };
-
-  const formatDate = (dateStr: string) => {
-    try {
-      const date = new Date(dateStr);
-      return date.toLocaleDateString('en-US', {
-        weekday: 'long',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-      });
-    } catch {
-      return dateStr;
-    }
+  const getActivityIcon = (type?: string) => {
+    if (!type) return '📍';
+    const t = type.toLowerCase();
+    if (t.includes('food') || t.includes('restaurant')) return '🍽️';
+    if (t.includes('museum') || t.includes('culture')) return '🏛️';
+    if (t.includes('nature') || t.includes('park')) return '🌳';
+    if (t.includes('shopping')) return '🛍️';
+    if (t.includes('hotel') || t.includes('accommodation')) return '🏨';
+    if (t.includes('transport')) return '🚂';
+    return '📍';
   };
 
   return (
-    <div className="bg-white dark:bg-charcoal rounded-sbb-xl shadow-sbb border border-cloud dark:border-iron max-w-2xl overflow-hidden my-2">
-      {/* Header */}
-      <div className="bg-linear-to-r from-sbb-red to-sbb-red-125 p-6 text-white relative">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 -mr-16 -mt-16 rounded-full" />
-        <div className="flex items-center justify-between relative z-10">
-          <div>
-            <h2 className="text-2xl font-black mb-1 tracking-tight">
-              Day Trip to {data.destination}
-            </h2>
-            <p className="text-white/80 flex items-center gap-2 text-sm font-bold">
-              <Clock className="w-4 h-4" />
-              {formatDate(data.date)}
-            </p>
+    <article
+      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-indigo-500 dark:hover:border-indigo-500"
+      data-testid="itinerary-card"
+      aria-label={`Itinerary for ${destination || 'destination'}`}
+    >
+      {/* Compact Header */}
+      <div className="bg-linear-to-r from-indigo-600 to-purple-600 px-4 py-2">
+        <div className="flex items-center justify-between text-white">
+          <div className="flex items-center space-x-2 flex-1 min-w-0">
+            <svg className="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+            <div className="flex-1 min-w-0">
+              <h3 className="text-lg font-bold truncate">Itinerary</h3>
+              <p className="text-xs text-indigo-100 truncate">{destination || 'Your Trip'}</p>
+            </div>
           </div>
-          {data.summary?.weatherOverview && (
-            <div className="text-right bg-black/10 px-3 py-2 rounded-sbb-lg backdrop-blur-sm">
-              <div className="flex items-center gap-2 justify-end">
-                {data.summary.weatherOverview.toLowerCase().includes('rain') ? (
-                  <CloudRain className="w-6 h-6" />
-                ) : (
-                  <Sun className="w-6 h-6" />
-                )}
-                <span className="text-sm font-black uppercase tracking-wider">{data.summary.weatherOverview}</span>
-              </div>
+          {duration && (
+            <div className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-xs font-semibold shrink-0 ml-2">
+              {duration}
             </div>
           )}
         </div>
       </div>
 
-      {/* Timeline */}
-      <div className="p-8 bg-white dark:bg-charcoal">
-        <div className="space-y-6">
-          {data.activities.map((activity, index) => (
-            <div key={index} className="flex gap-6 group">
-              {/* Time */}
-              <div className="shrink-0 w-24 text-right pt-2">
-                <span className="text-sm font-black text-midnight dark:text-milk block">
-                  {activity.time}
-                </span>
-                {activity.duration && (
-                  <div className="text-[10px] text-smoke dark:text-graphite font-black uppercase tracking-widest mt-1">
-                    {activity.duration}
-                  </div>
-                )}
-              </div>
-
-              {/* Timeline connector */}
-              <div className="flex flex-col items-center">
-                <div
-                  className={`rounded-full p-2.5 shadow-sbb-sm border-2 border-white dark:border-charcoal group-hover:scale-110 transition-transform ${getActivityColor(
-                    activity.type
-                  )}`}
-                >
-                  {getActivityIcon(activity.type)}
+      {/* Compact Content */}
+      <div className="p-3">
+        {/* Transportation & Budget - Compact */}
+        {(transportation || budget) && (
+          <div className="flex items-center justify-between mb-3 pb-3 border-b border-gray-200 dark:border-gray-700">
+            {transportation && (
+              <div className="flex items-center space-x-1.5">
+                <svg className="w-4 h-4 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+                </svg>
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Transport</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">{transportation}</p>
                 </div>
-                {index < data.activities.length - 1 && (
-                  <div className="w-1.5 h-full bg-cloud dark:bg-iron my-1 rounded-full opacity-50" />
-                )}
               </div>
+            )}
+            {budget && budget.total !== undefined && (
+              <div className="flex items-center space-x-1.5">
+                <svg className="w-4 h-4 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                </svg>
+                <div>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Budget</p>
+                  <p className="text-sm font-semibold text-gray-900 dark:text-white">
+                    {budget.total} {budget.currency || 'CHF'}
+                  </p>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
 
-              {/* Activity details */}
-              <div className="flex-1 pb-10">
-                <div className="bg-milk dark:bg-midnight/30 rounded-sbb-xl p-5 border border-transparent hover:border-cloud dark:hover:border-iron hover:shadow-sbb-sm transition-all duration-300">
-                  <h3 className="font-black text-midnight dark:text-milk mb-2 tracking-tight group-hover:text-sbb-red transition-colors">
-                    {activity.title}
-                  </h3>
-                  {activity.location && (
-                    <p className="text-xs text-anthracite dark:text-graphite font-bold flex items-center gap-1.5 mb-3">
-                      <MapPin className="w-3.5 h-3.5 text-sbb-red" />
-                      {activity.location}
-                    </p>
+        {/* Compact Activities Timeline */}
+        {activities.length > 0 ? (
+          <div className="space-y-2">
+            <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Activities ({activities.length})
+            </p>
+            {activities.map((activity, idx) => (
+              <div key={idx} className="flex items-start space-x-2">
+                {/* Timeline */}
+                <div className="flex flex-col items-center shrink-0">
+                  <div className="w-8 h-8 rounded-lg bg-indigo-100 dark:bg-indigo-900/30 flex items-center justify-center text-base">
+                    {getActivityIcon(activity.type)}
+                  </div>
+                  {idx < activities.length - 1 && (
+                    <div className="w-0.5 h-8 bg-gray-200 dark:bg-gray-700 my-1"></div>
                   )}
+                </div>
+
+                {/* Activity Details - Compact */}
+                <div className="flex-1 min-w-0 pb-2">
+                  <div className="flex items-start justify-between mb-1">
+                    <h4 className="text-sm font-semibold text-gray-900 dark:text-white truncate">
+                      {activity.title || 'Activity'}
+                    </h4>
+                    {activity.time && (
+                      <span className="text-xs font-medium text-indigo-600 dark:text-indigo-400 shrink-0 ml-2">
+                        {activity.time}
+                      </span>
+                    )}
+                  </div>
                   {activity.description && (
-                    <p className="text-sm text-anthracite dark:text-graphite leading-relaxed">
+                    <p className="text-xs text-gray-600 dark:text-gray-400 line-clamp-2 mb-1">
                       {activity.description}
                     </p>
                   )}
-                  {activity.weather && (
-                    <div className="mt-4 inline-flex items-center gap-2 px-2.5 py-1 bg-white/50 dark:bg-charcoal/50 rounded-full text-[10px] text-smoke dark:text-graphite font-black uppercase tracking-widest border border-cloud/30 dark:border-iron/30">
-                      <span className="text-sm">🌤️</span>
-                      {activity.weather.condition} • {activity.weather.temperature}°C
+                  {activity.location && (
+                    <div className="flex items-center space-x-1 text-xs text-gray-500 dark:text-gray-400">
+                      <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      </svg>
+                      <span className="truncate">{activity.location}</span>
                     </div>
                   )}
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Summary Footer */}
-      {data.summary && (
-        <div className="bg-milk dark:bg-iron/20 px-8 py-6 border-t border-cloud dark:border-iron">
-          <div className="flex flex-wrap gap-8 text-sm">
-            {data.summary.totalTravelTime && (
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-sbb-red rounded-sbb flex items-center justify-center text-white shadow-sbb-red">
-                  <Train className="w-4 h-4" />
-                </div>
-                <span className="text-anthracite dark:text-graphite font-bold">
-                  <span className="text-xs uppercase tracking-widest text-smoke block mb-0.5">Travel Time</span>
-                  {data.summary.totalTravelTime}
-                </span>
-              </div>
-            )}
-            {data.summary.totalCost && (
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 bg-anthracite dark:bg-charcoal rounded-sbb flex items-center justify-center text-white">
-                  <span className="text-xs font-black">CHF</span>
-                </div>
-                <span className="text-anthracite dark:text-graphite font-bold">
-                  <span className="text-xs uppercase tracking-widest text-smoke block mb-0.5">Est. Cost</span>
-                  CHF {data.summary.totalCost}
-                </span>
-              </div>
-            )}
+            ))}
           </div>
-        </div>
-      )}
-    </div>
+        ) : (
+          <div className="text-center py-6">
+            <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+            </svg>
+            <p className="text-sm text-gray-500 dark:text-gray-400">No activities</p>
+          </div>
+        )}
+      </div>
+    </article>
   );
 }

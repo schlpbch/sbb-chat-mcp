@@ -13,7 +13,6 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
   const t = translations[language];
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // Handle Escape key to close menu
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape' && isOpen) {
@@ -23,7 +22,6 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
 
     if (isOpen) {
       document.addEventListener('keydown', handleEscape);
-      // Focus the menu when it opens
       menuRef.current?.focus();
     }
 
@@ -35,151 +33,62 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
   const menuItems = [
     {
       icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-          />
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
         </svg>
       ),
-      label: t.home || 'Home',
+      label: 'Home',
       href: '/',
+      description: 'Landing page',
     },
     {
       icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-          />
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
         </svg>
       ),
-      label: t.chat || 'Chat',
+      label: 'Chat',
       href: '/chat',
+      description: 'AI Travel Assistant',
     },
     {
       icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-          />
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-          />
-        </svg>
-      ),
-      label: t.attractions || 'Attractions',
-      href: '#attractions',
-    },
-    {
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
-          />
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
         </svg>
       ),
       label: t.map || 'Map',
-      href: '#map',
+      href: '/map',
+      description: 'Interactive map view',
     },
     {
       icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
-          />
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
         </svg>
       ),
       label: 'MCP Test',
       href: '/mcp-test',
+      description: 'Test MCP integration',
     },
     {
       icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
         </svg>
       ),
       label: 'Health',
       href: '/health',
-    },
-    {
-      icon: (
-        <svg
-          className="w-5 h-5"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
-      label: t.about || 'About',
-      href: '#about',
+      description: 'System status',
     },
   ];
 
   return (
     <>
-      {/* Menu Overlay */}
+      {/* Overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-30 opacity-0 animate-[fadeIn_0.2s_ease-out_forwards]"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 transition-opacity"
           onClick={onClose}
           aria-hidden="true"
         />
@@ -192,86 +101,71 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
         aria-modal="true"
         aria-labelledby="menu-title"
         tabIndex={-1}
-        className={`fixed left-0 top-0 h-full w-80 bg-white/80 dark:bg-gray-900/80 backdrop-blur-lg border-r border-gray-200/50 dark:border-gray-700/50 shadow-2xl z-40 transform transition-all duration-300 ${
+        className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-700 shadow-2xl z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
-        <div className="p-6 h-full flex flex-col">
-          {/* Menu Header */}
-          <div className="mb-8">
-            <div className="flex items-center gap-3 mb-2">
-              <div
-                className="w-12 h-12 rounded-xl bg-linear-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg"
-                aria-hidden="true"
+        <div className="flex flex-col h-full">
+          {/* Header */}
+          <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-700">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-3">
+                <div className="w-10 h-10 rounded-lg bg-linear-to-br from-red-600 to-red-700 flex items-center justify-center shadow-lg">
+                  <span className="text-white font-bold text-lg">SBB</span>
+                </div>
+                <div>
+                  <h2 id="menu-title" className="text-lg font-bold text-gray-900 dark:text-white">
+                    Menu
+                  </h2>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Navigation</p>
+                </div>
+              </div>
+              <button
+                onClick={onClose}
+                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                aria-label="Close menu"
               >
-                <svg
-                  className="w-7 h-7 text-white"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  aria-hidden="true"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
-                  />
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
-                  />
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
-              </div>
-              <div>
-                <h2
-                  id="menu-title"
-                  className="text-xl font-bold text-neutral-900 dark:text-neutral-100"
-                >
-                  Swiss
-                  <span className="bg-linear-to-r from-blue-500 to-green-500 bg-clip-text text-transparent">
-                    Explorer
-                  </span>
-                </h2>
-                <p className="text-xs text-neutral-600 dark:text-neutral-400">
-                  {t.discoveryDashboard || 'Discover Switzerland'}
-                </p>
-              </div>
+              </button>
             </div>
           </div>
 
           {/* Menu Items */}
-          <nav className="flex-1" aria-label="Main navigation">
+          <nav className="flex-1 overflow-y-auto p-4" aria-label="Main navigation">
             <ul className="space-y-2">
               {menuItems.map((item, index) => (
                 <li key={index}>
                   <a
                     href={item.href}
                     onClick={onClose}
-                    className="flex items-center gap-3 px-4 py-3 rounded-xl text-neutral-700 dark:text-neutral-300 hover:bg-primary-50 dark:hover:bg-primary-950 hover:text-primary-600 dark:hover:text-primary-400 transition-all duration-200 group focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+                    aria-label={item.label}
+                    className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 group"
                   >
-                    <span
-                      className="group-hover:scale-110 transition-transform duration-200"
-                      aria-hidden="true"
-                    >
+                    <span className="text-gray-500 dark:text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-500 transition-colors">
                       {item.icon}
                     </span>
-                    <span className="font-medium">{item.label}</span>
+                    <div className="flex-1">
+                      <div className="font-semibold">{item.label}</div>
+                      <div className="text-xs text-gray-500 dark:text-gray-400">{item.description}</div>
+                    </div>
+                    <svg className="w-5 h-5 text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-500 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
                   </a>
                 </li>
               ))}
             </ul>
           </nav>
 
-          {/* Menu Footer */}
-          <div className="pt-6 border-t border-neutral-200 dark:border-neutral-800">
-            <p className="text-xs text-neutral-500 dark:text-neutral-400 text-center">
+          {/* Footer */}
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
               {t.version || 'v2.0.0'}
             </p>
-            <p className="text-xs text-neutral-400 dark:text-neutral-600 text-center mt-1">
-              &copy; 2024 SBB Chat MCP
+            <p className="text-xs text-gray-400 dark:text-gray-600 text-center mt-1">
+              © 2024 SBB Chat MCP
             </p>
           </div>
         </div>
