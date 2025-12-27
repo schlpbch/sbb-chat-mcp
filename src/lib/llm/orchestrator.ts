@@ -64,6 +64,11 @@ export function createExecutionPlan(
     return createEcoFriendlyPlan(context);
   }
 
+  // Handle station search (departures/arrivals)
+  if (intent.type === 'station_search') {
+    return createStationEventsPlan(context);
+  }
+
   if (context.preferences.accessibility?.wheelchair) {
     return createAccessiblePlan(context);
   }
@@ -169,6 +174,45 @@ export function createAccessiblePlan(
   context: ConversationContext
 ): ExecutionPlan {
   return createTripPlan(context);
+}
+
+/**
+ * Create a plan for station events (departures/arrivals)
+ */
+function createStationEventsPlan(context: ConversationContext): ExecutionPlan {
+  // Try to find a location name from context or extract from message if possible (simplified here)
+  // In a real scenario, we'd want robust entity extraction.
+  // For now, we rely on the context having the location set via 'updateContextFromMessage'
+  // OR we assume the Orchestrator is called after some entity extraction.
+  
+  // Actually, context.location.origin is often used as the "target" for single-location queries in our current logic
+  const stationName = context.location.origin?.name || 'Switzerland';
+
+  return {
+    id: `events-${Date.now()}`,
+    name: 'Station Events',
+    description: `Get departures/arrivals for ${stationName}`,
+    steps: [
+      {
+        id: 'find-station',
+        toolName: 'findStopPlacesByName',
+        params: { query: stationName, limit: 1 },
+      },
+      {
+        id: 'get-events',
+        toolName: 'getPlaceEvents',
+        params: (results: StepResults) => {
+          const station = results.get('find-station')?.data?.[0];
+          return {
+            placeId: station?.id || '',
+            eventType: 'departures', // Default to departures
+            limit: 10,
+          };
+        },
+        dependsOn: ['find-station'],
+      },
+    ],
+  };
 }
 
 /**
@@ -341,6 +385,10 @@ export function requiresOrchestration(message: string): boolean {
     'best way',
     'complete',
     'entire',
+    'departures',
+    'arrivals',
+    'schedule',
+    'timetable',
   ];
 
   const lowerMessage = message.toLowerCase();

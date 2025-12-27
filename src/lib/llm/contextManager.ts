@@ -341,10 +341,18 @@ export function extractIntent(message: string): Intent {
     confidence = 0.8;
   }
 
+  // Simple entity extraction for "from X"
+  const fromMatch = lowerMessage.match(/from\s+([a-zA-Z0-9\s\.-]+)/);
+  const toMatch = lowerMessage.match(/to\s+([a-zA-Z0-9\s\.-]+)/);
+  
+  const extractedEntities: any = {};
+  if (fromMatch) extractedEntities.origin = fromMatch[1].trim();
+  if (toMatch) extractedEntities.destination = toMatch[1].trim();
+
   return {
     type,
     confidence,
-    extractedEntities: {},
+    extractedEntities,
     timestamp: new Date(),
   };
 }

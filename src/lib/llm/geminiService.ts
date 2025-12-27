@@ -220,6 +220,8 @@ export async function sendOrchestratedChatMessage(
   
   const updatedContext = updateContextFromMessage(sessionContext, message, {
     intent,
+    origin: intent.extractedEntities?.origin,
+    destination: intent.extractedEntities?.destination,
   });
   sessionContexts.set(sessionId, updatedContext);
 
