@@ -6,6 +6,7 @@ import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 import WelcomeSection from '@/components/chat/WelcomeSection';
 import MessageList from '@/components/chat/MessageList';
+import VoiceButton from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';
 
 export default function Home() {
@@ -74,6 +75,11 @@ export default function Home() {
  {/* Input Area */}
  <div className="px-4 sm:px-6 py-4 bg-gray-50 border-t border-gray-200">
  <div className="flex items-center space-x-3">
+ <VoiceButton
+ language={language}
+ onTranscript={setInput}
+ onAutoSend={handleSendMessage}
+ />
  <div className="flex-1">
  <textarea
  ref={inputRef}

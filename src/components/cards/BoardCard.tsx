@@ -35,11 +35,15 @@ export default function BoardCard({ data }: BoardCardProps) {
       [];
   }
   
-  // Try to extract type
+  // Try to extract type - check arrivals FIRST since it's more specific
   let extractedType: 'departures' | 'arrivals' = type;
-  if (rawData.departures) extractedType = 'departures';
-  if (rawData.arrivals) extractedType = 'arrivals';
-  if (rawData.eventType) extractedType = rawData.eventType;
+  if (rawData.arrivals && Array.isArray(rawData.arrivals) && rawData.arrivals.length > 0) {
+    extractedType = 'arrivals';
+  } else if (rawData.departures && Array.isArray(rawData.departures) && rawData.departures.length > 0) {
+    extractedType = 'departures';
+  } else if (rawData.eventType) {
+    extractedType = rawData.eventType;
+  }
   
   // Try to extract station name
   let extractedStation = station;
