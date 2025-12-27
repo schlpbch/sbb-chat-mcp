@@ -21,6 +21,7 @@ export function useChat(language: Language) {
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [toolsExecuting, setToolsExecuting] = useState<string[]>([]);
+  const [textOnlyMode, setTextOnlyMode] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { addSearch } = useRecentSearches();
@@ -58,7 +59,7 @@ export function useChat(language: Language) {
         history: messages.map((m) => ({ role: m.role, content: m.content })),
         context: { language },
         sessionId,
-        useOrchestration: true,
+        useOrchestration: !textOnlyMode,
       };
       console.log('[useChat] Sending request:', requestBody);
       
@@ -124,6 +125,8 @@ export function useChat(language: Language) {
     setInput,
     isLoading,
     toolsExecuting,
+    textOnlyMode,
+    setTextOnlyMode,
     messagesEndRef,
     inputRef,
     handleSendMessage,

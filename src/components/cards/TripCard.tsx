@@ -141,9 +141,9 @@ export default function TripCard({ data }: TripCardProps) {
  </div>
 
  {/* Additional Trip Info Bar */}
- <div className="px-4 py-2 bg-gray-50 border-b border-gray-200">
- <div className="flex items-center justify-between text-xs">
- <div className="flex items-center space-x-3">
+ <div className="px-3 sm:px-4 py-2 bg-gray-50 border-b border-gray-200">
+ <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
+ <div className="flex flex-wrap items-center gap-2 sm:gap-3">
  {/* Price */}
  {data.price && (
  <div className="flex items-center space-x-1 text-green-700">
@@ -173,6 +173,27 @@ export default function TripCard({ data }: TripCardProps) {
  <span>{data.occupancy}</span>
  </div>
  )}
+ 
+ {/* CO2 Emissions */}
+ {(data.co2 !== undefined || data.trainCO2 !== undefined) && (
+ <div className="flex items-center space-x-1 text-green-700">
+ <span className="text-base">🌱</span>
+ <span className="font-semibold">{(data.co2 || data.trainCO2)?.toFixed(1)} kg CO₂</span>
+ </div>
+ )}
+ 
+ {/* CO2 Savings */}
+ {(data.co2Savings !== undefined || data.savings !== undefined) && (
+ <div className="flex items-center space-x-1 px-2 py-1 bg-green-50 rounded-md border border-green-200">
+ <svg className="w-4 h-4 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+ </svg>
+ <span className="font-semibold text-green-800">
+ Save {(data.co2Savings || data.savings)?.toFixed(1)} kg CO₂
+ {data.comparedTo && ` vs ${data.comparedTo}`}
+ </span>
+ </div>
+ )}
  </div>
  
  {/* Operator/Company */}
@@ -183,12 +204,44 @@ export default function TripCard({ data }: TripCardProps) {
  </span>
  </div>
  )}
+ 
+ {/* Journey Notes/Attributes */}
+ {(data.notes || data.attributes || data.infos) && (
+ <div className="flex flex-wrap gap-1 mt-2">
+ {data.notes?.map((note: string, i: number) => (
+ <span key={i} className="px-2 py-0.5 bg-blue-50 text-blue-700 text-xs rounded-full border border-blue-200">
+ ℹ️ {note}
+ </span>
+ ))}
+ {data.attributes?.map((attr: string, i: number) => (
+ <span key={i} className="px-2 py-0.5 bg-purple-50 text-purple-700 text-xs rounded-full border border-purple-200">
+ {attr}
+ </span>
+ ))}
+ </div>
+ )}
+ 
+ {/* Booking/Reservation Info */}
+ {(data.bookingUrl || data.reservationRequired) && (
+ <div className="flex items-center gap-2 mt-2">
+ {data.reservationRequired && (
+ <span className="px-2 py-1 bg-yellow-50 text-yellow-800 text-xs font-medium rounded border border-yellow-200">
+ 🎫 Reservation required
+ </span>
+ )}
+ {data.bookingUrl && (
+ <a href={data.bookingUrl} target="_blank" rel="noopener noreferrer" className="px-2 py-1 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 transition-colors">
+ Book now →
+ </a>
+ )}
+ </div>
+ )}
  </div>
  </div>
 
  {/* Compact Trip Overview */}
- <div className="p-3">
- <div className="flex items-center justify-between">
+ <div className="p-2 sm:p-3">
+ <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
  {/* Origin */}
  <div className="flex-1 min-w-0">
  <p className="text-xl font-bold text-gray-900">
@@ -211,15 +264,22 @@ export default function TripCard({ data }: TripCardProps) {
  </div>
  </div>
 
- {/* Arrow with leg count */}
- <div className="flex flex-col items-center px-3">
+ {/* Arrow - hidden on mobile, shown on sm+ */}
+ <div className="hidden sm:flex flex-col items-center px-3">
  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+ </svg>
+ </div>
+ 
+ {/* Mobile arrow */}
+ <div className="flex sm:hidden items-center justify-center py-1">
+ <svg className="w-5 h-5 text-green-600 rotate-90" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
  </svg>
  </div>
 
  {/* Destination */}
- <div className="flex-1 min-w-0 text-right">
+ <div className="flex-1 min-w-0 sm:text-right">
  <p className="text-xl font-bold text-gray-900">
  {formatTime(destination.time)}
  </p>

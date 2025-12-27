@@ -22,7 +22,7 @@ export default function WelcomeSection({ language, onSendMessage }: WelcomeSecti
     : quickActions;
 
   return (
-    <div className="h-full flex flex-col items-center justify-center space-y-8 sm:space-y-12 px-4 py-8">
+    <div className="h-full flex flex-col items-center justify-start space-y-8 sm:space-y-12 px-4 pt-8 pb-8">
       {/* Welcome Section - Enhanced */}
       <WelcomeHeader language={language} />
 

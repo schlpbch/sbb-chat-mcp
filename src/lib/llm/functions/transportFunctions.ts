@@ -72,6 +72,12 @@ export const transportFunctions = [
           description: 'Number of trip options (default: 5)',
           default: 5,
         },
+        responseMode: {
+          type: 'string',
+          description: 'Response detail level: "standard" (detailed) or "compact" (minimal)',
+          default: 'standard',
+          enum: ['standard', 'compact'],
+        },
       },
       required: ['origin', 'destination'],
     },

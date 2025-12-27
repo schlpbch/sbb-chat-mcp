@@ -19,6 +19,8 @@ export default function Home() {
     setInput,
     isLoading,
     toolsExecuting,
+    textOnlyMode,
+    setTextOnlyMode,
     messagesEndRef,
     inputRef,
     handleSendMessage,
@@ -53,38 +55,18 @@ export default function Home() {
 
       <main
         id="main-content"
-        className="flex-1 overflow-hidden pt-4"
+        className="flex-1 overflow-hidden pt-16"
         role="main"
         aria-label="Chat application"
       >
         <div className="h-full flex flex-col">
           {/* Chat Container */}
           <div className="flex-1 flex flex-col bg-white shadow-2xl overflow-hidden">
-            {/* Header */}
-            <header className="relative bg-linear-to-r from-[#EB0000] via-red-600 to-red-700 px-4 sm:px-6 py-4 shadow-lg">
-              <div className="flex items-center justify-between">
-                <div>
-                  <h1 className="text-2xl font-bold text-white drop-shadow-lg">
-                    SBB Travel Assistant
-                  </h1>
-                  <p className="mt-1 text-sm text-white/90 drop-shadow">
-                    Your AI-powered guide for Swiss public transport
-                  </p>
-                </div>
-                <div className="hidden sm:flex items-center space-x-2">
-                  <div className="flex items-center px-3 py-1.5 bg-white/20 rounded-full backdrop-blur-sm border border-white/30">
-                    <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
-                    <span className="text-xs font-semibold text-white drop-shadow">
-                      Online
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </header>
+
 
             {/* Messages Area */}
             <div
-              className="flex-1 overflow-y-auto overflow-x-hidden px-4 sm:px-6 py-6 space-y-6 scroll-smooth"
+              className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6 scroll-smooth"
               role="log"
               aria-live="polite"
               aria-atomic="false"
@@ -99,13 +81,42 @@ export default function Home() {
                 <MessageList
                   messages={messages}
                   messagesEndRef={messagesEndRef}
+                  textOnlyMode={textOnlyMode}
                 />
               )}
             </div>
 
             {/* Input Area */}
-            <div className="px-4 sm:px-6 py-4 bg-gray-50 border-t border-gray-200">
-              <div className="flex items-center space-x-3">
+            <div className="px-3 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200">
+              {/* Mode Toggle */}
+              <div className="flex items-center justify-between mb-2">
+                <button
+                  onClick={() => setTextOnlyMode(!textOnlyMode)}
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-gray-200"
+                  aria-label={textOnlyMode ? 'Switch to rich mode' : 'Switch to text-only mode'}
+                >
+                  {textOnlyMode ? (
+                    <>
+                      <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                      </svg>
+                      <span className="text-gray-700">Text Only</span>
+                    </>
+                  ) : (
+                    <>
+                      <svg className="w-4 h-4 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+                      </svg>
+                      <span className="text-purple-700">Rich Mode</span>
+                    </>
+                  )}
+                </button>
+                <span className="text-xs text-gray-500">
+                  {textOnlyMode ? 'Streaming text responses' : 'Interactive cards & tools'}
+                </span>
+              </div>
+              
+              <div className="flex items-end gap-2 sm:gap-3">
                 <VoiceButton
                   language={language}
                   onTranscript={setInput}
@@ -135,7 +146,7 @@ export default function Home() {
                   onClick={() => handleSendMessage()}
                   disabled={isLoading || !input.trim()}
                   aria-label={isLoading ? 'Sending message' : 'Send message'}
-                  className="shrink-0 h-[52px] px-6 bg-[#EB0000] text-white rounded-xl font-semibold hover:from-[#EB0000]-125 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
+                  className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#EB0000] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
@@ -159,6 +170,7 @@ export default function Home() {
                         ></path>
                       </svg>
                       <span className="hidden sm:inline">Thinking...</span>
+                      <span className="sm:hidden">...</span>
                     </>
                   ) : (
                     <>
@@ -180,7 +192,7 @@ export default function Home() {
                   )}
                 </button>
               </div>
-              <p id="chat-hint" className="text-xs text-gray-500 mt-2">
+              <p id="chat-hint" className="text-xs text-gray-500 mt-2 hidden sm:block">
                 Press Enter to send, Shift+Enter for new line
               </p>
             </div>

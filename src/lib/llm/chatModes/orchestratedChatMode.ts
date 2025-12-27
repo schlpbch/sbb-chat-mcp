@@ -90,7 +90,7 @@ ${formattedResults}
 Raw data summary:
 ${JSON.stringify(planResult.summary, null, 2)}
 
-Please provide a helpful, conversational response that summarizes the key information clearly and provides transport recommendations. Responds in ${
+IMPORTANT: The information will be displayed as visual cards to the user. Do NOT repeat or summarize the trip details (times, stations, connections, etc.) in text form. Keep your response extremely brief - just a short greeting or acknowledgment if needed, or respond with an empty string. The cards will show all the details. Respond in ${
         context.language === 'de'
           ? 'German'
           : context.language === 'fr'

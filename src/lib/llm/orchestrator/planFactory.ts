@@ -98,14 +98,13 @@ function createTripPlan(context: ConversationContext): ExecutionPlan {
         id: 'eco-comparison',
         toolName: 'getEcoComparison',
         params: (results) => {
+          const firstTrip = results.get('find-trips')?.data?.[0];
           return {
-            tripId: results.get('find-trips')?.data?.[0]?.id || '',
+            tripId: firstTrip?.id || '',
           };
         },
         dependsOn: ['find-trips'],
-        optional: true,
-        condition: (results) =>
-          context.preferences.travelStyle === 'eco' || !!results.get('find-trips')?.data?.[0],
+        condition: (results) => !!results.get('find-trips')?.data?.[0]?.id,
       },
     ],
   };
