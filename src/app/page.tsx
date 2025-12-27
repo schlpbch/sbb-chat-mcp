@@ -217,43 +217,56 @@ export default function Home() {
               {/* Messages Area */}
               <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 sm:px-6 py-6 space-y-6 scroll-smooth">
                 {messages.length === 0 ? (
-                  <div className="h-full flex flex-col items-center justify-center space-y-8">
-                    {/* Welcome Section */}
-                    <div className="text-center space-y-3 max-w-2xl">
-                      <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 dark:text-white">
-                        Grüezi! 👋
-                      </h2>
-                      <p className="text-lg text-gray-600 dark:text-gray-300">
-                        How can I help you travel across Switzerland today?
+                  <div className="h-full flex flex-col items-center justify-center space-y-12 px-4">
+                    {/* Welcome Section - Enhanced */}
+                    <div className="text-center space-y-6 max-w-3xl">
+                      <div className="inline-flex items-center space-x-2 px-4 py-2 bg-red-50 dark:bg-red-900/20 rounded-full border border-red-200 dark:border-red-800">
+                        <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+                        <span className="text-sm font-semibold text-red-700 dark:text-red-300">AI-Powered Travel Assistant</span>
+                      </div>
+                      
+                      <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white leading-tight">
+                        Your Swiss Travel
+                        <span className="block bg-linear-to-r from-sbb-red via-red-600 to-red-700 bg-clip-text text-transparent">
+                          Companion
+                        </span>
+                      </h1>
+                      
+                      <p className="text-xl sm:text-2xl text-gray-600 dark:text-gray-300 font-light max-w-2xl mx-auto leading-relaxed">
+                        Discover connections, check weather, explore stations, and plan eco-friendly journeys across Switzerland.
                       </p>
                     </div>
 
-                    {/* Quick Actions Grid */}
-                    <div className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    {/* Quick Actions Grid - Enhanced */}
+                    <div className="w-full max-w-4xl">
+                      <h2 className="text-center text-sm font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider mb-6">
+                        Try asking about
+                      </h2>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                       {quickActions.map((action, i) => (
                         <button
                           key={i}
                           onClick={() => handleSendMessage(action.query)}
-                          className="group relative overflow-hidden rounded-xl bg-white dark:bg-gray-700 p-6 text-left shadow-md hover:shadow-xl transition-all duration-300 border border-gray-200 dark:border-gray-600 hover:border-sbb-red dark:hover:border-sbb-red"
+                          className="group relative overflow-hidden rounded-2xl bg-white dark:bg-gray-800 p-5 text-left shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-200 dark:border-gray-700 hover:border-sbb-red dark:hover:border-sbb-red hover:-translate-y-1"
                         >
-                          <div className="flex items-start space-x-4">
-                            <div className={`shrink-0 w-12 h-12 rounded-lg bg-linear-to-br ${action.color} flex items-center justify-center text-2xl shadow-lg`}>
+                          <div className="absolute inset-0 bg-linear-to-br from-transparent to-gray-50 dark:to-gray-900/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          
+                          <div className="relative space-y-3">
+                            <div className={`w-14 h-14 rounded-xl bg-linear-to-br ${action.color} flex items-center justify-center text-3xl shadow-lg group-hover:scale-110 transition-transform duration-300`}>
                               {action.icon}
                             </div>
-                            <div className="flex-1 min-w-0">
-                              <h3 className="text-lg font-semibold text-gray-900 dark:text-white group-hover:text-sbb-red transition-colors">
+                            <div>
+                              <h3 className="text-base font-bold text-gray-900 dark:text-white group-hover:text-sbb-red transition-colors">
                                 {action.label}
                               </h3>
-                              <p className="mt-1 text-sm text-gray-600 dark:text-gray-300 font-medium">
+                              <p className="mt-1 text-xs text-gray-600 dark:text-gray-400 line-clamp-2">
                                 {action.description}
                               </p>
                             </div>
-                            <svg className="w-5 h-5 text-gray-400 group-hover:text-sbb-red group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                            </svg>
                           </div>
                         </button>
                       ))}
+                      </div>
                     </div>
 
                     {/* Features */}
@@ -331,7 +344,7 @@ export default function Home() {
 
               {/* Input Area */}
               <div className="px-4 sm:px-6 py-4 bg-gray-50 dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
-                <div className="flex items-end space-x-3">
+                <div className="flex items-center space-x-3">
                   <div className="flex-1">
                     <textarea
                       value={input}
@@ -340,14 +353,14 @@ export default function Home() {
                       placeholder="Ask about connections, stations, or travel info..."
                       disabled={isLoading}
                       rows={1}
-                      className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-sbb-red focus:border-transparent resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                      className="w-full px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                       style={{ minHeight: '52px', maxHeight: '120px' }}
                     />
                   </div>
                   <button
                     onClick={() => handleSendMessage()}
                     disabled={isLoading || !input.trim()}
-                    className="shrink-0 px-6 py-3 bg-linear-to-r from-sbb-red to-red-600 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-sbb-red-125 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:shadow-lg transition-all duration-200 flex items-center space-x-2"
+                    className="shrink-0 h-[52px] px-6 bg-linear-to-r from-sbb-red to-red-600 text-white rounded-xl font-semibold hover:from-sbb-red-125 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
                   >
                     {isLoading ? (
                       <>
