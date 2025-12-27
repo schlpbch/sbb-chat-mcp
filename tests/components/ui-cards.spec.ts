@@ -293,26 +293,8 @@ test.describe('Card Components - Common Features', () => {
   });
 
   test('should support dark mode', async ({ page }) => {
-    // Enable dark mode
-    const themeButton = page.getByRole('button', { name: 'Toggle dark mode' });
-    await themeButton.click();
-
-    const input = page.getByTestId('chat-input');
-    await input.fill('Show departures from Bern');
-    await page.getByTestId('send-button').click();
-
-    await page.waitForTimeout(3000);
-
-    // Check that dark mode is active
-    await expect(page.locator('html')).toHaveClass(/dark/);
-
-    // Cards should adapt to dark mode
-    const darkCards = page.locator('[class*="dark:bg"], [class*="dark:border"]');
-    const count = await darkCards.count();
-
-    if (count > 0) {
-      await expect(darkCards.first()).toBeVisible();
-    }
+    // Dark mode has been removed from the application
+    test.skip();
   });
 
   test('should be responsive on mobile', async ({ page }) => {

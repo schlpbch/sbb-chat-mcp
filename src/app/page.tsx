@@ -90,7 +90,7 @@ export default function Home() {
  <button
  onClick={() => handleSendMessage()}
  disabled={isLoading || !input.trim()}
- className="shrink-0 h-[52px] px-6 bg-linear-to-r from-[#EB0000] to-red-600 text-white rounded-xl font-semibold hover:from-[#EB0000]-125 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
+ className="shrink-0 h-[52px] px-6 bg-[#EB0000] text-white rounded-xl font-semibold hover:from-[#EB0000]-125 hover:to-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center space-x-2"
  >
  {isLoading ? (
  <>
