@@ -58,7 +58,7 @@ export default function WeatherCard({ data }: WeatherCardProps) {
 
  return (
  <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-yellow-500:border-yellow-500"
+ className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-yellow-500"
  data-testid="weather-card"
  aria-label={`Weather for ${location}`}
  >

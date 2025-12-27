@@ -99,7 +99,7 @@ export default function WelcomeSection({ onSendMessage }: WelcomeSectionProps) {
  <button
  key={i}
  onClick={() => onSendMessage(action.query)}
- className="group relative overflow-hidden rounded-2xl bg-white p-4 sm:p-5 text-left shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-sbb-red:border-sbb-red hover:-translate-y-1"
+ className="group relative overflow-hidden rounded-2xl bg-white p-4 sm:p-5 text-left shadow-sm hover:shadow-2xl transition-all duration-300 border border-gray-200 hover:border-sbb-red hover:-translate-y-1"
  >
  <div className="absolute inset-0 bg-linear-to-br from-transparent to-gray-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
  

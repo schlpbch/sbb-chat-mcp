@@ -42,7 +42,7 @@ export default function BoardCard({ data }: BoardCardProps) {
 
  return (
  <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500:border-purple-500"
+ className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
  data-testid="board-card"
  aria-label={`${isDeparture ? 'Departures' : 'Arrivals'} board for ${station || 'station'}`}
  >
@@ -69,7 +69,7 @@ export default function BoardCard({ data }: BoardCardProps) {
  connections.slice(0, 5).map((conn, idx) => (
  <div
  key={idx}
- className="p-2 hover:bg-gray-50:bg-gray-900 transition-colors"
+ className="p-2 hover:bg-gray-50 transition-colors"
  >
  <div className="flex items-center justify-between">
  <div className="flex items-center space-x-2 flex-1 min-w-0">

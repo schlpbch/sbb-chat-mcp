@@ -21,7 +21,7 @@ export default function EcoCard({ data }: EcoCardProps) {
 
  return (
  <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500:border-green-500"
+ className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500"
  data-testid="eco-card"
  aria-label="Environmental impact comparison"
  >

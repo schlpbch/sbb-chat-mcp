@@ -36,7 +36,7 @@ export default function ItineraryCard({ data }: ItineraryCardProps) {
 
  return (
  <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-indigo-500:border-indigo-500"
+ className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-indigo-500"
  data-testid="itinerary-card"
  aria-label={`Itinerary for ${destination || 'destination'}`}
  >

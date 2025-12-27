@@ -103,7 +103,7 @@ export default function TripCard({ data }: TripCardProps) {
 
  return (
  <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500:border-green-500"
+ className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500"
  data-testid="trip-card"
  aria-label={`Trip from ${origin.name} to ${destination.name}, duration ${durationStr}`}
  >
@@ -260,7 +260,7 @@ export default function TripCard({ data }: TripCardProps) {
  {legs.length > 0 && (
  <button
  onClick={() => setIsExpanded(!isExpanded)}
- className="mt-2 w-full px-3 py-1.5 bg-gray-100 hover:bg-gray-200:bg-gray-600 text-gray-700 rounded-lg font-medium text-xs transition-colors flex items-center justify-center space-x-1"
+ className="mt-2 w-full px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium text-xs transition-colors flex items-center justify-center space-x-1"
  >
  <span>{isExpanded ? 'Hide' : 'Show'} Details</span>
  <svg className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">

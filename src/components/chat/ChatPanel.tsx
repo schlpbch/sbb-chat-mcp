@@ -172,7 +172,7 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
  <button
  key={i}
  onClick={() => handleSendMessage(suggestion)}
- className="px-4 py-3 bg-milk border border-cloud rounded-sbb-lg text-xs font-bold text-anthracite hover:border-sbb-red hover:text-sbb-red:text-sbb-red transition-all duration-200 text-left flex justify-between items-center group"
+ className="px-4 py-3 bg-milk border border-cloud rounded-sbb-lg text-xs font-bold text-anthracite hover:border-sbb-red hover:text-sbb-red transition-all duration-200 text-left flex justify-between items-center group"
  >
  {suggestion}
  <span className="opacity-0 group-hover:opacity-100 transition-opacity">➔</span>

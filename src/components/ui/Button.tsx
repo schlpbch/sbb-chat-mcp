@@ -16,7 +16,7 @@ const variantClasses: Record<ButtonVariant, string> = {
  primary: 'bg-sbb-red text-white hover:bg-sbb-red-125 active:scale-95 shadow-sbb hover:shadow-sbb-red/40',
  secondary: 'bg-anthracite text-white hover:bg-midnight active:scale-95 shadow-sbb',
  outline: 'border-2 border-sbb-red text-sbb-red hover:bg-sbb-red hover:text-white active:scale-95 transition-all',
- ghost: 'text-anthracite hover:bg-milk:bg-charcoal active:scale-95 transition-all',
+ ghost: 'text-anthracite hover:bg-milk active:scale-95 transition-all',
  danger: 'bg-sbb-red text-white hover:bg-sbb-red-125 active:scale-95 shadow-sbb-red/20 hover:shadow-sbb-red/40',
 };
 

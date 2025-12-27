@@ -251,7 +251,7 @@ export default function ToolTestPage() {
  btn.textContent = originalText || 'Copy JSON';
  }, 2000);
  }}
- className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200:bg-gray-600 transition-colors"
+ className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
  aria-label="Copy JSON result to clipboard"
  >
  Copy JSON

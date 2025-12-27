@@ -29,14 +29,14 @@ export const Input = React.forwardRef<HTMLInputElement, InputProps>(
 
  const inputClasses = [
  'px-4 py-2.5 border-2 rounded-sbb transition-all duration-200',
- 'focus:outline-none focus:border-sbb-red:border-sbb-red focus:shadow-sbb-red/20',
+ 'focus:outline-none focus:border-sbb-red focus:shadow-sbb-red/20',
  'disabled:opacity-50 disabled:cursor-not-allowed',
  hasError
  ? 'border-sbb-red'
- : 'border-cloud hover:border-silver:border-storm',
+ : 'border-cloud hover:border-storm',
  'bg-milk',
  'text-midnight font-bold text-sm',
- 'placeholder:text-smoke:text-graphite',
+ 'placeholder:text-graphite',
  leftIcon ? 'pl-11' : '',
  rightIcon ? 'pr-11' : '',
  fullWidth ? 'w-full' : '',

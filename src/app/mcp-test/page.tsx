@@ -196,7 +196,7 @@ export default function McpTestPage() {
  className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-all ${
  activeTab === 'tools'
  ? 'bg-blue-600 text-white shadow-lg'
- : 'text-gray-600 hover:bg-gray-100:bg-gray-700'
+ : 'text-gray-600 hover:bg-gray-100'
  }`}
  >
  <div className="flex items-center justify-center space-x-2">
@@ -211,7 +211,7 @@ export default function McpTestPage() {
  className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-all ${
  activeTab === 'resources'
  ? 'bg-green-600 text-white shadow-lg'
- : 'text-gray-600 hover:bg-gray-100:bg-gray-700'
+ : 'text-gray-600 hover:bg-gray-100'
  }`}
  >
  <div className="flex items-center justify-center space-x-2">
@@ -226,7 +226,7 @@ export default function McpTestPage() {
  className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-all ${
  activeTab === 'prompts'
  ? 'bg-purple-600 text-white shadow-lg'
- : 'text-gray-600 hover:bg-gray-100:bg-gray-700'
+ : 'text-gray-600 hover:bg-gray-100'
  }`}
  >
  <div className="flex items-center justify-center space-x-2">
@@ -248,7 +248,7 @@ export default function McpTestPage() {
  return (
  <div
  key={index}
- className="bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-500:border-blue-500 hover:shadow-xl transition-all"
+ className="bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-500 hover:shadow-xl transition-all"
  >
  <div className="flex items-start justify-between mb-3">
  <div className="flex-1">
@@ -329,7 +329,7 @@ export default function McpTestPage() {
  {filteredResources.map((resource, index) => (
  <div
  key={index}
- className="bg-white rounded-xl border border-gray-200 p-6 hover:border-green-500:border-green-500 hover:shadow-xl transition-all"
+ className="bg-white rounded-xl border border-gray-200 p-6 hover:border-green-500 hover:shadow-xl transition-all"
  >
  <div className="flex items-start justify-between mb-3">
  <h3 className="text-lg font-bold text-gray-900">
@@ -371,7 +371,7 @@ export default function McpTestPage() {
  {filteredPrompts.map((prompt, index) => (
  <div
  key={index}
- className="bg-white rounded-xl border border-gray-200 p-6 hover:border-purple-500:border-purple-500 hover:shadow-xl transition-all"
+ className="bg-white rounded-xl border border-gray-200 p-6 hover:border-purple-500 hover:shadow-xl transition-all"
  >
  <div className="flex items-start justify-between mb-3">
  <h3 className="text-lg font-bold text-gray-900">
