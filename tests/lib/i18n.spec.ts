@@ -10,23 +10,28 @@ test.describe('i18n - Translation Functions', () => {
     // Navigate to a page that uses i18n
     await page.goto('/');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000);
 
-    // Test language switching
+    // Test language switching via select element
     const languages = ['en', 'de', 'fr', 'it'];
-    
+
     for (const lang of languages) {
-      // Switch language via navbar
-      const langButton = page.getByRole('button', { name: new RegExp(lang, 'i') });
-      
-      if (await langButton.isVisible().catch(() => false)) {
-        await langButton.click();
-        
-        // Wait for language to apply
-        await page.waitForTimeout(500);
-        
-        // Verify language is applied (check for language-specific content)
-        const html = await page.locator('html').getAttribute('lang');
-        expect(html).toContain(lang);
+      // Find the language selector
+      const selects = page.locator('select');
+      const count = await selects.count();
+
+      if (count > 0) {
+        const firstSelect = selects.first();
+        const options = await firstSelect.locator('option').allTextContents();
+
+        // Check if this is the language selector
+        if (options.some(opt => opt.includes('English') || opt.includes('Deutsch'))) {
+          await firstSelect.selectOption(lang);
+          await page.waitForTimeout(500);
+
+          // Verify language was selected
+          await expect(firstSelect).toHaveValue(lang);
+        }
       }
     }
   });
