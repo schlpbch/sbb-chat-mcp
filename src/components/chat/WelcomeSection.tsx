@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import { translations, type Language } from '@/lib/i18n';
 import FavoritesSection from './FavoritesSection';
 import RecentSearches from './RecentSearches';
 
@@ -14,6 +15,7 @@ interface QuickAction {
 }
 
 interface WelcomeSectionProps {
+  language: Language;
   onSendMessage: (query: string) => void;
 }
 
@@ -238,8 +240,19 @@ const groupedActions = categories.map(category => ({
   actions: quickActions.filter(a => a.category === category)
 }));
 
-export default function WelcomeSection({ onSendMessage }: WelcomeSectionProps) {
+// Category name mapping
+const categoryNameMap: Record<string, keyof typeof translations.en.welcome> = {
+  'Journey Planning': 'categoryJourneyPlanning',
+  'Real-Time': 'categoryRealTime',
+  'Stations': 'categoryStations',
+  'Eco & Sustainability': 'categoryEco',
+  'Weather': 'categoryWeather',
+  'Accessibility': 'categoryAccessibility',
+};
+
+export default function WelcomeSection({ language, onSendMessage }: WelcomeSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const t = translations[language].welcome;
 
   // Show filtered or all actions
   const displayActions = selectedCategory
@@ -251,14 +264,14 @@ export default function WelcomeSection({ onSendMessage }: WelcomeSectionProps) {
       {/* Welcome Section - Enhanced */}
       <div className="text-center space-y-4 sm:space-y-6 max-w-3xl">
         <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 leading-tight">
-          Your Swiss Travel
+          {t.title}
           <span className="block bg-linear-to-r from-sbb-red via-red-600 to-red-700 bg-clip-text text-transparent">
-            Companion
+            {t.subtitle}
           </span>
         </h1>
 
         <p className="text-base sm:text-xl lg:text-2xl text-gray-600 font-light max-w-2xl mx-auto leading-relaxed px-4">
-          Discover connections, check weather, explore stations, and plan eco-friendly journeys across Switzerland.
+          {t.description}
         </p>
       </div>
 
@@ -279,28 +292,34 @@ export default function WelcomeSection({ onSendMessage }: WelcomeSectionProps) {
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
-            All ({quickActions.length})
+            {t.allQuestions} ({quickActions.length})
           </button>
-          {groupedActions.map(group => (
-            <button
-              key={group.name}
-              onClick={() => setSelectedCategory(group.name)}
-              className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
-                selectedCategory === group.name
-                  ? 'bg-sbb-red text-white shadow-lg'
-                  : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
-              }`}
-            >
-              {group.name} ({group.actions.length})
-            </button>
-          ))}
+          {groupedActions.map(group => {
+            const translationKey = categoryNameMap[group.name];
+            const categoryName = translationKey ? t[translationKey] : group.name;
+            return (
+              <button
+                key={group.name}
+                onClick={() => setSelectedCategory(group.name)}
+                className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                  selectedCategory === group.name
+                    ? 'bg-sbb-red text-white shadow-lg'
+                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
+                }`}
+              >
+                {categoryName} ({group.actions.length})
+              </button>
+            );
+          })}
         </div>
       </div>
 
       {/* Quick Actions Grid - Compact */}
       <div className="w-full max-w-6xl">
         <h2 className="text-center text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 sm:mb-4">
-          {selectedCategory ? `${selectedCategory} Questions` : 'Explore 25 Ways to Travel Smarter'}
+          {selectedCategory
+            ? `${t[categoryNameMap[selectedCategory] || 'allQuestions']} ${language === 'en' ? 'Questions' : ''}`
+            : t.exploreTitle}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
           {displayActions.map((action, i) => (

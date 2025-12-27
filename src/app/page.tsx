@@ -66,7 +66,7 @@ export default function Home() {
  {/* Messages Area */}
  <div className="flex-1 overflow-y-auto overflow-x-hidden px-4 sm:px-6 py-6 space-y-6 scroll-smooth">
  {messages.length === 0 ? (
- <WelcomeSection onSendMessage={handleSendMessage} />
+ <WelcomeSection language={language} onSendMessage={handleSendMessage} />
  ) : (
  <MessageList messages={messages} messagesEndRef={messagesEndRef} />
  )}
