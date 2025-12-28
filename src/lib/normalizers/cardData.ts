@@ -55,11 +55,24 @@ export function normalizeBoardData(raw: unknown): NormalizedBoardData {
   const type: 'departures' | 'arrivals' =
     data.type === 'arrivals' ? 'arrivals' : 'departures';
 
+  // Log available fields for debugging
+  console.log('=== BOARD DATA FIELDS ===', {
+    hasStation: !!data.station,
+    hasStationName: !!data.stationName,
+    hasPlace: !!data.place,
+    hasStopPlace: !!data.stopPlace,
+    placeName: data.place?.name,
+    stopPlaceName: data.stopPlace?.name,
+    allKeys: Object.keys(data),
+  });
+
   // Extract station name from multiple possible fields
   const station = data.station || 
                  data.stationName || 
                  data.place?.name ||
                  data.stopPlace?.name ||
+                 data.location?.name ||
+                 data.name ||
                  'Unknown Station';
 
   // Extract connections from various possible locations
