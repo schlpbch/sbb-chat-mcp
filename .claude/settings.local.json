@@ -17,7 +17,10 @@
       "Bash(curl:*)",
       "Bash(wc:*)",
       "Bash(npm run build:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(cat:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm test:unit:*)"
     ]
   }
 }

@@ -15,17 +15,27 @@ export interface Message {
     params: any;
     result: any;
   }>;
+  error?: {
+    type: 'network' | 'api' | 'timeout' | 'validation' | 'server' | 'general';
+    message: string;
+    details?: string;
+    retryable: boolean;
+  };
 }
 
 export function useChat(language: Language) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [isTyping, setIsTyping] = useState(false);
   const [toolsExecuting, setToolsExecuting] = useState<string[]>([]);
   const [textOnlyMode, setTextOnlyMode] = useState(false);
+  const [error, setError] = useState<Message['error'] | null>(null);
+  const [retryCount, setRetryCount] = useState(0);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { addSearch } = useRecentSearches();
+  const abortControllerRef = useRef<AbortController | null>(null);
 
   const [sessionId] = useState(
     () => `session-${Date.now()}-${Math.random().toString(36).slice(2)}`
@@ -36,12 +46,17 @@ export function useChat(language: Language) {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  const handleSendMessage = async (text?: string) => {
+  const handleSendMessage = async (text?: string, isRetry = false) => {
     const messageContent = text || input.trim();
     if (!messageContent || isLoading) return;
 
-    // Track in recent searches
-    addSearch(messageContent);
+    // Clear previous error
+    setError(null);
+
+    // Track in recent searches (only for new messages, not retries)
+    if (!isRetry) {
+      addSearch(messageContent);
+    }
 
     const userMessage: Message = {
       id: Date.now().toString(),
@@ -50,18 +65,33 @@ export function useChat(language: Language) {
       timestamp: new Date(),
     };
 
-    setMessages((prev) => [...prev, userMessage]);
-    setInput('');
+    if (!isRetry) {
+      setMessages((prev) => [...prev, userMessage]);
+      setInput('');
+    }
+    
     setIsLoading(true);
+    setIsTyping(true);
+
+    // Create abort controller for timeout
+    abortControllerRef.current = new AbortController();
+    const timeoutId = setTimeout(() => {
+      abortControllerRef.current?.abort();
+    }, 30000); // 30 second timeout
 
     try {
+      // Check network connectivity
+      if (!navigator.onLine) {
+        throw new Error('NETWORK_ERROR: No internet connection');
+      }
+
       // Parse markdown intent
       const intent = parseMarkdownIntent(messageContent);
       console.log('[useChat] Parsed intent:', intent);
 
       const requestBody = {
         message: userMessage.content,
-        intent, // Add parsed intent
+        intent,
         history: messages.map((m) => ({ role: m.role, content: m.content })),
         context: { language },
         sessionId,
@@ -73,11 +103,24 @@ export function useChat(language: Language) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(requestBody),
+        signal: abortControllerRef.current.signal,
       });
 
+      clearTimeout(timeoutId);
+
       if (!response.ok) {
-        const error = await response.json();
-        throw new Error(error.error || 'Failed to get response');
+        const errorData = await response.json().catch(() => ({}));
+        const errorMessage = errorData.error || `Server error: ${response.status}`;
+        
+        if (response.status === 429) {
+          throw new Error('RATE_LIMIT: Too many requests. Please wait a moment.');
+        } else if (response.status >= 500) {
+          throw new Error(`SERVER_ERROR: ${errorMessage}`);
+        } else if (response.status === 400) {
+          throw new Error(`VALIDATION_ERROR: ${errorMessage}`);
+        } else {
+          throw new Error(`API_ERROR: ${errorMessage}`);
+        }
       }
 
       const data = await response.json();
@@ -97,24 +140,93 @@ export function useChat(language: Language) {
       };
 
       setMessages((prev) => [...prev, assistantMessage]);
+      setRetryCount(0); // Reset retry count on success
     } catch (error) {
       console.error('Chat error:', error);
-      const errorMessage: Message = {
+      clearTimeout(timeoutId);
+      
+      let errorType: 'network' | 'api' | 'timeout' | 'validation' | 'server' | 'general' = 'general';
+      let errorMessage = 'Sorry, I encountered an error. Please try again.';
+      let errorDetails = '';
+      let retryable = true;
+
+      if (error instanceof Error) {
+        const errorString = error.message;
+        
+        if (error.name === 'AbortError' || errorString.includes('TIMEOUT')) {
+          errorType = 'timeout';
+          errorMessage = 'Request took too long. Please try a simpler query or check your connection.';
+          retryable = true;
+        } else if (errorString.includes('NETWORK_ERROR') || errorString.includes('Failed to fetch')) {
+          errorType = 'network';
+          errorMessage = 'No internet connection. Please check your network and try again.';
+          retryable = true;
+        } else if (errorString.includes('RATE_LIMIT')) {
+          errorType = 'api';
+          errorMessage = errorString.replace('RATE_LIMIT: ', '');
+          retryable = false;
+        } else if (errorString.includes('SERVER_ERROR')) {
+          errorType = 'server';
+          errorMessage = 'Travel data temporarily unavailable. Please try again in a moment.';
+          retryable = true;
+        } else if (errorString.includes('VALIDATION_ERROR')) {
+          errorType = 'validation';
+          errorMessage = errorString.replace('VALIDATION_ERROR: ', '');
+          retryable = false;
+        } else if (errorString.includes('API_ERROR')) {
+          errorType = 'api';
+          errorMessage = errorString.replace('API_ERROR: ', '');
+          retryable = true;
+        }
+        
+        errorDetails = error.stack || error.message;
+      }
+
+      const errorObj = {
+        type: errorType,
+        message: errorMessage,
+        details: errorDetails,
+        retryable,
+      };
+
+      setError(errorObj);
+
+      const errorMessageObj: Message = {
         id: (Date.now() + 1).toString(),
         role: 'assistant',
-        content:
-          error instanceof Error
-            ? error.message
-            : 'Sorry, I encountered an error. Please try again.',
+        content: errorMessage,
         timestamp: new Date(),
+        error: errorObj,
       };
-      setMessages((prev) => [...prev, errorMessage]);
+
+      setMessages((prev) => [...prev, errorMessageObj]);
     } finally {
       setIsLoading(false);
+      setIsTyping(false);
       // Return focus to input after response
       setTimeout(() => {
         inputRef.current?.focus();
       }, 100);
+    }
+  };
+
+  const handleRetry = async () => {
+    if (!error || !error.retryable) return;
+    
+    // Exponential backoff
+    const delay = Math.min(1000 * Math.pow(2, retryCount), 10000);
+    setRetryCount((prev) => prev + 1);
+    
+    // Remove last error message
+    setMessages((prev) => prev.slice(0, -1));
+    
+    // Wait before retrying
+    await new Promise((resolve) => setTimeout(resolve, delay));
+    
+    // Get the last user message
+    const lastUserMessage = messages.findLast((m) => m.role === 'user');
+    if (lastUserMessage) {
+      await handleSendMessage(lastUserMessage.content, true);
     }
   };
 
@@ -130,12 +242,15 @@ export function useChat(language: Language) {
     input,
     setInput,
     isLoading,
+    isTyping,
     toolsExecuting,
     textOnlyMode,
     setTextOnlyMode,
+    error,
     messagesEndRef,
     inputRef,
     handleSendMessage,
     handleKeyPress,
+    handleRetry,
   };
 }
