@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { Message } from '@/types/chat';
+import { logger } from '@/lib/logger';
 
 const MAX_STORED_MESSAGES = 50;
 
@@ -27,7 +28,7 @@ export function useChatStorage(storageKey: string) {
         setMessages(messagesWithDates);
       }
     } catch (error) {
-      console.error('Error loading chat history:', error);
+      logger.error('useChatStorage', 'Error loading chat history', error);
     }
   }, [storageKey]);
 
@@ -39,7 +40,7 @@ export function useChatStorage(storageKey: string) {
         const messagesToStore = messages.slice(-MAX_STORED_MESSAGES);
         localStorage.setItem(storageKey, JSON.stringify(messagesToStore));
       } catch (error) {
-        console.error('Error saving chat history:', error);
+        logger.error('useChatStorage', 'Error saving chat history', error);
       }
     }
   }, [messages, storageKey]);
@@ -50,7 +51,7 @@ export function useChatStorage(storageKey: string) {
     try {
       localStorage.removeItem(storageKey);
     } catch (error) {
-      console.error('Error clearing chat history:', error);
+      logger.error('useChatStorage', 'Error clearing chat history', error);
     }
   }, [storageKey]);
 

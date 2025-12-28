@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect, useRef, KeyboardEvent } from 'react';
+import { logger } from '@/lib/logger';
 
 interface ChatInputProps {
  onSend: (message: string) => void;
@@ -48,7 +49,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
  };
 
  recognition.onerror = (event: any) => {
- console.error('Speech recognition error:', event.error);
+ logger.error('ChatInput', 'Speech recognition error', { error: event.error });
  setIsRecording(false);
  setIsListening(false);
  };
@@ -103,7 +104,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
  recognitionRef.current.start();
  setIsRecording(true);
  } catch (error) {
- console.error('Error starting speech recognition:', error);
+ logger.error('ChatInput', 'Error starting speech recognition', error);
  }
  }
  }

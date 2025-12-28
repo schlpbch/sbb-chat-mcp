@@ -8,6 +8,7 @@ import type { Message } from '@/types/chat';
 import { useChatStorage } from '@/hooks/useChatStorage';
 import { useChatAPI } from '@/hooks/useChatAPI';
 import { useChatExport } from '@/hooks/useChatExport';
+import { logger } from '@/lib/logger';
 
 // Re-export Message type for backward compatibility
 export type { Message };
@@ -60,14 +61,14 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
  };
 
  // Debug: Log when component renders
- console.log('ChatPanel render - isOpen:', isOpen);
+ logger.debug('ChatPanel', `render - isOpen: ${isOpen}`);
 
  if (!isOpen) {
- console.log('ChatPanel: Not rendering because isOpen is false');
+ logger.debug('ChatPanel', 'Not rendering because isOpen is false');
  return null;
  }
 
- console.log('ChatPanel: Rendering panel!');
+ logger.debug('ChatPanel', 'Rendering panel!');
 
  return (
  <div 

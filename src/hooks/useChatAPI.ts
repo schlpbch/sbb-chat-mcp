@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import type { Language } from '@/lib/i18n';
 import type { Message } from '@/types/chat';
+import { logger } from '@/lib/logger';
 
 /**
  * Custom hook for handling chat API communication
@@ -55,7 +56,7 @@ export function useChatAPI(
       };
       setMessages(prev => [...prev, assistantMessage]);
     } catch (error) {
-      console.error('Chat error:', error);
+      logger.error('useChatAPI', 'Chat error', error);
       // Add error message
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
