@@ -180,6 +180,10 @@ export async function POST(
       if (content && content.length > 0 && content[0].text) {
         try {
           const parsedResult = JSON.parse(content[0].text);
+          
+          // LOG ALL MCP RESPONSES for debugging
+          console.log(`=== MCP TOOL RESPONSE: ${toolName} ===`, JSON.stringify(parsedResult, null, 2));
+          
           return NextResponse.json(parsedResult, { status: 200 });
         } catch (e) {
           // If not JSON, return as-is
