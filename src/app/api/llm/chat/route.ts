@@ -38,6 +38,7 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     const {
       message,
+      intent, // Add intent
       history,
       context,
       enableFunctionCalling = true,
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
       useOrchestration = true,
     } = body as {
       message: string;
+      intent?: any;
       history?: ChatMessage[];
       context?: ChatContext;
       enableFunctionCalling?: boolean;
@@ -84,11 +86,15 @@ export async function POST(request: NextRequest) {
     console.log('[chat/route] useOrchestration:', useOrchestration, 'sessionId:', sessionId);
     if (useOrchestration && sessionId) {
       console.log('[chat/route] Using orchestrated chat with session:', sessionId);
+      if (intent) {
+        console.log('[chat/route] Parsed intent:', intent);
+      }
       result = await sendOrchestratedChatMessage(
         message,
         sessionId,
         history,
-        context
+        context,
+        intent // Add intent parameter
       );
     } else {
       console.log('[chat/route] Using standard chat');

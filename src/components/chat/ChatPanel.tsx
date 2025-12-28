@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import type { Language } from '@/lib/i18n';
+import { exportChatAsText, exportChatAsJSON } from '@/lib/exportUtils';
 
 export interface Message {
  id: string;
@@ -18,11 +19,45 @@ interface ChatPanelProps {
  onClose: () => void;
 }
 
+const CHAT_STORAGE_KEY = 'sbb-chat-history';
+const MAX_STORED_MESSAGES = 50; // Limit stored messages to prevent storage overflow
+
 export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps) {
  const [messages, setMessages] = useState<Message[]>([]);
  const [isLoading, setIsLoading] = useState(false);
  const messagesEndRef = useRef<HTMLDivElement>(null);
  const panelRef = useRef<HTMLDivElement>(null);
+
+ // Load messages from localStorage on mount
+ useEffect(() => {
+ try {
+ const storedMessages = localStorage.getItem(CHAT_STORAGE_KEY);
+ if (storedMessages) {
+ const parsed = JSON.parse(storedMessages);
+ // Convert timestamp strings back to Date objects
+ const messagesWithDates = parsed.map((msg: any) => ({
+ ...msg,
+ timestamp: new Date(msg.timestamp)
+ }));
+ setMessages(messagesWithDates);
+ }
+ } catch (error) {
+ console.error('Error loading chat history:', error);
+ }
+ }, []);
+
+ // Save messages to localStorage whenever they change
+ useEffect(() => {
+ if (messages.length > 0) {
+ try {
+ // Only store the most recent messages
+ const messagesToStore = messages.slice(-MAX_STORED_MESSAGES);
+ localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messagesToStore));
+ } catch (error) {
+ console.error('Error saving chat history:', error);
+ }
+ }
+ }, [messages]);
 
  // Auto-scroll to bottom
  useEffect(() => {
@@ -47,6 +82,31 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
  document.removeEventListener('keydown', handleEscape);
  };
  }, [isOpen, onClose]);
+
+ const clearChatHistory = () => {
+ if (confirm('Are you sure you want to clear the chat history?')) {
+ setMessages([]);
+ try {
+ localStorage.removeItem(CHAT_STORAGE_KEY);
+ } catch (error) {
+ console.error('Error clearing chat history:', error);
+ }
+ }
+ };
+
+ const handleExportChat = () => {
+ if (messages.length === 0) {
+ alert('No messages to export');
+ return;
+ }
+
+ const choice = confirm('Export as JSON? (Cancel for plain text)');
+ if (choice) {
+ exportChatAsJSON(messages);
+ } else {
+ exportChatAsText(messages);
+ }
+ };
 
  const handleSendMessage = async (content: string) => {
  // Add user message
@@ -140,13 +200,39 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
  </div>
  </div>
  
+ <div className="flex items-center gap-2 relative z-10">
+ {messages.length > 0 && (
+ <>
+ <button
+ onClick={handleExportChat}
+ className="w-8 h-8 rounded-sbb bg-white/20 text-white hover:bg-white/30 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50"
+ aria-label="Export chat"
+ title="Export chat"
+ >
+ <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+ </svg>
+ </button>
+ <button
+ onClick={clearChatHistory}
+ className="w-8 h-8 rounded-sbb bg-white/20 text-white hover:bg-white/30 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50"
+ aria-label="Clear chat history"
+ title="Clear chat history"
+ >
+ <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+ </svg>
+ </button>
+ </>
+ )}
  <button
  onClick={onClose}
- className="w-8 h-8 rounded-sbb bg-white/20 text-white hover:bg-white/30 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50 relative z-10"
+ className="w-8 h-8 rounded-sbb bg-white/20 text-white hover:bg-white/30 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50"
  aria-label="Close chat"
  >
  <span className="text-xl leading-none">✕</span>
  </button>
+ </div>
  </div>
 
  {/* Messages */}

@@ -21,10 +21,27 @@ export async function sendOrchestratedChatMessage(
   message: string,
   sessionId: string,
   history: ChatMessage[] = [],
-  context: ChatContext = { language: 'en' }
+  context: ChatContext = { language: 'en' },
+  parsedIntent?: any // Add parsed markdown intent
 ): Promise<ChatResponse> {
   const sessionContext = getSessionContext(sessionId, context.language);
-  const intent = extractIntent(message);
+  const extractedIntent = extractIntent(message);
+  
+  // Merge parsed markdown intent with extracted intent
+  const intent = parsedIntent?.hasMarkdown ? {
+    ...extractedIntent,
+    // Override with markdown-parsed structured data if available
+    extractedEntities: {
+      ...extractedIntent.extractedEntities,
+      ...(parsedIntent.structuredData?.origin && { origin: parsedIntent.structuredData.origin }),
+      ...(parsedIntent.structuredData?.destination && { destination: parsedIntent.structuredData.destination }),
+    },
+    queryType: parsedIntent.queryType || extractedIntent.queryType,
+    preferences: parsedIntent.structuredData?.preferences || [],
+    subQueries: parsedIntent.subQueries || [],
+  } : extractedIntent;
+  
+  console.log('[sendOrchestratedChatMessage] Merged intent:', intent);
 
   const updatedContext = updateContextFromMessage(sessionContext, message, {
     intent,

@@ -1,5 +1,7 @@
 'use client';
 
+import type { Language } from '@/lib/i18n';
+
 interface ItineraryCardProps {
  data: {
  destination?: string;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, KeyboardEvent } from 'react';
+import { useState, useEffect, useRef, KeyboardEvent } from 'react';
 
 interface ChatInputProps {
  onSend: (message: string) => void;
@@ -9,6 +9,68 @@ interface ChatInputProps {
 
 export default function ChatInput({ onSend, disabled }: ChatInputProps) {
  const [input, setInput] = useState('');
+ const [isRecording, setIsRecording] = useState(false);
+ const [isListening, setIsListening] = useState(false);
+ const recognitionRef = useRef<any>(null);
+ const [speechSupported, setSpeechSupported] = useState(false);
+
+ // Initialize speech recognition
+ useEffect(() => {
+ if (typeof window !== 'undefined') {
+ const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+ if (SpeechRecognition) {
+ setSpeechSupported(true);
+ const recognition = new SpeechRecognition();
+ recognition.continuous = true;
+ recognition.interimResults = true;
+ recognition.lang = 'en-US'; // Default to English, can be made dynamic
+
+ recognition.onstart = () => {
+ setIsListening(true);
+ };
+
+ recognition.onresult = (event: any) => {
+ let interimTranscript = '';
+ let finalTranscript = '';
+
+ for (let i = event.resultIndex; i < event.results.length; i++) {
+ const transcript = event.results[i][0].transcript;
+ if (event.results[i].isFinal) {
+ finalTranscript += transcript + ' ';
+ } else {
+ interimTranscript += transcript;
+ }
+ }
+
+ if (finalTranscript) {
+ setInput(prev => prev + finalTranscript);
+ }
+ };
+
+ recognition.onerror = (event: any) => {
+ console.error('Speech recognition error:', event.error);
+ setIsRecording(false);
+ setIsListening(false);
+ };
+
+ recognition.onend = () => {
+ setIsListening(false);
+ if (isRecording) {
+ // Restart if still in recording mode
+ recognition.start();
+ }
+ };
+
+ recognitionRef.current = recognition;
+ }
+ }
+
+ return () => {
+ if (recognitionRef.current) {
+ recognitionRef.current.stop();
+ }
+ };
+ }, [isRecording]);
 
  const handleSend = () => {
  if (input.trim() && !disabled) {
@@ -24,6 +86,29 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
  }
  };
 
+ const toggleVoiceRecording = () => {
+ if (!speechSupported || disabled) return;
+
+ if (isRecording) {
+ // Stop recording
+ if (recognitionRef.current) {
+ recognitionRef.current.stop();
+ }
+ setIsRecording(false);
+ setIsListening(false);
+ } else {
+ // Start recording
+ if (recognitionRef.current) {
+ try {
+ recognitionRef.current.start();
+ setIsRecording(true);
+ } catch (error) {
+ console.error('Error starting speech recognition:', error);
+ }
+ }
+ }
+ };
+
  return (
  <div className="p-6 bg-white border-t border-cloud shadow-lg">
  <div className="flex space-x-3 items-center">
@@ -33,15 +118,32 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
  value={input}
  onChange={(e) => setInput(e.target.value)}
  onKeyPress={handleKeyPress}
- placeholder="Search for connections, stations or help..."
+ placeholder={isRecording ? "Listening..." : "Search for connections, stations or help..."}
  disabled={disabled}
- className="w-full pl-5 pr-12 py-3.5 bg-milk border-2 border-cloud rounded-sbb 
+ className="w-full pl-5 pr-20 py-3.5 bg-milk border-2 border-cloud rounded-sbb
  focus:outline-none focus:border-sbb-red
  text-midnight text-sm font-bold placeholder:text-graphite
  disabled:opacity-50 disabled:cursor-not-allowed
  transition-all duration-200 shadow-sbb-sm focus:shadow-sbb-red/20"
  />
  <div className="absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
+ {speechSupported && (
+ <button
+ onClick={toggleVoiceRecording}
+ disabled={disabled}
+ className={`p-1.5 rounded-sbb transition-all duration-200 ${
+ isRecording
+ ? 'bg-sbb-red text-white animate-pulse'
+ : 'text-graphite hover:text-sbb-red hover:bg-milk'
+ }`}
+ aria-label={isRecording ? 'Stop recording' : 'Start voice input'}
+ title={isRecording ? 'Stop recording' : 'Voice input'}
+ >
+ <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+ <path fillRule="evenodd" d="M7 4a3 3 0 016 0v4a3 3 0 11-6 0V4zm4 10.93A7.001 7.001 0 0017 8a1 1 0 10-2 0A5 5 0 015 8a1 1 0 00-2 0 7.001 7.001 0 006 6.93V17H6a1 1 0 100 2h8a1 1 0 100-2h-3v-2.07z" clipRule="evenodd" />
+ </svg>
+ </button>
+ )}
  <span className="text-xs font-black text-cloud select-none group-focus-within:text-sbb-red/40 transition-colors">
  ↵
  </span>
