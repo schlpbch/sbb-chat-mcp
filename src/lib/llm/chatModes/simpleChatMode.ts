@@ -144,7 +144,12 @@ GUIDELINES:
     };
   } catch (error) {
     console.error('Gemini API error:', error);
-    throw new Error('Failed to get AI response. Please try again.');
+    console.error('Error details:', {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+    });
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    throw new Error(`Failed to get AI response: ${errorMessage}`);
   }
 }
 

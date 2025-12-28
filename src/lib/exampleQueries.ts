@@ -120,8 +120,9 @@ export function getExamplesByCategory(category: ExampleQuery['category']): Examp
 }
 
 export function getRandomExamples(count: number = 3): ExampleQuery[] {
-  const shuffled = [...exampleQueries].sort(() => Math.random() - 0.5);
-  return shuffled.slice(0, count);
+  // Return first N examples to avoid hydration mismatch
+  // (Math.random() causes server/client to render different content)
+  return exampleQueries.slice(0, count);
 }
 
 export function getExampleById(id: string): ExampleQuery | undefined {
