@@ -149,33 +149,49 @@ export function normalizeCompareData(
   }
 
   // Transform routes
-  const routes: Route[] = rawRoutes.map((trip: any, idx: number) => ({
-    id: trip.id || `route-${idx}`,
-    name: trip.name || `Option ${idx + 1}`,
-    duration: trip.duration || trip.summary?.duration || 'PT0M',
-    transfers: trip.transfers !== undefined
-      ? trip.transfers
-      : (trip.summary?.transfers || (trip.legs?.length ? trip.legs.length - 1 : 0)),
-    departure:
+  const routes: Route[] = rawRoutes.map((trip: any, idx: number) => {
+    // Extract departure time from first leg
+    const firstLeg = trip.legs?.[0];
+    const lastLeg = trip.legs?.[trip.legs?.length - 1];
+    
+    const departureTime =
       trip.departureTime ||
       trip.departure ||
       trip.origin?.departureTime ||
       trip.origin?.time ||
       trip.summary?.departure ||
-      new Date().toISOString(),
-    arrival:
+      firstLeg?.start?.departure?.timeAimed ||
+      firstLeg?.departure ||
+      (trip.legs?.length > 0 ? firstLeg?.serviceJourney?.stopPoints?.[0]?.departure?.timeAimed : null) ||
+      null;
+    
+    const arrivalTime =
       trip.arrivalTime ||
       trip.arrival ||
       trip.destination?.arrivalTime ||
       trip.destination?.time ||
       trip.summary?.arrival ||
-      new Date().toISOString(),
-    price: trip.price || trip.summary?.price,
-    co2: trip.co2 || trip.trainCO2 || trip.summary?.co2,
-    occupancy: trip.occupancy || trip.summary?.occupancy,
-    score: trip.score !== undefined ? trip.score : 100.0,
-    legs: trip.legs || [],
-  }));
+      lastLeg?.end?.arrival?.timeAimed ||
+      lastLeg?.arrival ||
+      (trip.legs?.length > 0 ? lastLeg?.serviceJourney?.stopPoints?.[lastLeg.serviceJourney?.stopPoints?.length - 1]?.arrival?.timeAimed : null) ||
+      null;
+
+    return {
+      id: trip.id || `route-${idx}`,
+      name: trip.name || `Option ${idx + 1}`,
+      duration: trip.duration || trip.summary?.duration || 'PT0M',
+      transfers: trip.transfers !== undefined
+        ? trip.transfers
+        : (trip.summary?.transfers || (trip.legs?.length ? trip.legs.length - 1 : 0)),
+      departure: departureTime || new Date().toISOString(),
+      arrival: arrivalTime || new Date().toISOString(),
+      price: trip.price || trip.summary?.price,
+      co2: trip.co2 || trip.trainCO2 || trip.summary?.co2,
+      occupancy: trip.occupancy || trip.summary?.occupancy,
+      score: trip.score !== undefined ? trip.score : 100.0,
+      legs: trip.legs || [],
+    };
+  });
 
   const normalized: NormalizedCompareData = {
     origin,
