@@ -84,12 +84,12 @@ export default function FeedbackModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
       <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden">
         {/* Header */}
-        <div className="bg-blue-600 text-white p-6">
+        <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-2xl font-bold">Send Feedback</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Send Feedback</h2>
             <button
               onClick={handleClose}
-              className="text-white hover:text-gray-200 transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Close"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -97,7 +97,7 @@ export default function FeedbackModal({
               </svg>
             </button>
           </div>
-          <p className="text-blue-100">We'd love to hear from you!</p>
+          <p className="text-gray-600">We'd love to hear from you!</p>
         </div>
 
         {/* Form */}
