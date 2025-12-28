@@ -150,6 +150,17 @@ export function normalizeCompareData(
 
   // Transform routes
   const routes: Route[] = rawRoutes.map((trip: any, idx: number) => {
+    // DEBUG: Log the actual trip structure
+    if (idx === 0) {
+      logger.debug('normalizeCompareData', 'First trip structure', {
+        trip,
+        hasLegs: !!trip.legs,
+        legsLength: trip.legs?.length,
+        firstLeg: trip.legs?.[0],
+        lastLeg: trip.legs?.[trip.legs?.length - 1],
+      });
+    }
+
     // Extract departure time from first leg
     const firstLeg = trip.legs?.[0];
     const lastLeg = trip.legs?.[trip.legs?.length - 1];
@@ -175,6 +186,15 @@ export function normalizeCompareData(
       lastLeg?.arrival ||
       (trip.legs?.length > 0 ? lastLeg?.serviceJourney?.stopPoints?.[lastLeg.serviceJourney?.stopPoints?.length - 1]?.arrival?.timeAimed : null) ||
       null;
+
+    // DEBUG: Log extracted times
+    if (idx === 0) {
+      logger.debug('normalizeCompareData', 'Extracted times', {
+        departureTime,
+        arrivalTime,
+        duration: trip.duration,
+      });
+    }
 
     return {
       id: trip.id || `route-${idx}`,
@@ -205,6 +225,7 @@ export function normalizeCompareData(
     origin,
     destination,
     routeCount: routes.length,
+    firstRoute: routes[0],
   });
 
   return normalized;
