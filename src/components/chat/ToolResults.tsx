@@ -10,6 +10,7 @@ import ItineraryCard from '@/components/cards/ItineraryCard';
 import CompareCard from '@/components/cards/CompareCard';
 import type { Language } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
+import { normalizeCompareData } from '@/lib/normalizers/cardData';
 
 interface ToolCall {
  toolName: string;
@@ -71,43 +72,20 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   if (toolName === 'compareRoutes' || toolName === 'journeyRanking') {
     if (!result) return null;
 
-    // Memoize the complex transformation to prevent unnecessary recalculations
+    // Normalize and validate the comparison data with memoization
     const transformedData = useMemo(() => {
-      logger.debug('ToolResults', 'Route comparison data', result);
-
-      // Extract routes from various possible locations
-      let routes = result.routes || result.trips || result.options || result.data || [];
-
-      // If result itself is an array, use it
-      if (Array.isArray(result) && !routes.length) {
-        routes = result;
+      try {
+        return normalizeCompareData(result, toolCall.params);
+      } catch (error) {
+        logger.error('ToolResults', 'Failed to normalize compare data', error);
+        // Return fallback structure
+        return {
+          origin: toolCall.params?.origin || 'Unknown',
+          destination: toolCall.params?.destination || 'Unknown',
+          criteria: toolCall.params?.criteria || 'balanced',
+          routes: [],
+        };
       }
-
-      logger.debug('ToolResults', `Extracted ${routes.length} routes`);
-
-      // Transform the data to match CompareCard's expected structure
-      const transformed = {
-        origin: result.origin || result.from || toolCall.params?.origin || toolCall.params?.from || 'Unknown',
-        destination: result.destination || result.to || toolCall.params?.destination || toolCall.params?.to || 'Unknown',
-        criteria: result.criteria || toolCall.params?.criteria || 'balanced',
-        routes: routes.map((trip: any, idx: number) => ({
-          id: trip.id || `route-${idx}`,
-          name: trip.name || `Option ${idx + 1}`,
-          duration: trip.duration || trip.summary?.duration || 'PT0M',
-          transfers: trip.transfers !== undefined ? trip.transfers : (trip.summary?.transfers || (trip.legs?.length ? trip.legs.length - 1 : 0)),
-          departure: trip.departureTime || trip.departure || trip.origin?.departureTime || trip.origin?.time || trip.summary?.departure || new Date().toISOString(),
-          arrival: trip.arrivalTime || trip.arrival || trip.destination?.arrivalTime || trip.destination?.time || trip.summary?.arrival || new Date().toISOString(),
-          price: trip.price || trip.summary?.price,
-          co2: trip.co2 || trip.trainCO2 || trip.summary?.co2,
-          occupancy: trip.occupancy || trip.summary?.occupancy,
-          score: trip.score !== undefined ? trip.score : 100.0,
-          legs: trip.legs || [],
-        })),
-        analysis: result.analysis,
-      };
-
-      logger.debug('ToolResults', 'Transformed route data', { routeCount: transformed.routes.length });
-      return transformed;
     }, [result, toolCall.params]);
 
     return <CompareCard key={idx} data={transformedData} language={language} />;

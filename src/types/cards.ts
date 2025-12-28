@@ -182,7 +182,7 @@ export interface CompareAnalysis {
 export interface CompareData {
   origin: string;
   destination: string;
-  criteria: 'fastest' | 'fewest_changes' | 'earliest_arrival' | 'balanced';
+  criteria: string; // Can be 'fastest' | 'fewest_changes' | 'earliest_arrival' | 'balanced' or custom
   routes: ComparisonRoute[];
   analysis?: CompareAnalysis;
 }

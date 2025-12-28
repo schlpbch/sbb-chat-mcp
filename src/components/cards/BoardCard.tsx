@@ -1,86 +1,53 @@
 'use client';
 
+import { useMemo } from 'react';
 import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
+import { normalizeBoardData } from '@/lib/normalizers/cardData';
+import { logger } from '@/lib/logger';
 
 interface BoardCardProps {
-  data: {
-    station?: string;
-    type?: 'departures' | 'arrivals';
-    connections?: Array<{
-      time?: string;
-      destination?: string;
-      origin?: string;
-      platform?: string;
-      line?: string;
-      delay?: string;
-      type?: string;
-    }>;
-  };
+  data: unknown;
   language: Language;
 }
 
 export default function BoardCard({ data, language }: BoardCardProps) {
   const t = translations[language];
-  const { station, type = 'departures', connections = [] } = data;
-  
-  // Handle raw MCP format - try multiple possible field names
-  const rawData = data as any;
-  
-  // Try to extract connections from various possible structures
-  let extractedConnections = connections;
-  if (!extractedConnections || extractedConnections.length === 0) {
-    extractedConnections = 
-      rawData.departures || 
-      rawData.arrivals || 
-      rawData.events || 
-      rawData.connections ||
-      rawData.results ||
-      rawData.data ||
-      [];
-  }
-  
-  // Try to extract type - check arrivals FIRST since it's more specific
-  let extractedType: 'departures' | 'arrivals' = type;
-  if (rawData.arrivals && Array.isArray(rawData.arrivals) && rawData.arrivals.length > 0) {
-    extractedType = 'arrivals';
-  } else if (rawData.departures && Array.isArray(rawData.departures) && rawData.departures.length > 0) {
-    extractedType = 'departures';
-  } else if (rawData.eventType) {
-    extractedType = rawData.eventType;
-  }
-  
-  // Try to extract station name
-  let extractedStation = station;
-  if (!extractedStation) {
-    extractedStation = 
-      rawData.stationName || 
-      rawData.station || 
-      rawData.stopName ||
-      rawData.placeName ||
-      '';
-  }
-  
-  const finalConnections = Array.isArray(extractedConnections) 
-    ? extractedConnections.map((conn: any) => ({
-        // Map MCP fields to expected format
-        time: conn.time || conn.departureTime || conn.arrivalTime,
-        destination: conn.destination,
-        origin: conn.origin,
-        platform: conn.platform,
-        line: conn.line || conn.serviceProduct?.sbbServiceProduct?.name || conn.serviceProduct?.name,
-        delay: conn.delay !== undefined && conn.delay > 0 ? `+${conn.delay}'` : undefined,
-        type: conn.type || conn.serviceProduct?.sbbServiceProduct?.vehicleMode?.name,
-      }))
-    : [];
-  const finalType = extractedType;
-  const finalStation = extractedStation;
-  
-  // Debug logging
-  console.log('[BoardCard] Received data:', JSON.stringify(data, null, 2));
-  console.log('[BoardCard] Extracted connections:', finalConnections);
-  console.log('[BoardCard] Final type:', finalType);
-  console.log('[BoardCard] Final station:', finalStation);
+
+  // Normalize and validate data with memoization
+  const normalizedData = useMemo(() => {
+    try {
+      return normalizeBoardData(data);
+    } catch (error) {
+      logger.error('BoardCard', 'Data normalization failed', error);
+      // Return fallback data structure
+      return {
+        type: 'departures' as const,
+        station: 'Unknown Station',
+        connections: [],
+      };
+    }
+  }, [data]);
+
+  const { type: finalType, station: finalStation, connections: extractedConnections } = normalizedData;
+
+  // Map connections to final format with service product extraction
+  const finalConnections = extractedConnections.map((conn: any) => ({
+    time: conn.time || conn.departureTime || conn.arrivalTime,
+    destination: conn.destination,
+    origin: conn.origin,
+    platform: conn.platform || conn.track,
+    line: conn.line || conn.lineNumber || conn.serviceProduct?.sbbServiceProduct?.name || conn.serviceProduct?.name,
+    delay: conn.delay !== undefined && conn.delay > 0 ? `+${conn.delay}'` : undefined,
+    type: conn.type || conn.category || conn.serviceProduct?.sbbServiceProduct?.vehicleMode?.name,
+  }));
+
+  logger.debug('BoardCard', 'Normalized data', {
+    type: finalType,
+    station: finalStation,
+    connectionCount: finalConnections.length,
+    connections: finalConnections,
+  });
 
   const formatTime = (time?: string) => {
     if (!time) return '--:--';
