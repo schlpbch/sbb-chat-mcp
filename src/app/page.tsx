@@ -115,7 +115,7 @@ export default function Home() {
                     </>
                   )}
                 </button>
-                <span className="text-xs text-gray-500">
+                <span className="hidden sm:block text-xs text-gray-500">
                   {textOnlyMode ? t.chat.textOnlyDesc : t.chat.richModeDesc}
                 </span>
               </div>
@@ -126,7 +126,7 @@ export default function Home() {
                   onTranscript={setInput}
                   onAutoSend={handleSendMessage}
                 />
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <label htmlFor="chat-input" className="sr-only">
                     Type your message
                   </label>
@@ -141,7 +141,7 @@ export default function Home() {
                     rows={1}
                     aria-label="Chat message input"
                     aria-describedby="chat-hint"
-                    className="w-full px-4 py-3 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="w-full px-3 sm:px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     style={{ minHeight: '52px', maxHeight: '120px' }}
                   />
                 </div>
