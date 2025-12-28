@@ -16,53 +16,72 @@ function SnowCard({ data, language }: SnowCardProps) {
   // Debug logging to see what data we're receiving
   console.log('=== SNOW CARD DATA ===', JSON.stringify(data, null, 2));
   
-  const location = data?.locationName || data?.location || data?.resortName || data?.name || 'Unknown';
+  // Check if data is a text response that needs parsing
+  const isTextResponse = typeof data === 'string' || data?.text;
+  const textContent = typeof data === 'string' ? data : data?.text;
   
-  // Try multiple field name variations for snow depth
-  const snowDepth = data?.snowDepth || 
-                   data?.snow_depth || 
-                   data?.currentSnowDepth ||
-                   data?.current_snow_depth ||
-                   data?.depth ||
-                   data?.snowDepthCm;
-                   
-  const snowfall24h = data?.snowfall24h || 
-                     data?.snowfall_24h || 
-                     data?.newSnow ||
-                     data?.new_snow ||
-                     data?.snowfall24Hours;
+  let location = 'Unknown';
+  let snowDepth, snowfall24h, snowfall7d, lastSnowfall, temperature, conditions, liftsOpen, slopesOpen, avalancheRisk;
+  
+  if (isTextResponse && textContent) {
+    // Parse text response for snow data
+    location = textContent.match(/(?:in|at)\s+([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*)/)?.[1] || 'Unknown';
+    const depthMatch = textContent.match(/(\d+)\s*cm/);
+    snowDepth = depthMatch ? parseInt(depthMatch[1]) : undefined;
+    const tempMatch = textContent.match(/(-?\d+(?:\.\d+)?)\s*degrees?\s*Celsius/i);
+    temperature = tempMatch ? parseFloat(tempMatch[1]) : undefined;
+    const snowfallMatch = textContent.match(/(\d+(?:\.\d+)?)\s*cm\s*expected/);
+    snowfall24h = snowfallMatch ? parseFloat(snowfallMatch[1]) : undefined;
+  } else {
+    // Try structured data extraction
+    location = data?.locationName || data?.location || data?.resortName || data?.name || 'Unknown';
+    
+    snowDepth = data?.snowDepth || 
+                     data?.snow_depth || 
+                     data?.currentSnowDepth ||
+                     data?.current_snow_depth ||
+                     data?.depth ||
+                     data?.snowDepthCm;
                      
-  const snowfall7d = data?.snowfall7d || 
-                    data?.snowfall_7d ||
-                    data?.snowfall7Days;
-                    
-  const lastSnowfall = data?.lastSnowfall || 
-                      data?.last_snowfall ||
-                      data?.lastSnowDate;
+    snowfall24h = data?.snowfall24h || 
+                       data?.snowfall_24h || 
+                       data?.newSnow ||
+                       data?.new_snow ||
+                       data?.snowfall24Hours;
+                       
+    snowfall7d = data?.snowfall7d || 
+                      data?.snowfall_7d ||
+                      data?.snowfall7Days;
                       
-  const temperature = data?.temperature || 
-                     data?.temp ||
-                     data?.currentTemp ||
-                     data?.current_temp;
+    lastSnowfall = data?.lastSnowfall || 
+                        data?.last_snowfall ||
+                        data?.lastSnowDate;
+                        
+    temperature = data?.temperature || 
+                       data?.temp ||
+                       data?.currentTemp ||
+                       data?.current_temp;
+                       
+    conditions = data?.conditions || 
+                      data?.skiConditions ||
+                      data?.ski_conditions ||
+                      data?.description;
+                      
+    liftsOpen = data?.liftsOpen || 
+                     data?.lifts_open ||
+                     data?.openLifts;
                      
-  const conditions = data?.conditions || 
-                    data?.skiConditions ||
-                    data?.ski_conditions ||
-                    data?.description;
-                    
-  const liftsOpen = data?.liftsOpen || 
-                   data?.lifts_open ||
-                   data?.openLifts;
-                   
-  const slopesOpen = data?.slopesOpen || 
-                    data?.slopes_open ||
-                    data?.openSlopes;
-                    
-  const avalancheRisk = data?.avalancheRisk || 
-                       data?.avalanche_risk ||
-                       data?.avalancheDanger;
+    slopesOpen = data?.slopesOpen || 
+                      data?.slopes_open ||
+                      data?.openSlopes;
+                      
+    avalancheRisk = data?.avalancheRisk || 
+                         data?.avalanche_risk ||
+                         data?.avalancheDanger;
+  }
 
   console.log('=== EXTRACTED SNOW DATA ===', {
+    isTextResponse,
     location,
     snowDepth,
     snowfall24h,
