@@ -283,11 +283,6 @@ export const translations = {
       closeMenu: 'Close menu',
       mainNavigation: 'Main navigation',
     },
-    errors: {
-      generic: 'Something went wrong. Please try again.',
-      network: 'Network error. Please check your connection.',
-      timeout: 'Request timed out. Please try again.',
-    },
     common: {
       close: 'Close',
       cancel: 'Cancel',
@@ -586,11 +581,6 @@ export const translations = {
       sendMessage: 'Nachricht senden',
       closeMenu: 'Menü schließen',
       mainNavigation: 'Hauptnavigation',
-    },
-    errors: {
-      generic: 'Etwas ist schief gelaufen. Bitte versuchen Sie es erneut.',
-      network: 'Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung.',
-      timeout: 'Zeitüberschreitung. Bitte versuchen Sie es erneut.',
     },
     common: {
       close: 'Schließen',
@@ -891,11 +881,6 @@ export const translations = {
       closeMenu: 'Fermer le menu',
       mainNavigation: 'Navigation principale',
     },
-    errors: {
-      generic: 'Une erreur s\'est produite. Veuillez réessayer.',
-      network: 'Erreur réseau. Veuillez vérifier votre connexion.',
-      timeout: 'Délai d\'attente dépassé. Veuillez réessayer.',
-    },
     common: {
       close: 'Fermer',
       cancel: 'Annuler',
@@ -1195,11 +1180,6 @@ export const translations = {
       closeMenu: 'Chiudi menu',
       mainNavigation: 'Navigazione principale',
     },
-    errors: {
-      generic: 'Qualcosa è andato storto. Riprova.',
-      network: 'Errore di rete. Controlla la tua connessione.',
-      timeout: 'Timeout della richiesta. Riprova.',
-    },
     common: {
       close: 'Chiudi',
       cancel: 'Annulla',
@@ -1396,11 +1376,6 @@ export const translations = {
       closeMenu: '关闭菜单',
       mainNavigation: '主导航',
     },
-    errors: {
-      generic: '出错了，请重试。',
-      network: '网络错误，请检查您的连接。',
-      timeout: '请求超时，请重试。',
-    },
     common: {
       close: '关闭',
       cancel: '取消',
@@ -1596,11 +1571,6 @@ export const translations = {
       sendMessage: 'संदेश भेजें',
       closeMenu: 'मेनू बंद करें',
       mainNavigation: 'मुख्य नेविगेशन',
-    },
-    errors: {
-      generic: 'कुछ गलत हो गया। कृपया पुनः प्रयास करें।',
-      network: 'नेटवर्क त्रुटि। कृपया अपना कनेक्शन जांचें।',
-      timeout: 'अनुरोध समय समाप्त। कृपया पुनः प्रयास करें।',
     },
     common: {
       close: 'बंद करें',
