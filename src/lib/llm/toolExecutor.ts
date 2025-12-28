@@ -68,7 +68,7 @@ export async function executeTool(
           try {
             // Use findPlaces for general locations (cities, ski resorts, etc.)
             const resolveResult = await executeTool('findPlaces', {
-              query: locationName.trim(),
+              nameMatch: locationName.trim(),
               limit: 1
             } as any);
 
