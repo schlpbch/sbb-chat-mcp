@@ -164,7 +164,7 @@ export default function FeedbackModal({
                 type === 'bug'
                   ? 'Describe the bug and steps to reproduce...'
                   : type === 'feature'
-                  ? 'Describe the feature you'd like to see...'
+                  ? "Describe the feature you'd like to see..."
                   : 'Share your thoughts...'
               }
               required
