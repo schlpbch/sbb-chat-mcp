@@ -150,64 +150,69 @@ export function normalizeCompareData(
 
   // Transform routes
   const routes: Route[] = rawRoutes.map((trip: any, idx: number) => {
-    // DEBUG: Log the actual trip structure
-    if (idx === 0) {
-      logger.debug('normalizeCompareData', 'First trip structure', {
-        trip,
-        hasLegs: !!trip.legs,
-        legsLength: trip.legs?.length,
-        firstLeg: trip.legs?.[0],
-        lastLeg: trip.legs?.[trip.legs?.length - 1],
-      });
-    }
+    // Helper function to extract time from leg
+    const extractTimeFromLeg = (leg: any, isStart: boolean): string | null => {
+      if (!leg) return null;
+      
+      // For serviceJourney legs (train/bus)
+      if (leg.serviceJourney?.stopPoints) {
+        const points = leg.serviceJourney.stopPoints;
+        const point = isStart ? points[0] : points[points.length - 1];
+        const timeData = isStart ? point?.departure : point?.arrival;
+        return timeData?.timeAimed || timeData?.timeRt || null;
+      }
+      
+      // For walking legs or simple legs
+      if (isStart) {
+        return leg.start?.departure?.timeAimed || 
+               leg.departure || 
+               null;
+      } else {
+        return leg.end?.arrival?.timeAimed || 
+               leg.arrival || 
+               null;
+      }
+    };
 
-    // Extract departure time from first leg
+    // Extract times from legs
     const firstLeg = trip.legs?.[0];
     const lastLeg = trip.legs?.[trip.legs?.length - 1];
     
-    const departureTime =
-      trip.departureTime ||
-      trip.departure ||
-      trip.origin?.departureTime ||
-      trip.origin?.time ||
-      trip.summary?.departure ||
-      firstLeg?.start?.departure?.timeAimed ||
-      firstLeg?.departure ||
-      (trip.legs?.length > 0 ? firstLeg?.serviceJourney?.stopPoints?.[0]?.departure?.timeAimed : null) ||
-      null;
+    const departureTime = extractTimeFromLeg(firstLeg, true) ||
+                         trip.departure ||
+                         trip.departureTime ||
+                         null;
     
-    const arrivalTime =
-      trip.arrivalTime ||
-      trip.arrival ||
-      trip.destination?.arrivalTime ||
-      trip.destination?.time ||
-      trip.summary?.arrival ||
-      lastLeg?.end?.arrival?.timeAimed ||
-      lastLeg?.arrival ||
-      (trip.legs?.length > 0 ? lastLeg?.serviceJourney?.stopPoints?.[lastLeg.serviceJourney?.stopPoints?.length - 1]?.arrival?.timeAimed : null) ||
-      null;
+    const arrivalTime = extractTimeFromLeg(lastLeg, false) ||
+                       trip.arrival ||
+                       trip.arrivalTime ||
+                       null;
 
-    // DEBUG: Log extracted times
+    // DEBUG: Log extracted times for first route
     if (idx === 0) {
-      logger.debug('normalizeCompareData', 'Extracted times', {
+      logger.debug('normalizeCompareData', 'Route extraction', {
+        hasLegs: !!trip.legs,
+        legsCount: trip.legs?.length,
         departureTime,
         arrivalTime,
         duration: trip.duration,
+        firstLegType: firstLeg?.type,
+        lastLegType: lastLeg?.type,
       });
     }
 
     return {
       id: trip.id || `route-${idx}`,
       name: trip.name || `Option ${idx + 1}`,
-      duration: trip.duration || trip.summary?.duration || 'PT0M',
+      duration: trip.duration || 'PT0M',
       transfers: trip.transfers !== undefined
         ? trip.transfers
-        : (trip.summary?.transfers || (trip.legs?.length ? trip.legs.length - 1 : 0)),
+        : (trip.legs?.length ? trip.legs.filter((l: any) => l.serviceJourney).length - 1 : 0),
       departure: departureTime || new Date().toISOString(),
       arrival: arrivalTime || new Date().toISOString(),
-      price: trip.price || trip.summary?.price,
-      co2: trip.co2 || trip.trainCO2 || trip.summary?.co2,
-      occupancy: trip.occupancy || trip.summary?.occupancy,
+      price: trip.price,
+      co2: trip.co2 || trip.trainCO2,
+      occupancy: trip.occupancy,
       score: trip.score !== undefined ? trip.score : 100.0,
       legs: trip.legs || [],
     };
@@ -225,7 +230,8 @@ export function normalizeCompareData(
     origin,
     destination,
     routeCount: routes.length,
-    firstRoute: routes[0],
+    firstRouteDeparture: routes[0]?.departure,
+    firstRouteArrival: routes[0]?.arrival,
   });
 
   return normalized;
