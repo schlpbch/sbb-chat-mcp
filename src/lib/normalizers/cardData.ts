@@ -109,7 +109,9 @@ export function normalizeCompareData(
   raw: unknown,
   params?: { origin?: string; destination?: string; criteria?: string }
 ): NormalizedCompareData {
-  logger.debug('normalizeCompareData', 'Input data', raw);
+  // ALWAYS log raw MCP response for debugging
+  console.log('=== RAW MCP COMPARE RESPONSE ===', JSON.stringify(raw, null, 2));
+  logger.debug('normalizeCompareData', 'Raw MCP response', raw);
 
   if (!raw || typeof raw !== 'object') {
     throw new Error('Invalid compare data: expected object');
