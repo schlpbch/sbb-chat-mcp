@@ -4,6 +4,7 @@ import { useMemo } from 'react';
 import StationCard from '@/components/cards/StationCard';
 import TripCard from '@/components/cards/TripCard';
 import WeatherCard from '@/components/cards/WeatherCard';
+import SnowCard from '@/components/cards/SnowCard';
 import BoardCard from '@/components/cards/BoardCard';
 import EcoCard from '@/components/cards/EcoCard';
 import ItineraryCard from '@/components/cards/ItineraryCard';
@@ -61,6 +62,9 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   
   // Weather results
   if (toolName === 'getWeather') return result ? <WeatherCard key={idx} data={result} language={language} /> : null;
+  
+  // Snow conditions
+  if (toolName === 'getSnowConditions') return result ? <SnowCard key={idx} data={result} language={language} /> : null;
   
   // Departures/Arrivals
   if (toolName === 'getPlaceEvents') return result ? <BoardCard key={idx} data={result} language={language} /> : null;
