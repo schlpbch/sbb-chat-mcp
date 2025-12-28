@@ -58,27 +58,38 @@ export async function executeTool(
       
       if (!hasLatLon) {
         const locationName = (params as any).locationName;
-        console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
         
-        // Use findPlaces for general locations (cities, ski resorts, etc.)
-        const resolveResult = await executeTool('findPlaces', {
-          query: locationName,
-          limit: 1
-        } as any);
-
-        if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
-          const place = resolveResult.data[0];
-          const lat = place.centroid?.latitude || place.location?.latitude;
-          const lon = place.centroid?.longitude || place.location?.longitude;
-          
-          if (lat !== undefined && lon !== undefined) {
-            console.log(`[toolExecutor] Resolved "${locationName}" to coordinates: ${lat}, ${lon}`);
-            params = { ...params, latitude: lat, longitude: lon, locationName } as any;
-          } else {
-            console.warn(`[toolExecutor] Could not find coordinates for "${locationName}"`);
-          }
+        // Validate locationName is not empty
+        if (!locationName || typeof locationName !== 'string' || locationName.trim() === '') {
+          console.warn(`[toolExecutor] Invalid locationName: "${locationName}"`);
         } else {
-          console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`);
+          console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
+          
+          try {
+            // Use findPlaces for general locations (cities, ski resorts, etc.)
+            const resolveResult = await executeTool('findPlaces', {
+              query: locationName.trim(),
+              limit: 1
+            } as any);
+
+            if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
+              const place = resolveResult.data[0];
+              const lat = place.centroid?.latitude || place.location?.latitude;
+              const lon = place.centroid?.longitude || place.location?.longitude;
+              
+              if (lat !== undefined && lon !== undefined) {
+                console.log(`[toolExecutor] Resolved "${locationName}" to coordinates: ${lat}, ${lon}`);
+                params = { ...params, latitude: lat, longitude: lon, locationName } as any;
+              } else {
+                console.warn(`[toolExecutor] Could not find coordinates for "${locationName}"`);
+              }
+            } else {
+              console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`, resolveResult.error);
+            }
+          } catch (error) {
+            console.error(`[toolExecutor] Error resolving location "${locationName}":`, error);
+            // Continue without coordinates - let the weather API handle it
+          }
         }
       }
     }
