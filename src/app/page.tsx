@@ -12,6 +12,7 @@ import { translations } from '@/lib/i18n';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import HelpButton from '@/components/HelpButton';
+import MarkdownHelpTooltip from '@/components/MarkdownHelpTooltip';
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>('en');
@@ -158,13 +159,15 @@ export default function Home() {
                     style={{ minHeight: '52px', maxHeight: '120px' }}
                   />
                 </div>
-                <button
-                  type="submit"
-                  onClick={() => handleSendMessage()}
-                  disabled={isLoading || !input.trim()}
-                  aria-label={isLoading ? 'Sending message' : 'Send message'}
-                  className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#EB0000] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
-                >
+                <div className="flex items-center gap-2">
+                  <MarkdownHelpTooltip />
+                  <button
+                    type="submit"
+                    onClick={() => handleSendMessage()}
+                    disabled={isLoading || !input.trim()}
+                    aria-label={isLoading ? 'Sending message' : 'Send message'}
+                    className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#EB0000] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+                  >
                   {isLoading ? (
                     <>
                       <svg
