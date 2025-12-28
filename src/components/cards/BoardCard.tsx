@@ -1,5 +1,8 @@
 'use client';
 
+import type { Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
+
 interface BoardCardProps {
   data: {
     station?: string;
@@ -14,9 +17,11 @@ interface BoardCardProps {
       type?: string;
     }>;
   };
+  language: Language;
 }
 
-export default function BoardCard({ data }: BoardCardProps) {
+export default function BoardCard({ data, language }: BoardCardProps) {
+  const t = translations[language];
   const { station, type = 'departures', connections = [] } = data;
   
   // Handle raw MCP format - try multiple possible field names
@@ -102,7 +107,7 @@ export default function BoardCard({ data }: BoardCardProps) {
     <article
       className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
       data-testid="board-card"
-      aria-label={`${isDeparture ? 'Departures' : 'Arrivals'} board for ${finalStation || 'station'}`}
+      aria-label={`${isDeparture ? t.board.departures : t.board.arrivals} board for ${finalStation || t.board.station}`}
     >
       {/* Compact Header */}
       <div className={`px-4 py-2 ${isDeparture ? 'bg-linear-to-r from-purple-600 to-purple-700' : 'bg-linear-to-r from-blue-600 to-blue-700'}`}>
@@ -115,8 +120,8 @@ export default function BoardCard({ data }: BoardCardProps) {
             )}
           </svg>
           <div>
-            <h3 className="text-lg font-bold">{isDeparture ? 'Departures' : 'Arrivals'}</h3>
-            <p className="text-xs text-purple-100">{finalStation || 'Station'}</p>
+            <h3 className="text-lg font-bold">{isDeparture ? t.board.departures : t.board.arrivals}</h3>
+            <p className="text-xs text-purple-100">{finalStation || t.board.station}</p>
           </div>
         </div>
       </div>
@@ -161,7 +166,7 @@ export default function BoardCard({ data }: BoardCardProps) {
                   {/* Platform */}
                   {conn.platform && (
                     <div className="text-right shrink-0">
-                      <p className="text-xs text-gray-500">Pl.</p>
+                      <p className="text-xs text-gray-500">{t.cards.platform}</p>
                       <p className="text-lg font-bold text-purple-600">
                         {conn.platform}
                       </p>
@@ -176,7 +181,7 @@ export default function BoardCard({ data }: BoardCardProps) {
             <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="text-sm text-gray-500">No {isDeparture ? 'departures' : 'arrivals'}</p>
+            <p className="text-sm text-gray-500">{isDeparture ? t.board.noDepartures : t.board.noArrivals}</p>
           </div>
         )}
       </div>
@@ -185,7 +190,7 @@ export default function BoardCard({ data }: BoardCardProps) {
       {finalConnections.length > 5 && (
         <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
           <p className="text-xs text-gray-600 text-center">
-            +{finalConnections.length - 5} more
+            +{finalConnections.length - 5} {t.board.more}
           </p>
         </div>
       )}

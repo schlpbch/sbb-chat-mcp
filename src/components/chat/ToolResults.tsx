@@ -51,10 +51,10 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   if (toolName === 'getWeather') return result ? <WeatherCard key={idx} data={result} language={language} /> : null;
   
   // Departures/Arrivals
-  if (toolName === 'getPlaceEvents') return result ? <BoardCard key={idx} data={result} /> : null;
+  if (toolName === 'getPlaceEvents') return result ? <BoardCard key={idx} data={result} language={language} /> : null;
   
   // Eco comparison
-  if (toolName === 'getEcoComparison') return result ? <EcoCard key={idx} data={result} /> : null;
+  if (toolName === 'getEcoComparison') return result ? <EcoCard key={idx} data={result} language={language} /> : null;
   
   // Route comparison
   if (toolName === 'compareRoutes' || toolName === 'journeyRanking') {
@@ -96,11 +96,11 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
     };
     
     console.log('[ToolResults] Transformed data:', transformedData);
-    return <CompareCard key={idx} data={transformedData} />;
+    return <CompareCard key={idx} data={transformedData} language={language} />;
   }
   
   // Itinerary
-  if (result?.destination && result?.activities) return <ItineraryCard key={idx} data={result} />;
+  if (result?.destination && result?.activities) return <ItineraryCard key={idx} data={result} language={language} />;
   
   return null;
   })}

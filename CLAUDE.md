@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-SBB Chat MCP is a Next.js 16 application that provides a Swiss travel assistant with MCP (Model Context Protocol) integration. It features an AI-powered chat interface, interactive map with tourist attractions, and tools for testing MCP servers.
+**sbb-travel-companion** is a Next.js 16 application that provides a Swiss travel assistant with MCP (Model Context Protocol) integration. It features an AI-powered chat interface, interactive map with tourist attractions, and tools for testing MCP servers.
 
 ## Tech Stack
 
@@ -74,6 +74,7 @@ pnpm run lint         # Run ESLint
 ## Environment Variables
 
 Create `.env.local` with:
+
 ```
 GOOGLE_GEMINI_API_KEY=your_gemini_api_key
 MCP_SERVER_URL_STAGING=https://journey-service-mcp-staging-xxx.run.app
@@ -85,11 +86,13 @@ MCP_SERVER_URL_DEV=http://localhost:8080
 ### Dark Mode (Tailwind v4)
 
 Dark mode is configured via `@variant` in `globals.css`:
+
 ```css
 @variant dark (&:where(.dark, .dark *));
 ```
 
 The `ThemeProvider` toggles the `.dark` class on `<html>`. Use `dark:` prefix for dark mode styles:
+
 ```tsx
 <div className="bg-white dark:bg-gray-900">
 ```
@@ -97,6 +100,7 @@ The `ThemeProvider` toggles the `.dark` class on `<html>`. Use `dark:` prefix fo
 ### Page Layout Pattern
 
 All pages should include Navbar and Menu for consistent navigation:
+
 ```tsx
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
@@ -128,6 +132,7 @@ export default function Page() {
 ### MCP Server Communication
 
 Use the proxy routes to avoid CORS issues:
+
 ```typescript
 // Fetch tools
 fetch(`/api/mcp-proxy/tools?server=${encodeURIComponent(mcpServerUrl)}`)
@@ -142,6 +147,7 @@ fetch(`/api/mcp-proxy/tools/${toolName}?server=${encodeURIComponent(mcpServerUrl
 ### Internationalization
 
 Import translations from `@/lib/i18n`:
+
 ```typescript
 import { Language, translations } from '@/lib/i18n';
 

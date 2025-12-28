@@ -3,6 +3,7 @@
 import { useFavoriteStations } from '@/hooks/useFavoriteStations';
 import { useToast } from '@/components/ui/Toast';
 import type { Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 
 interface StationCardProps {
  data: {
