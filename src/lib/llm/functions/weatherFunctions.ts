@@ -38,18 +38,18 @@ export const weatherFunctions = [
       properties: {
         latitude: {
           type: 'number',
-          description: 'Latitude of the ski resort or mountain location',
+          description: 'Latitude of the ski resort or mountain location (optional if locationName is provided)',
         },
         longitude: {
           type: 'number',
-          description: 'Longitude of the ski resort or mountain location',
+          description: 'Longitude of the ski resort or mountain location (optional if locationName is provided)',
         },
         locationName: {
           type: 'string',
-          description: 'Name of the ski resort or location',
+          description: 'Name of the ski resort or location (will be automatically resolved to coordinates)',
         },
       },
-      required: ['latitude', 'longitude'],
+      required: [],
     },
   },
 ];
