@@ -32,6 +32,12 @@ export function useChat(language: Language) {
   const [textOnlyMode, setTextOnlyMode] = useState(false);
   const [error, setError] = useState<Message['error'] | null>(null);
   const [retryCount, setRetryCount] = useState(0);
+  
+  // Prompt history state
+  const [promptHistory, setPromptHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [currentDraft, setCurrentDraft] = useState('');
+  
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { addSearch } = useRecentSearches();
@@ -56,6 +62,18 @@ export function useChat(language: Language) {
     // Track in recent searches (only for new messages, not retries)
     if (!isRetry) {
       addSearch(messageContent);
+      
+      // Add to prompt history (avoid duplicates of last entry)
+      setPromptHistory(prev => {
+        if (prev[prev.length - 1] === messageContent) {
+          return prev;
+        }
+        return [...prev, messageContent];
+      });
+      
+      // Reset history navigation
+      setHistoryIndex(-1);
+      setCurrentDraft('');
     }
 
     const userMessage: Message = {
@@ -231,9 +249,50 @@ export function useChat(language: Language) {
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
+    // Handle Enter key
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       handleSendMessage();
+      return;
+    }
+    
+    // Handle Arrow Up - navigate to previous prompt
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      
+      if (promptHistory.length === 0) return;
+      
+      // Save current draft if we're at the bottom
+      if (historyIndex === -1) {
+        setCurrentDraft(input);
+      }
+      
+      const newIndex = historyIndex === -1 
+        ? promptHistory.length - 1 
+        : Math.max(0, historyIndex - 1);
+      
+      setHistoryIndex(newIndex);
+      setInput(promptHistory[newIndex]);
+      return;
+    }
+    
+    // Handle Arrow Down - navigate to next prompt
+    if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      
+      if (historyIndex === -1) return;
+      
+      const newIndex = historyIndex + 1;
+      
+      if (newIndex >= promptHistory.length) {
+        // Restore draft and reset
+        setHistoryIndex(-1);
+        setInput(currentDraft);
+      } else {
+        setHistoryIndex(newIndex);
+        setInput(promptHistory[newIndex]);
+      }
+      return;
     }
   };
 
