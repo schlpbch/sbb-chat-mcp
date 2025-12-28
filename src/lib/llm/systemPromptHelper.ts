@@ -50,6 +50,21 @@ export function generateSystemPrompt(
    - "Weather in Lugano" → getWeather({locationName: "Lugano"})
    - "Snow in St. Moritz" → getWeather({locationName: "St. Moritz"})
 
+5. ECO COMPARISON → Use getEcoComparison
+   Triggers: "CO2", "carbon", "environmental impact", "eco", "emissions", "save by taking train"
+   **CRITICAL: Automatically extract tripId from previous trip results!**
+   
+   WORKFLOW:
+   - If user asks about CO2/eco for a trip you just showed, extract the trip ID from the trip data
+   - Trip IDs are in the format: Trip::XXXXX (e.g., Trip::1234567890)
+   - Look in the previous tool results for findTrips to find the trip ID
+   - DO NOT ask the user for the trip ID - extract it automatically!
+   
+   Examples:
+   - User: "Find trip from Bern to Paris" → [you call findTrips, get Trip::123456]
+   - User: "How much CO2 do I save?" → getEcoComparison({tripId: "Trip::123456"})
+   - User: "What's the environmental impact?" → getEcoComparison({tripId: "Trip::123456"})
+
 COMMON STATION IDS (for quick reference):
 Zurich HB: 8503000, Bern: 8507000, Geneva: 8501008, Basel SBB: 8500010
 Lausanne: 8501120, Lucerne: 8505000, Thun: 8507100, Interlaken Ost: 8507492`;
