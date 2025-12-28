@@ -191,13 +191,13 @@ GEMINI_MODEL=gemini-1.5-flash
 - ✅ Context management and conversation state
 - ✅ 25-question evaluation framework
 
-### Phase 4 - In Progress
+### Phase 4 - ✅ Complete
 
 - ✅ Cross-component map interactivity
 - ✅ Rich message cards for all tool types
-- ⏳ Voice input
-- ⏳ Export itineraries
-- ⏳ Chat persistence
+- ✅ Voice input with Web Speech API
+- ✅ Export itineraries (text, JSON, PDF)
+- ✅ Chat persistence with localStorage
 
 ### Phase 5 - Planned
 
