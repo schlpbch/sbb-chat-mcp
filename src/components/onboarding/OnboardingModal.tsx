@@ -236,29 +236,28 @@ export default function OnboardingModal({
               ← Previous
             </button>
 
-            <div className="flex gap-3">
+            <button
+              onClick={onSkip}
+              className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+            >
+              Skip
+            </button>
+
+            {isLastStep ? (
               <button
-                onClick={onSkip}
-                className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
+                onClick={onComplete}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-sm"
               >
-                Skip
+                Start Chatting →
               </button>
-              {isLastStep ? (
-                <button
-                  onClick={onComplete}
-                  className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-sm"
-                >
-                  Start Chatting →
-                </button>
-              ) : (
-                <button
-                  onClick={onNext}
-                  className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-sm"
-                >
-                  Next →
-                </button>
-              )}
-            </div>
+            ) : (
+              <button
+                onClick={onNext}
+                className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-sm"
+              >
+                Next →
+              </button>
+            )}
           </div>
         </div>
       </div>
