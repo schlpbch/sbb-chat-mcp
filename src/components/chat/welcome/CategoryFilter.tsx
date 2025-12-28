@@ -22,7 +22,7 @@ export default function CategoryFilter({
         onClick={() => onSelectCategory(null)}
         className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
           selectedCategory === null
-            ? 'bg-sbb-red text-white shadow-lg'
+            ? 'bg-gray-200 text-gray-800 border border-gray-300'
             : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
         }`}
       >
@@ -37,7 +37,7 @@ export default function CategoryFilter({
             onClick={() => onSelectCategory(group.name)}
             className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
               selectedCategory === group.name
-                ? 'bg-sbb-red text-white shadow-lg'
+                ? 'bg-gray-200 text-gray-800 border border-gray-300'
                 : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-200'
             }`}
           >
