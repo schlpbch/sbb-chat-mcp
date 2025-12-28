@@ -29,7 +29,7 @@ export default function TripCard({ data, language }: TripCardProps) {
  return {
  name: point?.place?.name || 'Unknown',
  time: timeData?.timeAimed || timeData?.timeRt || null,
- platform: point?.platform || null,
+ platform: point?.platform || point?.forBoarding?.plannedQuay?.name || null,
  delay: timeData?.delayText || null,
  };
  }
@@ -38,17 +38,17 @@ export default function TripCard({ data, language }: TripCardProps) {
  const point = leg.start;
  return {
  name: point?.place?.name || leg.origin?.name || 'Unknown',
- time: leg.departure || leg.start?.departure?.timeAimed || null,
- platform: null,
- delay: null,
+ time: leg.departure || point?.departure?.timeAimed || null,
+ platform: point?.platform || point?.forBoarding?.plannedQuay?.name || null,
+ delay: point?.departure?.delayText || null,
  };
  } else {
  const point = leg.end;
  return {
  name: point?.place?.name || leg.destination?.name || 'Unknown',
- time: leg.arrival || leg.end?.arrival?.timeAimed || null,
- platform: null,
- delay: null,
+ time: leg.arrival || point?.arrival?.timeAimed || null,
+ platform: point?.platform || point?.forAlighting?.plannedQuay?.name || null,
+ delay: point?.arrival?.delayText || null,
  };
  }
  };
