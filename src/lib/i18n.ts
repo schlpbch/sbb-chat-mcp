@@ -1269,6 +1269,7 @@ export const translations = {
       noDepartures: '无出发列车',
       noArrivals: '无到达列车',
       more: '更多',
+      showLess: '显示更少',
     },
     station: {
       unknownStation: '未知车站',
@@ -1465,6 +1466,7 @@ export const translations = {
       noDepartures: 'कोई प्रस्थान नहीं',
       noArrivals: 'कोई आगमन नहीं',
       more: 'और',
+      showLess: 'कम दिखाएं',
     },
     station: {
       unknownStation: 'अज्ञात स्टेशन',
