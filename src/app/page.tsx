@@ -13,6 +13,9 @@ import { useOnboarding } from '@/hooks/useOnboarding';
 import OnboardingModal from '@/components/onboarding/OnboardingModal';
 import HelpButton from '@/components/HelpButton';
 import MarkdownHelpTooltip from '@/components/MarkdownHelpTooltip';
+import { useFeedback } from '@/hooks/useFeedback';
+import FeedbackButton from '@/components/feedback/FeedbackButton';
+import FeedbackModal from '@/components/feedback/FeedbackModal';
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>('en');
@@ -41,6 +44,16 @@ export default function Home() {
     skipOnboarding,
     openOnboarding,
   } = useOnboarding();
+  
+  const {
+    isOpen: isFeedbackOpen,
+    isSubmitting: isFeedbackSubmitting,
+    error: feedbackError,
+    success: feedbackSuccess,
+    openFeedback,
+    closeFeedback,
+    submitFeedback,
+  } = useFeedback();
   
   const t = translations[language];
 
@@ -218,6 +231,19 @@ export default function Home() {
 
       {/* Help Button */}
       {!isOnboardingOpen && <HelpButton onClick={openOnboarding} />}
+
+      {/* Feedback Button */}
+      <FeedbackButton onClick={openFeedback} />
+
+      {/* Feedback Modal */}
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        isSubmitting={isFeedbackSubmitting}
+        error={feedbackError}
+        success={feedbackSuccess}
+        onClose={closeFeedback}
+        onSubmit={submitFeedback}
+      />
     </div>
   );
 }
