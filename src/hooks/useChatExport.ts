@@ -1,7 +1,7 @@
 'use client';
 
 import { exportChatAsText, exportChatAsJSON } from '@/lib/exportUtils';
-import type { Message } from './useChatStorage';
+import type { Message } from '@/types/chat';
 
 /**
  * Custom hook for handling chat export functionality

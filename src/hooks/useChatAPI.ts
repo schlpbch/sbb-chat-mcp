@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import type { Language } from '@/lib/i18n';
-import type { Message } from './useChatStorage';
+import type { Message } from '@/types/chat';
 
 /**
  * Custom hook for handling chat API communication

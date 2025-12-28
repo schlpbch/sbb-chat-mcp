@@ -1,37 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import type { Language } from '@/lib/i18n';
+import type { CompareCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
-
-interface ComparisonRoute {
-  id: string;
-  name: string;
-  duration: string;
-  transfers: number;
-  departure: string;
-  arrival: string;
-  price?: number;
-  co2?: number;
-  occupancy?: string;
-  score?: number;
-  legs?: any[];
-}
-
-interface CompareCardProps {
-  data: {
-    origin: string;
-    destination: string;
-    criteria: 'fastest' | 'fewest_changes' | 'earliest_arrival' | 'balanced';
-    routes: ComparisonRoute[];
-    analysis?: {
-      recommendation?: string;
-      summary?: string;
-      tradeoffs?: string[];
-    };
-  };
-  language: Language;
-}
 
 export default function CompareCard({ data, language }: CompareCardProps) {
   const t = translations[language];

@@ -1,18 +1,13 @@
 'use client';
 
-import type { Language } from '@/lib/i18n';
+import type { WeatherCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
-
-interface WeatherCardProps {
-  data: any; // Using any since the structure varies
-  language: Language;
-}
 
 export default function WeatherCard({ data, language }: WeatherCardProps) {
   const t = translations[language];
  // Extract current weather from hourly data (first index)
- const hourly = data?.hourly || {};
- const daily = data?.daily || {};
+ const hourly = data?.hourly;
+ const daily = data?.daily;
  
  const location = data?.locationName || data?.location || 'Unknown';
  const temperature = hourly?.temperature_2m?.[0];
@@ -44,9 +39,9 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  // Build forecast from daily data
  const forecast = daily?.time?.slice(0, 3).map((date: string, idx: number) => ({
  day: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
- high: daily.temperature_2m_max?.[idx],
- low: daily.temperature_2m_min?.[idx],
- condition: getConditionFromCode(daily.weather_code?.[idx])
+ high: daily?.temperature_2m_max?.[idx],
+ low: daily?.temperature_2m_min?.[idx],
+ condition: getConditionFromCode(daily?.weather_code?.[idx])
  })) || [];
 
  const getWeatherIcon = (cond?: string) => {

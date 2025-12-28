@@ -1,13 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-
-export interface Message {
-  id: string;
-  role: 'user' | 'assistant';
-  content: string;
-  timestamp: Date;
-}
+import type { Message } from '@/types/chat';
 
 const MAX_STORED_MESSAGES = 50;
 

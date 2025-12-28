@@ -4,16 +4,13 @@ import { useRef, useEffect } from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import type { Language } from '@/lib/i18n';
+import type { Message } from '@/types/chat';
 import { useChatStorage } from '@/hooks/useChatStorage';
 import { useChatAPI } from '@/hooks/useChatAPI';
 import { useChatExport } from '@/hooks/useChatExport';
 
-export interface Message {
- id: string;
- role: 'user' | 'assistant';
- content: string;
- timestamp: Date;
-}
+// Re-export Message type for backward compatibility
+export type { Message };
 
 interface ChatPanelProps {
  language: Language;

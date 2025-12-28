@@ -1,19 +1,7 @@
 'use client';
 
-import type { Language } from '@/lib/i18n';
+import type { EcoCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
-
-interface EcoCardProps {
- data: {
- route?: string;
- trainCO2?: number;
- carCO2?: number;
- planeCO2?: number;
- savings?: number;
- treesEquivalent?: number;
- };
- language: Language;
-}
 
 export default function EcoCard({ data, language }: EcoCardProps) {
  const t = translations[language];
