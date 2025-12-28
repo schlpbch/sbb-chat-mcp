@@ -13,16 +13,62 @@ interface SnowCardProps {
 function SnowCard({ data, language }: SnowCardProps) {
   const t = translations[language];
   
-  const location = data?.locationName || data?.location || data?.resortName || 'Unknown';
-  const snowDepth = data?.snowDepth || data?.snow_depth;
-  const snowfall24h = data?.snowfall24h || data?.snowfall_24h || data?.newSnow;
-  const snowfall7d = data?.snowfall7d || data?.snowfall_7d;
-  const lastSnowfall = data?.lastSnowfall || data?.last_snowfall;
-  const temperature = data?.temperature || data?.temp;
-  const conditions = data?.conditions || data?.skiConditions;
-  const liftsOpen = data?.liftsOpen || data?.lifts_open;
-  const slopesOpen = data?.slopesOpen || data?.slopes_open;
-  const avalancheRisk = data?.avalancheRisk || data?.avalanche_risk;
+  // Debug logging to see what data we're receiving
+  console.log('=== SNOW CARD DATA ===', JSON.stringify(data, null, 2));
+  
+  const location = data?.locationName || data?.location || data?.resortName || data?.name || 'Unknown';
+  
+  // Try multiple field name variations for snow depth
+  const snowDepth = data?.snowDepth || 
+                   data?.snow_depth || 
+                   data?.currentSnowDepth ||
+                   data?.current_snow_depth ||
+                   data?.depth ||
+                   data?.snowDepthCm;
+                   
+  const snowfall24h = data?.snowfall24h || 
+                     data?.snowfall_24h || 
+                     data?.newSnow ||
+                     data?.new_snow ||
+                     data?.snowfall24Hours;
+                     
+  const snowfall7d = data?.snowfall7d || 
+                    data?.snowfall_7d ||
+                    data?.snowfall7Days;
+                    
+  const lastSnowfall = data?.lastSnowfall || 
+                      data?.last_snowfall ||
+                      data?.lastSnowDate;
+                      
+  const temperature = data?.temperature || 
+                     data?.temp ||
+                     data?.currentTemp ||
+                     data?.current_temp;
+                     
+  const conditions = data?.conditions || 
+                    data?.skiConditions ||
+                    data?.ski_conditions ||
+                    data?.description;
+                    
+  const liftsOpen = data?.liftsOpen || 
+                   data?.lifts_open ||
+                   data?.openLifts;
+                   
+  const slopesOpen = data?.slopesOpen || 
+                    data?.slopes_open ||
+                    data?.openSlopes;
+                    
+  const avalancheRisk = data?.avalancheRisk || 
+                       data?.avalanche_risk ||
+                       data?.avalancheDanger;
+
+  console.log('=== EXTRACTED SNOW DATA ===', {
+    location,
+    snowDepth,
+    snowfall24h,
+    temperature,
+    conditions,
+  });
 
   return (
     <article
