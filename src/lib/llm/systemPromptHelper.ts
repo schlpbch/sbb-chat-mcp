@@ -45,12 +45,20 @@ export function generateSystemPrompt(
    - "Find stations near Matterhorn" → findStopPlacesByName({query: "Matterhorn"})
 
 4. WEATHER → Use getWeather
-   Triggers: "weather", "forecast", "snow conditions", "temperature"
+   Triggers: "weather", "forecast", "temperature", "rain", "wind"
    Examples:
    - "Weather in Lugano" → getWeather({locationName: "Lugano"})
-   - "Snow in St. Moritz" → getWeather({locationName: "St. Moritz"})
+   - "Temperature in Zurich" → getWeather({locationName: "Zurich"})
 
-5. ECO COMPARISON → Use getEcoComparison
+5. SNOW CONDITIONS → Use getSnowConditions
+   Triggers: "snow", "snow conditions", "ski", "skiing", "snowfall", "snow depth"
+   **Use this for ski resorts and mountain locations!**
+   Examples:
+   - "Snow conditions in St. Moritz" → getSnowConditions({locationName: "St. Moritz"})
+   - "How much snow in Zermatt" → getSnowConditions({locationName: "Zermatt"})
+   - "Ski conditions in Verbier" → getSnowConditions({locationName: "Verbier"})
+
+6. ECO COMPARISON → Use getEcoComparison
    Triggers: "CO2", "carbon", "environmental impact", "eco", "emissions", "save by taking train"
    **CRITICAL: Automatically extract tripId from previous trip results!**
    
