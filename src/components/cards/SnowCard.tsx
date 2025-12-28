@@ -16,59 +16,44 @@ function SnowCard({ data, language }: SnowCardProps) {
   // Debug logging to see what data we're receiving
   console.log('=== SNOW CARD DATA ===', JSON.stringify(data, null, 2));
   
-  // Extract structured data with multiple field name variations
-  const location = data?.locationName || data?.location || data?.resortName || data?.name || 'Unknown';
+  // Extract from hourly data (similar to WeatherCard)
+  const hourly = data?.hourly;
+  const daily = data?.daily;
   
-  const snowDepth = data?.snowDepth || 
-                   data?.snow_depth || 
-                   data?.currentSnowDepth ||
-                   data?.current_snow_depth ||
-                   data?.depth ||
-                   data?.snowDepthCm;
-                   
-  const snowfall24h = data?.snowfall24h || 
-                     data?.snowfall_24h || 
-                     data?.newSnow ||
-                     data?.new_snow ||
-                     data?.snowfall24Hours;
-                     
-  const snowfall7d = data?.snowfall7d || 
-                    data?.snowfall_7d ||
-                    data?.snowfall7Days;
-                    
-  const lastSnowfall = data?.lastSnowfall || 
-                      data?.last_snowfall ||
-                      data?.lastSnowDate;
-                      
-  const temperature = data?.temperature || 
-                     data?.temp ||
-                     data?.currentTemp ||
-                     data?.current_temp;
-                     
-  const conditions = data?.conditions || 
-                    data?.skiConditions ||
-                    data?.ski_conditions ||
-                    data?.description;
-                    
-  const liftsOpen = data?.liftsOpen || 
-                   data?.lifts_open ||
-                   data?.openLifts;
-                   
-  const slopesOpen = data?.slopesOpen || 
-                    data?.slopes_open ||
-                    data?.openSlopes;
-                    
-  const avalancheRisk = data?.avalancheRisk || 
-                       data?.avalanche_risk ||
-                       data?.avalancheDanger;
+  // Location name from query or coordinates
+  const location = data?.locationName || data?.location || data?.name || 'Unknown';
+  
+  // Extract current snow conditions from hourly data (first index = current)
+  const snowDepth = hourly?.snow_depth?.[0] || hourly?.snowDepth?.[0];
+  const snowfall = hourly?.snowfall?.[0];
+  const temperature = hourly?.temperature_2m?.[0] || hourly?.temperature?.[0];
+  
+  // Daily snow data
+  const snowfall24h = daily?.snowfall_sum?.[0];
+  const snowfallWeek = daily?.snowfall_sum?.slice(0, 7).reduce((a: number, b: number) => a + b, 0);
+  
+  // Weather conditions
+  const weatherCode = hourly?.weather_code?.[0];
+  const getCondition = (code?: number) => {
+    if (code === undefined) return undefined;
+    if (code >= 71 && code <= 77) return 'Snowing';
+    if (code >= 85 && code <= 86) return 'Snow showers';
+    if (code === 0) return 'Clear';
+    if (code <= 3) return 'Partly cloudy';
+    return 'Variable';
+  };
+  const conditions = getCondition(weatherCode);
 
   console.log('=== EXTRACTED SNOW DATA ===', {
     location,
     snowDepth,
+    snowfall,
     snowfall24h,
     temperature,
     conditions,
-    allDataKeys: Object.keys(data || {}),
+    hasHourly: !!hourly,
+    hasDaily: !!daily,
+    hourlyKeys: hourly ? Object.keys(hourly) : [],
   });
 
   return (
@@ -119,69 +104,40 @@ function SnowCard({ data, language }: SnowCardProps) {
               <span className="text-lg">🌨️</span>
               <div>
                 <p className="text-xs text-gray-500">Last 24h</p>
-                <p className="text-sm font-semibold text-gray-900">{snowfall24h} cm</p>
+                <p className="text-sm font-semibold text-gray-900">{Math.round(snowfall24h)} cm</p>
               </div>
             </div>
           )}
-          {snowfall7d !== undefined && (
+          {snowfallWeek !== undefined && snowfallWeek > 0 && (
             <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded">
               <span className="text-lg">📅</span>
               <div>
                 <p className="text-xs text-gray-500">Last 7 days</p>
-                <p className="text-sm font-semibold text-gray-900">{snowfall7d} cm</p>
+                <p className="text-sm font-semibold text-gray-900">{Math.round(snowfallWeek)} cm</p>
               </div>
             </div>
           )}
-          {liftsOpen !== undefined && (
+          {snowfall !== undefined && snowfall > 0 && (
             <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded">
-              <span className="text-lg">🚡</span>
+              <span className="text-lg">❄️</span>
               <div>
-                <p className="text-xs text-gray-500">Lifts Open</p>
-                <p className="text-sm font-semibold text-gray-900">{liftsOpen}</p>
-              </div>
-            </div>
-          )}
-          {slopesOpen !== undefined && (
-            <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded">
-              <span className="text-lg">⛷️</span>
-              <div>
-                <p className="text-xs text-gray-500">Slopes Open</p>
-                <p className="text-sm font-semibold text-gray-900">{slopesOpen}</p>
+                <p className="text-xs text-gray-500">Current Hour</p>
+                <p className="text-sm font-semibold text-gray-900">{Math.round(snowfall)} cm</p>
               </div>
             </div>
           )}
         </div>
 
-        {/* Additional Info */}
-        {(conditions || lastSnowfall || avalancheRisk) && (
-          <div className="mt-3 pt-3 border-t border-gray-200 space-y-2">
-            {conditions && (
-              <div className="flex items-start space-x-2">
-                <span className="text-sm">⛷️</span>
-                <div>
-                  <p className="text-xs text-gray-500">Conditions</p>
-                  <p className="text-sm text-gray-900">{conditions}</p>
-                </div>
+        {/* Weather Conditions */}
+        {conditions && (
+          <div className="mt-3 pt-3 border-t border-gray-200">
+            <div className="flex items-start space-x-2">
+              <span className="text-sm">⛷️</span>
+              <div>
+                <p className="text-xs text-gray-500">Conditions</p>
+                <p className="text-sm text-gray-900">{conditions}</p>
               </div>
-            )}
-            {lastSnowfall && (
-              <div className="flex items-start space-x-2">
-                <span className="text-sm">🕐</span>
-                <div>
-                  <p className="text-xs text-gray-500">Last Snowfall</p>
-                  <p className="text-sm text-gray-900">{lastSnowfall}</p>
-                </div>
-              </div>
-            )}
-            {avalancheRisk && (
-              <div className="flex items-start space-x-2">
-                <span className="text-sm">⚠️</span>
-                <div>
-                  <p className="text-xs text-gray-500">Avalanche Risk</p>
-                  <p className="text-sm font-semibold text-orange-600">{avalancheRisk}</p>
-                </div>
-              </div>
-            )}
+            </div>
           </div>
         )}
       </div>
