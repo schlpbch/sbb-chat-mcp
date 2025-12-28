@@ -37,24 +37,30 @@ export interface NormalizedBoardData {
  * Handles multiple possible data structures and extracts connections
  */
 export function normalizeBoardData(raw: unknown): NormalizedBoardData {
+  // ALWAYS log raw board data for debugging
+  console.log('=== RAW BOARD DATA ===', JSON.stringify(raw, null, 2));
   logger.debug('normalizeBoardData', 'Input data', raw);
 
-  // Validate with Zod schema
+  // Try Zod validation but don't fail if it doesn't match
   const parseResult = boardDataSchema.safeParse(raw);
 
   if (!parseResult.success) {
-    logger.error('normalizeBoardData', 'Validation failed', parseResult.error);
-    throw new Error('Invalid board data: validation failed');
+    logger.warn('normalizeBoardData', 'Zod validation failed, proceeding with raw data', parseResult.error);
+    // Continue with raw data instead of throwing
   }
 
-  const data = parseResult.data;
+  const data = (parseResult.success ? parseResult.data : raw) as any;
 
   // Determine type
   const type: 'departures' | 'arrivals' =
     data.type === 'arrivals' ? 'arrivals' : 'departures';
 
-  // Extract station name
-  const station = data.station || data.stationName || 'Unknown Station';
+  // Extract station name from multiple possible fields
+  const station = data.station || 
+                 data.stationName || 
+                 data.place?.name ||
+                 data.stopPlace?.name ||
+                 'Unknown Station';
 
   // Extract connections from various possible locations
   let connections: Connection[] = [];
@@ -69,10 +75,20 @@ export function normalizeBoardData(raw: unknown): NormalizedBoardData {
     connections = data.events;
   } else if (data.stationboard && Array.isArray(data.stationboard)) {
     connections = data.stationboard;
+  } else if (Array.isArray(data)) {
+    // If the data itself is an array, use it
+    connections = data;
   } else {
     logger.warn('normalizeBoardData', 'No connections found in data');
     connections = [];
   }
+
+  console.log('=== NORMALIZED BOARD DATA ===', {
+    type,
+    station,
+    connectionCount: connections.length,
+    firstConnection: connections[0],
+  });
 
   logger.debug('normalizeBoardData', 'Normalized result', {
     type,
