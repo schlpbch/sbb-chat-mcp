@@ -9,6 +9,9 @@ import MessageList from '@/components/chat/MessageList';
 import VoiceButton from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';
 import { translations } from '@/lib/i18n';
+import { useOnboarding } from '@/hooks/useOnboarding';
+import OnboardingModal from '@/components/onboarding/OnboardingModal';
+import HelpButton from '@/components/HelpButton';
 
 export default function Home() {
   const [language, setLanguage] = useState<Language>('en');
@@ -27,6 +30,16 @@ export default function Home() {
     handleSendMessage,
     handleKeyPress,
   } = useChat(language);
+  
+  const {
+    isOpen: isOnboardingOpen,
+    currentStep,
+    nextStep,
+    prevStep,
+    completeOnboarding,
+    skipOnboarding,
+    openOnboarding,
+  } = useOnboarding();
   
   const t = translations[language];
 
@@ -188,6 +201,19 @@ export default function Home() {
           </div>
         </div>
       </main>
+
+      {/* Onboarding Modal */}
+      <OnboardingModal
+        isOpen={isOnboardingOpen}
+        currentStep={currentStep}
+        onNext={nextStep}
+        onPrev={prevStep}
+        onComplete={completeOnboarding}
+        onSkip={skipOnboarding}
+      />
+
+      {/* Help Button */}
+      {!isOnboardingOpen && <HelpButton onClick={openOnboarding} />}
     </div>
   );
 }
