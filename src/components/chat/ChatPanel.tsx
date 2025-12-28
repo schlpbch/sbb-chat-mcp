@@ -1,10 +1,12 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import type { Language } from '@/lib/i18n';
-import { exportChatAsText, exportChatAsJSON } from '@/lib/exportUtils';
+import { useChatStorage } from '@/hooks/useChatStorage';
+import { useChatAPI } from '@/hooks/useChatAPI';
+import { useChatExport } from '@/hooks/useChatExport';
 
 export interface Message {
  id: string;
@@ -19,45 +21,12 @@ interface ChatPanelProps {
  onClose: () => void;
 }
 
-const CHAT_STORAGE_KEY = 'sbb-chat-history';
-const MAX_STORED_MESSAGES = 50; // Limit stored messages to prevent storage overflow
-
 export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps) {
- const [messages, setMessages] = useState<Message[]>([]);
- const [isLoading, setIsLoading] = useState(false);
+ const { messages, setMessages, clearHistory } = useChatStorage('sbb-chat-history');
+ const { sendMessage, isLoading } = useChatAPI(language, setMessages);
+ const { handleExportChat } = useChatExport(messages);
  const messagesEndRef = useRef<HTMLDivElement>(null);
  const panelRef = useRef<HTMLDivElement>(null);
-
- // Load messages from localStorage on mount
- useEffect(() => {
- try {
- const storedMessages = localStorage.getItem(CHAT_STORAGE_KEY);
- if (storedMessages) {
- const parsed = JSON.parse(storedMessages);
- // Convert timestamp strings back to Date objects
- const messagesWithDates = parsed.map((msg: any) => ({
- ...msg,
- timestamp: new Date(msg.timestamp)
- }));
- setMessages(messagesWithDates);
- }
- } catch (error) {
- console.error('Error loading chat history:', error);
- }
- }, []);
-
- // Save messages to localStorage whenever they change
- useEffect(() => {
- if (messages.length > 0) {
- try {
- // Only store the most recent messages
- const messagesToStore = messages.slice(-MAX_STORED_MESSAGES);
- localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(messagesToStore));
- } catch (error) {
- console.error('Error saving chat history:', error);
- }
- }
- }, [messages]);
 
  // Auto-scroll to bottom
  useEffect(() => {
@@ -83,82 +52,14 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
  };
  }, [isOpen, onClose]);
 
- const clearChatHistory = () => {
+ const handleClearHistory = () => {
  if (confirm('Are you sure you want to clear the chat history?')) {
- setMessages([]);
- try {
- localStorage.removeItem(CHAT_STORAGE_KEY);
- } catch (error) {
- console.error('Error clearing chat history:', error);
- }
- }
- };
-
- const handleExportChat = () => {
- if (messages.length === 0) {
- alert('No messages to export');
- return;
- }
-
- const choice = confirm('Export as JSON? (Cancel for plain text)');
- if (choice) {
- exportChatAsJSON(messages);
- } else {
- exportChatAsText(messages);
+ clearHistory();
  }
  };
 
  const handleSendMessage = async (content: string) => {
- // Add user message
- const userMessage: Message = {
- id: Date.now().toString(),
- role: 'user',
- content,
- timestamp: new Date()
- };
- setMessages(prev => [...prev, userMessage]);
- setIsLoading(true);
-
- try {
- // Call API
- const response = await fetch('/api/llm/chat', {
- method: 'POST',
- headers: { 'Content-Type': 'application/json' },
- body: JSON.stringify({
- message: content,
- history: messages.map(m => ({ role: m.role, content: m.content })),
- context: { language }
- })
- });
-
- if (!response.ok) {
- const error = await response.json();
- throw new Error(error.error || 'Failed to get response');
- }
-
- const data = await response.json();
-
- // Add assistant message
- const assistantMessage: Message = {
- id: (Date.now() + 1).toString(),
- role: 'assistant',
- content: data.response,
- timestamp: new Date()
- };
- setMessages(prev => [...prev, assistantMessage]);
- } catch (error) {
- console.error('Chat error:', error);
- // Add error message
- const errorMessage: Message = {
- id: (Date.now() + 1).toString(),
- role: 'assistant',
- content: error instanceof Error ? error.message : 'Sorry, I encountered an error. Please try again.',
- timestamp: new Date()
- };
- setMessages(prev => [...prev, errorMessage]);
- } finally {
- setIsLoading(false);
- }
+ await sendMessage(content, messages);
  };
 
  // Debug: Log when component renders
@@ -214,7 +115,7 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
  </svg>
  </button>
  <button
- onClick={clearChatHistory}
+ onClick={handleClearHistory}
  className="w-8 h-8 rounded-sbb bg-white/20 text-white hover:bg-white/30 transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50"
  aria-label="Clear chat history"
  title="Clear chat history"

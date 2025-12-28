@@ -30,12 +30,7 @@ export async function sendOrchestratedChatMessage(
   // Merge parsed markdown intent with extracted intent
   const intent = parsedIntent?.hasMarkdown ? {
     ...extractedIntent,
-    // Override with markdown-parsed structured data if available
-    extractedEntities: {
-      ...extractedIntent.extractedEntities,
-      ...(parsedIntent.structuredData?.origin && { origin: parsedIntent.structuredData.origin }),
-      ...(parsedIntent.structuredData?.destination && { destination: parsedIntent.structuredData.destination }),
-    },
+    // Add markdown-parsed structured data (preferences, sub-queries)
     preferences: parsedIntent.structuredData?.preferences || [],
     subQueries: parsedIntent.subQueries || [],
   } : extractedIntent;

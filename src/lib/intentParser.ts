@@ -6,8 +6,6 @@ import type { Root, Heading, List, Strong, Emphasis, InlineCode, Table } from 'm
 export interface ParsedIntent {
   mainQuery: string;
   structuredData?: {
-    origin?: string;
-    destination?: string;
     date?: string;
     time?: string;
     preferences?: string[];
@@ -57,8 +55,6 @@ export function parseMarkdownIntent(markdown: string): ParsedIntent {
   // Walk the AST to extract structured data
   const headings: string[] = [];
   const lists: string[][] = [];
-  const strongTexts: string[] = [];
-  const codeTexts: string[] = [];
   const tables: Table[] = [];
 
   function walkNode(node: any) {
@@ -70,11 +66,6 @@ export function parseMarkdownIntent(markdown: string): ParsedIntent {
         .map((item: any) => extractText(item))
         .filter(Boolean);
       if (items.length > 0) lists.push(items);
-    } else if (node.type === 'strong') {
-      const text = extractText(node);
-      if (text) strongTexts.push(text);
-    } else if (node.type === 'inlineCode') {
-      if (node.value) codeTexts.push(node.value);
     } else if (node.type === 'table') {
       tables.push(node);
     }
@@ -87,8 +78,7 @@ export function parseMarkdownIntent(markdown: string): ParsedIntent {
   tree.children.forEach(walkNode);
 
   // Extract structured data from parsed elements
-  extractStations(strongTexts, codeTexts, intent);
-  extractDateTime(strongTexts, codeTexts, markdown, intent);
+  extractDateTime(markdown, intent);
   extractPreferences(lists, intent);
   extractSubQueries(headings, lists, intent);
   extractComparisons(tables, intent);
@@ -114,40 +104,9 @@ function extractText(node: any): string {
 }
 
 /**
- * Extract station names from bold/code text
+ * Extract date and time information from the full text
  */
-function extractStations(strongTexts: string[], codeTexts: string[], intent: ParsedIntent) {
-  const allTexts = [...strongTexts, ...codeTexts];
-  
-  // Common station patterns
-  const stationPattern = /\b([A-Z][a-z]+(?:\s+[A-Z][a-z]+)*(?:\s+HB)?)\b/g;
-  
-  // Look for origin/destination patterns
-  const fromPattern = /(?:from|von|de|da)\s+([^to]+?)(?:\s+to|\s+nach|\s+à|\s+a|$)/i;
-  const toPattern = /(?:to|nach|à|a)\s+(.+?)(?:\s+on|\s+at|$)/i;
-  
-  const fullText = intent.mainQuery;
-  
-  const fromMatch = fullText.match(fromPattern);
-  const toMatch = fullText.match(toPattern);
-  
-  if (fromMatch && strongTexts.length > 0) {
-    intent.structuredData!.origin = strongTexts[0];
-  }
-  
-  if (toMatch && strongTexts.length > 1) {
-    intent.structuredData!.destination = strongTexts[1];
-  } else if (toMatch && strongTexts.length === 1 && codeTexts.length > 0) {
-    intent.structuredData!.destination = codeTexts[0];
-  }
-}
-
-/**
- * Extract date and time information
- */
-function extractDateTime(strongTexts: string[], codeTexts: string[], fullText: string, intent: ParsedIntent) {
-  const allTexts = [...strongTexts, ...codeTexts, fullText];
-  
+function extractDateTime(fullText: string, intent: ParsedIntent) {
   // Date patterns
   const datePatterns = [
     /\b(today|tomorrow|yesterday)\b/i,
@@ -163,19 +122,17 @@ function extractDateTime(strongTexts: string[], codeTexts: string[], fullText: s
     /\bat\s+`?(\d{1,2}(?::\d{2})?(?:\s*[ap]m)?)`?/i,
   ];
   
-  for (const text of allTexts) {
-    for (const pattern of datePatterns) {
-      const match = text.match(pattern);
-      if (match && !intent.structuredData!.date) {
-        intent.structuredData!.date = match[1];
-      }
+  for (const pattern of datePatterns) {
+    const match = fullText.match(pattern);
+    if (match && !intent.structuredData!.date) {
+      intent.structuredData!.date = match[1];
     }
-    
-    for (const pattern of timePatterns) {
-      const match = text.match(pattern);
-      if (match && !intent.structuredData!.time) {
-        intent.structuredData!.time = match[1];
-      }
+  }
+  
+  for (const pattern of timePatterns) {
+    const match = fullText.match(pattern);
+    if (match && !intent.structuredData!.time) {
+      intent.structuredData!.time = match[1];
     }
   }
 }
@@ -279,7 +236,7 @@ function determineQueryType(
     intent.queryType = 'comparison';
   } else if (intent.subQueries && intent.subQueries.length > 1) {
     intent.queryType = 'multi-part';
-  } else if (intent.structuredData?.origin || intent.structuredData?.destination) {
+  } else if (/\b(train|trip|journey|connection|from|to)\b/i.test(intent.mainQuery)) {
     intent.queryType = 'journey';
   } else if (/weather|temperature|forecast/i.test(intent.mainQuery)) {
     intent.queryType = 'weather';
