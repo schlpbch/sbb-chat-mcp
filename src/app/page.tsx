@@ -75,6 +75,8 @@ export default function Home() {
         language={language}
         onLanguageChange={setLanguage}
         onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
+        onFeedbackClick={openFeedback}
+        onHelpClick={openOnboarding}
       />
 
       <Menu
