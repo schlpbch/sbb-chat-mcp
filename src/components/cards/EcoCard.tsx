@@ -1,11 +1,12 @@
 'use client';
 
+import { memo } from 'react';
 import type { EcoCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
 import { formatCO2 } from '@/lib/formatters';
 import CardHeader from './CardHeader';
 
-export default function EcoCard({ data, language }: EcoCardProps) {
+function EcoCard({ data, language }: EcoCardProps) {
  const t = translations[language];
  const { route, trainCO2, carCO2, planeCO2, savings, treesEquivalent } = data;
 
@@ -126,3 +127,10 @@ export default function EcoCard({ data, language }: EcoCardProps) {
  </article>
  );
 }
+
+export default memo(EcoCard, (prevProps, nextProps) => {
+  return (
+    prevProps.data === nextProps.data &&
+    prevProps.language === nextProps.language
+  );
+});

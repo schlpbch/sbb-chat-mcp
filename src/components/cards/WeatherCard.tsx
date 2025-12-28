@@ -1,10 +1,11 @@
 'use client';
 
+import { memo } from 'react';
 import type { WeatherCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
 
-export default function WeatherCard({ data, language }: WeatherCardProps) {
+function WeatherCard({ data, language }: WeatherCardProps) {
   const t = translations[language];
  // Extract current weather from hourly data (first index)
  const hourly = data?.hourly;
@@ -187,3 +188,10 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  </article>
  );
 }
+
+export default memo(WeatherCard, (prevProps, nextProps) => {
+  return (
+    prevProps.data === nextProps.data &&
+    prevProps.language === nextProps.language
+  );
+});

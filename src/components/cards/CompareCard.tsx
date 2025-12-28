@@ -1,12 +1,12 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, memo } from 'react';
 import type { CompareCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
 import { formatTime, formatDuration, parseDurationToMinutes } from '@/lib/formatters';
 import CardHeader from './CardHeader';
 
-export default function CompareCard({ data, language }: CompareCardProps) {
+function CompareCard({ data, language }: CompareCardProps) {
   const t = translations[language];
   const [expandedRoute, setExpandedRoute] = useState<string | null>(null);
   const { origin, destination, criteria, routes, analysis } = data;
@@ -300,3 +300,10 @@ export default function CompareCard({ data, language }: CompareCardProps) {
     </article>
   );
 }
+
+export default memo(CompareCard, (prevProps, nextProps) => {
+  return (
+    prevProps.data === nextProps.data &&
+    prevProps.language === nextProps.language
+  );
+});
