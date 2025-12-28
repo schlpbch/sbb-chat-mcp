@@ -1,5 +1,8 @@
 'use client';
 
+import type { Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
+
 interface EcoCardProps {
  data: {
  route?: string;
@@ -9,9 +12,11 @@ interface EcoCardProps {
  savings?: number;
  treesEquivalent?: number;
  };
+ language: Language;
 }
 
-export default function EcoCard({ data }: EcoCardProps) {
+export default function EcoCard({ data, language }: EcoCardProps) {
+ const t = translations[language];
  const { route, trainCO2, carCO2, planeCO2, savings, treesEquivalent } = data;
 
  const formatCO2 = (value?: number) => {
@@ -32,8 +37,8 @@ export default function EcoCard({ data }: EcoCardProps) {
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>
  <div>
- <h3 className="text-lg font-bold">Eco Impact</h3>
- <p className="text-xs text-green-100 truncate">{route || 'Your Journey'}</p>
+ <h3 className="text-lg font-bold">{t.eco.ecoImpact}</h3>
+ <p className="text-xs text-green-100 truncate">{route || t.eco.yourJourney}</p>
  </div>
  </div>
  </div>
@@ -43,7 +48,7 @@ export default function EcoCard({ data }: EcoCardProps) {
  {/* CO2 Comparison - Compact */}
  <div>
  <p className="text-xs font-semibold text-gray-700 mb-2">
- CO₂ Emissions (kg)
+ {t.eco.co2EmissionsKg}
  </p>
  <div className="space-y-2">
  {/* Train */}
@@ -51,7 +56,7 @@ export default function EcoCard({ data }: EcoCardProps) {
  <span className="text-lg">🚂</span>
  <div className="flex-1">
  <div className="flex items-center justify-between mb-0.5">
- <span className="text-xs font-medium text-gray-700">Train</span>
+ <span className="text-xs font-medium text-gray-700">{t.eco.train}</span>
  <span className="text-sm font-bold text-green-600">
  {formatCO2(trainCO2)}
  </span>
@@ -68,7 +73,7 @@ export default function EcoCard({ data }: EcoCardProps) {
  <span className="text-lg">🚗</span>
  <div className="flex-1">
  <div className="flex items-center justify-between mb-0.5">
- <span className="text-xs font-medium text-gray-700">Car</span>
+ <span className="text-xs font-medium text-gray-700">{t.eco.car}</span>
  <span className="text-sm font-bold text-orange-600">
  {formatCO2(carCO2)}
  </span>
@@ -86,7 +91,7 @@ export default function EcoCard({ data }: EcoCardProps) {
  <span className="text-lg">✈️</span>
  <div className="flex-1">
  <div className="flex items-center justify-between mb-0.5">
- <span className="text-xs font-medium text-gray-700">Plane</span>
+ <span className="text-xs font-medium text-gray-700">{t.eco.plane}</span>
  <span className="text-sm font-bold text-red-600">
  {formatCO2(planeCO2)}
  </span>
@@ -111,10 +116,10 @@ export default function EcoCard({ data }: EcoCardProps) {
  </div>
  <div className="flex-1 min-w-0">
  <p className="text-xs font-semibold text-green-800">
- Saving {formatCO2(savings)} kg CO₂
+ {t.eco.saving} {formatCO2(savings)} kg CO₂
  </p>
  <p className="text-xs text-green-700">
- vs. car
+ {t.eco.vsCar}
  </p>
  </div>
  </div>
@@ -126,9 +131,9 @@ export default function EcoCard({ data }: EcoCardProps) {
  <div className="flex items-center justify-center space-x-2 p-2 bg-gray-50 rounded-lg">
  <span className="text-2xl">🌳</span>
  <div>
- <p className="text-xs text-gray-600">Equivalent to</p>
+ <p className="text-xs text-gray-600">{t.eco.equivalentTo}</p>
  <p className="text-sm font-bold text-gray-900">
- {treesEquivalent.toFixed(1)} trees/year
+ {treesEquivalent.toFixed(1)} {t.eco.treesPerYear}
  </p>
  </div>
  </div>

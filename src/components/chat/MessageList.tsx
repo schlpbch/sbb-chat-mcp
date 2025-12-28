@@ -1,49 +1,28 @@
 'use client';
 
-import MarkdownCard from '@/components/cards/MarkdownCard';
-import ToolResults from './ToolResults';
-import type { Message } from '@/hooks/useChat';
+import Message from './Message';
+import type { Message as MessageType } from '@/hooks/useChat';
 import type { Language } from '@/lib/i18n';
 
 interface MessageListProps {
- messages: Message[];
- messagesEndRef: React.RefObject<HTMLDivElement | null>;
- textOnlyMode?: boolean;
- language: Language;
+  messages: MessageType[];
+  messagesEndRef: React.RefObject<HTMLDivElement | null>;
+  textOnlyMode?: boolean;
+  language: Language;
 }
 
 export default function MessageList({ messages, messagesEndRef, textOnlyMode = false, language }: MessageListProps) {
- return (
- <>
- {messages.map((message) => (
- <div key={message.id} className={`flex ${message.role === 'user' ? 'justify-end' : 'justify-start'}`}>
- <div className={`max-w-[90%] sm:max-w-[85%] ${message.role === 'user' ? 'order-2' : 'order-1'}`}>
- {message.role === 'user' ? (
- <div className="bg-[#EB0000] text-white rounded-2xl px-4 sm:px-5 py-2.5 sm:py-3 shadow-md">
- <p className="text-sm leading-relaxed whitespace-pre-wrap break-words">
- {message.content}
- </p>
- <span className="text-xs opacity-70 mt-1.5 sm:mt-2 block">
- {message.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
- </span>
- </div>
- ) : (
- <div className="space-y-3">
- {/* Tool Results - hide in text-only mode */}
- {!textOnlyMode && message.toolCalls && message.toolCalls.length > 0 && (
- <ToolResults toolCalls={message.toolCalls} language={language} />
- )}
- 
- {/* Text Response */}
- {message.content && message.content.trim() && (
- <MarkdownCard content={message.content} />
- )}
- </div>
- )}
- </div>
- </div>
- ))}
- <div ref={messagesEndRef} />
- </>
- );
+  return (
+    <>
+      {messages.map((message) => (
+        <Message 
+          key={message.id} 
+          message={message} 
+          textOnlyMode={textOnlyMode} 
+          language={language} 
+        />
+      ))}
+      <div ref={messagesEndRef} />
+    </>
+  );
 }

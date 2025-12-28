@@ -6,14 +6,22 @@ import remarkGfm from 'remark-gfm';
 interface MarkdownCardProps {
   content: string;
   title?: string;
+  variant?: 'user' | 'assistant';
+  timestamp?: string;
 }
 
-export default function MarkdownCard({ content, title }: MarkdownCardProps) {
+export default function MarkdownCard({ content, title, variant = 'assistant', timestamp }: MarkdownCardProps) {
   if (!content || !content.trim()) return null;
+
+  const isUser = variant === 'user';
 
   return (
     <article
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200"
+      className={`rounded-lg overflow-hidden transition-all duration-200 ${
+        isUser 
+          ? 'bg-[#EB0000] text-white rounded-2xl shadow-md' 
+          : 'bg-white border border-gray-200 shadow-md hover:shadow-lg'
+      }`}
       data-testid="markdown-card"
     >
       {/* Compact Header */}
@@ -29,35 +37,35 @@ export default function MarkdownCard({ content, title }: MarkdownCardProps) {
       )}
 
       {/* Compact Markdown Content */}
-      <div className="p-4 prose prose-sm prose-gray max-w-none">
+      <div className={`p-4 prose prose-sm max-w-none ${isUser ? 'prose-invert' : 'prose-gray'}`}>
         <ReactMarkdown
           remarkPlugins={[remarkGfm]}
           components={{
             // Headings
             h1: ({ node, ...props }) => (
-              <h1 className="text-3xl font-bold text-gray-900 mb-4 mt-6" {...props} />
+              <h1 className={`text-3xl font-bold mb-4 mt-6 ${isUser ? 'text-white' : 'text-gray-900'}`} {...props} />
             ),
             h2: ({ node, ...props }) => (
-              <h2 className="text-2xl font-bold text-gray-900 mb-3 mt-5" {...props} />
+              <h2 className={`text-2xl font-bold mb-3 mt-5 ${isUser ? 'text-white' : 'text-gray-900'}`} {...props} />
             ),
             h3: ({ node, ...props }) => (
-              <h3 className="text-xl font-bold text-gray-900 mb-2 mt-4" {...props} />
+              <h3 className={`text-xl font-bold mb-2 mt-4 ${isUser ? 'text-white' : 'text-gray-900'}`} {...props} />
             ),
             h4: ({ node, ...props }) => (
-              <h4 className="text-lg font-semibold text-gray-900 mb-2 mt-3" {...props} />
+              <h4 className={`text-lg font-semibold mb-2 mt-3 ${isUser ? 'text-white' : 'text-gray-900'}`} {...props} />
             ),
             
             // Paragraphs
             p: ({ node, ...props }) => (
-              <p className="text-gray-700 mb-4 leading-relaxed" {...props} />
+              <p className={`mb-4 leading-relaxed ${isUser ? 'text-white' : 'text-gray-700'}`} {...props} />
             ),
             
             // Lists
             ul: ({ node, ...props }) => (
-              <ul className="list-disc list-inside mb-4 space-y-2 text-gray-700" {...props} />
+              <ul className={`list-disc list-inside mb-4 space-y-2 ${isUser ? 'text-white' : 'text-gray-700'}`} {...props} />
             ),
             ol: ({ node, ...props }) => (
-              <ol className="list-decimal list-inside mb-4 space-y-2 text-gray-700" {...props} />
+              <ol className={`list-decimal list-inside mb-4 space-y-2 ${isUser ? 'text-white' : 'text-gray-700'}`} {...props} />
             ),
             li: ({ node, ...props }) => (
               <li className="ml-4" {...props} />
@@ -66,7 +74,7 @@ export default function MarkdownCard({ content, title }: MarkdownCardProps) {
             // Links
             a: ({ node, ...props }) => (
               <a
-                className="text-blue-600 hover:underline font-medium"
+                className={`hover:underline font-medium ${isUser ? 'text-white underline' : 'text-blue-600'}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 {...props}
@@ -77,25 +85,31 @@ export default function MarkdownCard({ content, title }: MarkdownCardProps) {
             code: ({ node, inline, ...props }: any) =>
               inline ? (
                 <code
-                  className="px-2 py-1 bg-gray-100 text-red-600 rounded text-sm font-mono"
+                  className={`px-2 py-1 rounded text-sm font-mono ${
+                    isUser ? 'bg-red-800 text-white' : 'bg-gray-100 text-red-600'
+                  }`}
                   {...props}
                 />
               ) : (
                 <code
-                  className="block p-4 bg-gray-100 text-gray-800 rounded-lg overflow-x-auto text-sm font-mono mb-4"
+                  className={`block p-4 rounded-lg overflow-x-auto text-sm font-mono mb-4 ${
+                    isUser ? 'bg-red-800 text-white' : 'bg-gray-100 text-gray-800'
+                  }`}
                   {...props}
                 />
               ),
             
             // Pre (code blocks)
             pre: ({ node, ...props }) => (
-              <pre className="bg-gray-100 rounded-lg p-4 overflow-x-auto mb-4" {...props} />
+              <pre className={`rounded-lg p-4 overflow-x-auto mb-4 ${isUser ? 'bg-red-800' : 'bg-gray-100'}`} {...props} />
             ),
             
             // Blockquotes
             blockquote: ({ node, ...props }) => (
               <blockquote
-                className="border-l-4 border-blue-600 pl-4 py-2 my-4 bg-blue-50 text-gray-700 italic"
+                className={`border-l-4 pl-4 py-2 my-4 italic ${
+                  isUser ? 'border-white bg-red-800 text-white' : 'border-blue-600 bg-blue-50 text-gray-700'
+                }`}
                 {...props}
               />
             ),
@@ -107,42 +121,51 @@ export default function MarkdownCard({ content, title }: MarkdownCardProps) {
               </div>
             ),
             thead: ({ node, ...props }) => (
-              <thead className="bg-gray-50" {...props} />
+              <thead className={isUser ? 'bg-red-800' : 'bg-gray-50'} {...props} />
             ),
             tbody: ({ node, ...props }) => (
-              <tbody className="bg-white divide-y divide-gray-200" {...props} />
+              <tbody className={`divide-y divide-gray-200 ${isUser ? 'bg-red-700' : 'bg-white'}`} {...props} />
             ),
             tr: ({ node, ...props }) => (
               <tr {...props} />
             ),
             th: ({ node, ...props }) => (
               <th
-                className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider"
+                className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider ${
+                  isUser ? 'text-white' : 'text-gray-700'
+                }`}
                 {...props}
               />
             ),
             td: ({ node, ...props }) => (
-              <td className="px-4 py-3 text-sm text-gray-700" {...props} />
+              <td className={`px-4 py-3 text-sm ${isUser ? 'text-white' : 'text-gray-700'}`} {...props} />
             ),
             
             // Horizontal rule
             hr: ({ node, ...props }) => (
-              <hr className="my-6 border-gray-200" {...props} />
+              <hr className={`my-6 ${isUser ? 'border-white' : 'border-gray-200'}`} {...props} />
             ),
             
             // Strong/Bold
             strong: ({ node, ...props }) => (
-              <strong className="font-bold text-gray-900" {...props} />
+              <strong className={`font-bold ${isUser ? 'text-white' : 'text-gray-900'}`} {...props} />
             ),
             
             // Emphasis/Italic
             em: ({ node, ...props }) => (
-              <em className="italic text-gray-700" {...props} />
+              <em className={`italic ${isUser ? 'text-white' : 'text-gray-700'}`} {...props} />
             ),
           }}
         >
           {content}
         </ReactMarkdown>
+        
+        {/* Timestamp */}
+        {timestamp && (
+          <span className={`text-xs mt-1.5 sm:mt-2 block ${isUser ? 'opacity-70' : 'text-gray-500'}`}>
+            {timestamp}
+          </span>
+        )}
       </div>
     </article>
   );

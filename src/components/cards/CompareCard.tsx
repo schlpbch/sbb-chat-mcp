@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import type { Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 
 interface ComparisonRoute {
   id: string;
@@ -28,9 +30,11 @@ interface CompareCardProps {
       tradeoffs?: string[];
     };
   };
+  language: Language;
 }
 
-export default function CompareCard({ data }: CompareCardProps) {
+export default function CompareCard({ data, language }: CompareCardProps) {
+  const t = translations[language];
   const [expandedRoute, setExpandedRoute] = useState<string | null>(null);
   const { origin, destination, criteria, routes, analysis } = data;
 
@@ -46,10 +50,10 @@ export default function CompareCard({ data }: CompareCardProps) {
 
   const getCriteriaLabel = (c: string) => {
     const labels: Record<string, string> = {
-      fastest: 'Fastest Route',
-      fewest_changes: 'Fewest Changes',
-      earliest_arrival: 'Earliest Arrival',
-      balanced: 'Balanced Option',
+      fastest: t.compare.criteria.fastest,
+      fewest_changes: t.compare.criteria.fewestChanges,
+      earliest_arrival: t.compare.criteria.earliestArrival,
+      balanced: t.compare.criteria.balanced,
     };
     return labels[c] || c;
   };
@@ -84,7 +88,7 @@ export default function CompareCard({ data }: CompareCardProps) {
   if (!routes || !Array.isArray(routes) || routes.length === 0) {
     return (
       <div className="bg-white rounded-lg border border-gray-200 p-4">
-        <p className="text-gray-500 text-center">No routes available for comparison</p>
+        <p className="text-gray-500 text-center">{t.compare.noRoutes}</p>
       </div>
     );
   }
@@ -123,8 +127,8 @@ export default function CompareCard({ data }: CompareCardProps) {
             </div>
           </div>
           <div className="text-right">
-            <p className="text-xs text-purple-100">Comparing</p>
-            <p className="text-lg font-bold">{routes.length} options</p>
+            <p className="text-xs text-purple-100">{t.compare.comparing}</p>
+            <p className="text-lg font-bold">{routes.length} {t.compare.options}</p>
           </div>
         </div>
       </div>
@@ -163,15 +167,15 @@ export default function CompareCard({ data }: CompareCardProps) {
               <div className="p-3">
                 <div className="flex items-center justify-between mb-2">
                   <div className="flex items-center space-x-2">
-                    <span className="text-lg font-bold text-gray-900">Option {idx + 1}</span>
+                    <span className="text-lg font-bold text-gray-900">{t.compare.option} {idx + 1}</span>
                     {isBest && (
                       <span className="px-2 py-0.5 bg-purple-600 text-white text-xs font-bold rounded-full">
-                        ⭐ Best Match
+                        ⭐ {t.compare.bestMatch}
                       </span>
                     )}
                     {route.score !== undefined && (
                       <span className="px-2 py-0.5 bg-gray-100 text-gray-700 text-xs font-semibold rounded">
-                        Score: {route.score.toFixed(1)}
+                        {t.compare.score}: {route.score.toFixed(1)}
                       </span>
                     )}
                   </div>
@@ -179,7 +183,7 @@ export default function CompareCard({ data }: CompareCardProps) {
                     onClick={() => setExpandedRoute(isExpanded ? null : route.id)}
                     className="text-purple-600 hover:text-purple-800 text-xs font-medium"
                   >
-                    {isExpanded ? 'Hide' : 'Details'}
+                    {isExpanded ? t.compare.hide : t.compare.details}
                   </button>
                 </div>
 
@@ -188,7 +192,7 @@ export default function CompareCard({ data }: CompareCardProps) {
                   <div className="flex items-center space-x-3">
                     <div>
                       <p className="text-xl font-bold text-gray-900">{formatTime(route.departure)}</p>
-                      <p className="text-xs text-gray-500">Departure</p>
+                      <p className="text-xs text-gray-500">{t.compare.departure}</p>
                     </div>
                     <div className="flex flex-col items-center px-2">
                       <svg className="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,7 +204,7 @@ export default function CompareCard({ data }: CompareCardProps) {
                     </div>
                     <div>
                       <p className="text-xl font-bold text-gray-900">{formatTime(route.arrival)}</p>
-                      <p className="text-xs text-gray-500">Arrival</p>
+                      <p className="text-xs text-gray-500">{t.compare.arrival}</p>
                     </div>
                   </div>
                 </div>
@@ -210,7 +214,7 @@ export default function CompareCard({ data }: CompareCardProps) {
                   {/* Duration Bar */}
                   <div className="col-span-2">
                     <div className="flex items-center justify-between mb-1">
-                      <span className="text-xs font-medium text-gray-600">Duration</span>
+                      <span className="text-xs font-medium text-gray-600">{t.compare.duration}</span>
                       <span className="text-xs font-bold text-gray-900">{formatDuration(route.duration)}</span>
                     </div>
                     <div className="h-2 bg-gray-200 rounded-full overflow-hidden">
@@ -227,7 +231,7 @@ export default function CompareCard({ data }: CompareCardProps) {
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
                     </svg>
                     <div>
-                      <p className="text-xs text-gray-500">Changes</p>
+                      <p className="text-xs text-gray-500">{t.compare.changes}</p>
                       <p className="text-sm font-bold text-gray-900">{route.transfers}</p>
                     </div>
                   </div>
@@ -239,7 +243,7 @@ export default function CompareCard({ data }: CompareCardProps) {
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                       </svg>
                       <div>
-                        <p className="text-xs text-gray-500">Price</p>
+                        <p className="text-xs text-gray-500">{t.compare.price}</p>
                         <p className="text-sm font-bold text-gray-900">CHF {route.price}</p>
                       </div>
                     </div>
@@ -289,7 +293,7 @@ export default function CompareCard({ data }: CompareCardProps) {
                 {/* Expanded Details */}
                 {isExpanded && route.legs && route.legs.length > 0 && (
                   <div className="mt-3 pt-3 border-t border-gray-200">
-                    <p className="text-xs font-semibold text-gray-700 mb-2">Journey Details</p>
+                    <p className="text-xs font-semibold text-gray-700 mb-2">{t.compare.journeyDetails}</p>
                     <div className="space-y-2">
                       {route.legs.map((leg: any, legIdx: number) => (
                         <div key={legIdx} className="flex items-center space-x-2 text-xs">
@@ -321,7 +325,7 @@ export default function CompareCard({ data }: CompareCardProps) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
             </svg>
             <div className="flex-1">
-              <p className="text-xs font-semibold text-purple-900 mb-1">Recommendation</p>
+              <p className="text-xs font-semibold text-purple-900 mb-1">{t.compare.recommendation}</p>
               <p className="text-sm text-purple-800">{analysis.recommendation}</p>
             </div>
           </div>
@@ -331,7 +335,7 @@ export default function CompareCard({ data }: CompareCardProps) {
       {/* Tradeoffs */}
       {analysis?.tradeoffs && analysis.tradeoffs.length > 0 && (
         <div className="px-4 py-3 bg-gray-50 border-t border-gray-200">
-          <p className="text-xs font-semibold text-gray-700 mb-2">Key Tradeoffs</p>
+          <p className="text-xs font-semibold text-gray-700 mb-2">{t.compare.keyTradeoffs}</p>
           <ul className="space-y-1">
             {analysis.tradeoffs.map((tradeoff, idx) => (
               <li key={idx} className="flex items-start space-x-2 text-xs text-gray-600">

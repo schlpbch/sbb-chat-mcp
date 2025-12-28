@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Language } from '@/lib/i18n';
 import { useRecentSearches } from './useRecentSearches';
+import { parseMarkdownIntent } from '@/lib/intentParser';
 
 export interface Message {
   id: string;
@@ -54,8 +55,13 @@ export function useChat(language: Language) {
     setIsLoading(true);
 
     try {
+      // Parse markdown intent
+      const intent = parseMarkdownIntent(messageContent);
+      console.log('[useChat] Parsed intent:', intent);
+
       const requestBody = {
         message: userMessage.content,
+        intent, // Add parsed intent
         history: messages.map((m) => ({ role: m.role, content: m.content })),
         context: { language },
         sessionId,

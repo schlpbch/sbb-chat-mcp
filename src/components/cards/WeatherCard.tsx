@@ -1,6 +1,7 @@
 'use client';
 
 import type { Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 
 interface WeatherCardProps {
   data: any; // Using any since the structure varies
@@ -8,6 +9,7 @@ interface WeatherCardProps {
 }
 
 export default function WeatherCard({ data, language }: WeatherCardProps) {
+  const t = translations[language];
  // Extract current weather from hourly data (first index)
  const hourly = data?.hourly || {};
  const daily = data?.daily || {};
@@ -24,16 +26,16 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  
  // Map weather code to condition
  const getConditionFromCode = (code?: number) => {
- if (code === undefined) return 'Unknown';
- if (code === 0) return 'Clear sky';
- if (code <= 3) return 'Partly cloudy';
- if (code <= 48) return 'Foggy';
- if (code <= 67) return 'Rainy';
- if (code <= 77) return 'Snowy';
- if (code <= 82) return 'Rain showers';
- if (code <= 86) return 'Snow showers';
- if (code <= 99) return 'Thunderstorm';
- return 'Unknown';
+ if (code === undefined) return t.weather.conditions.unknown;
+ if (code === 0) return t.weather.conditions.clearSky;
+ if (code <= 3) return t.weather.conditions.partlyCloudy;
+ if (code <= 48) return t.weather.conditions.foggy;
+ if (code <= 67) return t.weather.conditions.rainy;
+ if (code <= 77) return t.weather.conditions.snowy;
+ if (code <= 82) return t.weather.conditions.rainShowers;
+ if (code <= 86) return t.weather.conditions.snowShowers;
+ if (code <= 99) return t.weather.conditions.thunderstorm;
+ return t.weather.conditions.unknown;
  };
  
  const weatherCode = hourly?.weather_code?.[0];
@@ -73,7 +75,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
  </svg>
  <div>
- <h3 className="text-lg font-bold">Weather</h3>
+ <h3 className="text-lg font-bold">{t.weather.weather}</h3>
  <p className="text-xs text-yellow-100">{location}</p>
  </div>
  </div>
@@ -99,7 +101,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
  </svg>
  <div>
- <p className="text-xs text-gray-500">Humidity</p>
+ <p className="text-xs text-gray-500">{t.weather.humidity}</p>
  <p className="text-sm font-semibold text-gray-900">{humidity}%</p>
  </div>
  </div>
@@ -110,7 +112,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
  </svg>
  <div>
- <p className="text-xs text-gray-500">Wind</p>
+ <p className="text-xs text-gray-500">{t.weather.wind}</p>
  <p className="text-sm font-semibold text-gray-900">{Math.round(windSpeed)} km/h</p>
  </div>
  </div>
@@ -124,7 +126,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
  <span className="text-lg">🌡️</span>
  <div>
- <p className="text-xs text-gray-500">Feels like</p>
+ <p className="text-xs text-gray-500">{t.weather.feelsLike}</p>
  <p className="text-sm font-semibold text-gray-900">{Math.round(feelsLike)}°</p>
  </div>
  </div>
@@ -133,7 +135,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
  <span className="text-lg">💧</span>
  <div>
- <p className="text-xs text-gray-500">Precipitation</p>
+ <p className="text-xs text-gray-500">{t.weather.precipitation}</p>
  <p className="text-sm font-semibold text-gray-900">{precipitation} mm</p>
  </div>
  </div>
@@ -142,7 +144,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
  <span className="text-lg">☀️</span>
  <div>
- <p className="text-xs text-gray-500">UV Index</p>
+ <p className="text-xs text-gray-500">{t.weather.uvIndex}</p>
  <p className="text-sm font-semibold text-gray-900">{Math.round(uvIndex)}</p>
  </div>
  </div>
@@ -151,7 +153,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
  <span className="text-lg">🔽</span>
  <div>
- <p className="text-xs text-gray-500">Pressure</p>
+ <p className="text-xs text-gray-500">{t.weather.pressure}</p>
  <p className="text-sm font-semibold text-gray-900">{Math.round(pressure)} hPa</p>
  </div>
  </div>
@@ -162,7 +164,7 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  {forecast && forecast.length > 0 && (
  <div className="pt-3 border-t border-gray-200">
  <p className="text-xs font-semibold text-gray-700 mb-2">
- Forecast
+ {t.weather.forecast}
  </p>
  <div className="grid grid-cols-3 gap-2">
  {forecast.map((day: any, idx: number) => (

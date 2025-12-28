@@ -23,7 +23,7 @@ export const translations = {
       categoryAccessibility: 'Accessibility',
     },
     chat: {
-      inputPlaceholder: 'Ask about trains, weather, or travel plans...',
+      inputPlaceholder: 'Ask about trains, stations, or travel plans... (Markdown supported)',
       send: 'Send',
       thinking: 'Thinking...',
       pressEnter: 'Press Enter to send, Shift+Enter for new line',
@@ -224,7 +224,7 @@ export const translations = {
       categoryAccessibility: 'Barrierefreiheit',
     },
     chat: {
-      inputPlaceholder: 'Fragen Sie nach Zügen, Wetter oder Reiseplänen...',
+      inputPlaceholder: 'Fragen Sie nach Zügen, Bahnhöfen oder Reiseplänen... (Markdown unterstützt)',
       send: 'Senden',
       thinking: 'Denke nach...',
       pressEnter: 'Enter zum Senden, Shift+Enter für neue Zeile',
@@ -425,7 +425,7 @@ export const translations = {
       categoryAccessibility: 'Accessibilité',
     },
     chat: {
-      inputPlaceholder: 'Posez des questions sur les trains, la météo ou les plans de voyage...',
+      inputPlaceholder: 'Posez des questions sur les trains, les gares ou les plans de voyage... (Markdown pris en charge)',
       send: 'Envoyer',
       thinking: 'Réflexion...',
       pressEnter: 'Entrée pour envoyer, Shift+Entrée pour nouvelle ligne',
@@ -626,7 +626,7 @@ export const translations = {
       categoryAccessibility: 'Accessibilità',
     },
     chat: {
-      inputPlaceholder: 'Chiedi informazioni su treni, meteo o piani di viaggio...',
+      inputPlaceholder: 'Chiedi informazioni su treni, stazioni o piani di viaggio... (Markdown supportato)',
       send: 'Invia',
       thinking: 'Pensando...',
       pressEnter: 'Invio per inviare, Shift+Invio per nuova riga',
