@@ -60,16 +60,16 @@ export async function executeTool(
         const locationName = (params as any).locationName;
         console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
         
-        // Try to find the location using findStopPlacesByName first (for cities/stations)
-        const resolveResult = await executeTool('findStopPlacesByName', {
-          query: locationName,
+        // Use findPlaces for general locations (cities, ski resorts, etc.)
+        const resolveResult = await executeTool('findPlaces', {
+          nameMatch: locationName,
           limit: 1
         } as any);
 
         if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
           const place = resolveResult.data[0];
-          const lat = place.location?.latitude;
-          const lon = place.location?.longitude;
+          const lat = place.centroid?.latitude || place.location?.latitude;
+          const lon = place.centroid?.longitude || place.location?.longitude;
           
           if (lat !== undefined && lon !== undefined) {
             console.log(`[toolExecutor] Resolved "${locationName}" to coordinates: ${lat}, ${lon}`);
