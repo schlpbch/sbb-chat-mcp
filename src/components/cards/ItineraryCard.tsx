@@ -19,9 +19,10 @@ interface ItineraryCardProps {
  currency?: string;
  };
  };
+ language: Language;
 }
 
-export default function ItineraryCard({ data }: ItineraryCardProps) {
+export default function ItineraryCard({ data, language }: ItineraryCardProps) {
  const { destination, duration, activities = [], transportation, budget } = data;
 
  const getActivityIcon = (type?: string) => {

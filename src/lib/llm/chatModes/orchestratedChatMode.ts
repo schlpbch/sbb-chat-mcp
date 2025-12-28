@@ -36,7 +36,6 @@ export async function sendOrchestratedChatMessage(
       ...(parsedIntent.structuredData?.origin && { origin: parsedIntent.structuredData.origin }),
       ...(parsedIntent.structuredData?.destination && { destination: parsedIntent.structuredData.destination }),
     },
-    queryType: parsedIntent.queryType || extractedIntent.queryType,
     preferences: parsedIntent.structuredData?.preferences || [],
     subQueries: parsedIntent.subQueries || [],
   } : extractedIntent;
