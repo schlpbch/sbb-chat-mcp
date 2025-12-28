@@ -183,12 +183,12 @@ export default function OnboardingModal({
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 animate-fade-in">
       <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-slide-up">
         {/* Header */}
-        <div className="bg-linear-to-r from-sbb-red to-red-700 text-white p-6">
+        <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-2xl font-bold">{step.title}</h2>
+            <h2 className="text-2xl font-bold text-gray-900">{step.title}</h2>
             <button
               onClick={onSkip}
-              className="text-white hover:text-gray-200 transition-colors"
+              className="text-gray-400 hover:text-gray-600 transition-colors"
               aria-label="Skip tutorial"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -196,7 +196,7 @@ export default function OnboardingModal({
               </svg>
             </button>
           </div>
-          <p className="text-red-100">{step.description}</p>
+          <p className="text-gray-600">{step.description}</p>
         </div>
 
         {/* Content */}
