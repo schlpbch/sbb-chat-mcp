@@ -3,21 +3,13 @@
 import { useState } from 'react';
 import type { CompareCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
+import { formatTime, formatDuration, parseDurationToMinutes } from '@/lib/formatters';
+import CardHeader from './CardHeader';
 
 export default function CompareCard({ data, language }: CompareCardProps) {
   const t = translations[language];
   const [expandedRoute, setExpandedRoute] = useState<string | null>(null);
   const { origin, destination, criteria, routes, analysis } = data;
-
-  const formatDuration = (d: string) => {
-    if (!d) return 'N/A';
-    return d.replace('PT', '').replace('H', 'h ').replace('M', 'm').toLowerCase();
-  };
-
-  const formatTime = (time: string) => {
-    if (!time) return '--:--';
-    return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  };
 
   const getCriteriaLabel = (c: string) => {
     const labels: Record<string, string> = {
@@ -72,13 +64,6 @@ export default function CompareCard({ data, language }: CompareCardProps) {
 
   const maxPrice = routes.reduce((max, r) => Math.max(max, r.price || 0), 0);
 
-  function parseDurationToMinutes(duration: string): number {
-    if (!duration) return 0;
-    const hours = duration.match(/(\d+)H/);
-    const minutes = duration.match(/(\d+)M/);
-    return (hours ? parseInt(hours[1]) * 60 : 0) + (minutes ? parseInt(minutes[1]) : 0);
-  }
-
   return (
     <article
       className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
@@ -86,23 +71,18 @@ export default function CompareCard({ data, language }: CompareCardProps) {
       aria-label={`Route comparison from ${origin} to ${destination}`}
     >
       {/* Header */}
-      <div className="bg-linear-to-r from-purple-600 to-indigo-600 px-4 py-3">
-        <div className="flex items-center justify-between text-white">
-          <div className="flex items-center space-x-2">
-            <span className="text-2xl">{getCriteriaIcon(criteria)}</span>
-            <div>
-              <h3 className="text-lg font-bold">{getCriteriaLabel(criteria)}</h3>
-              <p className="text-xs text-purple-100">
-                {origin} → {destination}
-              </p>
-            </div>
-          </div>
-          <div className="text-right">
-            <p className="text-xs text-purple-100">{t.compare.comparing}</p>
+      <CardHeader
+        icon={<span className="text-2xl">{getCriteriaIcon(criteria)}</span>}
+        title={getCriteriaLabel(criteria)}
+        subtitle={`${origin} → ${destination}`}
+        color="purple"
+        rightContent={
+          <>
+            <p className="text-xs opacity-90">{t.compare.comparing}</p>
             <p className="text-lg font-bold">{routes.length} {t.compare.options}</p>
-          </div>
-        </div>
-      </div>
+          </>
+        }
+      />
 
       {/* Analysis Summary */}
       {analysis?.summary && (

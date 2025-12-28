@@ -2,6 +2,7 @@
 
 import type { WeatherCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
+import CardHeader from './CardHeader';
 
 export default function WeatherCard({ data, language }: WeatherCardProps) {
   const t = translations[language];
@@ -62,21 +63,18 @@ export default function WeatherCard({ data, language }: WeatherCardProps) {
  data-testid="weather-card"
  aria-label={`Weather for ${location}`}
  >
- {/* Compact Header */}
- <div className="bg-linear-to-r from-yellow-500 to-orange-500 px-4 py-2">
- <div className="flex items-center justify-between text-white">
- <div className="flex items-center space-x-2">
+ {/* Header */}
+ <CardHeader
+ icon={
  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 15a4 4 0 004 4h9a5 5 0 10-.1-9.999 5.002 5.002 0 10-9.78 2.096A4.001 4.001 0 003 15z" />
  </svg>
- <div>
- <h3 className="text-lg font-bold">{t.weather.weather}</h3>
- <p className="text-xs text-yellow-100">{location}</p>
- </div>
- </div>
- <div className="text-3xl">{getWeatherIcon(condition)}</div>
- </div>
- </div>
+ }
+ title={t.weather.weather}
+ subtitle={location}
+ color="yellow"
+ rightContent={<div className="text-3xl">{getWeatherIcon(condition)}</div>}
+ />
 
  {/* Compact Content */}
  <div className="p-3">
