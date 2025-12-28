@@ -88,21 +88,6 @@ export default function Navbar({
 
           {/* Right Section */}
           <div className="flex items-center space-x-2">
-            {/* MCP Server Selector */}
-            <div className="hidden lg:block">
-              <select
-                value={mcpServerUrl}
-                onChange={(e) => handleMcpServerChange(e.target.value)}
-                className="text-sm px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              >
-                {mcpServers.map((server) => (
-                  <option key={server.value} value={server.value}>
-                    {server.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
             {/* Help Button */}
             {onHelpClick && (
               <button
@@ -140,6 +125,21 @@ export default function Navbar({
                 </svg>
               </button>
             )}
+
+            {/* MCP Server Selector */}
+            <div className="hidden lg:block">
+              <select
+                value={mcpServerUrl}
+                onChange={(e) => handleMcpServerChange(e.target.value)}
+                className="text-sm px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-transparent"
+              >
+                {mcpServers.map((server) => (
+                  <option key={server.value} value={server.value}>
+                    {server.label}
+                  </option>
+                ))}
+              </select>
+            </div>
 
             {/* Language Selector */}
             <div className="relative">
