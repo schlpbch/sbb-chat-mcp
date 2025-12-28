@@ -69,6 +69,7 @@ export const translations = {
       noDepartures: 'No departures',
       noArrivals: 'No arrivals',
       more: 'more',
+      showLess: 'Show less',
     },
     station: {
       unknownStation: 'Unknown Station',
@@ -367,7 +368,8 @@ export const translations = {
       station: 'Bahnhof',
       noDepartures: 'Keine Abfahrten',
       noArrivals: 'Keine Ankünfte',
-      more: 'weitere',
+      more: 'mehr',
+      showLess: 'Weniger anzeigen',
     },
     station: {
       unknownStation: 'Unbekannter Bahnhof',
@@ -666,7 +668,8 @@ export const translations = {
       station: 'Gare',
       noDepartures: 'Aucun départ',
       noArrivals: 'Aucune arrivée',
-      more: 'de plus',
+      more: 'plus',
+      showLess: 'Afficher moins',
     },
     station: {
       unknownStation: 'Gare Inconnue',
@@ -965,7 +968,8 @@ export const translations = {
       station: 'Stazione',
       noDepartures: 'Nessuna partenza',
       noArrivals: 'Nessun arrivo',
-      more: 'altro',
+      more: 'più',
+      showLess: 'Mostra meno',
     },
     station: {
       unknownStation: 'Stazione Sconosciuta',

@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import { normalizeBoardData } from '@/lib/normalizers/cardData';
@@ -13,6 +13,7 @@ interface BoardCardProps {
 
 export default function BoardCard({ data, language }: BoardCardProps) {
   const t = translations[language];
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Normalize and validate data with memoization
   const normalizedData = useMemo(() => {
@@ -69,6 +70,8 @@ export default function BoardCard({ data, language }: BoardCardProps) {
   };
 
   const isDeparture = finalType === 'departures';
+  const displayedConnections = isExpanded ? finalConnections : finalConnections.slice(0, 5);
+  const hasMore = finalConnections.length > 5;
 
   return (
     <article
@@ -96,7 +99,7 @@ export default function BoardCard({ data, language }: BoardCardProps) {
       {/* Compact Connections List */}
       <div className="divide-y divide-gray-200">
         {finalConnections.length > 0 ? (
-          finalConnections.slice(0, 5).map((conn, idx) => (
+          displayedConnections.map((conn, idx) => (
             <div
               key={idx}
               className="p-2 hover:bg-gray-50 transition-colors"
@@ -153,12 +156,19 @@ export default function BoardCard({ data, language }: BoardCardProps) {
         )}
       </div>
 
-      {/* Compact Footer */}
-      {finalConnections.length > 5 && (
+      {/* Expandable Footer */}
+      {hasMore && (
         <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
-          <p className="text-xs text-gray-600 text-center">
-            +{finalConnections.length - 5} {t.board.more}
-          </p>
+          <button
+            onClick={() => setIsExpanded(!isExpanded)}
+            className="w-full text-xs text-purple-600 hover:text-purple-800 font-medium transition-colors"
+          >
+            {isExpanded ? (
+              `${t.board.showLess}`
+            ) : (
+              `+${finalConnections.length - 5} ${t.board.more}`
+            )}
+          </button>
         </div>
       )}
     </article>
