@@ -231,12 +231,6 @@ export default function Home() {
         onSkip={skipOnboarding}
       />
 
-      {/* Help Button */}
-      {!isOnboardingOpen && <HelpButton onClick={openOnboarding} />}
-
-      {/* Feedback Button */}
-      <FeedbackButton onClick={openFeedback} />
-
       {/* Feedback Modal */}
       <FeedbackModal
         isOpen={isFeedbackOpen}
