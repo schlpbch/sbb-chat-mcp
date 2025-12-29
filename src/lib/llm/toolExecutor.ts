@@ -56,6 +56,8 @@ export async function executeTool(
     if ((toolName === 'getWeather' || toolName === 'getSnowConditions') && 'locationName' in params) {
       const hasLatLon = 'latitude' in params && 'longitude' in params;
       
+      console.log(`[toolExecutor] Weather/Snow tool called:`, { toolName, hasLatLon, params });
+      
       if (!hasLatLon) {
         const locationName = (params as any).locationName;
         console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
@@ -66,19 +68,24 @@ export async function executeTool(
           limit: 1
         } as any);
 
+        console.log(`[toolExecutor] findPlaces result:`, { success: resolveResult.success, dataLength: resolveResult.data?.length, error: resolveResult.error });
+
         if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
           const place = resolveResult.data[0];
           const lat = place.centroid?.latitude || place.location?.latitude;
           const lon = place.centroid?.longitude || place.location?.longitude;
           
+          console.log(`[toolExecutor] Extracted coordinates:`, { lat, lon, place });
+          
           if (lat !== undefined && lon !== undefined) {
             console.log(`[toolExecutor] Resolved "${locationName}" to coordinates: ${lat}, ${lon}`);
             params = { ...params, latitude: lat, longitude: lon, locationName } as any;
+            console.log(`[toolExecutor] Updated params:`, params);
           } else {
             console.warn(`[toolExecutor] Could not find coordinates for "${locationName}"`);
           }
         } else {
-          console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`);
+          console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`, resolveResult.error);
         }
       }
     }
