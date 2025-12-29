@@ -86,11 +86,11 @@ export function updateContextFromMessage(
 
     if (extractedData.date) {
       const lowerDate = extractedData.date.toLowerCase();
-      if (lowerDate === 'tomorrow') {
+      if (lowerDate === 'tomorrow' || lowerDate === 'morgen') {
         baseDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-      } else if (lowerDate === 'yesterday') {
+      } else if (lowerDate === 'yesterday' || lowerDate === 'gestern') {
         baseDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      } else if (lowerDate !== 'today') {
+      } else if (lowerDate !== 'today' && lowerDate !== 'heute') {
         const parsed = new Date(extractedData.date);
         if (!isNaN(parsed.getTime())) {
           baseDate = parsed;

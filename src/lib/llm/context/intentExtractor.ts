@@ -55,10 +55,10 @@ export function extractIntent(message: string): Intent {
   }
 
   // Enhanced entity extraction with Unicode support (for Zürich, Genève, etc.)
-  // Matches from "from" until a keyword like "at", "to", "tomorrow", or end of string
-  const fromMatch = lowerMessage.match(/from\s+([^,]+?)(?=\s+(?:at|to|in|on|tomorrow|today|yesterday|with|via)\b|$|[.,!?])/i);
-  const toMatch = lowerMessage.match(/to\s+([^,]+?)(?=\s+(?:at|from|in|on|tomorrow|today|yesterday|with|via)\b|$|[.,!?])/i);
-  const inMatch = lowerMessage.match(/in\s+([^,]+?)(?=\s+(?:at|from|to|on|tomorrow|today|yesterday|with|via)\b|$|[.,!?])/i);
+  // Matches from "from/von" until a keyword like "at/um", "to/nach", etc.
+  const fromMatch = lowerMessage.match(/(?:from|von|ab)\s+([^,]+?)(?=\s+(?:at|um|to|nach|in|on|tomorrow|morgen|today|heute|yesterday|gestern|with|via)\b|$|[.,!?])/i);
+  const toMatch = lowerMessage.match(/(?:to|nach|bis)\s+([^,]+?)(?=\s+(?:at|um|from|von|in|on|tomorrow|morgen|today|heute|yesterday|gestern|with|via)\b|$|[.,!?])/i);
+  const inMatch = lowerMessage.match(/(?:in|bei)\s+([^,]+?)(?=\s+(?:at|um|from|von|to|nach|on|tomorrow|morgen|today|heute|yesterday|gestern|with|via)\b|$|[.,!?])/i);
 
   const extractedEntities: any = {};
   if (fromMatch) extractedEntities.origin = fromMatch[1].trim();
@@ -70,13 +70,13 @@ export function extractIntent(message: string): Intent {
 
   // Extract date and time (using patterns from intentParser)
   const datePatterns = [
-    /\b(today|tomorrow|yesterday)\b/i,
+    /\b(today|tomorrow|yesterday|heute|morgen|gestern)\b/i,
     /\b(\d{1,2}[\/\-\.]\d{1,2}(?:[\/\-\.]\d{2,4})?)\b/,
   ];
   
   const timePatterns = [
     /\b(\d{1,2}:\d{2})\b/i,
-    /\bat\s+(\d{1,2}(?::\d{2})?)\b/i,
+    /\b(?:at|um)\s+(\d{1,2}(?::\d{2})?)\b/i,
   ];
 
   for (const pattern of datePatterns) {
