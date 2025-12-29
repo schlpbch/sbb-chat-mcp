@@ -27,6 +27,10 @@ export function requiresOrchestration(message: string): boolean {
     'coach',
     'units',
     'information',
+    'from',
+    'to',
+    'trip',
+    'connection',
   ];
 
   const lowerMessage = message.toLowerCase();

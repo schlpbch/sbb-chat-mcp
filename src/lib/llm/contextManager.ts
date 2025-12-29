@@ -81,10 +81,43 @@ export function updateContextFromMessage(
   }
 
   if (extractedData.date || extractedData.time) {
-    const dateStr = extractedData.date || new Date().toISOString().split('T')[0];
-    const timeStr = extractedData.time || '09:00';
-    updated.time.departureTime = new Date(`${dateStr}T${timeStr}`);
-    updated.time.date = new Date(dateStr);
+    const now = new Date();
+    let baseDate = now;
+
+    if (extractedData.date) {
+      const lowerDate = extractedData.date.toLowerCase();
+      if (lowerDate === 'tomorrow') {
+        baseDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
+      } else if (lowerDate === 'yesterday') {
+        baseDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+      } else if (lowerDate !== 'today') {
+        const parsed = new Date(extractedData.date);
+        if (!isNaN(parsed.getTime())) {
+          baseDate = parsed;
+        }
+      }
+    }
+
+    const dateStr = baseDate.toISOString().split('T')[0];
+    let timeStr = extractedData.time || '09:00';
+    
+    // Normalize timeStr (e.g., "7:00" -> "07:00")
+    if (/^\d:\d{2}/.test(timeStr)) {
+      timeStr = '0' + timeStr;
+    } else if (/^\d$/.test(timeStr) || /^\d{2}$/.test(timeStr)) {
+      // Just a number like "7" or "19"
+      timeStr = (timeStr.length === 1 ? '0' : '') + timeStr + ':00';
+    }
+
+    const combined = new Date(`${dateStr}T${timeStr}`);
+    if (!isNaN(combined.getTime())) {
+      updated.time.departureTime = combined;
+      updated.time.date = new Date(dateStr);
+    } else {
+      // Fallback
+      updated.time.departureTime = new Date();
+      updated.time.date = new Date();
+    }
   }
 
   if (extractedData.preferences) {
