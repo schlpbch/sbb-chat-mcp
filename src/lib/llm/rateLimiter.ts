@@ -210,13 +210,18 @@ export function getRemainingTokens(userId: string): number {
  * Middleware helper for Next.js API routes
  */
 export function withRateLimit(
-  handler: (req: any, res: any) => Promise<any>
+  handler: (req: unknown, res: unknown) => Promise<unknown>
 ) {
-  return async (req: any, res: any) => {
+  return async (req: { headers: Record<string, string | string[] | undefined>; socket: { remoteAddress?: string } }, res: { setHeader: (name: string, value: string | number) => void; status: (code: number) => { json: (data: unknown) => void } }) => {
     // Extract user ID from session, IP, or default
+    const getFirstHeader = (name: string): string | undefined => {
+      const value = req.headers[name];
+      return Array.isArray(value) ? value[0] : value;
+    };
+
     const userId =
-      req.headers['x-session-id'] ||
-      req.headers['x-forwarded-for'] ||
+      getFirstHeader('x-session-id') ||
+      getFirstHeader('x-forwarded-for') ||
       req.socket.remoteAddress ||
       'anonymous';
 

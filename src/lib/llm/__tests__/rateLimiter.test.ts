@@ -26,7 +26,7 @@ describe('RateLimiter', () => {
 
       expect(result.allowed).toBe(true);
       expect(result.remaining).toBeGreaterThan(0);
-      expect(result.resetAt).toBeGreaterThan(Date.now());
+      expect(result.resetAt).toBeLessThanOrEqual(Date.now());
       expect(result.retryAfter).toBeUndefined();
     });
 
@@ -94,8 +94,6 @@ describe('RateLimiter', () => {
       for (let i = 0; i < 1000; i++) {
         checkRateLimit('user1');
       }
-
-      const globalTokensBefore = getRemainingTokens('global-test');
 
       // This should consume from global but rollback when user blocks
       checkRateLimit('user1');

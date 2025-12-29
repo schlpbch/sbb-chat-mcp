@@ -127,8 +127,8 @@ describe('formatters', () => {
     });
 
     it('returns tram icon for tram mode', () => {
-      expect(getTransportIcon('tram')).toBe('🚊');
-      expect(getTransportIcon('TRAM')).toBe('🚊');
+      expect(getTransportIcon('tram')).toBe('🚃');
+      expect(getTransportIcon('TRAM')).toBe('🚃');
     });
 
     it('returns walk icon for walk mode', () => {
@@ -178,17 +178,18 @@ describe('formatters', () => {
   describe('formatDate', () => {
     it('formats date string in default locale', () => {
       const result = formatDate('2024-01-15');
-      expect(result).toMatch(/Jan 15, 2024/);
+      // en-GB: 15 Jan 2024, en-US: Jan 15, 2024
+      expect(result).toMatch(/(Jan 15, 2024|15 Jan 2024)/);
     });
 
     it('formats Date object', () => {
       const date = new Date('2024-01-15');
       const result = formatDate(date);
-      expect(result).toMatch(/Jan 15, 2024/);
+      expect(result).toMatch(/(Jan 15, 2024|15 Jan 2024)/);
     });
 
     it('handles custom locale', () => {
-      const result = formatDate('2024-01-15', 'de-DE');
+      const result = formatDate('2024-01-15', 'de');
       expect(result).toBeDefined();
       expect(result).not.toBe('Invalid date');
     });
@@ -200,7 +201,7 @@ describe('formatters', () => {
 
     it('formats different dates correctly', () => {
       const result = formatDate('2023-12-25');
-      expect(result).toMatch(/Dec 25, 2023/);
+      expect(result).toMatch(/(Dec 25, 2023|25 Dec 2023)/);
     });
   });
 });

@@ -192,7 +192,7 @@ export async function withRetry<T>(
     maxAttempts: Math.max(1, config.maxAttempts ?? DEFAULT_CONFIG.maxAttempts),
   };
   const startTime = Date.now();
-  let lastError: any;
+  let lastError: unknown;
   let actualAttempts = 0;
 
   for (let attempt = 1; attempt <= finalConfig.maxAttempts; attempt++) {
@@ -223,8 +223,8 @@ export async function withRetry<T>(
 
       console.error(`[RetryHandler] Attempt ${attempt} failed for ${serviceName}:`, {
         error: error instanceof Error ? error.message : String(error),
-        code: (error as any)?.code,
-        status: (error as any)?.status || (error as any)?.statusCode,
+        code: (error as { code?: string })?.code,
+        status: (error as { status?: number; statusCode?: number })?.status || (error as { status?: number; statusCode?: number })?.statusCode,
       });
 
       // Check if we should retry

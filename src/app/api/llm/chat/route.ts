@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
       useOrchestration = true,
     } = body as {
       message: string;
-      intent?: any;
+      intent?: unknown;
       history?: ChatMessage[];
       context?: ChatContext;
       enableFunctionCalling?: boolean;
