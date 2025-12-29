@@ -408,6 +408,44 @@ export default function TripCard({ data, language }: TripCardProps) {
  {formatDuration(leg.duration)}
  </p>
  )}
+ 
+ {/* Leg Attributes (Accessibility, Services) */}
+ {leg.serviceJourney?.notices && leg.serviceJourney.notices.length > 0 && (
+ <div className="flex flex-wrap gap-1.5 mt-2">
+ {leg.serviceJourney.notices
+ .filter((n: any) => n.type === 'ATTRIBUTE')
+ .map((n: any, i: number) => {
+ let icon = null;
+ const code = n.name;
+ // Map common SBB attributes to icons
+ if (['WR', 'W', 'Y'].includes(code)) icon = '♿';
+ else if (code === 'WL') icon = '🛗'; // Lift
+ else if (code === 'FA') icon = '🧸'; // Family
+ else if (code === 'BZ') icon = '💼'; // Business
+ else if (code === 'FS') icon = '📶'; // FreeSurf
+ else if (code === 'RZ') icon = '🤫'; // Quiet
+ else if (code === 'R') icon = '🎫'; // Reservation
+ else if (code === 'GR') icon = '👥'; // Group
+ else if (code === 'SV') icon = '🚲'; // Bike
+ else if (code === 'BE') icon = '🍽️'; // Bistro/Restaurant
+
+ return (
+ <span 
+ key={i} 
+ className={`inline-flex items-center space-x-1 px-1.5 py-0.5 text-[10px] rounded border ${
+ icon === '♿' || icon === '🛗' 
+ ? 'bg-blue-50 text-blue-700 border-blue-200' 
+ : 'bg-gray-100 text-gray-600 border-gray-200'
+ }`} 
+ title={n.text?.template || code}
+ >
+ {icon && <span className="text-sm mr-0.5 leading-none">{icon}</span>}
+ <span className="font-medium">{code}</span>
+ </span>
+ );
+ })}
+ </div>
+ )}
  </div>
  </div>
  );
@@ -418,3 +456,4 @@ export default function TripCard({ data, language }: TripCardProps) {
  </article>
  );
 }
+```
