@@ -12,6 +12,12 @@ Model Context Protocol (MCP).
 - View detailed information for each attraction
 - Find nearby public transport stations
 
+### Personalization & Settings (New)
+
+- **Persistent Settings**: Configure Home/Work stations and Theme preferences (Light/Dark/System)
+- **Saved Trips**: Save your favorite connections for quick access later (`/settings`)
+- **Map Integration**: "Show on Map" button for visualizing trip routes instantly
+
 ### AI Travel Assistant
 
 - Natural language chat interface powered by Google Gemini 2.0 Flash
@@ -160,11 +166,11 @@ NEXT_PUBLIC_MCP_SERVER_URL_STAGING=https://your-staging-url
 NEXT_PUBLIC_MCP_ENV=staging
 ```
 
-### Optional for AI Chat
+### Required for AI Chat
 
 ```bash
-GEMINI_API_KEY=your_gemini_api_key
-GEMINI_MODEL=gemini-1.5-flash
+GEMINI_API_KEY=your_gemini_api_key (Required)
+GEMINI_MODEL=gemini-2.0-flash (Default)
 ```
 
 ## Features Roadmap
