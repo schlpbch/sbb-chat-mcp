@@ -124,7 +124,9 @@ export async function POST(request: NextRequest) {
     });
     return NextResponse.json(
       {
-        error: error instanceof Error ? error.message : 'Internal server error',
+        error: 'Internal server error',
+        details: error instanceof Error ? error.message : String(error),
+        requestId: request.headers.get('x-request-id') || 'unknown'
       },
       { status: 500 }
     );

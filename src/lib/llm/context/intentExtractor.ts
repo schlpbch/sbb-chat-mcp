@@ -23,9 +23,17 @@ export function extractIntent(message: string): Intent {
     'to',
     'journey',
     'route',
+    'zug', 'bahn', 'verbindung', 'reise', // DE
+    'train', 'connexion', 'voyage', 'aller', // FR
+    'treno', 'viaggio', // IT
   ];
-  const weatherKeywords = ['weather', 'forecast', 'temperature', 'rain', 'snow'];
-  const stationKeywords = ['station', 'stop', 'platform', 'departures', 'arrivals'];
+  const weatherKeywords = ['weather', 'forecast', 'temperature', 'rain', 'snow', 'wetter', 'météo', 'meteo'];
+  const stationKeywords = [
+    'station', 'stop', 'platform', 'departures', 'arrivals',
+    'bahnhof', 'haltestelle', 'abfahrt', 'ankunft', // DE
+    'gare', 'arrêt', 'départ', 'arrivée', // FR
+    'stazione', 'fermata', 'partenze', 'arrivi' // IT
+  ];
   const formationKeywords = [
     'formation',
     'fromation',
@@ -37,6 +45,7 @@ export function extractIntent(message: string): Intent {
     'information',
     'info',
     'unit',
+    'wagen', 'sektor', 'traktion', // DE
   ];
 
   let type: Intent['type'] = 'general_info';
@@ -59,15 +68,37 @@ export function extractIntent(message: string): Intent {
   // Enhanced entity extraction with Unicode support (for Zürich, Genève, etc.)
   // Enhanced entity extraction with Unicode support
   // Matches from "from/von/de" until a keyword
-  const fromMatch = lowerMessage.match(/(?:from|von|ab|de|depuis)\s+(.+?)(?=\s+(?:at|um|à|to|nach|bis|pour|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with|via)\b|$|[.,!?])/i);
-  const toMatch = lowerMessage.match(/(?:to|nach|bis|à|pour|vers)\s+(.+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with|via)\b|$|[.,!?])/i);
-  const inMatch = lowerMessage.match(/(?:in|bei|dans|à)\s+([^,]+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|to|nach|bis|pour|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with|via)\b|$|[.,!?])/i);
+  // Enhanced entity extraction with Unicode support
+  // Matches from "from/von/de" until a keyword
+  // Updated to allow dots in abbreviations (e.g. St. Gallen) by ensuring dot is followed by space or EOS
+  // Note: Removed \.\s from lookahead to allow St. to be captured
+  const fromMatch = lowerMessage.match(/(?:from|von|ab|de|depuis|da)\s+(.+?)(?=\s+(?:at|um|à|to|nach|bis|pour|via|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with)\b|$|[?!]|$)/i);
+  const toMatch = lowerMessage.match(/(?:to|nach|bis|à|pour|vers|a)\s+(.+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|da|via|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with)\b|$|[?!]|$)/i);
+  const inMatch = lowerMessage.match(/(?:in|bei|dans|à)\s+([^,]+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|da|to|nach|bis|pour|a|via|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with)\b|$|[?!]|$)/i);
+  
+  // Implicit "X to Y" pattern (e.g. "Zurich to Bern")
+  // Only use if explicit 'from' is missing but 'to' is present, and message is short-ish
+  const simpleToMatch = !fromMatch && !inMatch ? lowerMessage.match(/^(.+?)\s+(?:to|nach|bis|à|pour|vers|a)\s+(.+?)(?=\s+(?:at|um|via)|$)/i) : null;
 
   const extractedEntities: any = {};
   if (fromMatch) extractedEntities.origin = fromMatch[1].replace(/\*\*|_|#/g, '').trim();
   if (toMatch) extractedEntities.destination = toMatch[1].replace(/\*\*|_|#/g, '').trim();
-  // For station queries like "arrivals in Zurich", treat "in" as the origin
-  if (inMatch && !fromMatch && !toMatch) {
+  
+  // Apply implicit match if standard match failed
+  if (simpleToMatch && !extractedEntities.origin) {
+      // Check if group 1 looks like a keyword or valid place
+      // Avoid matching "I want to go to Bern" -> Origin "I want to go"
+      // Basic heuristic: length < 30 chars
+      if (simpleToMatch[1].length < 30) {
+        extractedEntities.origin = simpleToMatch[1].replace(/\*\*|_|#/g, '').trim();
+        if (!extractedEntities.destination) {
+            extractedEntities.destination = simpleToMatch[2].replace(/\*\*|_|#/g, '').trim();
+        }
+      }
+  }
+
+  // For station queries like "arrivals in Zurich", treat "in" as the origin (station)
+  if (inMatch && !fromMatch && !toMatch && !simpleToMatch) {
     extractedEntities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
   }
 

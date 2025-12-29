@@ -36,9 +36,33 @@ export function createExecutionPlan(
       return createTripPlan(context);
     case 'train_formation':
       return createFormationPlan(context);
+    case 'weather_check':
+      return createWeatherPlan(context);
     default:
       return null;
   }
+}
+
+/**
+ * Create a plan for weather check
+ */
+function createWeatherPlan(context: ConversationContext): ExecutionPlan {
+    const location = context.location.origin?.name || 
+                   context.intentHistory[context.intentHistory.length - 1]?.extractedEntities?.origin || 
+                   'Switzerland';
+    
+    return {
+        id: `weather-${Date.now()}`,
+        name: 'Weather Check',
+        description: `Get weather for ${location}`,
+        steps: [
+            {
+                id: 'get-weather',
+                toolName: 'getWeather',
+                params: { location }
+            }
+        ]
+    };
 }
 
 /**
