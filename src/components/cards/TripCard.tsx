@@ -391,6 +391,19 @@ export default function TripCard({ data, language }: TripCardProps) {
  </span>
  )}
  </div>
+
+ {/* Intermediate Stops */}
+ {leg.serviceJourney?.stopPoints && leg.serviceJourney.stopPoints.length > 2 && (
+ <div className="pl-4 ml-1.5 border-l-2 border-gray-200 my-1 space-y-1 py-1">
+ {leg.serviceJourney.stopPoints.slice(1, -1).map((point: any, pIdx: number) => (
+ <div key={pIdx} className="flex justify-between items-center text-xs text-gray-500">
+ <span>{point.place?.name}</span>
+ <span>{point.departure?.timeAimed || point.arrival?.timeAimed ? formatTime(point.departure?.timeAimed || point.arrival?.timeAimed) : ''}</span>
+ </div>
+ ))}
+ </div>
+ )}
+
  <div className="flex items-center space-x-2">
  <span className="text-xs font-semibold text-gray-900 w-12">
  {formatTime(legEnd.time)}

@@ -23,9 +23,9 @@ export function generateSystemPrompt(
 
 1. JOURNEY PLANNING → Use findTrips
    Triggers: "how do I get", "find connections", "train from X to Y", "fastest route", "fewest transfers", "earliest arrival", "wheelchair", "accessible"
-   **For accessibility/wheelchair requests, ALWAYS use responseMode: "detailed" to check attributes!**
+   **ALWAYS use responseMode: "detailed" to ensure accessibility attributes and full stop lists are returned.**
    Examples: 
-   - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern"})
+   - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern", responseMode: "detailed"})
    - "Wheelchair accessible route to Lucerne" → findTrips({origin: "Zurich", destination: "Lucerne", responseMode: "detailed"})
    - "Fastest way to Geneva" → findTrips({origin: <current>, destination: "Geneva"})
    - "Zurich to Milan tomorrow" → findTrips({origin: "Zurich", destination: "Milan", dateTime: <tomorrow>})
