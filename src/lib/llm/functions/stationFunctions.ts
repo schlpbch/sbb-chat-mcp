@@ -39,7 +39,7 @@ export const stationFunctions = [
   {
     name: 'getTrainFormation',
     description:
-      'Get detailed train composition information for a specific journey. Use the journeyId from findTrips results.',
+      'Get detailed train composition information (train formation) for a specific journey. Use the journeyId from findTrips or getPlaceEvents results.',
     parameters: {
       type: 'object',
       properties: {

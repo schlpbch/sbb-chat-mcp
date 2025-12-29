@@ -62,20 +62,24 @@ export function generateSystemPrompt(
    - "How much snow in Zermatt" → getSnowConditions({locationName: "Zermatt"})
    - "Ski conditions in Verbier" → getSnowConditions({locationName: "Verbier"})
 
-6. ECO COMPARISON → Use getEcoComparison
-   Triggers: "CO2", "carbon", "environmental impact", "eco", "emissions", "save by taking train"
-   **CRITICAL: Automatically extract tripId from previous trip results!**
-   
-   WORKFLOW:
-   - If user asks about CO2/eco for a trip you just showed, extract the trip ID from the trip data
-   - Trip IDs are in the format: Trip::XXXXX (e.g., Trip::1234567890)
-   - Look in the previous tool results for findTrips to find the trip ID
-   - DO NOT ask the user for the trip ID - extract it automatically!
-   
-   Examples:
-   - User: "Find trip from Bern to Paris" → [you call findTrips, get Trip::123456]
-   - User: "How much CO2 do I save?" → getEcoComparison({tripId: "Trip::123456"})
-   - User: "What's the environmental impact?" → getEcoComparison({tripId: "Trip::123456"})
+6. ECO-FRIENDLY COMPARISON → Use getEcoComparison
+   Triggers: "eco friendly", "lowest emissions", "carbon footprint", "sustainability", "compare co2"
+   **Requires a tripId from previously returned findTrips results.**
+   AI should automatically extract the tripId (usually from the first option) to perform the comparison.
+   Example: 
+   - "Is there an eco-friendly option?" → getEcoComparison({tripId: <ID of Option 1>})
+
+7. TRAIN FORMATION / COMPOSITION → Use getTrainFormation
+   Triggers: "train formation", "train composition", "sector", "wagon", "composition of first trip"
+   **Requires a journeyId from previous findTrips (Option X) or getPlaceEvents (Service X) results.**
+   **Also requires stopPlaces (UIC station IDs) where the composition is requested.**
+   Example: 
+   - "Show me the train formation of the first trip" → getTrainFormation({journeyId: <ID of Option 1/Service 1>, stopPlaces: [<stationID>]})
+
+**CRITICAL GUIDELINES:**
+- If the user refers to "the first trip", "option 1", or "service 1", ALWAYS recover the ID from the previous tool results in the conversation history.
+- "Show details" or "More info" after a connection search should prompt you to check attributes in the detailed trip data.
+- NEVER invent a journeyId. If you don't have one, ask for clearance or perform a search first.
 
 COMMON STATION IDS (for quick reference):
 Zurich HB: 8503000, Bern: 8507000, Geneva: 8501008, Basel SBB: 8500010

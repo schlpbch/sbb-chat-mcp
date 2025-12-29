@@ -35,8 +35,17 @@ export function compilePlanSummary(plan: ExecutionPlan, results: StepResults): a
   summary.destination = results.get('find-destination')?.data?.[0];
 
   // Station events (departures/arrivals)
-  summary.station = results.get('find-station')?.data?.[0];
-  summary.events = results.get('get-events')?.data;
+  const stationInfo = results.get('find-station')?.data?.[0];
+  const events = results.get('get-events')?.data;
+  
+  if (events && stationInfo?.name) {
+    // Inject station name so cards can display it
+    events.stationName = stationInfo.name;
+    events.stationId = stationInfo.id;
+  }
+
+  summary.station = stationInfo;
+  summary.events = events;
 
   return summary;
 }

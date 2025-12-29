@@ -35,12 +35,25 @@ export function formatPlanResults(
 
   // Station events (departures/arrivals)
   if (summary.events) {
+    const eventType = summary.events.arrivals ? 'Arrivals' : 'Departures';
+    const list = summary.events.arrivals || summary.events.departures || [];
+    
     parts.push(
-      `\n## ${summary.station?.name || 'Station'} - Live Board`
+      `\n## ${summary.station?.name || 'Station'} - Live ${eventType}`
     );
-    parts.push(
-      `\nShowing live departure/arrival information.`
-    );
+    
+    if (list.length > 0) {
+      parts.push(`Showing next ${list.length} services:`);
+      list.slice(0, 3).forEach((item: any, i: number) => {
+        const line = item.serviceProduct?.sbbServiceProduct?.name || item.line || 'Train';
+        const time = new Date(item.departureTime || item.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        parts.push(
+          `- **Service ${i + 1}:** ${time} ${line} to ${item.destination || item.origin} (ID: ${item.journeyId})`
+        );
+      });
+    } else {
+      parts.push(`No upcoming ${eventType.toLowerCase()} found.`);
+    }
   }
 
   return parts.join('\n');
