@@ -53,13 +53,15 @@ export async function executeTool(
     }
 
     // Special handling for getWeather and getSnowConditions - resolve location name to lat/lon if needed
-    if ((toolName === 'getWeather' || toolName === 'getSnowConditions') && 'locationName' in params) {
+    if (toolName === 'getWeather' || toolName === 'getSnowConditions') {
       const hasLatLon = 'latitude' in params && 'longitude' in params;
-      
-      console.log(`[toolExecutor] Weather/Snow tool called:`, { toolName, hasLatLon, params });
-      
-      if (!hasLatLon) {
-        const locationName = (params as any).locationName;
+      const hasLocationName = 'locationName' in params || 'location' in params;
+
+      console.log(`[toolExecutor] Weather/Snow tool called:`, { toolName, hasLatLon, hasLocationName, params });
+
+      if (!hasLatLon && hasLocationName) {
+        // Support both 'locationName' and 'location' parameter names
+        const locationName = (params as any).locationName || (params as any).location;
         console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
         
         // Use findPlaces for general locations (cities, ski resorts, etc.)
@@ -90,7 +92,9 @@ export async function executeTool(
           
           if (lat !== undefined && lon !== undefined) {
             console.log(`[toolExecutor] Resolved "${locationName}" to coordinates: ${lat}, ${lon}`);
-            params = { ...params, latitude: lat, longitude: lon, locationName } as any;
+            // Remove 'location' param if it exists (LLM sometimes uses this instead of locationName)
+            const { location, ...restParams } = params as any;
+            params = { ...restParams, latitude: lat, longitude: lon, locationName } as any;
             console.log(`[toolExecutor] Updated params:`, params);
           } else {
             console.warn(`[toolExecutor] Could not find coordinates for "${locationName}"`);

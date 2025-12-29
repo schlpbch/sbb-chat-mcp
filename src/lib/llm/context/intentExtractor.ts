@@ -51,16 +51,31 @@ export function extractIntent(message: string): Intent {
   let type: Intent['type'] = 'general_info';
   let confidence = 0.5;
 
-  if (stationKeywords.some((k) => lowerMessage.includes(k))) {
+  // Helper function to check for keyword with word boundaries
+  const hasKeyword = (keywords: string[], message: string) => {
+    return keywords.some((k) => {
+      // For multi-word keywords like "get to", use simple includes
+      if (k.includes(' ')) {
+        return message.includes(k);
+      }
+      // For single words, use word boundary at start only to match plurals
+      // (e.g., "station" matches "stations", but "rain" doesn't match "trains")
+      const regex = new RegExp(`\\b${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i');
+      return regex.test(message);
+    });
+  };
+
+  // Check station keywords first (most specific - "train station" should be station search, not trip)
+  if (hasKeyword(stationKeywords, lowerMessage)) {
     type = 'station_search';
     confidence = 0.9;
-  } else if (formationKeywords.some((k) => lowerMessage.includes(k))) {
+  } else if (hasKeyword(formationKeywords, lowerMessage)) {
     type = 'train_formation';
     confidence = 0.9;
-  } else if (tripKeywords.some((k) => lowerMessage.includes(k))) {
+  } else if (hasKeyword(tripKeywords, lowerMessage)) {
     type = 'trip_planning';
     confidence = 0.8;
-  } else if (weatherKeywords.some((k) => lowerMessage.includes(k))) {
+  } else if (hasKeyword(weatherKeywords, lowerMessage)) {
     type = 'weather_check';
     confidence = 0.9;
   }

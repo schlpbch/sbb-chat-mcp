@@ -47,11 +47,12 @@ export function useChatAPI(
 
       const data = await response.json();
 
-      // Add Companion message
+      // Add Companion message with tool calls if available
       const CompanionMessage: Message = {
         id: (Date.now() + 1).toString(),
         role: 'Companion',
         content: data.response,
+        toolCalls: data.toolCalls, // Include tool calls from API response
         timestamp: new Date()
       };
       setMessages(prev => [...prev, CompanionMessage]);
