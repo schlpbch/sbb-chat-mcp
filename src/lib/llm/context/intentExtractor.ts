@@ -54,10 +54,11 @@ export function extractIntent(message: string): Intent {
     confidence = 0.9;
   }
 
-  // Simple entity extraction for "from X" and "in X"
-  const fromMatch = lowerMessage.match(/from\s+([a-zA-Z0-9\s\.-]+)/);
-  const toMatch = lowerMessage.match(/to\s+([a-zA-Z0-9\s\.-]+)/);
-  const inMatch = lowerMessage.match(/in\s+([a-zA-Z0-9\s\.-]+)/);
+  // Enhanced entity extraction with Unicode support (for Zürich, Genève, etc.)
+  // Matches from "from" until a keyword like "at", "to", "tomorrow", or end of string
+  const fromMatch = lowerMessage.match(/from\s+([^,]+?)(?=\s+(?:at|to|in|on|tomorrow|today|yesterday|with|via)\b|$|[.,!?])/i);
+  const toMatch = lowerMessage.match(/to\s+([^,]+?)(?=\s+(?:at|from|in|on|tomorrow|today|yesterday|with|via)\b|$|[.,!?])/i);
+  const inMatch = lowerMessage.match(/in\s+([^,]+?)(?=\s+(?:at|from|to|on|tomorrow|today|yesterday|with|via)\b|$|[.,!?])/i);
 
   const extractedEntities: any = {};
   if (fromMatch) extractedEntities.origin = fromMatch[1].trim();
@@ -65,6 +66,27 @@ export function extractIntent(message: string): Intent {
   // For station queries like "arrivals in Zurich", treat "in" as the origin
   if (inMatch && !fromMatch && !toMatch) {
     extractedEntities.origin = inMatch[1].trim();
+  }
+
+  // Extract date and time (using patterns from intentParser)
+  const datePatterns = [
+    /\b(today|tomorrow|yesterday)\b/i,
+    /\b(\d{1,2}[\/\-\.]\d{1,2}(?:[\/\-\.]\d{2,4})?)\b/,
+  ];
+  
+  const timePatterns = [
+    /\b(\d{1,2}:\d{2})\b/i,
+    /\bat\s+(\d{1,2}(?::\d{2})?)\b/i,
+  ];
+
+  for (const pattern of datePatterns) {
+    const match = lowerMessage.match(pattern);
+    if (match) extractedEntities.date = match[1];
+  }
+  
+  for (const pattern of timePatterns) {
+    const match = lowerMessage.match(pattern);
+    if (match) extractedEntities.time = match[1];
   }
 
   // Extract event type for station queries

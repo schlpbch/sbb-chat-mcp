@@ -240,6 +240,7 @@ function createStationEventsPlan(context: ConversationContext): ExecutionPlan {
           return {
             placeId: station?.id || '',
             eventType: eventType,
+            dateTime: context.time.departureTime?.toISOString(),
             limit: 10,
           };
         },

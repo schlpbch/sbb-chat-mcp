@@ -41,6 +41,8 @@ export async function sendOrchestratedChatMessage(
     intent,
     origin: intent.extractedEntities?.origin,
     destination: intent.extractedEntities?.destination,
+    date: intent.extractedEntities?.date,
+    time: intent.extractedEntities?.time,
   });
   setSessionContext(sessionId, updatedContext);
 
