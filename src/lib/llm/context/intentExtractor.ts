@@ -9,6 +9,8 @@ import type { Intent } from './types';
  */
 export function extractIntent(message: string): Intent {
   const lowerMessage = message.toLowerCase();
+  console.log('[intentExtractor] Extracting from:', message);
+  console.log('[intentExtractor] Lowercase:', lowerMessage);
 
   const tripKeywords = [
     'train',
@@ -55,17 +57,18 @@ export function extractIntent(message: string): Intent {
   }
 
   // Enhanced entity extraction with Unicode support (for Zürich, Genève, etc.)
-  // Matches from "from/von" until a keyword like "at/um", "to/nach", etc.
-  const fromMatch = lowerMessage.match(/(?:from|von|ab)\s+([^,]+?)(?=\s+(?:at|um|to|nach|in|on|tomorrow|morgen|today|heute|yesterday|gestern|with|via)\b|$|[.,!?])/i);
-  const toMatch = lowerMessage.match(/(?:to|nach|bis)\s+([^,]+?)(?=\s+(?:at|um|from|von|in|on|tomorrow|morgen|today|heute|yesterday|gestern|with|via)\b|$|[.,!?])/i);
-  const inMatch = lowerMessage.match(/(?:in|bei)\s+([^,]+?)(?=\s+(?:at|um|from|von|to|nach|on|tomorrow|morgen|today|heute|yesterday|gestern|with|via)\b|$|[.,!?])/i);
+  // Enhanced entity extraction with Unicode support
+  // Matches from "from/von/de" until a keyword
+  const fromMatch = lowerMessage.match(/(?:from|von|ab|de|depuis)\s+(.+?)(?=\s+(?:at|um|à|to|nach|bis|pour|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with|via)\b|$|[.,!?])/i);
+  const toMatch = lowerMessage.match(/(?:to|nach|bis|à|pour|vers)\s+(.+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with|via)\b|$|[.,!?])/i);
+  const inMatch = lowerMessage.match(/(?:in|bei|dans|à)\s+([^,]+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|to|nach|bis|pour|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with|via)\b|$|[.,!?])/i);
 
   const extractedEntities: any = {};
-  if (fromMatch) extractedEntities.origin = fromMatch[1].trim();
-  if (toMatch) extractedEntities.destination = toMatch[1].trim();
+  if (fromMatch) extractedEntities.origin = fromMatch[1].replace(/\*\*|_|#/g, '').trim();
+  if (toMatch) extractedEntities.destination = toMatch[1].replace(/\*\*|_|#/g, '').trim();
   // For station queries like "arrivals in Zurich", treat "in" as the origin
   if (inMatch && !fromMatch && !toMatch) {
-    extractedEntities.origin = inMatch[1].trim();
+    extractedEntities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
   }
 
   // Extract date and time (using patterns from intentParser)
@@ -100,6 +103,7 @@ export function extractIntent(message: string): Intent {
       extractedEntities.eventType = 'departures';
     }
   }
+  console.log('[intentExtractor] Extracted entities:', extractedEntities);
 
   return {
     type,

@@ -74,6 +74,7 @@ export async function executePlan(
           success: result.success,
           data: result.data,
           error: result.error,
+          params: params,
           duration: Date.now() - stepStart,
         };
       } catch (error) {
@@ -82,6 +83,7 @@ export async function executePlan(
           toolName: step.toolName,
           success: false,
           error: error instanceof Error ? error.message : 'Unknown error',
+          params: params,
           duration: Date.now() - stepStart,
         };
       }

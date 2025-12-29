@@ -101,8 +101,27 @@ export function updateContextFromMessage(
     const dateStr = baseDate.toISOString().split('T')[0];
     let timeStr = extractedData.time || '09:00';
     
-    // Normalize timeStr (e.g., "7:00" -> "07:00")
-    if (/^\d:\d{2}/.test(timeStr)) {
+    // Normalize timeStr (e.g., "7:00" -> "07:00", "2pm" -> "14:00")
+    if (/(\d{1,2})([ap]m)/i.test(timeStr)) {
+      const match = timeStr.match(/(\d{1,2})([ap]m)/i);
+      if (match) {
+        let hour = parseInt(match[1]);
+        const ampm = match[2].toLowerCase();
+        if (ampm === 'pm' && hour < 12) hour += 12;
+        if (ampm === 'am' && hour === 12) hour = 0;
+        timeStr = (hour < 10 ? '0' : '') + hour + ':00';
+      }
+    } else if (/(\d{1,2}):(\d{2})\s*([ap]m)/i.test(timeStr)) {
+      const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)/i);
+      if (match) {
+        let hour = parseInt(match[1]);
+        const min = match[2];
+        const ampm = match[3].toLowerCase();
+        if (ampm === 'pm' && hour < 12) hour += 12;
+        if (ampm === 'am' && hour === 12) hour = 0;
+        timeStr = (hour < 10 ? '0' : '') + hour + ':' + min;
+      }
+    } else if (/^\d:\d{2}/.test(timeStr)) {
       timeStr = '0' + timeStr;
     } else if (/^\d$/.test(timeStr) || /^\d{2}$/.test(timeStr)) {
       // Just a number like "7" or "19"

@@ -27,6 +27,7 @@ export interface StepResult {
   success: boolean;
   data?: any;
   error?: string;
+  params?: any;
   duration: number;
 }
 

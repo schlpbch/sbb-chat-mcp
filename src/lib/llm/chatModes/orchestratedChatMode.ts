@@ -76,7 +76,7 @@ export async function sendOrchestratedChatMessage(
         .filter((r) => r.success && r.data)
         .map((r) => ({
           toolName: r.toolName,
-          params: {},
+          params: r.params || {},
           result: r.data,
         }));
       console.log(
@@ -119,6 +119,10 @@ IMPORTANT: The information will be displayed as visual cards to the user. Do NOT
       return {
         response,
         toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+        debug: {
+            intent: intent,
+            context: updatedContext
+        }
       };
     }
   }

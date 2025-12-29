@@ -23,6 +23,10 @@ export interface ChatResponse {
     params: any;
     result: any;
   }>;
+  debug?: {
+      intent?: any;
+      context?: any;
+  };
 }
 
 /**

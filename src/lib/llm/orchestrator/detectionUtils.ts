@@ -31,6 +31,11 @@ export function requiresOrchestration(message: string): boolean {
     'to',
     'trip',
     'connection',
+    'facilities',
+    'weather',
+    'rain',
+    'snow',
+    'forecast',
   ];
 
   const lowerMessage = message.toLowerCase();

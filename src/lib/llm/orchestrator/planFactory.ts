@@ -112,11 +112,24 @@ function createFormationPlan(context: ConversationContext): ExecutionPlan | null
  * Create a plan for trip search
  * Pattern: find stations -> find trips -> get eco comparison
  */
-function createTripPlan(context: ConversationContext): ExecutionPlan {
-  const origin = context.location.origin?.name;
-  const destination = context.location.destination?.name;
 
+function createTripPlan(context: ConversationContext): ExecutionPlan {
+  // Try to get location from context first, then fallback to latest intent extraction
+  let origin = context.location.origin?.name;
+  let destination = context.location.destination?.name;
   if (!origin || !destination) {
+    const latest = context.intentHistory[context.intentHistory.length - 1];
+    if (latest?.extractedEntities?.origin) origin = latest.extractedEntities.origin;
+    if (latest?.extractedEntities?.destination) destination = latest.extractedEntities.destination;
+  }
+
+  // Fallback for "Departures from X" being misinterpreted as trip
+  if (origin && !destination && !context.location.destination) {
+     // If we only have origin, maybe we can accept it if we are just searching connections?
+     // Or we return a "search destination" step? For now, we proceed to allow partial filling.
+  }
+
+  if (!origin && !destination) {
     return {
       id: `trip-${Date.now()}`,
       name: 'Trip Search',
@@ -138,30 +151,15 @@ function createTripPlan(context: ConversationContext): ExecutionPlan {
     description: `Find connections from ${origin} to ${destination}`,
     steps: [
       {
-        id: 'find-origin',
-        toolName: 'findStopPlacesByName',
-        params: { query: origin, limit: 1 },
-      },
-      {
-        id: 'find-destination',
-        toolName: 'findStopPlacesByName',
-        params: { query: destination, limit: 1 },
-      },
-      {
         id: 'find-trips',
         toolName: 'findTrips',
-        params: (results) => {
-          const originStation = results.get('find-origin')?.data?.[0];
-          const destStation = results.get('find-destination')?.data?.[0];
-          return {
-            origin: originStation?.name || origin,
-            destination: destStation?.name || destination,
-            date,
-            time,
-            isArrivalTime: context.time.isArriveBy || false,
-          };
+        params: {
+          origin: origin,
+          destination: destination,
+          date: date,
+          time: time,
+          isArrivalTime: context.time.isArriveBy || false,
         },
-        dependsOn: ['find-origin', 'find-destination'],
       },
       {
         id: 'eco-comparison',

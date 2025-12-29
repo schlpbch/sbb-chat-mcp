@@ -110,6 +110,10 @@ export async function POST(request: NextRequest) {
       response: result.response,
       toolCalls: result.toolCalls,
       timestamp: new Date().toISOString(),
+      debug: {
+        receivedIntent: result.debug?.intent || intent,
+        finalContext: result.debug?.context || context,
+      }
     });
   } catch (error) {
     console.error('Chat API error:', error);

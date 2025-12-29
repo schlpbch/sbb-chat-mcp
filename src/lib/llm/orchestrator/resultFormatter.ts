@@ -46,9 +46,20 @@ export function formatPlanResults(
       parts.push(`Showing next ${list.length} services:`);
       list.slice(0, 3).forEach((item: any, i: number) => {
         const line = item.serviceProduct?.sbbServiceProduct?.name || item.line || 'Train';
-        const time = new Date(item.departureTime || item.arrivalTime).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        const rawTime = item.departureTime || item.arrivalTime || item.departure?.timeAimed || item.arrival?.timeAimed;
+        let timeStr = 'N/A';
+        if (rawTime) {
+          try {
+            const date = new Date(rawTime);
+            if (!isNaN(date.getTime())) {
+              timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+            }
+          } catch (e) {
+            console.warn('Error formatting time in resultFormatter', e);
+          }
+        }
         parts.push(
-          `- **Service ${i + 1}:** ${time} ${line} to ${item.destination || item.origin} (ID: ${item.journeyId})`
+          `- **Service ${i + 1}:** ${timeStr} ${line} to ${item.destination || item.origin?.name || item.origin || 'Unknown'} (ID: ${item.journeyId})`
         );
       });
     } else {

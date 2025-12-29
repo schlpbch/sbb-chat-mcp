@@ -31,21 +31,40 @@ export function compilePlanSummary(plan: ExecutionPlan, results: StepResults): a
   
   summary.trips = trips;
   summary.ecoComparison = ecoComparison;
-  summary.origin = results.get('find-origin')?.data?.[0];
-  summary.destination = results.get('find-destination')?.data?.[0];
+  
+  // If we skipped explicit station finding, try to infer proper names from the trip result
+  let originInfo = results.get('find-origin')?.data?.[0];
+  let destInfo = results.get('find-destination')?.data?.[0];
+  
+  if (!originInfo && trips && trips.length > 0) {
+      originInfo = { name: trips[0].legs[0].start.place.name };
+  }
+  if (!destInfo && trips && trips.length > 0) {
+      const lastLeg = trips[0].legs[trips[0].legs.length - 1];
+      destInfo = { name: lastLeg.end.place.name };
+  }
+
+  summary.origin = originInfo;
+  summary.destination = destInfo;
 
   // Station events (departures/arrivals)
-  const stationInfo = results.get('find-station')?.data?.[0];
-  const events = results.get('get-events')?.data;
+  const findStationRes = results.get('find-station');
+  const getEventsRes = results.get('get-events');
+  const stationInfo = findStationRes?.data?.[0];
+  const events = getEventsRes?.data;
   
-  if (events && stationInfo?.name) {
+  if (events && typeof events === 'object' && stationInfo?.name) {
     // Inject station name so cards can display it
-    events.stationName = stationInfo.name;
-    events.stationId = stationInfo.id;
+    try {
+      (events as any).stationName = stationInfo.name;
+      (events as any).stationId = stationInfo.id;
+    } catch (e) {
+      console.warn('Could not inject station info into events', e);
+    }
   }
 
   summary.station = stationInfo;
-  summary.events = events;
+  summary.events = (events && typeof events === 'object') ? events : null;
 
   return summary;
 }
