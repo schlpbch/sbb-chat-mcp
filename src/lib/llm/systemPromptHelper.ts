@@ -45,9 +45,11 @@ export function generateSystemPrompt(
    - "Find stations near Matterhorn" → findStopPlacesByName({query: "Matterhorn"})
 
 4. WEATHER → Use getWeather
-   Triggers: "weather", "forecast", "temperature", "rain", "wind"
+   Triggers: "weather", "forecast", "temperature", "rain", "wind", "next days"
+   **Returns current weather AND 7-day forecast automatically.**
    Examples:
    - "Weather in Lugano" → getWeather({locationName: "Lugano"})
+   - "Forecast for Zurich next 3 days" → getWeather({locationName: "Zurich"})
    - "Temperature in Zurich" → getWeather({locationName: "Zurich"})
 
 5. SNOW CONDITIONS → Use getSnowConditions
