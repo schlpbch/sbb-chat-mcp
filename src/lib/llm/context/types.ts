@@ -73,6 +73,7 @@ export interface Intent {
     | 'trip_planning'
     | 'weather_check'
     | 'station_search'
+    | 'train_formation'
     | 'general_info';
   confidence: number;
   extractedEntities: Record<string, any>;

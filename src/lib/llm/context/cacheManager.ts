@@ -71,6 +71,17 @@ function trackMentionedEntities(
     }));
   }
 
+  if (toolName === 'getPlaceEvents' && result && (result.departures || result.arrivals)) {
+    const list = result.departures || result.arrivals || [];
+    context.mentionedTrips = list.slice(0, 5).map((item: any, index: number) => ({
+      type: 'trip' as const,
+      name: `Service ${index + 1}`,
+      data: { ...item, id: item.journeyId }, // Normalize ID for easier access
+      mentionedAt: now,
+      referenceIndex: index + 1,
+    }));
+  }
+
   if (
     (toolName === 'findStopPlacesByName' || toolName === 'findPlaces') &&
     Array.isArray(result)

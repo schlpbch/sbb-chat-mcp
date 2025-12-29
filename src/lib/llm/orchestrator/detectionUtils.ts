@@ -19,6 +19,10 @@ export function requiresOrchestration(message: string): boolean {
     'arrivals',
     'schedule',
     'timetable',
+    'formation',
+    'composition',
+    'wagon',
+    'sector',
   ];
 
   const lowerMessage = message.toLowerCase();

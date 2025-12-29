@@ -24,12 +24,16 @@ export function extractIntent(message: string): Intent {
   ];
   const weatherKeywords = ['weather', 'forecast', 'temperature', 'rain', 'snow'];
   const stationKeywords = ['station', 'stop', 'platform', 'departures', 'arrivals'];
+  const formationKeywords = ['formation', 'composition', 'wagon', 'sector', 'coach', 'where is'];
 
   let type: Intent['type'] = 'general_info';
   let confidence = 0.5;
 
   if (stationKeywords.some((k) => lowerMessage.includes(k))) {
     type = 'station_search';
+    confidence = 0.9;
+  } else if (formationKeywords.some((k) => lowerMessage.includes(k))) {
+    type = 'train_formation';
     confidence = 0.9;
   } else if (tripKeywords.some((k) => lowerMessage.includes(k))) {
     type = 'trip_planning';
