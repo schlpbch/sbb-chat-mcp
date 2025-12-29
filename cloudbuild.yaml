@@ -1,4 +1,16 @@
 steps:
+  # Install dependencies and Run Tests
+  - name: 'node:20'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        corepack enable
+        corepack prepare pnpm@latest --activate
+        pnpm install --frozen-lockfile
+        pnpm run lint
+        pnpm run test:unit
+
   # Build the container image
   - name: 'gcr.io/cloud-builders/docker'
     args:
@@ -42,6 +54,29 @@ steps:
       - '10'
       - '--timeout'
       - '300'
+
+  # Verify deployment (Wait for service to be ready and check health)
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Get the URL of the deployed service
+        SERVICE_URL=$(gcloud run services describe sbb-chat-mcp --region europe-west6 --format 'value(status.url)')
+        echo "Verifying deployment at $$SERVICE_URL..."
+        
+        # Poll the health endpoint (up to 5 attempts)
+        for i in {1..5}; do
+          if curl -s -f "$$SERVICE_URL/api/health" | grep -q '"status":"ok"'; then
+            echo "✅ Deployment verified successfully!"
+            exit 0
+          fi
+          echo "Waiting for service to be healthy... (attempt $$i)"
+          sleep 10
+        done
+        
+        echo "❌ Deployment verification failed!"
+        exit 1
 
 images:
   - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:$COMMIT_SHA'
