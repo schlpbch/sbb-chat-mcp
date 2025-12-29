@@ -15,13 +15,16 @@ export const languageToLocale: Record<Language, string> = {
 /**
  * Formats ISO 8601 time string to HH:MM format
  */
-export function formatTime(time: string | null | undefined, language: Language = 'en'): string {
+export function formatTime(
+  time: string | null | undefined,
+  language: Language = 'en'
+): string {
   if (!time) return '--:--';
   try {
     return new Date(time).toLocaleTimeString(languageToLocale[language], {
       hour: '2-digit',
       minute: '2-digit',
-      hour12: false
+      hour12: false,
     });
   } catch {
     return '--:--';
@@ -44,29 +47,53 @@ export function formatDuration(duration?: string): string {
 /**
  * Maps transport mode to emoji icon
  */
-export function getTransportIcon(mode: string): string {
+export function getTransportIcon(mode: string | any): string {
+  // Safety check: if mode is not a string, return default icon
+  if (!mode || typeof mode !== 'string') return '🚆';
+
   const lowerMode = mode.toLowerCase();
-  
+
   // Specific train types
-  if (lowerMode.includes('ir') || lowerMode.includes('ic') || lowerMode.includes('re') || lowerMode.includes('s-bahn') || lowerMode.includes('s1') || lowerMode.includes('s2')) return '🚂';
-  
+  if (
+    lowerMode.includes('ir') ||
+    lowerMode.includes('ic') ||
+    lowerMode.includes('re') ||
+    lowerMode.includes('s-bahn') ||
+    lowerMode.includes('s1') ||
+    lowerMode.includes('s2')
+  )
+    return '🚂';
+
   // General modes
   if (lowerMode.includes('train') || lowerMode.includes('rail')) return '🚂';
   if (lowerMode.includes('bus')) return '🚌';
   if (lowerMode.includes('tram')) return '🚃';
   if (lowerMode.includes('walk')) return '🚶';
   if (lowerMode.includes('bike') || lowerMode.includes('cycle')) return '🚴';
-  if (lowerMode.includes('ferry') || lowerMode.includes('boat') || lowerMode.includes('ship')) return '⛴️';
-  if (lowerMode.includes('cable') || lowerMode.includes('gondola') || lowerMode.includes('funicular')) return '🚡';
+  if (
+    lowerMode.includes('ferry') ||
+    lowerMode.includes('boat') ||
+    lowerMode.includes('ship')
+  )
+    return '⛴️';
+  if (
+    lowerMode.includes('cable') ||
+    lowerMode.includes('gondola') ||
+    lowerMode.includes('funicular')
+  )
+    return '🚡';
   if (lowerMode.includes('plane') || lowerMode.includes('flight')) return '✈️';
-  
+
   return '🚆'; // Default train icon
 }
 
 /**
  * Formats a number as currency
  */
-export function formatCurrency(amount: number, currency: string = 'CHF'): string {
+export function formatCurrency(
+  amount: number,
+  currency: string = 'CHF'
+): string {
   return `${currency} ${amount.toFixed(2)}`;
 }
 
@@ -85,18 +112,23 @@ export function parseDurationToMinutes(duration: string): number {
   if (!duration) return 0;
   const hours = duration.match(/(\d+)H/);
   const minutes = duration.match(/(\d+)M/);
-  return (hours ? parseInt(hours[1]) * 60 : 0) + (minutes ? parseInt(minutes[1]) : 0);
+  return (
+    (hours ? parseInt(hours[1]) * 60 : 0) + (minutes ? parseInt(minutes[1]) : 0)
+  );
 }
 
 /**
  * Formats a date to readable format
  */
-export function formatDate(date: string | Date, language: Language = 'en'): string {
+export function formatDate(
+  date: string | Date,
+  language: Language = 'en'
+): string {
   try {
     return new Date(date).toLocaleDateString(languageToLocale[language], {
       month: 'short',
       day: 'numeric',
-      year: 'numeric'
+      year: 'numeric',
     });
   } catch {
     return 'Invalid date';

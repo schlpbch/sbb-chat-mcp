@@ -20,7 +20,11 @@
       "Bash(git push:*)",
       "Bash(cat:*)",
       "Bash(pnpm add:*)",
-      "Bash(pnpm test:unit:*)"
+      "Bash(pnpm test:unit:*)",
+      "Bash(findstr:*)",
+      "Bash(dir /s /b \"c:\\\\Users\\\\schlp\\\\code\\\\sbb-chat-mcp\\\\src\")",
+      "Bash(node -e:*)",
+      "Bash(node test-keywords.js:*)"
     ]
   }
 }
