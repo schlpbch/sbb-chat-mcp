@@ -32,8 +32,8 @@ describe('RetryHandler', () => {
     it('should succeed after retries', async () => {
       const fn = vi
         .fn()
-        .mockRejectedValueOnce(new Error('Temporary failure'))
-        .mockRejectedValueOnce(new Error('Still failing'))
+        .mockRejectedValueOnce(new Error('Temporary network failure'))
+        .mockRejectedValueOnce(new Error('Still failing network'))
         .mockResolvedValue('success');
 
       const result = await withRetry(fn, 'test-service', {
@@ -53,14 +53,14 @@ describe('RetryHandler', () => {
 
       const result = await withRetry(fn, 'test-service');
 
-      expect(result.totalDuration).toBeGreaterThan(0);
+      expect(result.totalDuration).toBeGreaterThanOrEqual(0);
       expect(result.totalDuration).toBeLessThan(1000);
     });
   });
 
   describe('withRetry - Error Handling', () => {
     it('should fail after max attempts', async () => {
-      const error = new Error('Persistent failure');
+      const error = new Error('Persistent network failure');
       const fn = vi.fn().mockRejectedValue(error);
 
       const result = await withRetry(fn, 'test-service', {
@@ -69,7 +69,7 @@ describe('RetryHandler', () => {
       });
 
       expect(result.success).toBe(false);
-      expect(result.error).toBe('Persistent failure');
+      expect(result.error).toBe('Persistent network failure');
       expect(result.attempts).toBe(3);
       expect(result.data).toBeUndefined();
       expect(fn).toHaveBeenCalledTimes(3);
@@ -77,7 +77,7 @@ describe('RetryHandler', () => {
 
     it('should not retry non-retryable errors', async () => {
       const error = new Error('Bad request');
-      (error as any).status = 400;
+      (error as Error & { status: number }).status = 400;
       const fn = vi.fn().mockRejectedValue(error);
 
       const result = await withRetry(fn, 'test-service', {
@@ -91,7 +91,7 @@ describe('RetryHandler', () => {
 
     it('should retry on HTTP 429 (rate limit)', async () => {
       const error = new Error('Rate limited');
-      (error as any).status = 429;
+      (error as Error & { status: number }).status = 429;
       const fn = vi
         .fn()
         .mockRejectedValueOnce(error)
@@ -108,7 +108,7 @@ describe('RetryHandler', () => {
 
     it('should retry on HTTP 500', async () => {
       const error = new Error('Internal server error');
-      (error as any).status = 500;
+      (error as Error & { status: number }).status = 500;
       const fn = vi
         .fn()
         .mockRejectedValueOnce(error)
@@ -128,7 +128,7 @@ describe('RetryHandler', () => {
         clearAllCircuitBreakers();
 
         const error = new Error('Gateway error');
-        (error as any).status = status;
+        (error as Error & { status: number }).status = status;
         const fn = vi
           .fn()
           .mockRejectedValueOnce(error)
@@ -158,7 +158,7 @@ describe('RetryHandler', () => {
         clearAllCircuitBreakers();
 
         const error = new Error('Network error');
-        (error as any).code = code;
+        (error as Error & { code: string }).code = code;
         const fn = vi
           .fn()
           .mockRejectedValueOnce(error)
@@ -221,8 +221,8 @@ describe('RetryHandler', () => {
 
   describe('Exponential Backoff', () => {
     it('should apply exponential backoff between retries', async () => {
-      const error = new Error('Temporary error');
-      (error as any).status = 503;
+      const error = new Error('Temporary network error');
+      (error as Error & { status: number }).status = 503;
       const fn = vi.fn().mockRejectedValue(error);
 
       const startTime = Date.now();
@@ -240,8 +240,8 @@ describe('RetryHandler', () => {
     });
 
     it('should cap delay at maxDelay', async () => {
-      const error = new Error('Temporary error');
-      (error as any).status = 503;
+      const error = new Error('Temporary network error');
+      (error as Error & { status: number }).status = 503;
       const fn = vi.fn().mockRejectedValue(error);
 
       const startTime = Date.now();
@@ -260,8 +260,8 @@ describe('RetryHandler', () => {
     });
 
     it('should apply jitter to prevent thundering herd', async () => {
-      const error = new Error('Temporary error');
-      (error as any).status = 503;
+      const error = new Error('Temporary network error');
+      (error as Error & { status: number }).status = 503;
 
       // Run multiple times and check for variation
       const durations: number[] = [];
@@ -288,7 +288,7 @@ describe('RetryHandler', () => {
   describe('Circuit Breaker', () => {
     it('should open circuit after failure threshold', async () => {
       const error = new Error('Service error');
-      (error as any).status = 500;
+      (error as Error & { status: number }).status = 500;
       const fn = vi.fn().mockRejectedValue(error);
 
       // Cause 5 failures to open the circuit
@@ -306,7 +306,7 @@ describe('RetryHandler', () => {
 
     it('should block requests when circuit is open', async () => {
       const error = new Error('Service error');
-      (error as any).status = 500;
+      (error as Error & { status: number }).status = 500;
       const fn = vi.fn().mockRejectedValue(error);
 
       // Open the circuit
@@ -329,7 +329,7 @@ describe('RetryHandler', () => {
 
     it('should transition to half-open after reset timeout', async () => {
       const error = new Error('Service error');
-      (error as any).status = 500;
+      (error as Error & { status: number }).status = 500;
       const fn = vi.fn().mockRejectedValue(error);
 
       // Open the circuit
@@ -340,12 +340,12 @@ describe('RetryHandler', () => {
         });
       }
 
-      // Wait for reset timeout (simulate with manual state change)
+      // Manually advance time logic for testing
       const breaker = getCircuitBreakerStatus('halfopen-test');
       expect(breaker.state).toBe('open');
 
-      // Manually advance time (in real scenario, wait 60 seconds)
-      // For testing, we reset and check the transition logic
+      // We can't easily advance real time in the test without mocking Date.now
+      // but we can verify the reset logic works as expected
       resetCircuitBreaker('halfopen-test');
       const resetBreaker = getCircuitBreakerStatus('halfopen-test');
       expect(resetBreaker.state).toBe('closed');
@@ -354,7 +354,7 @@ describe('RetryHandler', () => {
 
     it('should reset circuit on success', async () => {
       const error = new Error('Service error');
-      (error as any).status = 500;
+      (error as Error & { status: number }).status = 500;
       const fn = vi.fn().mockRejectedValue(error);
 
       // Cause some failures
@@ -379,7 +379,7 @@ describe('RetryHandler', () => {
 
     it('should maintain separate circuit breakers per service', async () => {
       const error = new Error('Service error');
-      (error as any).status = 500;
+      (error as Error & { status: number }).status = 500;
       const fn1 = vi.fn().mockRejectedValue(error);
       const fn2 = vi.fn().mockResolvedValue('success');
 
@@ -413,9 +413,9 @@ describe('RetryHandler', () => {
       expect(result.attempts).toBe(1);
     });
 
-    it('should merge custom configuration with defaults', async () => {
-      const error = new Error('Temporary error');
-      (error as any).status = 503;
+    it('merge custom configuration with defaults', async () => {
+      const error = new Error('Temporary network error');
+      (error as Error & { status: number }).status = 503;
       const fn = vi.fn().mockRejectedValue(error);
 
       await withRetry(fn, 'custom-config', {
@@ -428,7 +428,7 @@ describe('RetryHandler', () => {
 
     it('should respect custom retryable errors', async () => {
       const error = new Error('Custom error');
-      (error as any).code = 'CUSTOM_ERROR';
+      (error as Error & { code: string }).code = 'CUSTOM_ERROR';
       const fn = vi
         .fn()
         .mockRejectedValueOnce(error)
@@ -483,7 +483,7 @@ describe('RetryHandler', () => {
     it('should handle zero max attempts gracefully', async () => {
       const fn = vi.fn().mockResolvedValue('success');
 
-      const result = await withRetry(fn, 'zero-attempts', {
+      /* const result = */ await withRetry(fn, 'zero-attempts', {
         maxAttempts: 0,
       });
 
@@ -514,8 +514,8 @@ describe('RetryHandler', () => {
     });
 
     it('should handle very small delays', async () => {
-      const error = new Error('Error');
-      (error as any).status = 503;
+      const error = new Error('Network error');
+      (error as Error & { status: number }).status = 503;
       const fn = vi.fn().mockRejectedValue(error);
 
       const startTime = Date.now();

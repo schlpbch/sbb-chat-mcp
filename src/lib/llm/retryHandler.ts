@@ -58,25 +58,27 @@ const CIRCUIT_BREAKER_CONFIG = {
 /**
  * Check if an error is retryable
  */
-function isRetryableError(error: any, config: RetryConfig): boolean {
+function isRetryableError(error: unknown, config: RetryConfig): boolean {
   if (!error) return false;
 
+  const err = error as { code?: string; status?: number; statusCode?: number; message?: string };
+
   // Check error code
-  if (error.code && config.retryableErrors.includes(error.code)) {
+  if (err.code && config.retryableErrors.includes(err.code)) {
     return true;
   }
 
   // Check HTTP status codes
-  if (error.status || error.statusCode) {
-    const status = error.status || error.statusCode;
+  if (err.status || err.statusCode) {
+    const status = err.status || err.statusCode;
     // Retry on 429 (rate limit), 500, 502, 503, 504
-    if ([429, 500, 502, 503, 504].includes(status)) {
+    if (status && [429, 500, 502, 503, 504].includes(status)) {
       return true;
     }
   }
 
   // Check error message
-  const message = error.message?.toLowerCase() || '';
+  const message = err.message?.toLowerCase() || '';
   if (
     message.includes('timeout') ||
     message.includes('network') ||
@@ -184,11 +186,17 @@ export async function withRetry<T>(
   serviceName: string = 'default',
   config: Partial<RetryConfig> = {}
 ): Promise<RetryResult<T>> {
-  const finalConfig: RetryConfig = { ...DEFAULT_CONFIG, ...config };
+  const finalConfig: RetryConfig = {
+    ...DEFAULT_CONFIG,
+    ...config,
+    maxAttempts: Math.max(1, config.maxAttempts ?? DEFAULT_CONFIG.maxAttempts),
+  };
   const startTime = Date.now();
   let lastError: any;
+  let actualAttempts = 0;
 
   for (let attempt = 1; attempt <= finalConfig.maxAttempts; attempt++) {
+    actualAttempts = attempt;
     try {
       // Check circuit breaker
       if (!canAttempt(serviceName)) {
@@ -224,7 +232,6 @@ export async function withRetry<T>(
         attempt < finalConfig.maxAttempts && isRetryableError(error, finalConfig);
 
       if (!shouldRetry) {
-        recordFailure(serviceName);
         break;
       }
 
@@ -241,7 +248,7 @@ export async function withRetry<T>(
   return {
     success: false,
     error: lastError instanceof Error ? lastError.message : String(lastError),
-    attempts: finalConfig.maxAttempts,
+    attempts: actualAttempts,
     totalDuration: Date.now() - startTime,
   };
 }
