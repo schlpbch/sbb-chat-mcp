@@ -456,4 +456,3 @@ export default function TripCard({ data, language }: TripCardProps) {
  </article>
  );
 }
-```
