@@ -10,9 +10,25 @@ interface FormationCardProps {
 export default function FormationCard({ data, language }: FormationCardProps) {
   const t = translations[language];
   
-  // SBB API returns composition under 'composition' or directly at root
-  const composition = data.composition || data;
-  const trainUnits = composition.trainUnits || [];
+  // SBB API can return composition in many formats. Let's be robust.
+  let trainUnits = [];
+  
+  // 1. Direct or under composition
+  const comp = data.composition || data;
+  if (comp.trainUnits) {
+    trainUnits = comp.trainUnits;
+  } 
+  // 2. Under formations[key].compound_train
+  else if (data.formations) {
+    const keys = Object.keys(data.formations);
+    if (keys.length > 0) {
+      const f = data.formations[keys[0]];
+      trainUnits = f.compound_train?.train_elements || 
+                   f.compound_train?.trainUnits || 
+                   f.compound_train?.units ||
+                   [];
+    }
+  }
 
   if (trainUnits.length === 0) {
     return (
@@ -46,9 +62,9 @@ export default function FormationCard({ data, language }: FormationCardProps) {
 
               {/* Wagon Row */}
               <div className="flex items-end space-x-1 overflow-x-auto pb-4 scrollbar-hide">
-                {unit.wagons?.map((wagon: any, wIdx: number) => {
-                  const is1st = wagon.firstClass;
-                  const sector = wagon.sector || '';
+                {(unit.wagons || unit.train_elements || unit.elements || [])?.map((wagon: any, wIdx: number) => {
+                  const is1st = wagon.firstClass === true || wagon.class === '1' || wagon.class === 1;
+                  const sector = wagon.sector || wagon.platform_sector || '';
                   const hasRestaurant = wagon.type?.includes('WR') || wagon.notices?.some((n: any) => n.name === 'BE' || n.name === 'WR');
                   const hasBikeSpace = wagon.notices?.some((n: any) => n.name === 'SV' || n.name === 'BK');
                   const isQuiet = wagon.notices?.some((n: any) => n.name === 'RZ');
@@ -57,20 +73,20 @@ export default function FormationCard({ data, language }: FormationCardProps) {
                   return (
                     <div key={wIdx} className="flex flex-col items-center">
                       {/* Sector Indicator */}
-                      <span className="text-[10px] font-bold text-purple-600 mb-1">{sector}</span>
+                      <span className="text-xs font-bold text-blue-600 mb-1">{sector}</span>
                       
                       {/* Wagon Shape */}
                       <div 
-                        className={`w-20 h-12 bg-white border-2 rounded-md flex flex-col items-center justify-center relative shadow-sm transition-transform hover:-translate-y-1 ${
-                          is1st ? 'border-yellow-400' : 'border-gray-300'
+                        className={`w-24 h-14 bg-white border-2 rounded-md flex flex-col items-center justify-center relative shadow-sm transition-transform hover:-translate-y-1 ${
+                          is1st ? 'border-yellow-400' : 'border-gray-200'
                         }`}
                         title={`${is1st ? '1st Class' : '2nd Class'} - Wagon ${wagon.number || ''}`}
                       >
                         {/* Status Bar */}
-                        <div className={`absolute top-0 w-full h-1 ${is1st ? 'bg-yellow-400' : 'bg-gray-400'}`} />
+                        <div className={`absolute top-0 w-full h-1.5 ${is1st ? 'bg-yellow-400' : 'bg-gray-400'}`} />
                         
                         {/* Class Number */}
-                        <span className={`text-lg font-black ${is1st ? 'text-yellow-600' : 'text-gray-400'}`}>
+                        <span className={`text-xl font-black ${is1st ? 'text-yellow-600' : 'text-gray-300'}`}>
                           {is1st ? '1' : '2'}
                         </span>
 
