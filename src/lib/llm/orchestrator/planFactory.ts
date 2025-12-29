@@ -49,28 +49,42 @@ function createFormationPlan(context: ConversationContext): ExecutionPlan | null
   const eventsResult = context.recentToolResults.get('getPlaceEvents')?.result;
   const tripsResult = context.recentToolResults.get('findTrips')?.result;
   
-  // Basic heuristic: check if the latest message mentions "first", "1st", etc.
-  // This is a bit simplified; real NLP would be better.
   const latestIntent = context.intentHistory[context.intentHistory.length - 1];
-  const entities = latestIntent?.extractedEntities || {};
+  const messageText = latestIntent?.extractedEntities?.query || ''; // Fallback
   
+  // Detect index (1st, 2nd, etc.)
+  let index = 0;
+  if (/second|2nd|#2/.test(messageText.toLowerCase())) index = 1;
+  if (/third|3rd|#3/.test(messageText.toLowerCase())) index = 2;
+  // Also check if user typed "2", "3" etc.
+  const numMatch = messageText.match(/\b([1-5])\b/);
+  if (numMatch) index = parseInt(numMatch[1]) - 1;
+
   let journeyId = '';
   let stopPlaceId = '';
 
   // 1. Try to find a journey from departures/arrivals board
   if (eventsResult) {
     const list = eventsResult.departures || eventsResult.arrivals || [];
-    if (list.length > 0) {
-      // Default to first one if "first" mentioned or no index specified
+    if (list.length > index) {
+      journeyId = list[index].journeyId;
+      stopPlaceId = eventsResult.place; 
+    } else if (list.length > 0) {
+      // Fallback to first if index out of range
       journeyId = list[0].journeyId;
-      stopPlaceId = eventsResult.place; // Use the station ID from the board
+      stopPlaceId = eventsResult.place;
     }
   }
   
-  // 2. Try to find a journey from trip search if no board results or preferred?
-  if (!journeyId && tripsResult && Array.isArray(tripsResult) && tripsResult.length > 0) {
-    journeyId = tripsResult[0].id;
-    stopPlaceId = tripsResult[0].legs?.[0]?.start?.place?.id;
+  // 2. Try to find a journey from trip search if no board results
+  if (!journeyId && tripsResult && Array.isArray(tripsResult)) {
+    if (tripsResult.length > index) {
+      journeyId = tripsResult[index].id;
+      stopPlaceId = tripsResult[index].legs?.[0]?.start?.place?.id;
+    } else if (tripsResult.length > 0) {
+      journeyId = tripsResult[0].id;
+      stopPlaceId = tripsResult[0].legs?.[0]?.start?.place?.id;
+    }
   }
 
   if (!journeyId) {

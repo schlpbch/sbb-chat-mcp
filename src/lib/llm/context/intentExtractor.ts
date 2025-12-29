@@ -24,7 +24,18 @@ export function extractIntent(message: string): Intent {
   ];
   const weatherKeywords = ['weather', 'forecast', 'temperature', 'rain', 'snow'];
   const stationKeywords = ['station', 'stop', 'platform', 'departures', 'arrivals'];
-  const formationKeywords = ['formation', 'composition', 'wagon', 'sector', 'coach', 'where is'];
+  const formationKeywords = [
+    'formation',
+    'fromation',
+    'composition',
+    'wagon',
+    'sector',
+    'coach',
+    'where is',
+    'information',
+    'info',
+    'unit',
+  ];
 
   let type: Intent['type'] = 'general_info';
   let confidence = 0.5;
