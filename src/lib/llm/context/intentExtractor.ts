@@ -28,15 +28,15 @@ export function extractIntent(message: string): Intent {
   let type: Intent['type'] = 'general_info';
   let confidence = 0.5;
 
-  if (tripKeywords.some((k) => lowerMessage.includes(k))) {
+  if (stationKeywords.some((k) => lowerMessage.includes(k))) {
+    type = 'station_search';
+    confidence = 0.9;
+  } else if (tripKeywords.some((k) => lowerMessage.includes(k))) {
     type = 'trip_planning';
     confidence = 0.8;
   } else if (weatherKeywords.some((k) => lowerMessage.includes(k))) {
     type = 'weather_check';
     confidence = 0.9;
-  } else if (stationKeywords.some((k) => lowerMessage.includes(k))) {
-    type = 'station_search';
-    confidence = 0.8;
   }
 
   // Simple entity extraction for "from X" and "in X"
