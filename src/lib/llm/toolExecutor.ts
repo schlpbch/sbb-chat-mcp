@@ -61,6 +61,13 @@ export async function executeTool(
       if (!hasLatLon) {
         const locationName = (params as any).locationName;
         console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
+
+        // DEBUG: Hardcode St. Moritz to verify flow
+        if (locationName.toLowerCase().includes('moritz')) {
+          console.log('[toolExecutor] HARDCODED St. Moritz resolution');
+           params = { ...params, latitude: 46.5, longitude: 9.84, locationName: "St. Moritz" } as any;
+           // Skip resolution
+        } else {
         
         // Use findPlaces for general locations (cities, ski resorts, etc.)
         const resolveResult = await executeTool('findPlaces', {
