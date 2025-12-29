@@ -61,13 +61,6 @@ export async function executeTool(
       if (!hasLatLon) {
         const locationName = (params as any).locationName;
         console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
-
-        // DEBUG: Hardcode St. Moritz to verify flow
-        if (locationName.toLowerCase().includes('moritz')) {
-          console.log('[toolExecutor] HARDCODED St. Moritz resolution');
-           params = { ...params, latitude: 46.5, longitude: 9.84, locationName: "St. Moritz" } as any;
-           // Skip resolution
-        } else {
         
         // Use findPlaces for general locations (cities, ski resorts, etc.)
         const resolveResult = await executeTool('findPlaces', {
@@ -79,8 +72,19 @@ export async function executeTool(
 
         if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
           const place = resolveResult.data[0];
-          const lat = place.centroid?.latitude || place.location?.latitude;
-          const lon = place.centroid?.longitude || place.location?.longitude;
+          let lat: number | undefined;
+          let lon: number | undefined;
+
+          // Handle GeoJSON centroid from findPlaces (coordinates is [lon, lat])
+          if (place.centroid?.coordinates && Array.isArray(place.centroid.coordinates)) {
+             lon = place.centroid.coordinates[0];
+             lat = place.centroid.coordinates[1];
+          } 
+          // Handle location object from findStopPlacesByName (legacy/fallback)
+          else if (place.location) {
+             lat = place.location.latitude;
+             lon = place.location.longitude;
+          }
           
           console.log(`[toolExecutor] Extracted coordinates:`, { lat, lon, place });
           
@@ -94,7 +98,6 @@ export async function executeTool(
         } else {
           console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`, resolveResult.error);
         }
-       } // Close the else block
       }
     }
 
