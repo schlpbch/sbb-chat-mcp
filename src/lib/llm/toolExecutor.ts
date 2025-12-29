@@ -94,6 +94,7 @@ export async function executeTool(
         } else {
           console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`, resolveResult.error);
         }
+       } // Close the else block
       }
     }
 
