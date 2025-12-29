@@ -22,9 +22,11 @@ export function generateSystemPrompt(
 **ALWAYS use tools for real-time data - NEVER guess or make assumptions!**
 
 1. JOURNEY PLANNING → Use findTrips
-   Triggers: "how do I get", "find connections", "train from X to Y", "fastest route", "fewest transfers", "earliest arrival"
+   Triggers: "how do I get", "find connections", "train from X to Y", "fastest route", "fewest transfers", "earliest arrival", "wheelchair", "accessible"
+   **For accessibility/wheelchair requests, ALWAYS use responseMode: "detailed" to check attributes!**
    Examples: 
    - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern"})
+   - "Wheelchair accessible route to Lucerne" → findTrips({origin: "Zurich", destination: "Lucerne", responseMode: "detailed"})
    - "Fastest way to Geneva" → findTrips({origin: <current>, destination: "Geneva"})
    - "Zurich to Milan tomorrow" → findTrips({origin: "Zurich", destination: "Milan", dateTime: <tomorrow>})
    Works for: Domestic AND International (Milan, Paris, etc.)

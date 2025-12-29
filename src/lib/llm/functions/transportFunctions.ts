@@ -74,9 +74,9 @@ export const transportFunctions = [
         },
         responseMode: {
           type: 'string',
-          description: 'Response detail level: "standard" (detailed) or "compact" (minimal)',
+          description: 'Response detail level: "standard", "compact", or "detailed" (includes accessibility/attributes)',
           default: 'standard',
-          enum: ['standard', 'compact'],
+          enum: ['standard', 'compact', 'detailed'],
         },
       },
       required: ['origin', 'destination'],
