@@ -9,6 +9,7 @@ import BoardCard from '@/components/cards/BoardCard';
 import EcoCard from '@/components/cards/EcoCard';
 import ItineraryCard from '@/components/cards/ItineraryCard';
 import CompareCard from '@/components/cards/CompareCard';
+import FormationCard from '@/components/cards/FormationCard';
 import type { Language } from '@/lib/i18n';
 import { logger } from '@/lib/logger';
 import { normalizeCompareData } from '@/lib/normalizers/cardData';
@@ -98,6 +99,9 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   // Itinerary
   if (result?.destination && result?.activities) return <ItineraryCard key={idx} data={result} language={language} />;
   
+  // Train Formation
+  if (toolName === 'getTrainFormation') return result ? <FormationCard key={idx} data={result} language={language} /> : null;
+
   return null;
   })}
   </div>
