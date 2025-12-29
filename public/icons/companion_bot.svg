@@ -1,0 +1,14 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="100" fill="#EB0000"/>
+  <!-- Conductor Hat -->
+  <path d="M120 180C120 145 160 135 256 135C352 135 392 145 392 180V220H120V180Z" fill="white"/>
+  <rect x="120" y="200" width="272" height="15" fill="#DCDCDC"/>
+  <path d="M256 142C210 142 165 150 140 165H372C347 150 302 142 256 142Z" fill="#EB0000" opacity="0.1"/>
+  <!-- Bot Face -->
+  <rect x="160" y="210" width="192" height="170" rx="45" fill="white"/>
+  <circle cx="210" cy="290" r="15" fill="#151515"/>
+  <circle cx="302" cy="290" r="15" fill="#151515"/>
+  <path d="M220 335Q256 350 292 335" stroke="#151515" stroke-width="8" stroke-linecap="round"/>
+  <!-- Neck/Base -->
+  <rect x="236" y="380" width="40" height="20" rx="4" fill="#DCDCDC"/>
+</svg>

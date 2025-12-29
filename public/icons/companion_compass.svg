@@ -1,0 +1,10 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="512" height="512" rx="100" fill="#EB0000"/>
+  <!-- Chat Bubble Base -->
+  <path d="M120 160C120 137.909 137.909 120 160 120H352C374.091 120 392 137.909 392 160V320C392 342.091 374.091 360 352 360H230L150 420V360C133.431 360 120 346.569 120 330V160Z" fill="white"/>
+  <!-- Elevated Compass Needle -->
+  <path d="M256 165L295 305L256 280L217 305L256 165Z" fill="#EB0000"/>
+  <path d="M256 315L217 175L256 200L295 175L256 315Z" fill="#A20013"/>
+  <!-- Subtle Shadow -->
+  <circle cx="256" cy="240" r="10" fill="black" opacity="0.1"/>
+</svg>
