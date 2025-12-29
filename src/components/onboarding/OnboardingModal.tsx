@@ -13,7 +13,7 @@ interface OnboardingModalProps {
 
 const steps = [
   {
-    title: 'Welcome to SBB Chat Assistant! 🚂',
+    title: 'Welcome to SBB Chat Companion! 🚂',
     description: 'Your intelligent companion for Swiss public transport journeys and station information.',
     content: (
       <div className="space-y-4">
@@ -107,7 +107,7 @@ const steps = [
   },
   {
     title: 'Quick Tips 💡',
-    description: 'Make the most of your SBB Chat Assistant experience.',
+    description: 'Make the most of your SBB Chat Companion experience.',
     content: (
       <div className="space-y-4">
         <div className="space-y-3">

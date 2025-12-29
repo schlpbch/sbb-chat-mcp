@@ -664,7 +664,7 @@ readiness.
 
 This plan provides a clear, actionable roadmap to transform SBB Chat MCP from a
 functional LLM-integrated app into a production-ready, intelligent travel
-assistant. By focusing on orchestration, rich UX, and production optimization,
+Companion. By focusing on orchestration, rich UX, and production optimization,
 we'll create a best-in-class experience that leverages the full power of the MCP
 ecosystem.
 

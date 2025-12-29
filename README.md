@@ -18,7 +18,7 @@ Model Context Protocol (MCP).
 - **Saved Trips**: Save your favorite connections for quick access later (`/settings`)
 - **Map Integration**: "Show on Map" button for visualizing trip routes instantly
 
-### AI Travel Assistant
+### AI Travel Companion
 
 - Natural language chat interface powered by Google Gemini 2.0 Flash
 - 13 integrated MCP tools for real-time travel data

@@ -69,7 +69,7 @@ function ShareContent() {
             {/* Header */}
             <div className="bg-linear-to-r from-sbb-red via-red-600 to-red-700 px-6 py-4">
               <h1 className="text-2xl font-bold text-white">Shared Trip</h1>
-              <p className="text-white/90 text-sm mt-1">View this trip in the SBB Travel Assistant</p>
+              <p className="text-white/90 text-sm mt-1">View this trip in the SBB Travel Companion</p>
             </div>
 
             {/* Trip Details */}
@@ -98,7 +98,7 @@ function ShareContent() {
                   onClick={handleOpenInApp}
                   className="w-full px-6 py-3 bg-sbb-red text-white rounded-lg font-bold hover:bg-sbb-red-125 transition-all duration-200 shadow-md hover:shadow-lg"
                 >
-                  Open in SBB Travel Assistant
+                  Open in SBB Travel Companion
                 </button>
                 <p className="text-xs text-gray-500 text-center mt-2">
                   Find the best connections and plan your journey
@@ -109,7 +109,7 @@ function ShareContent() {
 
           {/* Footer Info */}
           <div className="mt-6 text-center text-sm text-gray-600">
-            <p>Powered by SBB Travel Assistant</p>
+            <p>Powered by SBB Travel Companion</p>
             <a href="/" className="text-sbb-red hover:underline mt-1 inline-block">
               Learn more
             </a>

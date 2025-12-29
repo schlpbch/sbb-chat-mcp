@@ -325,7 +325,7 @@ test.describe('LLM Chat API', () => {
           sessionId: `test-history-${Date.now()}`,
           history: [
             { role: 'user', content: 'Previous message' },
-            { role: 'assistant', content: 'Previous response' },
+            { role: 'Companion', content: 'Previous response' },
           ],
           context: { language: 'en' },
         },

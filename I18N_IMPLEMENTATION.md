@@ -2,7 +2,7 @@
 
 ## Overview
 
-Added full internationalization support to the SBB Travel Assistant landing page (WelcomeSection), supporting all 6 languages: English, German, French, Italian, Chinese, and Hindi.
+Added full internationalization support to the SBB Travel Companion landing page (WelcomeSection), supporting all 6 languages: English, German, French, Italian, Chinese, and Hindi.
 
 ## Languages Supported
 

@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from 'next';
 import { Outfit } from 'next/font/google';
 import './globals.css';
 import { ToastProvider } from '@/components/ui/Toast';
-import PWAInstallPrompt from '@/components/PWAInstallPrompt';
+
 import { SettingsProvider } from '@/context/SettingsContext';
 import { MapProvider } from '@/context/MapContext';
 
@@ -12,7 +12,7 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'SBB Chat MCP - Swiss Travel Assistant',
+  title: 'SBB Chat MCP - Swiss Travel Companion',
   description: 'Your intelligent companion for Swiss public transport journeys, weather, and station information',
   applicationName: 'SBB Chat MCP',
   appleWebApp: {
@@ -35,7 +35,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     siteName: 'SBB Chat MCP',
-    title: 'SBB Chat MCP - Swiss Travel Assistant',
+    title: 'SBB Chat MCP - Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
     images: ['/SBB-chat-MCP.png'],
   },
@@ -74,7 +74,7 @@ export default function RootLayout({
           <MapProvider>
             <ToastProvider>
               {children}
-            <PWAInstallPrompt />
+
             </ToastProvider>
           </MapProvider>
         </SettingsProvider>

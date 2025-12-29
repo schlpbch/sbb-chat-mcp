@@ -62,7 +62,7 @@ describe('useChatStorage', () => {
         },
         {
           id: '2',
-          role: 'assistant',
+          role: 'Companion',
           content: 'Hi there!',
           timestamp: new Date('2025-01-01T12:00:01Z'),
         },
@@ -161,7 +161,7 @@ describe('useChatStorage', () => {
       // Create 100 messages
       const manyMessages: Message[] = Array.from({ length: 100 }, (_, i) => ({
         id: `${i}`,
-        role: i % 2 === 0 ? ('user' as const) : ('assistant' as const),
+        role: i % 2 === 0 ? ('user' as const) : ('Companion' as const),
         content: `Message ${i}`,
         timestamp: new Date(),
       }));
@@ -498,7 +498,7 @@ describe('useChatStorage', () => {
 
       const largeMessageSet: Message[] = Array.from({ length: 1000 }, (_, i) => ({
         id: `${i}`,
-        role: i % 2 === 0 ? ('user' as const) : ('assistant' as const),
+        role: i % 2 === 0 ? ('user' as const) : ('Companion' as const),
         content: `Message ${i}`.repeat(100), // Large content
         timestamp: new Date(),
       }));

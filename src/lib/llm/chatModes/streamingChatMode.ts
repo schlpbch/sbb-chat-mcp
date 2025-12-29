@@ -22,7 +22,7 @@ export async function* sendStreamingChatMessage(
 
     const model = createModel(true);
 
-    const systemPrompt = `You are a helpful Swiss travel assistant.
+    const systemPrompt = `You are a helpful Swiss travel Companion.
 
 CONTEXT:
 - User's language: ${context.language}

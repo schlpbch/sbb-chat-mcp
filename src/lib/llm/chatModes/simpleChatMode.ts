@@ -7,7 +7,7 @@ import type { FunctionCallParams } from '../functionDefinitions';
 import { createModel } from './modelFactory';
 
 export interface ChatMessage {
-  role: 'user' | 'assistant';
+  role: 'user' | 'Companion';
   content: string;
 }
 
@@ -43,7 +43,7 @@ export async function sendChatMessage(
 
     const model = createModel(enableFunctionCalling);
 
-    const systemPrompt = `You are a helpful Swiss travel assistant integrated into the SBB Chat MCP app.
+    const systemPrompt = `You are a helpful Swiss travel Companion integrated into the SBB Chat MCP app.
 
 CONTEXT:
 - User's language: ${context.language}

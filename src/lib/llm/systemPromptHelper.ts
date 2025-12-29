@@ -86,7 +86,7 @@ Zurich HB: 8503000, Bern: 8507000, Geneva: 8501008, Basel SBB: 8500010
 Lausanne: 8501120, Lucerne: 8505000, Thun: 8507100, Interlaken Ost: 8507492`;
   }
 
-  return `You are a helpful Swiss travel assistant integrated into the SBB Chat MCP app.
+  return `You are a helpful Swiss travel Companion integrated into the SBB Chat MCP app.
 
 CONTEXT:
 - User's language: ${context.language}

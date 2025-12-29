@@ -49,9 +49,9 @@ test.describe('Critical Flow: Complete Trip Planning', () => {
     expect(allUserMessages).toBeGreaterThanOrEqual(2);
 
     // Step 4: Verify chat history is maintained
-    const assistantMessages = page.getByTestId('message-assistant');
-    const assistantCount = await assistantMessages.count();
-    expect(assistantCount).toBeGreaterThanOrEqual(1);
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const CompanionCount = await CompanionMessages.count();
+    expect(CompanionCount).toBeGreaterThanOrEqual(1);
   });
 
   test('should handle complex multi-city itinerary planning', async ({ page }) => {
@@ -64,11 +64,11 @@ test.describe('Critical Flow: Complete Trip Planning', () => {
     await page.waitForTimeout(10000);
 
     // Should receive comprehensive response
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
       expect(response!.length).toBeGreaterThan(100); // Should be detailed
     }
@@ -93,11 +93,11 @@ test.describe('Critical Flow: Complete Trip Planning', () => {
     await page.waitForTimeout(8000);
 
     // Should get response about eco-friendly travel
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
 
       // Check for eco-related keywords
@@ -159,8 +159,8 @@ test.describe('Critical Flow: Contextual Conversation', () => {
     await page.waitForTimeout(5000);
 
     // AI should ask for clarification or provide options
-    const assistantMessages = page.getByTestId('message-assistant');
-    const firstResponse = await assistantMessages.last().textContent();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const firstResponse = await CompanionMessages.last().textContent();
 
     expect(firstResponse).toBeTruthy();
 
@@ -170,7 +170,7 @@ test.describe('Critical Flow: Contextual Conversation', () => {
     await page.waitForTimeout(5000);
 
     // Should get more specific recommendations
-    const messageCount = await assistantMessages.count();
+    const messageCount = await CompanionMessages.count();
     expect(messageCount).toBeGreaterThanOrEqual(2);
   });
 
@@ -191,8 +191,8 @@ test.describe('Critical Flow: Contextual Conversation', () => {
     const userMessages = page.getByTestId('message-user');
     await expect(userMessages.last()).toContainText('first one');
 
-    const assistantMessages = page.getByTestId('message-assistant');
-    expect(await assistantMessages.count()).toBeGreaterThanOrEqual(2);
+    const CompanionMessages = page.getByTestId('message-Companion');
+    expect(await CompanionMessages.count()).toBeGreaterThanOrEqual(2);
   });
 });
 

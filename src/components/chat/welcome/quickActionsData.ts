@@ -76,14 +76,7 @@ export const quickActions: QuickAction[] = [
     color: 'from-orange-600 to-red-600',
     category: 'Real-Time'
   },
-  {
-    icon: '⏱️',
-    label: 'Transfer Check',
-    description: 'Connection times',
-    query: 'Can I make a 5-minute transfer at Zurich HB?',
-    color: 'from-red-500 to-pink-600',
-    category: 'Real-Time'
-  },
+
   {
     icon: '🔍',
     label: 'Platform Info',

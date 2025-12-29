@@ -83,13 +83,7 @@ const questions = [
     query: 'What trains are arriving at Bern in the next hour?',
     expectedTools: ['findStopPlacesByName', 'getPlaceEvents'],
   },
-  {
-    id: 10,
-    category: 'Real-Time',
-    label: 'Transfer Check',
-    query: 'Can I make a 5-minute transfer at Zurich HB?',
-    expectedTools: ['findStopPlacesByName'],
-  },
+
   {
     id: 11,
     category: 'Real-Time',

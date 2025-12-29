@@ -7,8 +7,8 @@ export default function SavedTripsList() {
 
   if (savedTrips.length === 0) {
     return (
-      <div className="text-center py-12 px-6 bg-gray-50/50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center">
-        <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-4 text-2xl">
+      <div className="text-center py-8 px-6 bg-gray-50/50 rounded-2xl border-2 border-dashed border-gray-200 flex flex-col items-center justify-center">
+        <div className="w-12 h-12 bg-gray-100 rounded-full flex items-center justify-center mb-3 text-xl">
           🎫
         </div>
         <p className="text-gray-900 font-medium mb-1">No saved trips yet</p>

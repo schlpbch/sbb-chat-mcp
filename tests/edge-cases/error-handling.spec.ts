@@ -23,11 +23,11 @@ test.describe('Network Error Handling', () => {
     // Should not crash, should show some feedback
     const errorMessage = page.locator('[role="alert"]');
     const loadingIndicator = page.getByTestId('loading-indicator');
-    const assistantMessage = page.getByTestId('message-assistant');
+    const CompanionMessage = page.getByTestId('message-Companion');
 
     const hasError = await errorMessage.isVisible().catch(() => false);
     const isLoading = await loadingIndicator.isVisible().catch(() => false);
-    const hasResponse = await assistantMessage.isVisible().catch(() => false);
+    const hasResponse = await CompanionMessage.isVisible().catch(() => false);
 
     // Should have some state (error, loading, or response)
     expect(hasError || isLoading || hasResponse).toBe(true);

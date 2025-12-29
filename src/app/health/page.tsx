@@ -174,7 +174,7 @@ export default function HealthPage() {
  System Health
  </h1>
  <p className="text-lg text-gray-600">
- Real-time monitoring of SBB Travel Assistant services
+ Real-time monitoring of SBB Travel Companion services
  </p>
  </div>
 

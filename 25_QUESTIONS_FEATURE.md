@@ -2,7 +2,7 @@
 
 ## Overview
 
-Enhanced the SBB Travel Assistant landing page with 25 carefully curated questions organized into 6 intelligent categories with an interactive filter system. This feature also serves as a comprehensive testing framework for LLM quality assurance, with automated Playwright tests validating tool execution and response quality.
+Enhanced the SBB Travel Companion landing page with 25 carefully curated questions organized into 6 intelligent categories with an interactive filter system. This feature also serves as a comprehensive testing framework for LLM quality assurance, with automated Playwright tests validating tool execution and response quality.
 
 ## Features Implemented
 
@@ -56,7 +56,7 @@ Questions are intelligently organized into categories that users can filter:
 |------|-------|-------|----------|
 | 🚀 | Live Departures | Show me the next departures from Basel SBB | `getPlaceEvents` |
 | 📥 | Arrivals | What trains are arriving at Bern in the next hour? | `getPlaceEvents` |
-| ⏱️ | Transfer Check | Can I make a 5-minute transfer at Zurich HB? | `optimizeTransfers` |
+
 | 🔍 | Platform Info | Which platform does the IC1 to Geneva leave from at Lausanne? | `getPlaceEvents` |
 | ⚠️ | Delays & Changes | Are there any delays on the route from Zurich to Bern right now? | `findTrips` |
 

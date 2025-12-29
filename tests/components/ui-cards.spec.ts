@@ -238,13 +238,13 @@ test.describe('ItineraryCard Component', () => {
 
     await page.waitForTimeout(8000);
 
-    // Check if any assistant message was received (content varies)
-    const assistantMessages = page.getByTestId('message-assistant');
-    const messageCount = await assistantMessages.count();
+    // Check if any Companion message was received (content varies)
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const messageCount = await CompanionMessages.count();
 
     // If we got a response, that's good enough
     if (messageCount > 0) {
-      await expect(assistantMessages.first()).toBeVisible();
+      await expect(CompanionMessages.first()).toBeVisible();
     } else {
       // Just check that the page is still functional
       await expect(input).toBeVisible();

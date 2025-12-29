@@ -18,7 +18,7 @@ export default function ChatMessage({ message }: ChatMessageProps) {
  >
  <div className="flex items-center gap-2 mb-1.5 opacity-60">
  <span className="text-[10px] font-black uppercase tracking-widest">
- {isUser ? 'You' : 'Assistant'}
+ {isUser ? 'You' : 'Companion'}
  </span>
  </div>
  <p className="text-sm font-medium whitespace-pre-wrap leading-relaxed">{message.content}</p>

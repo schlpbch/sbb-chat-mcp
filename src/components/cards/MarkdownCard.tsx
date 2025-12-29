@@ -6,11 +6,11 @@ import remarkGfm from 'remark-gfm';
 interface MarkdownCardProps {
   content: string;
   title?: string;
-  variant?: 'user' | 'assistant';
+  variant?: 'user' | 'Companion';
   timestamp?: string;
 }
 
-export default function MarkdownCard({ content, title, variant = 'assistant', timestamp }: MarkdownCardProps) {
+export default function MarkdownCard({ content, title, variant = 'Companion', timestamp }: MarkdownCardProps) {
   if (!content || !content.trim()) return null;
 
   const isUser = variant === 'user';

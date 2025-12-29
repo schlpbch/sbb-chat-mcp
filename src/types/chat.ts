@@ -8,13 +8,13 @@
 
 export interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'Companion';
   content: string;
   timestamp: Date;
 }
 
 export interface ExportableMessage {
-  role: 'user' | 'assistant';
+  role: 'user' | 'Companion';
   content: string;
   timestamp: Date;
 }
@@ -41,7 +41,7 @@ export interface ToolResult {
 export interface ChatRequest {
   message: string;
   history: Array<{
-    role: 'user' | 'assistant';
+    role: 'user' | 'Companion';
     content: string;
   }>;
   context?: {

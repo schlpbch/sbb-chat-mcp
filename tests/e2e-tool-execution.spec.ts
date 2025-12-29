@@ -40,10 +40,10 @@ test.describe('Tool Execution: Trip Search', () => {
       expect(cardText!.length).toBeGreaterThan(10);
     }
 
-    // Verify assistant responded
-    const assistantMessages = page.getByTestId('message-assistant');
-    const assistantCount = await assistantMessages.count();
-    expect(assistantCount).toBeGreaterThanOrEqual(1);
+    // Verify Companion responded
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const CompanionCount = await CompanionMessages.count();
+    expect(CompanionCount).toBeGreaterThanOrEqual(1);
   });
 
   test('should handle journey search with parameters extraction', async ({ page }) => {
@@ -56,11 +56,11 @@ test.describe('Tool Execution: Trip Search', () => {
     await page.waitForTimeout(10000);
 
     // LLM should extract parameters and call tools
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
 
       // Should mention Geneva or provide results
@@ -113,11 +113,11 @@ test.describe('Tool Execution: Weather Information', () => {
     await page.waitForTimeout(8000);
 
     // Check for weather information
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
 
       // Should contain weather-related terms
@@ -145,11 +145,11 @@ test.describe('Tool Execution: Weather Information', () => {
     await page.waitForTimeout(12000);
 
     // Should call both weather and journey tools
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
       expect(response!.length).toBeGreaterThan(50); // Should be comprehensive
     }
@@ -183,9 +183,9 @@ test.describe('Tool Execution: Station Information', () => {
       expect(boardText).toBeTruthy();
     }
 
-    // Or check assistant message
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    // Or check Companion message
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
     expect(count).toBeGreaterThanOrEqual(1);
   });
 
@@ -198,11 +198,11 @@ test.describe('Tool Execution: Station Information', () => {
     await page.waitForTimeout(10000);
 
     // Should get real-time information
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
 
       // Should mention time or provide schedule
@@ -231,11 +231,11 @@ test.describe('Tool Execution: Error Handling', () => {
     await page.waitForTimeout(8000);
 
     // Should get error message or clarification request
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
 
       // Should indicate problem or ask for clarification
@@ -275,8 +275,8 @@ test.describe('Tool Execution: Error Handling', () => {
     const userMessages = page.getByTestId('message-user');
     expect(await userMessages.count()).toBeGreaterThanOrEqual(2);
 
-    const assistantMessages = page.getByTestId('message-assistant');
-    expect(await assistantMessages.count()).toBeGreaterThanOrEqual(1);
+    const CompanionMessages = page.getByTestId('message-Companion');
+    expect(await CompanionMessages.count()).toBeGreaterThanOrEqual(1);
   });
 
   test('should handle tool timeout gracefully', async ({ page }) => {
@@ -318,11 +318,11 @@ test.describe('Tool Execution: Complex Scenarios', () => {
     await page.waitForTimeout(15000);
 
     // Should coordinate multiple tool executions
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
       expect(response!.length).toBeGreaterThan(100); // Comprehensive response
     }
@@ -337,11 +337,11 @@ test.describe('Tool Execution: Complex Scenarios', () => {
     await page.waitForTimeout(5000);
 
     // Should ask for clarification
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     if (count > 0) {
-      const response = await assistantMessages.last().textContent();
+      const response = await CompanionMessages.last().textContent();
       expect(response).toBeTruthy();
 
       // Should ask where "there" is
@@ -373,8 +373,8 @@ test.describe('Tool Execution: Complex Scenarios', () => {
     const userMessages = page.getByTestId('message-user');
     expect(await userMessages.count()).toBe(2);
 
-    const assistantMessages = page.getByTestId('message-assistant');
-    expect(await assistantMessages.count()).toBeGreaterThanOrEqual(2);
+    const CompanionMessages = page.getByTestId('message-Companion');
+    expect(await CompanionMessages.count()).toBeGreaterThanOrEqual(2);
   });
 });
 

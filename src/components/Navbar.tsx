@@ -1,8 +1,9 @@
 'use client';
 
 import { Language, translations } from '@/lib/i18n';
-import { useState, useEffect } from 'react';
-import { getAllMcpServerUrls, getMcpServerUrl } from '@/config/env';
+import Link from 'next/link';
+
+
 
 interface NavbarProps {
   language: Language;
@@ -31,28 +32,7 @@ export default function Navbar({
   onHelpClick,
 }: NavbarProps) {
   const t = translations[language];
-  const [mcpServerUrl, setMcpServerUrl] = useState(getMcpServerUrl());
 
-  const envUrls = getAllMcpServerUrls();
-
-  const mcpServers = [
-    { label: t.navbar.mcpServer.gcloudStaging, value: envUrls.staging },
-    { label: t.navbar.mcpServer.localDev, value: envUrls.dev },
-    { label: t.navbar.mcpServer.localApiRoutes, value: '/api/mcp' },
-  ];
-
-  useEffect(() => {
-    const savedUrl = localStorage.getItem('mcpServerUrl');
-    if (savedUrl) {
-      setMcpServerUrl(savedUrl);
-    }
-  }, []);
-
-  const handleMcpServerChange = (url: string) => {
-    setMcpServerUrl(url);
-    localStorage.setItem('mcpServerUrl', url);
-    window.location.reload();
-  };
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-lg border-b border-gray-200 shadow-sm">
@@ -73,8 +53,8 @@ export default function Navbar({
               </button>
             )}
 
-            {/* Logo */}
-            <a href="/" className="flex items-center space-x-3" aria-label={t.navbar.appTitle}>
+            {/* Logo & Title */}
+            <Link href="/" className="flex items-center space-x-3" aria-label={t.navbar.appTitle}>
               <div className="w-10 h-10 rounded-lg overflow-hidden shadow-lg border border-gray-100 bg-white">
                 <img src="/SBB-chat-MCP.png" alt="SBB logo" className="w-full h-full object-contain" />
               </div>
@@ -82,9 +62,9 @@ export default function Navbar({
                 <h1 className="text-xl font-bold text-gray-900 leading-tight">
                   {t.navbar.appTitle}
                 </h1>
-                <p className="text-xs font-semibold text-gray-700 leading-tight mt-1">{t.navbar.travelAssistant}</p>
+                <p className="text-xs font-semibold text-gray-700 leading-tight mt-1">{t.navbar.travelCompanion}</p>
               </div>
-            </a>
+            </Link>
           </div>
 
           {/* Right Section */}
@@ -127,20 +107,7 @@ export default function Navbar({
               </button>
             )}
 
-            {/* MCP Server Selector */}
-            <div className="hidden lg:block">
-              <select
-                value={mcpServerUrl}
-                onChange={(e) => handleMcpServerChange(e.target.value)}
-                className="text-sm px-3 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-transparent"
-              >
-                {mcpServers.map((server) => (
-                  <option key={server.value} value={server.value}>
-                    {server.label}
-                  </option>
-                ))}
-              </select>
-            </div>
+
 
             {/* Language Selector */}
             <div className="relative">

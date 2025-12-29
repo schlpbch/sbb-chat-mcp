@@ -69,7 +69,7 @@ export interface MCPPrompt {
 }
 
 export interface MCPPromptMessage {
-  role: 'user' | 'assistant';
+  role: 'user' | 'Companion';
   content: {
     type: 'text' | 'image';
     text?: string;

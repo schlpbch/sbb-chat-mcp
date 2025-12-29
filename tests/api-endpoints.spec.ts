@@ -125,8 +125,8 @@ test.describe('API - LLM Chat', () => {
     await page.waitForTimeout(2000);
 
     // Response should be streaming or completed
-    const assistantMessages = page.getByTestId('message-assistant');
-    const count = await assistantMessages.count();
+    const CompanionMessages = page.getByTestId('message-Companion');
+    const count = await CompanionMessages.count();
 
     expect(count).toBeGreaterThanOrEqual(0);
   });

@@ -67,7 +67,7 @@ test.describe('Chat API - Orchestration Logic', () => {
         // the orchestrator should handle it if history exists
         history: [
             { role: 'user', content: 'departures from Zurich HB' },
-            { role: 'assistant', content: 'Here are the departures...' }
+            { role: 'Companion', content: 'Here are the departures...' }
         ]
       },
     });

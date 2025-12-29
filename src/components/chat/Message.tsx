@@ -39,7 +39,7 @@ export default function Message({ message, textOnlyMode = false, language }: Mes
             {message.content && message.content.trim() && (
               <MarkdownCard 
                 content={message.content} 
-                variant="assistant" 
+                variant="Companion" 
                 timestamp={timestamp}
               />
             )}

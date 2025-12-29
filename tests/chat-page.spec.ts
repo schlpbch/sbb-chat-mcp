@@ -12,7 +12,7 @@ test.describe('Chat Page', () => {
       await expect(page.getByRole('main', { name: 'Chat interface' })).toBeVisible();
 
       // Header with title
-      await expect(page.getByRole('heading', { name: 'AI Travel Assistant', level: 1 })).toBeVisible();
+      await expect(page.getByRole('heading', { name: 'AI Travel Companion', level: 1 })).toBeVisible();
 
       // Navbar branding
       await expect(page.getByRole('heading', { name: 'SBB Chat MCP' })).toBeVisible();
@@ -219,8 +219,8 @@ test.describe('Chat Page - API Integration', () => {
     await input.fill('What is the capital of Switzerland?');
     await page.getByTestId('send-button').click();
 
-    // Wait for assistant response
-    await expect(page.getByTestId('message-assistant')).toBeVisible({ timeout: 30000 });
+    // Wait for Companion response
+    await expect(page.getByTestId('message-Companion')).toBeVisible({ timeout: 30000 });
   });
 
   test.skip('shows tool execution for complex queries', async ({ page }) => {
@@ -234,6 +234,6 @@ test.describe('Chat Page - API Integration', () => {
     await expect(page.getByTestId('loading-indicator')).toBeVisible();
 
     // Wait for response
-    await expect(page.getByTestId('message-assistant')).toBeVisible({ timeout: 60000 });
+    await expect(page.getByTestId('message-Companion')).toBeVisible({ timeout: 60000 });
   });
 });

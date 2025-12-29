@@ -94,7 +94,7 @@ export async function sendOrchestratedChatMessage(
 
       const model = createModel(false);
 
-      const summaryPrompt = `You are a Swiss travel assistant. The user asked: "${message}"
+      const summaryPrompt = `You are a Swiss travel Companion. The user asked: "${message}"
 
 I have gathered the following information for you:
 

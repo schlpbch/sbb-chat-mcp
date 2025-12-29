@@ -362,7 +362,7 @@ test.describe('Quick Wins Features', () => {
       // Verify clipboard contains formatted text with emojis
       const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
       expect(clipboardText).toContain('🚂');
-      expect(clipboardText).toContain('Powered by SBB Travel Assistant');
+      expect(clipboardText).toContain('Powered by SBB Travel Companion');
     });
 
     test('should display shared trip from URL', async ({ page }) => {
@@ -376,7 +376,7 @@ test.describe('Quick Wins Features', () => {
       await expect(page.locator('text="Arrival: 11:00"')).toBeVisible();
 
       // Verify "Open in App" button exists
-      await expect(page.locator('button:has-text("Open in SBB Travel Assistant")')).toBeVisible();
+      await expect(page.locator('button:has-text("Open in SBB Travel Companion")')).toBeVisible();
     });
 
     test('should handle invalid share link gracefully', async ({ page }) => {

@@ -7,7 +7,7 @@ import { parseMarkdownIntent } from '@/lib/intentParser';
 
 export interface Message {
   id: string;
-  role: 'user' | 'assistant';
+  role: 'user' | 'Companion';
   content: string;
   timestamp: Date;
   toolCalls?: Array<{
@@ -149,15 +149,15 @@ export function useChat(language: Language) {
         setTimeout(() => setToolsExecuting([]), 800);
       }
 
-      const assistantMessage: Message = {
+      const CompanionMessage: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant',
+        role: 'Companion',
         content: data.response,
         timestamp: new Date(),
         toolCalls: data.toolCalls,
       };
 
-      setMessages((prev) => [...prev, assistantMessage]);
+      setMessages((prev) => [...prev, CompanionMessage]);
       setRetryCount(0); // Reset retry count on success
     } catch (error) {
       console.error('Chat error:', error);
@@ -211,7 +211,7 @@ export function useChat(language: Language) {
 
       const errorMessageObj: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant',
+        role: 'Companion',
         content: errorMessage,
         timestamp: new Date(),
         error: errorObj,

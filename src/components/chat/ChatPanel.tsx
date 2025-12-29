@@ -93,7 +93,7 @@ export default function ChatPanel({ language, isOpen, onClose }: ChatPanelProps)
  </div>
  <div>
  <h2 id="chat-title" className="text-white font-black text-lg tracking-tight leading-none">
- SBB Assistant
+ SBB Companion
  </h2>
  <span className="text-[10px] text-white/70 font-black uppercase tracking-[0.2em]">Always at your service</span>
  </div>

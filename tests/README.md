@@ -216,7 +216,7 @@ pnpm test:chromium
 - Input form accessibility
 - Quick start suggestions
 - Input behavior (enable/disable, clear, submit)
-- Message display (user/assistant)
+- Message display (user/Companion)
 - Loading indicators
 - Keyboard navigation
 - ARIA labels and live regions

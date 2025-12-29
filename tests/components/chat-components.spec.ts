@@ -143,7 +143,7 @@ test.describe('ChatMessage Component', () => {
     }
   });
 
-  test('should display assistant messages', async ({ page }) => {
+  test('should display Companion messages', async ({ page }) => {
     const input = page.getByTestId('chat-input');
     await input.fill('What is the weather in Zürich?');
     await page.getByTestId('send-button').click();
@@ -151,12 +151,12 @@ test.describe('ChatMessage Component', () => {
     // Wait for response
     await page.waitForTimeout(5000);
 
-    // Check for assistant message
-    const assistantMessage = page.getByTestId('message-assistant');
-    const count = await assistantMessage.count();
+    // Check for Companion message
+    const CompanionMessage = page.getByTestId('message-Companion');
+    const count = await CompanionMessage.count();
 
     if (count > 0) {
-      await expect(assistantMessage.first()).toBeVisible();
+      await expect(CompanionMessage.first()).toBeVisible();
     }
   });
 
@@ -174,7 +174,7 @@ test.describe('ChatMessage Component', () => {
     expect(count).toBeGreaterThanOrEqual(0);
   });
 
-  test('should support markdown formatting in assistant messages', async ({ page }) => {
+  test('should support markdown formatting in Companion messages', async ({ page }) => {
     const input = page.getByTestId('chat-input');
     await input.fill('Give me a list of cities');
     await page.getByTestId('send-button').click();

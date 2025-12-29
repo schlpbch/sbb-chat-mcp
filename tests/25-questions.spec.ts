@@ -90,14 +90,7 @@ const allQuestions: TestQuestion[] = [
     expectedTools: ['findStopPlacesByName', 'getPlaceEvents'],
     expectedCards: ['BoardCard'],
   },
-  {
-    number: 10,
-    category: 'Real-Time',
-    label: 'Transfer Check',
-    query: 'Can I make a 5-minute transfer at Zurich HB?',
-    expectedTools: ['findStopPlacesByName'],
-    expectedCards: [],
-  },
+
   {
     number: 11,
     category: 'Real-Time',
@@ -253,14 +246,14 @@ async function testQuestion(page: Page, question: TestQuestion) {
     .or(page.locator('text=Calling'));
   await expect(loadingIndicator).toBeHidden({ timeout: 60000 });
 
-  // Check for assistant response
-  const assistantMessage = page
-    .locator('[data-testid="message-assistant"]')
+  // Check for Companion response
+  const CompanionMessage = page
+    .locator('[data-testid="message-Companion"]')
     .last();
-  await expect(assistantMessage).toBeVisible({ timeout: 5000 });
+  await expect(CompanionMessage).toBeVisible({ timeout: 5000 });
 
   // Get the response text
-  const responseText = await assistantMessage.textContent();
+  const responseText = await CompanionMessage.textContent();
 
   // Check for error messages
   const hasError =

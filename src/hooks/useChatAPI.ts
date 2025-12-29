@@ -47,20 +47,20 @@ export function useChatAPI(
 
       const data = await response.json();
 
-      // Add assistant message
-      const assistantMessage: Message = {
+      // Add Companion message
+      const CompanionMessage: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant',
+        role: 'Companion',
         content: data.response,
         timestamp: new Date()
       };
-      setMessages(prev => [...prev, assistantMessage]);
+      setMessages(prev => [...prev, CompanionMessage]);
     } catch (error) {
       logger.error('useChatAPI', 'Chat error', error);
       // Add error message
       const errorMessage: Message = {
         id: (Date.now() + 1).toString(),
-        role: 'assistant',
+        role: 'Companion',
         content: error instanceof Error ? error.message : 'Sorry, I encountered an error. Please try again.',
         timestamp: new Date()
       };

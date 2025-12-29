@@ -171,7 +171,7 @@ const quickActions: QuickAction[] = [
 1. **Predictable Results** - Users get consistent responses that match their expectations
 2. **Showcases Capabilities** - Highlights advanced features like transfer optimization and eco comparison
 3. **Swiss Focus** - All examples use real Swiss locations users will recognize
-4. **Better Onboarding** - New users see realistic examples of what the assistant can do
+4. **Better Onboarding** - New users see realistic examples of what the Companion can do
 5. **Reduced Confusion** - No questions that would fail or require unsupported functionality
 
 ## Next Steps (Optional)
