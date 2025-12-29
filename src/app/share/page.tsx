@@ -24,7 +24,7 @@ function ShareContent() {
 
   if (!from || !to) {
     return (
-      <div className="flex flex-col min-h-screen bg-gray-50">
+      <div className="flex flex-col min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
         <Navbar
           language={language}
           onLanguageChange={setLanguage}
@@ -52,7 +52,7 @@ function ShareContent() {
   }
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-50">
+    <div className="flex flex-col min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
       <Navbar
         language={language}
         onLanguageChange={setLanguage}

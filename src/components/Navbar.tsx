@@ -75,8 +75,8 @@ export default function Navbar({
 
             {/* Logo */}
             <a href="/" className="flex items-center space-x-3" aria-label={t.navbar.appTitle}>
-              <div className="w-10 h-10 rounded-lg bg-linear-to-br from-red-600 to-red-700 flex items-center justify-center shadow-lg">
-                <span className="text-white font-bold text-lg">SBB</span>
+              <div className="w-10 h-10 rounded-lg overflow-hidden shadow-lg border border-gray-100 bg-white">
+                <img src="/SBB-chat-MCP.png" alt="SBB logo" className="w-full h-full object-contain" />
               </div>
               <div className="hidden sm:flex sm:flex-col">
                 <h1 className="text-xl font-bold text-gray-900 leading-tight">

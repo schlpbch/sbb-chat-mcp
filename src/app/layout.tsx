@@ -3,6 +3,8 @@ import { Outfit } from 'next/font/google';
 import './globals.css';
 import { ToastProvider } from '@/components/ui/Toast';
 import PWAInstallPrompt from '@/components/PWAInstallPrompt';
+import { SettingsProvider } from '@/context/SettingsContext';
+import { MapProvider } from '@/context/MapContext';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -24,11 +26,10 @@ export const metadata: Metadata = {
   manifest: '/manifest.json',
   icons: {
     icon: [
-      { url: '/icons/icon-192x192.png', sizes: '192x192', type: 'image/png' },
-      { url: '/icons/icon-512x512.png', sizes: '512x512', type: 'image/png' },
+      { url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' },
     ],
     apple: [
-      { url: '/icons/icon-152x152.png', sizes: '152x152', type: 'image/png' },
+      { url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' },
     ],
   },
   openGraph: {
@@ -36,11 +37,13 @@ export const metadata: Metadata = {
     siteName: 'SBB Chat MCP',
     title: 'SBB Chat MCP - Swiss Travel Assistant',
     description: 'Your intelligent companion for Swiss public transport',
+    images: ['/SBB-chat-MCP.png'],
   },
   twitter: {
     card: 'summary',
     title: 'SBB Chat MCP',
     description: 'Your intelligent companion for Swiss public transport',
+    images: ['/SBB-chat-MCP.png'],
   },
 };
 
@@ -60,17 +63,21 @@ export default function RootLayout({
   return (
     <html lang="en" className={outfit.variable}>
       <head>
-        <link rel="apple-touch-icon" href="/icons/icon-152x152.png" />
+        <link rel="apple-touch-icon" href="/SBB-chat-MCP.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="SBB Chat" />
       </head>
       <body className="antialiased font-sans">
-        <ToastProvider>
-          {children}
-          <PWAInstallPrompt />
-        </ToastProvider>
+        <SettingsProvider>
+          <MapProvider>
+            <ToastProvider>
+              {children}
+            <PWAInstallPrompt />
+            </ToastProvider>
+          </MapProvider>
+        </SettingsProvider>
       </body>
     </html>
   );

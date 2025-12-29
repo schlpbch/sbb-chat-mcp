@@ -3,6 +3,7 @@
 import { useEffect, useRef } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { useMapContext } from '@/context/MapContext';
 
 interface MapProps {
  // Map can now accept other features or just display the base
@@ -11,6 +12,9 @@ interface MapProps {
 export default function Map({}: MapProps) {
  const mapRef = useRef<L.Map | null>(null);
  const mapContainerRef = useRef<HTMLDivElement>(null);
+
+  const { activeRoute } = useMapContext();
+  const routeLayerRef = useRef<L.Polyline | null>(null);
 
  useEffect(() => {
  if (!mapContainerRef.current || mapRef.current) return;
@@ -62,13 +66,44 @@ export default function Map({}: MapProps) {
 
  return () => {
  window.removeEventListener('MAP_CENTER_EVENT', handleCenterEvent);
+      if (routeLayerRef.current) routeLayerRef.current.remove();
  map.remove();
  mapRef.current = null;
  };
  }, []);
 
+  // Effect to handle active route visualization
+  useEffect(() => {
+    if (!mapRef.current || !activeRoute) return;
+
+    // Remove existing route layer
+    if (routeLayerRef.current) {
+      routeLayerRef.current.remove();
+      routeLayerRef.current = null;
+    }
+
+    if (activeRoute.points.length > 0) {
+      // Create new polyline
+      const polyline = L.polyline(activeRoute.points, {
+        color: activeRoute.color || '#EB0000',
+        weight: 5,
+        opacity: 0.8,
+        lineCap: 'round',
+        lineJoin: 'round',
+      }).addTo(mapRef.current);
+
+      routeLayerRef.current = polyline;
+
+      // Fit map to bounds
+      mapRef.current.fitBounds(polyline.getBounds(), {
+        padding: [50, 50],
+        animate: true,
+      });
+    }
+  }, [activeRoute]);
+
  return (
- <div className="relative w-full h-full rounded-2xl overflow-hidden shadow-sbb">
+  <div className="relative w-full h-full overflow-hidden">
  <div
  ref={mapContainerRef}
  className="w-full h-full"

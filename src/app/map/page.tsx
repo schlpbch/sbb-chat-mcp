@@ -16,7 +16,7 @@ export default function MapPage() {
  const [isChatOpen, setIsChatOpen] = useState(false);
 
  return (
- <div className="flex flex-col h-screen w-screen overflow-hidden bg-milk">
+ <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100">
  {/* Skip Navigation Links */}
  <a
  href="#main-content"
@@ -47,8 +47,8 @@ export default function MapPage() {
  onClose={() => setIsChatOpen(false)}
  />
 
- <div className="flex flex-1 overflow-hidden pt-16 p-6 gap-6 relative z-0">
- <div className="flex flex-1 overflow-hidden bg-white rounded-sbb shadow-sbb-xl border border-cloud/30 relative">
+ <div className="flex flex-1 overflow-hidden pt-16 relative z-0">
+ <div className="flex flex-1 overflow-hidden bg-white shadow-2xl relative">
  {/* Main Map Area */}
  <main id="main-content" className="flex-1 relative">
  <Map />

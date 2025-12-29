@@ -151,7 +151,7 @@ export default function ResourceTestPage() {
  }
 
  return (
- <div className="flex flex-col h-screen w-screen overflow-hidden bg-gray-50">
+  <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100">
  <Navbar
  language={language}
  onLanguageChange={setLanguage}
