@@ -68,7 +68,7 @@ function CompareCard({ data, language }: CompareCardProps) {
     <article
       className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
       data-testid="compare-card"
-      aria-label={`Route comparison from ${origin} to ${destination}`}
+      aria-label={`${t.compare.routeComparison} ${origin} → ${destination}`}
     >
       {/* Header */}
       <CardHeader
@@ -195,7 +195,7 @@ function CompareCard({ data, language }: CompareCardProps) {
                       </svg>
                       <div>
                         <p className="text-xs text-gray-500">{t.compare.price}</p>
-                        <p className="text-sm font-bold text-gray-900">CHF {route.price}</p>
+                        <p className="text-sm font-bold text-gray-900">{t.common.chf} {route.price}</p>
                       </div>
                     </div>
                   )}
@@ -220,7 +220,7 @@ function CompareCard({ data, language }: CompareCardProps) {
                   {(route as any).reservationRequired && (
                     <div className="flex items-center space-x-1 text-yellow-700">
                       <span>🎫</span>
-                      <span className="font-medium">Reservation</span>
+                      <span className="font-medium">{t.cards.reservation}</span>
                     </div>
                   )}
                 </div>
@@ -252,7 +252,7 @@ function CompareCard({ data, language }: CompareCardProps) {
                             {leg.type === 'WalkLeg' ? '🚶' : '🚂'}
                           </span>
                           <span className="font-medium text-gray-700">
-                            {leg.serviceJourney?.serviceProducts?.[0]?.name || 'Walk'}
+                            {leg.serviceJourney?.serviceProducts?.[0]?.name || t.common.walk}
                           </span>
                           {leg.duration && (
                             <span className="text-gray-500">({formatDuration(leg.duration)})</span>

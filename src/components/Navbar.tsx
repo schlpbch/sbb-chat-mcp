@@ -1,6 +1,6 @@
 'use client';
 
-import { Language } from '@/lib/i18n';
+import { Language, translations } from '@/lib/i18n';
 import { useState, useEffect } from 'react';
 import { getAllMcpServerUrls, getMcpServerUrl } from '@/config/env';
 
@@ -30,14 +30,15 @@ export default function Navbar({
   onFeedbackClick,
   onHelpClick,
 }: NavbarProps) {
+  const t = translations[language];
   const [mcpServerUrl, setMcpServerUrl] = useState(getMcpServerUrl());
 
   const envUrls = getAllMcpServerUrls();
 
   const mcpServers = [
-    { label: 'GCloud Staging', value: envUrls.staging },
-    { label: 'Local Dev', value: envUrls.dev },
-    { label: 'Local API Routes', value: '/api/mcp' },
+    { label: t.navbar.mcpServer.gcloudStaging, value: envUrls.staging },
+    { label: t.navbar.mcpServer.localDev, value: envUrls.dev },
+    { label: t.navbar.mcpServer.localApiRoutes, value: '/api/mcp' },
   ];
 
   useEffect(() => {
@@ -64,7 +65,7 @@ export default function Navbar({
               <button
                 onClick={onMenuToggle}
                 className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
-                aria-label="Toggle menu"
+                aria-label={t.navbar.toggleMenu}
               >
                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
@@ -73,15 +74,15 @@ export default function Navbar({
             )}
 
             {/* Logo */}
-            <a href="/" className="flex items-center space-x-3" aria-label="SBB MCP">
+            <a href="/" className="flex items-center space-x-3" aria-label={t.navbar.appTitle}>
               <div className="w-10 h-10 rounded-lg bg-linear-to-br from-red-600 to-red-700 flex items-center justify-center shadow-lg">
                 <span className="text-white font-bold text-lg">SBB</span>
               </div>
               <div className="hidden sm:flex sm:flex-col">
                 <h1 className="text-xl font-bold text-gray-900 leading-tight">
-                  SBB Chat MCP
+                  {t.navbar.appTitle}
                 </h1>
-                <p className="text-xs font-semibold text-gray-700 leading-tight mt-1">Travel Assistant</p>
+                <p className="text-xs font-semibold text-gray-700 leading-tight mt-1">{t.navbar.travelAssistant}</p>
               </div>
             </a>
           </div>
@@ -93,8 +94,8 @@ export default function Navbar({
               <button
                 onClick={onHelpClick}
                 className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
-                aria-label="Help"
-                title="Help & Tutorial"
+                aria-label={t.help.needHelp}
+                title={t.help.helpTooltip}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path
@@ -112,8 +113,8 @@ export default function Navbar({
               <button
                 onClick={onFeedbackClick}
                 className="p-2 rounded-lg text-gray-600 hover:bg-gray-100 transition-colors"
-                aria-label="Feedback"
-                title="Send Feedback"
+                aria-label={t.feedback.sendFeedback}
+                title={t.feedback.sendFeedback}
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path

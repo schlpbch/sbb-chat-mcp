@@ -61,14 +61,14 @@ export default function Home() {
     <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100">
       {/* Skip Links for Accessibility */}
       <a href="#main-content" className="skip-link sr-only-focusable">
-        Skip to main content
+        {t.accessibility.skipToMain}
       </a>
       <a
         href="#chat-input"
         className="skip-link sr-only-focusable"
         style={{ left: '200px' }}
       >
-        Skip to chat input
+        {t.accessibility.skipToChat}
       </a>
 
       <Navbar
@@ -89,7 +89,7 @@ export default function Home() {
         id="main-content"
         className="flex-1 overflow-hidden pt-16"
         role="main"
-        aria-label="Chat application"
+        aria-label={t.accessibility.chatApplication}
       >
         <div className="h-full flex flex-col">
           {/* Chat Container */}
@@ -102,7 +102,7 @@ export default function Home() {
               role="log"
               aria-live="polite"
               aria-atomic="false"
-              aria-label="Chat conversation"
+              aria-label={t.accessibility.chatConversation}
             >
               {messages.length === 0 ? (
                 <WelcomeSection
@@ -168,7 +168,7 @@ export default function Home() {
                     placeholder={t.chat.inputPlaceholder}
                     disabled={isLoading}
                     rows={1}
-                    aria-label="Chat message input"
+                    aria-label={t.accessibility.typeYourMessage}
                     aria-describedby="chat-hint"
                     className="w-full px-3 sm:px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     style={{ minHeight: '52px', maxHeight: '120px' }}
@@ -180,7 +180,7 @@ export default function Home() {
                     type="submit"
                     onClick={() => handleSendMessage()}
                     disabled={isLoading || !input.trim()}
-                    aria-label={isLoading ? 'Sending message' : 'Send message'}
+                    aria-label={isLoading ? t.accessibility.sendingMessage : t.accessibility.sendMessage}
                     className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#EB0000] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
                   >
                   {isLoading ? (

@@ -5,6 +5,8 @@ import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import { normalizeBoardData } from '@/lib/normalizers/cardData';
 import { logger } from '@/lib/logger';
+import { formatTime, getTransportIcon } from '@/lib/formatters';
+import CardHeader from './CardHeader';
 
 interface BoardCardProps {
   data: unknown;
@@ -24,11 +26,11 @@ export default function BoardCard({ data, language }: BoardCardProps) {
       // Return fallback data structure
       return {
         type: 'departures' as const,
-        station: 'Unknown Station',
+        station: t.board.station,
         connections: [],
       };
     }
-  }, [data]);
+  }, [data, t.board.station]);
 
   const { type: finalType, station: finalStation, connections: extractedConnections } = normalizedData;
 
@@ -50,51 +52,32 @@ export default function BoardCard({ data, language }: BoardCardProps) {
     connections: finalConnections,
   });
 
-  const formatTime = (time?: string) => {
-    if (!time) return '--:--';
-    try {
-      return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-    } catch {
-      return time;
-    }
-  };
-
-  const getTransportIcon = (transportType?: string) => {
-    if (!transportType) return '🚂';
-    const t = transportType.toLowerCase();
-    if (t.includes('train') || t.includes('rail')) return '🚂';
-    if (t.includes('bus')) return '🚌';
-    if (t.includes('tram')) return '🚃';
-    if (t.includes('boat') || t.includes('ship')) return '⛴️';
-    return '🚂';
-  };
-
   const isDeparture = finalType === 'departures';
   const displayedConnections = isExpanded ? finalConnections : finalConnections.slice(0, 5);
   const hasMore = finalConnections.length > 5;
 
   return (
     <article
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
+      className={`bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 ${
+        isDeparture ? 'hover:border-purple-500' : 'hover:border-blue-500'
+      }`}
       data-testid="board-card"
       aria-label={`${isDeparture ? t.board.departures : t.board.arrivals} board for ${finalStation || t.board.station}`}
     >
-      {/* Compact Header */}
-      <div className={`px-4 py-2 ${isDeparture ? 'bg-linear-to-r from-purple-600 to-purple-700' : 'bg-linear-to-r from-blue-600 to-blue-700'}`}>
-        <div className="flex items-center space-x-2 text-white">
-          <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <CardHeader
+        icon={
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             {isDeparture ? (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             ) : (
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 16l-4-4m0 0l4-4m-4 4h18" />
             )}
           </svg>
-          <div>
-            <h3 className="text-lg font-bold">{isDeparture ? t.board.departures : t.board.arrivals}</h3>
-            <p className="text-xs text-purple-100">{finalStation || t.board.station}</p>
-          </div>
-        </div>
-      </div>
+        }
+        title={isDeparture ? t.board.departures : t.board.arrivals}
+        subtitle={finalStation || t.board.station}
+        color={isDeparture ? 'purple' : 'blue'}
+      />
 
       {/* Compact Connections List */}
       <div className="divide-y divide-gray-200">
@@ -109,7 +92,7 @@ export default function BoardCard({ data, language }: BoardCardProps) {
                   {/* Time */}
                   <div className="w-12 shrink-0">
                     <p className="text-lg font-bold text-gray-900">
-                      {formatTime(conn.time)}
+                      {formatTime(conn.time, language)}
                     </p>
                     {conn.delay && (
                       <span className="text-xs px-1 py-0.5 bg-red-100 text-red-800 rounded">
@@ -119,12 +102,12 @@ export default function BoardCard({ data, language }: BoardCardProps) {
                   </div>
 
                   {/* Icon */}
-                  <span className="text-lg" aria-hidden="true">{getTransportIcon(conn.type)}</span>
+                  <span className="text-lg" aria-hidden="true">{getTransportIcon(conn.type || '')}</span>
 
                   {/* Destination/Origin */}
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-semibold text-gray-900 truncate">
-                      {isDeparture ? (conn.destination || 'Unknown') : (conn.origin || 'Unknown')}
+                      {isDeparture ? (conn.destination || t.common.unknown) : (conn.origin || t.common.unknown)}
                     </p>
                     {conn.line && (
                       <span className="inline-block mt-0.5 px-2 py-0.5 bg-gray-700 text-white text-xs font-bold rounded">
@@ -161,7 +144,9 @@ export default function BoardCard({ data, language }: BoardCardProps) {
         <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
-            className="w-full text-xs text-purple-600 hover:text-purple-800 font-medium transition-colors"
+            className={`w-full text-xs font-medium transition-colors ${
+              isDeparture ? 'text-purple-600 hover:text-purple-800' : 'text-blue-600 hover:text-blue-800'
+            }`}
           >
             {isExpanded ? (
               `${t.board.showLess}`

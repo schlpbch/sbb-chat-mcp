@@ -4,6 +4,7 @@ import { memo } from 'react';
 import type { WeatherCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
+import { languageToLocale } from '@/lib/formatters';
 
 function WeatherCard({ data, language }: WeatherCardProps) {
   const t = translations[language];
@@ -11,7 +12,7 @@ function WeatherCard({ data, language }: WeatherCardProps) {
  const hourly = data?.hourly;
  const daily = data?.daily;
  
- const location = data?.locationName || data?.location || 'Unknown';
+  const location = data?.locationName || data?.location || t.weather.conditions.unknown;
  const temperature = hourly?.temperature_2m?.[0];
  const feelsLike = hourly?.apparent_temperature?.[0];
  const humidity = hourly?.relative_humidity_2m?.[0];
@@ -38,9 +39,9 @@ function WeatherCard({ data, language }: WeatherCardProps) {
  const weatherCode = hourly?.weather_code?.[0];
  const condition = getConditionFromCode(weatherCode);
 
- // Build forecast from daily data
- const forecast = daily?.time?.slice(0, 3).map((date: string, idx: number) => ({
- day: new Date(date).toLocaleDateString('en-US', { weekday: 'short' }),
+  // Build forecast from daily data
+  const forecast = daily?.time?.slice(0, 3).map((date: string, idx: number) => ({
+    day: new Date(date).toLocaleDateString(languageToLocale[language] || 'en-US', { weekday: 'short' }),
  high: daily?.temperature_2m_max?.[idx],
  low: daily?.temperature_2m_min?.[idx],
  condition: getConditionFromCode(daily?.weather_code?.[idx])
@@ -62,7 +63,7 @@ function WeatherCard({ data, language }: WeatherCardProps) {
  <article
  className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-yellow-500"
  data-testid="weather-card"
- aria-label={`Weather for ${location}`}
+  aria-label={`${t.weather.weather} ${location}`}
  >
  {/* Header */}
  <CardHeader

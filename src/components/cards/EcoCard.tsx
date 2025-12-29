@@ -10,12 +10,12 @@ function EcoCard({ data, language }: EcoCardProps) {
  const t = translations[language];
  const { route, trainCO2, carCO2, planeCO2, savings, treesEquivalent } = data;
 
- return (
- <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500"
- data-testid="eco-card"
- aria-label="Environmental impact comparison"
- >
+  return (
+    <article
+      className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500"
+      data-testid="eco-card"
+      aria-label={t.eco.ecoImpact}
+    >
  {/* Header */}
  <CardHeader
  icon={

@@ -4,145 +4,131 @@ import { useState } from 'react';
 import { translations, type Language } from '@/lib/i18n';
 import ShareMenu from '@/components/ui/ShareMenu';
 import type { ShareableTrip } from '@/lib/shareUtils';
+import { formatTime, formatDuration, getTransportIcon } from '@/lib/formatters';
+import CardHeader from './CardHeader';
 
 interface TripCardProps {
- data: any;
- language: Language;
+  data: any;
+  language: Language;
 }
 
 export default function TripCard({ data, language }: TripCardProps) {
- const [isExpanded, setIsExpanded] = useState(false);
- const [showDetails, setShowDetails] = useState(false);
- const t = translations[language];
+  const [isExpanded, setIsExpanded] = useState(false);
+  const t = translations[language];
 
- const legs = data.legs || [];
- const firstLeg = legs[0];
- const lastLeg = legs[legs.length - 1];
+  const legs = data.legs || [];
+  const firstLeg = legs[0];
+  const lastLeg = legs[legs.length - 1];
 
- const getStopInfo = (leg: any, isStart: boolean) => {
- if (!leg) return { name: 'Unknown', time: null, platform: null, delay: null };
+  const getStopInfo = (leg: any, isStart: boolean) => {
+    if (!leg) return { name: t.common.unknown, time: null, platform: null, delay: null };
 
- if (leg.serviceJourney) {
- const points = leg.serviceJourney.stopPoints || [];
- const point = isStart ? points[0] : points[points.length - 1];
- const timeData = isStart ? point?.departure : point?.arrival;
- return {
- name: point?.place?.name || 'Unknown',
- time: timeData?.timeAimed || timeData?.timeRt || null,
- platform: point?.platform || point?.forBoarding?.plannedQuay?.name || null,
- delay: timeData?.delayText || null,
- };
- }
+    if (leg.serviceJourney) {
+      const points = leg.serviceJourney.stopPoints || [];
+      const point = isStart ? points[0] : points[points.length - 1];
+      const timeData = isStart ? point?.departure : point?.arrival;
+      return {
+        name: point?.place?.name || t.common.unknown,
+        time: timeData?.timeAimed || timeData?.timeRt || null,
+        platform: point?.platform || point?.forBoarding?.plannedQuay?.name || null,
+        delay: timeData?.delayText || null,
+      };
+    }
 
- if (isStart) {
- const point = leg.start;
- return {
- name: point?.place?.name || leg.origin?.name || 'Unknown',
- time: leg.departure || point?.departure?.timeAimed || null,
- platform: point?.platform || point?.forBoarding?.plannedQuay?.name || null,
- delay: point?.departure?.delayText || null,
- };
- } else {
- const point = leg.end;
- return {
- name: point?.place?.name || leg.destination?.name || 'Unknown',
- time: leg.arrival || point?.arrival?.timeAimed || null,
- platform: point?.platform || point?.forAlighting?.plannedQuay?.name || null,
- delay: point?.arrival?.delayText || null,
- };
- }
- };
+    if (isStart) {
+      const point = leg.start;
+      return {
+        name: point?.place?.name || leg.origin?.name || t.common.unknown,
+        time: leg.departure || point?.departure?.timeAimed || null,
+        platform: point?.platform || point?.forBoarding?.plannedQuay?.name || null,
+        delay: point?.departure?.delayText || null,
+      };
+    } else {
+      const point = leg.end;
+      return {
+        name: point?.place?.name || leg.destination?.name || t.common.unknown,
+        time: leg.arrival || point?.arrival?.timeAimed || null,
+        platform: point?.platform || point?.forAlighting?.plannedQuay?.name || null,
+        delay: point?.arrival?.delayText || null,
+      };
+    }
+  };
 
- const getTripEndpoints = () => {
- const tripOrigin = data.origin?.name || data.start?.place?.name;
- const tripDest = data.destination?.name || data.end?.place?.name;
- const tripDepartureTime = data.departure || data.start?.departure?.timeAimed;
- const tripArrivalTime = data.arrival || data.end?.arrival?.timeAimed;
+  const getTripEndpoints = () => {
+    const tripOrigin = data.origin?.name || data.start?.place?.name;
+    const tripDest = data.destination?.name || data.end?.place?.name;
+    const tripDepartureTime = data.departure || data.start?.departure?.timeAimed;
+    const tripArrivalTime = data.arrival || data.end?.arrival?.timeAimed;
 
- const legOrigin = getStopInfo(firstLeg, true);
- const legDest = getStopInfo(lastLeg, false);
+    const legOrigin = getStopInfo(firstLeg, true);
+    const legDest = getStopInfo(lastLeg, false);
 
- return {
- origin: {
- name: tripOrigin || legOrigin.name,
- time: tripDepartureTime || legOrigin.time,
- platform: legOrigin.platform,
- delay: legOrigin.delay,
- },
- destination: {
- name: tripDest || legDest.name,
- time: tripArrivalTime || legDest.time,
- platform: legDest.platform,
- delay: legDest.delay,
- },
- };
- };
+    return {
+      origin: {
+        name: tripOrigin || legOrigin.name,
+        time: tripDepartureTime || legOrigin.time,
+        platform: legOrigin.platform,
+        delay: legOrigin.delay,
+      },
+      destination: {
+        name: tripDest || legDest.name,
+        time: tripArrivalTime || legDest.time,
+        platform: legDest.platform,
+        delay: legDest.delay,
+      },
+    };
+  };
 
- const endpoints = getTripEndpoints();
- const origin = endpoints.origin;
- const destination = endpoints.destination;
+  const endpoints = getTripEndpoints();
+  const origin = endpoints.origin;
+  const destination = endpoints.destination;
 
- const formatDuration = (d?: string) => {
- if (!d) return 'N/A';
- return d.replace('PT', '').replace('H', 'h ').replace('M', 'm').toLowerCase();
- };
+  const durationStr = formatDuration(data.duration);
+  const serviceLegs = legs.filter((l: any) => l.serviceJourney);
+  const transfers = serviceLegs.length - 1;
 
- const formatTime = (time: string | null) => {
- if (!time) return '--:--';
- return new Date(time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
- };
+  const getTripTransportIcon = (leg: any) => {
+    if (leg.type === 'WalkLeg') return '🚶';
+    const mode = leg.serviceJourney?.serviceProducts?.[0]?.vehicleMode?.name || '';
+    return getTransportIcon(mode);
+  };
 
- const durationStr = formatDuration(data.duration);
- const serviceLegs = legs.filter((l: any) => l.serviceJourney);
- const transfers = serviceLegs.length - 1;
+  // Prepare shareable trip data
+  const shareableTrip: ShareableTrip = {
+    from: origin.name,
+    to: destination.name,
+    departure: origin.time ? formatTime(origin.time, language) : undefined,
+    arrival: destination.time ? formatTime(destination.time, language) : undefined,
+    duration: durationStr !== 'N/A' ? durationStr : undefined,
+    transfers: transfers > 0 ? transfers : undefined,
+  };
 
- const getTransportIcon = (leg: any) => {
- if (leg.type === 'WalkLeg') return '🚶';
- const mode = leg.serviceJourney?.serviceProducts?.[0]?.vehicleMode?.name?.toLowerCase() || '';
- if (mode.includes('train') || mode.includes('rail')) return '🚂';
- if (mode.includes('bus')) return '🚌';
- if (mode.includes('tram')) return '🚃';
- if (mode.includes('boat') || mode.includes('ship')) return '⛴️';
- if (mode.includes('cable') || mode.includes('gondola')) return '🚡';
- return '🚂';
- };
-
- // Prepare shareable trip data
- const shareableTrip: ShareableTrip = {
- from: origin.name,
- to: destination.name,
- departure: origin.time ? formatTime(origin.time) : undefined,
- arrival: destination.time ? formatTime(destination.time) : undefined,
- duration: durationStr !== 'N/A' ? durationStr : undefined,
- transfers: transfers > 0 ? transfers : undefined,
- };
-
- return (
- <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500"
- data-testid="trip-card"
- aria-label={`Trip from ${origin.name} to ${destination.name}, duration ${durationStr}`}
- >
- {/* Compact Header */}
- <div className="bg-linear-to-r from-green-600 to-green-700 px-4 py-2">
- <div className="flex items-center justify-between text-white text-sm">
- <div className="flex items-center space-x-2">
- <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
- <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
- </svg>
- <span className="font-semibold">{durationStr}</span>
- </div>
- <div className="flex items-center space-x-2">
- {transfers > 0 && (
- <span className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-xs font-semibold">
- {transfers} {transfers === 1 ? 'change' : 'changes'}
- </span>
- )}
- <span className="text-xs opacity-80">{legs.length} {legs.length === 1 ? 'leg' : 'legs'}</span>
- <ShareMenu trip={shareableTrip} />
- </div>
- </div>
- </div>
+  return (
+    <article
+      className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500"
+      data-testid="trip-card"
+      aria-label={`${t.common.tripFrom} ${origin.name} ${t.common.to} ${destination.name}, ${t.cards.duration} ${durationStr}`}
+    >
+      <CardHeader
+        icon={
+          <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+          </svg>
+        }
+        title={`${origin.name} → ${destination.name}`}
+        subtitle={durationStr}
+        color="green"
+        rightContent={
+          <div className="flex items-center space-x-2">
+            {transfers >= 0 && (
+              <span className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-[10px] font-bold uppercase tracking-wider">
+                {transfers} {transfers === 1 ? t.cards.change : t.cards.changes}
+              </span>
+            )}
+            <ShareMenu trip={shareableTrip} />
+          </div>
+        }
+      />
 
  {/* Additional Trip Info Bar */}
  <div className="px-3 sm:px-4 py-2 bg-gray-50 border-b border-gray-200">
@@ -154,7 +140,7 @@ export default function TripCard({ data, language }: TripCardProps) {
  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
  </svg>
- <span className="font-semibold">CHF {data.price}</span>
+ <span className="font-semibold">{t.common.chf} {data.price}</span>
  </div>
  )}
  
@@ -164,9 +150,9 @@ export default function TripCard({ data, language }: TripCardProps) {
  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
  </svg>
- <span>Accessible</span>
- </div>
- )}
+                  <span>{t.cards.accessible}</span>
+                </div>
+              )}
  
  {/* Occupancy */}
  {data.occupancy && (
@@ -192,12 +178,12 @@ export default function TripCard({ data, language }: TripCardProps) {
  <svg className="w-4 h-4 text-green-700" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
  </svg>
- <span className="font-semibold text-green-800">
- Save {(data.co2Savings || data.savings)?.toFixed(1)} kg CO₂
- {data.comparedTo && ` vs ${data.comparedTo}`}
- </span>
- </div>
- )}
+                <span className="font-semibold text-green-800">
+                  {t.cards.co2Savings} {(data.co2Savings || data.savings)?.toFixed(1)} kg CO₂
+                  {data.comparedTo && ` ${t.cards.vs} ${data.comparedTo}`}
+                </span>
+              </div>
+            )}
  </div>
  
  {/* Operator/Company */}
@@ -228,18 +214,18 @@ export default function TripCard({ data, language }: TripCardProps) {
  {/* Booking/Reservation Info */}
  {(data.bookingUrl || data.reservationRequired) && (
  <div className="flex items-center gap-2 mt-2">
- {data.reservationRequired && (
- <span className="px-2 py-1 bg-yellow-50 text-yellow-800 text-xs font-medium rounded border border-yellow-200">
- 🎫 Reservation required
- </span>
- )}
- {data.bookingUrl && (
- <a href={data.bookingUrl} target="_blank" rel="noopener noreferrer" className="px-2 py-1 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 transition-colors">
- Book now →
- </a>
- )}
- </div>
- )}
+                {data.reservationRequired && (
+                  <span className="px-2 py-1 bg-yellow-50 text-yellow-800 text-xs font-medium rounded border border-yellow-200">
+                    🎫 {t.cards.reservationRequired}
+                  </span>
+                )}
+                {data.bookingUrl && (
+                  <a href={data.bookingUrl} target="_blank" rel="noopener noreferrer" className="px-2 py-1 bg-red-600 text-white text-xs font-medium rounded hover:bg-red-700 transition-colors">
+                    {t.cards.bookNow} →
+                  </a>
+                )}
+              </div>
+            )}
  </div>
  </div>
 
@@ -257,7 +243,7 @@ export default function TripCard({ data, language }: TripCardProps) {
  <div className="flex items-center space-x-1 mt-1">
  {origin.platform && (
  <span className="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
- Pl. {origin.platform}
+ {t.cards.platform} {origin.platform}
  </span>
  )}
  {origin.delay && (
@@ -291,11 +277,11 @@ export default function TripCard({ data, language }: TripCardProps) {
  {destination.name}
  </p>
  <div className="flex items-center justify-end space-x-1 mt-1">
- {destination.platform && (
- <span className="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
- Pl. {destination.platform}
- </span>
- )}
+                    {destination.platform && (
+                      <span className="inline-block px-1.5 py-0.5 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
+                        {t.cards.platform} {destination.platform}
+                      </span>
+                    )}
  {destination.delay && (
  <span className="inline-block px-1.5 py-0.5 bg-red-100 text-red-800 text-xs font-semibold rounded">
  {destination.delay}
@@ -348,7 +334,7 @@ export default function TripCard({ data, language }: TripCardProps) {
  onClick={() => setIsExpanded(!isExpanded)}
  className="mt-2 w-full px-3 py-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-lg font-medium text-xs transition-colors flex items-center justify-center space-x-1"
  >
- <span>{isExpanded ? 'Hide' : 'Show'} Details</span>
+              <span>{isExpanded ? t.cards.hideDetails : t.cards.showDetails}</span>
  <svg className={`w-3 h-3 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
  </svg>
@@ -387,7 +373,7 @@ export default function TripCard({ data, language }: TripCardProps) {
  <span className="text-xs text-gray-600 truncate">{legStart.name}</span>
  {legStart.platform && (
  <span className="text-xs px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded shrink-0">
- Pl. {legStart.platform}
+ {t.cards.platform} {legStart.platform}
  </span>
  )}
  </div>
@@ -409,11 +395,11 @@ export default function TripCard({ data, language }: TripCardProps) {
  {formatTime(legEnd.time)}
  </span>
  <span className="text-xs text-gray-600 truncate">{legEnd.name}</span>
- {legEnd.platform && (
- <span className="text-xs px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded shrink-0">
- Pl. {legEnd.platform}
- </span>
- )}
+                          {legEnd.platform && (
+                            <span className="text-xs px-1.5 py-0.5 bg-blue-100 text-blue-800 rounded shrink-0">
+                              {t.cards.platform} {legEnd.platform}
+                            </span>
+                          )}
  </div>
  </div>
  {leg.duration && (

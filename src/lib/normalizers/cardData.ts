@@ -37,6 +37,11 @@ export interface NormalizedBoardData {
  * Handles multiple possible data structures and extracts connections
  */
 export function normalizeBoardData(raw: unknown): NormalizedBoardData {
+  // Validate input
+  if (!raw || typeof raw !== 'object') {
+    throw new Error('Invalid board data: expected object');
+  }
+
   // ALWAYS log raw board data for debugging
   console.log('=== RAW BOARD DATA ===', JSON.stringify(raw, null, 2));
   logger.debug('normalizeBoardData', 'Input data', raw);
@@ -235,10 +240,17 @@ export function normalizeCompareData(
     return {
       id: trip.id || `route-${idx}`,
       name: trip.name || `Option ${idx + 1}`,
-      duration: trip.duration || 'PT0M',
+      duration: trip.duration || trip.summary?.duration || 'PT0M',
       transfers: trip.transfers !== undefined
         ? trip.transfers
-        : (trip.legs?.length ? trip.legs.filter((l: any) => l.serviceJourney).length - 1 : 0),
+        : (trip.legs?.length 
+            ? (() => {
+                const serviceLegs = trip.legs.filter((l: any) => l.serviceJourney).length;
+                // If we have service journey legs, count those minus 1
+                // Otherwise, use total legs minus 1
+                return serviceLegs > 0 ? Math.max(0, serviceLegs - 1) : Math.max(0, trip.legs.length - 1);
+              })()
+            : 0),
       departure: departureTime || new Date().toISOString(),
       arrival: arrivalTime || new Date().toISOString(),
       price: trip.price,

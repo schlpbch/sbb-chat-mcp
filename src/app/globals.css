@@ -1,33 +1,6 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
-
-
-/* SBB Design System CSS Variables */
-:root {
-  /* SBB Brand Colors */
-  --sbb-red: #EB0000;
-  --sbb-red-125: #C60018;
-  --sbb-red-150: #A20013;
-
-  /* Colors */
-  --color-background: #FFFFFF;
-  --color-surface: #F6F6F6;
-  --color-surface-elevated: #FFFFFF;
-  --color-border: #E5E5E5;
-  --color-text-primary: #151515;
-  --color-text-secondary: #5A5A5A;
-  --color-text-tertiary: #8D8D8D;
-
-  /* Spacing */
-  --spacing-unit: 0.25rem;
-
-  /* Transitions */
-  --transition-fast: 150ms ease-in-out;
-  --transition-base: 200ms ease-in-out;
-  --transition-slow: 300ms ease-in-out;
-}
-
 /* Base styles */
 * {
   box-sizing: border-box;
@@ -42,9 +15,6 @@ html {
 body {
   margin: 0;
   padding: 0;
-  background-color: var(--color-background);
-  color: var(--color-text-primary);
-  transition: background-color var(--transition-base), color var(--transition-base);
 }
 
 /* Custom Scrollbar - Modern & Subtle */
@@ -69,37 +39,24 @@ body {
 /* Firefox Scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: var(--sbb-red) var(--color-surface);
+  scrollbar-color: #EB0000 #F6F6F6;
 }
 
 /* Focus Styles - SBB Accessibility */
 :focus-visible {
-  outline: 2px solid var(--sbb-red);
+  outline: 2px solid #EB0000;
   outline-offset: 2px;
 }
 
 /* Selection Colors */
 ::selection {
-  background-color: var(--sbb-red);
+  background-color: #EB0000;
   color: white;
 }
 
 ::-moz-selection {
-  background-color: var(--sbb-red);
+  background-color: #EB0000;
   color: white;
-}
-
-/* Smooth Transitions for Theme Changes */
-body,
-body * {
-  transition-property: background-color, border-color, color, fill, stroke;
-  transition-duration: var(--transition-base);
-  transition-timing-function: ease-in-out;
-}
-
-/* Disable transitions on page load */
-.preload * {
-  transition: none !important;
 }
 
 /* Leaflet marker icon fix */
@@ -107,52 +64,7 @@ body * {
   background-image: url(https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png);
 }
 
-/* SBB Custom Utilities */
-.sbb-container {
-  max-width: 1440px;
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
-}
-
-.sbb-card {
-  background: var(--color-surface-elevated);
-  border: 1px solid var(--color-border);
-  border-radius: 4px;
-  padding: 2rem;
-  transition: all var(--transition-base);
-  box-shadow: 0 4px 20px -5px rgba(0, 0, 0, 0.05);
-}
-
-.sbb-card:hover {
-  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
-  transform: translateY(-4px) scale(1.01);
-}
-
-.sbb-button-primary {
-  background-color: var(--sbb-red);
-  color: white;
-  padding: 0.875rem 2rem;
-  border-radius: 2px;
-  font-weight: 700;
-  letter-spacing: 0.025em;
-  transition: all var(--transition-base);
-  border: none;
-  cursor: pointer;
-  box-shadow: 0 4px 12px rgba(235, 0, 0, 0.2);
-}
-
-.sbb-button-primary:hover {
-  background-color: var(--sbb-red-125);
-  box-shadow: 0 8px 20px rgba(235, 0, 0, 0.3);
-  transform: translateY(-2px);
-}
-
-.sbb-button-primary:active {
-  transform: translateY(0) scale(0.96);
-}
-
+/* Glass effect utility */
 .glass {
   background: rgba(255, 255, 255, 0.7);
   backdrop-filter: blur(12px);
@@ -224,7 +136,7 @@ body * {
   left: 0;
   z-index: 9999;
   padding: 1rem 1.5rem;
-  background-color: var(--sbb-red);
+  background-color: #EB0000;
   color: white;
   font-weight: 700;
   text-decoration: none;
@@ -244,15 +156,9 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid var(--sbb-red);
+  outline: 3px solid #EB0000;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(235, 0, 0, 0.1);
-}
-
-/* Focus within for containers */
-.focus-within-ring:focus-within {
-  outline: 2px solid var(--sbb-red);
-  outline-offset: 2px;
 }
 
 /* Reduced Motion Support */
@@ -280,28 +186,9 @@ select:focus-visible {
   }
 }
 
-/* Keyboard Navigation Indicator */
-body.using-keyboard *:focus {
-  outline: 3px solid var(--sbb-red);
-  outline-offset: 2px;
-}
-
-/* ARIA Live Region Styles */
-[aria-live] {
-  position: relative;
-}
-
-/* Visually indicate required fields */
-[aria-required="true"]::after,
-[required]::after {
-  content: " *";
-  color: var(--sbb-red);
-  font-weight: bold;
-}
-
 /* Error state styling */
 [aria-invalid="true"] {
-  border-color: var(--sbb-red) !important;
+  border-color: #EB0000 !important;
   background-color: rgba(235, 0, 0, 0.05);
 }
 
@@ -313,21 +200,8 @@ body.using-keyboard *:focus {
   filter: grayscale(50%);
 }
 
-/* Tooltip accessibility */
-[role="tooltip"] {
-  position: absolute;
-  z-index: 1000;
-  padding: 0.5rem 0.75rem;
-  background-color: var(--color-text-primary);
-  color: white;
-  font-size: 0.875rem;
-  border-radius: 4px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-}
-
 /* Loading/Busy state */
 [aria-busy="true"] {
   cursor: wait;
   opacity: 0.7;
 }
-
