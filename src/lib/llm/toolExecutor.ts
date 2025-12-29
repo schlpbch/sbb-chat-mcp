@@ -101,6 +101,11 @@ export async function executeTool(
       }
     }
 
+    // Enforce detailed mode for findTrips to ensure accessibility and stop data
+    if (toolName === 'findTrips') {
+       params = { ...(params as any), responseMode: 'detailed' };
+    }
+
     // Construct absolute URL for server-side fetch
     const baseUrl =
       typeof window === 'undefined'
