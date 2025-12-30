@@ -27,7 +27,11 @@ export default function ExampleQueryCard({
     >
       <div className="flex items-start gap-3">
         <span
-          className={`text-xl flex-shrink-0 transition-all ${grayscale ? 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100' : ''}`}
+          className={`text-xl shrink-0 transition-all ${
+            grayscale
+              ? 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100'
+              : ''
+          }`}
         >
           {example.icon}
         </span>
@@ -39,11 +43,6 @@ export default function ExampleQueryCard({
             <p className="text-xs text-gray-500 mt-1">{example.description}</p>
           )}
         </div>
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 5l7 7-7 7"
-          />
-        </svg>
       </div>
     </button>
   );
