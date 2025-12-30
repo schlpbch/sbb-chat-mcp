@@ -24,7 +24,7 @@ export default function MarkdownCard({
     <article
       className={`rounded-lg overflow-hidden transition-all duration-200 ${
         isUser
-          ? 'bg-[#EB0000] text-white rounded-2xl shadow-md'
+          ? 'bg-[#EC0000] text-white rounded-2xl shadow-md'
           : 'bg-white border border-gray-200 shadow-md hover:shadow-lg'
       }`}
       data-testid="markdown-card"

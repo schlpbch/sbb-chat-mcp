@@ -85,7 +85,7 @@ export default function Map({}: MapProps) {
     if (activeRoute.points.length > 0) {
       // Create new polyline
       const polyline = L.polyline(activeRoute.points, {
-        color: activeRoute.color || '#EB0000',
+        color: activeRoute.color || '#EC0000',
         weight: 5,
         opacity: 0.8,
         lineCap: 'round',

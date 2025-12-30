@@ -11,38 +11,44 @@ export interface LocalizedExampleQuery {
 interface ExampleQueryCardProps {
   example: LocalizedExampleQuery;
   onClick: (text: string) => void;
-  grayscale?: boolean;
 }
 
 export default function ExampleQueryCard({
   example,
   onClick,
-  grayscale = false,
 }: ExampleQueryCardProps) {
+  const handleClick = () => {
+    onClick(example.text);
+  };
+
   return (
     <button
-      onClick={() => onClick(example.text)}
-      className="group w-full text-left p-4 bg-white rounded-xl border border-gray-200 hover:border-[#EB0000] hover:shadow-md transition-all duration-200"
-      aria-label={example.text}
+      onClick={handleClick}
+      className="group w-full text-left bg-white hover:bg-gray-50 border border-gray-200 hover:border-sbb-red rounded-xl p-4 transition-all duration-200 hover:shadow-md"
     >
       <div className="flex items-start gap-3">
-        <span
-          className={`text-xl shrink-0 transition-all ${
-            grayscale
-              ? 'grayscale opacity-60 group-hover:grayscale-0 group-hover:opacity-100'
-              : ''
-          }`}
-        >
-          {example.icon}
-        </span>
+        <span className="text-xl shrink-0">{example.icon}</span>
         <div className="flex-1 min-w-0">
-          <p className="text-sm text-gray-700 line-clamp-2 group-hover:text-gray-900">
-            {example.text}
+          <p className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
+            {example.text.split('\n')[0]}
           </p>
           {example.description && (
-            <p className="text-xs text-gray-500 mt-1">{example.description}</p>
+            <p className="text-xs text-gray-500">{example.description}</p>
           )}
         </div>
+        <svg
+          className="w-5 h-5 text-gray-400 group-hover:text-sbb-red group-hover:translate-x-1 transition-all shrink-0"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 5l7 7-7 7"
+          />
+        </svg>
       </div>
     </button>
   );

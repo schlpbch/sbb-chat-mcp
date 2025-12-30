@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { getRandomExamples, getExamplesByCategory } from '@/lib/exampleQueries';
 import ExampleQueryCard from '@/components/ExampleQueryCard';
-import type { Language } from '@/lib/i18n';
+import { translations, type Language } from '@/lib/i18n';
 
 interface FeaturedExamplesProps {
   language: Language;
@@ -12,6 +12,7 @@ interface FeaturedExamplesProps {
 export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
   const router = useRouter();
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
+  const t = translations[language];
 
   const examples = selectedCategory
     ? getExamplesByCategory(selectedCategory as any, language)
@@ -22,26 +23,33 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
   };
 
   const categories = [
-    { id: 'trips', label: '🚂 Trips', labelEn: 'Trips' },
-    { id: 'weather', label: '🌤️ Weather', labelEn: 'Weather' },
-    { id: 'stations', label: '🏢 Stations', labelEn: 'Stations' },
-    { id: 'markdown', label: '✨ Advanced', labelEn: 'Advanced' },
+    { id: 'trips', label: `🚂 ${t.landing.categories.trips}` },
+    { id: 'weather', label: `🌤️ ${t.landing.categories.weather}` },
+    { id: 'stations', label: `🏢 ${t.landing.categories.stations}` },
+    { id: 'markdown', label: `✨ ${t.landing.categories.advanced}` },
   ];
 
   return (
-    <section className="py-16 px-4">
+    <section className="py-16 px-4" aria-label="Example queries">
       {/* Category Filter */}
       <div className="max-w-6xl mx-auto mb-8">
-        <div className="flex flex-wrap gap-2 justify-center">
+        <nav
+          className="flex flex-wrap gap-2 justify-center"
+          aria-label="Category filters"
+          role="navigation"
+        >
           <button
             onClick={() => setSelectedCategory(null)}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               selectedCategory === null
-                ? 'bg-[#EB0000] text-white shadow-md'
-                : 'bg-white text-gray-700 border border-gray-200 hover:border-[#EB0000]'
+                ? 'bg-[#EC0000] text-white shadow-md'
+                : 'bg-white text-gray-700 border border-gray-200 hover:border-[#EC0000]'
             }`}
+            type="button"
+            aria-pressed={selectedCategory === null}
+            aria-label={t.landing.categories.allExamples}
           >
-            All Examples
+            {t.landing.categories.allExamples}
           </button>
           {categories.map((category) => (
             <button
@@ -49,14 +57,17 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
               onClick={() => setSelectedCategory(category.id)}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
                 selectedCategory === category.id
-                  ? 'bg-[#EB0000] text-white shadow-md'
-                  : 'bg-white text-gray-700 border border-gray-200 hover:border-[#EB0000]'
+                  ? 'bg-[#EC0000] text-white shadow-md'
+                  : 'bg-white text-gray-700 border border-gray-200 hover:border-[#EC0000]'
               }`}
+              type="button"
+              aria-pressed={selectedCategory === category.id}
+              aria-label={category.label}
             >
               {category.label}
             </button>
           ))}
-        </div>
+        </nav>
       </div>
 
       {/* Examples Grid */}
@@ -66,7 +77,6 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
             key={example.id}
             example={example}
             onClick={handleExampleClick}
-            grayscale={true}
           />
         ))}
       </div>

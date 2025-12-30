@@ -6,12 +6,15 @@ import Menu from '@/components/Menu';
 import HeroSection from '@/components/landing/HeroSection';
 import FeaturedExamples from '@/components/landing/FeaturedExamples';
 
+import { translations } from '@/lib/i18n';
+
 export default function LandingPage() {
   const [language, setLanguage] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const t = translations[language];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-gray-50">
       <Navbar
         language={language}
         onLanguageChange={setLanguage}
@@ -26,9 +29,30 @@ export default function LandingPage() {
         language={language}
       />
 
-      <main className="pt-16">
-        <HeroSection />
+      <main className="pt-16" role="main" aria-label="Main content">
+        <HeroSection language={language} />
         <FeaturedExamples language={language} />
+
+        {/* Footer */}
+        <footer
+          className="py-8 px-4 border-t border-gray-200 bg-white"
+          role="contentinfo"
+          aria-label="Site footer"
+        >
+          <div className="max-w-6xl mx-auto text-center">
+            <p className="text-sm text-gray-600">
+              {t.landing.footer.copyright}
+              <span className="mx-2">•</span>
+              <a href="#" className="hover:text-[#EC0000] transition-colors">
+                {t.landing.footer.privacy}
+              </a>
+              <span className="mx-2">•</span>
+              <a href="#" className="hover:text-[#EC0000] transition-colors">
+                {t.landing.footer.terms}
+              </a>
+            </p>
+          </div>
+        </footer>
       </main>
     </div>
   );

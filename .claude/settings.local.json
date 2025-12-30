@@ -35,7 +35,8 @@
       "Bash(gcloud beta builds triggers create github:*)",
       "Bash(gcloud alpha builds repositories list:*)",
       "Bash(gcloud beta builds triggers describe:*)",
-      "Bash(terraform apply:*)"
+      "Bash(terraform apply:*)",
+      "Bash(npx tsc:*)"
     ]
   }
 }

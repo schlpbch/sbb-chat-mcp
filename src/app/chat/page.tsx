@@ -21,7 +21,6 @@ export default function ChatPage() {
   const searchParams = useSearchParams();
   const [language, setLanguage] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
 
   const {
@@ -64,48 +63,6 @@ export default function ChatPage() {
   useEffect(() => {
     setMounted(true);
   }, []);
-
-  // Load recent searches from localStorage
-  useEffect(() => {
-    if (!mounted) return;
-    const stored = localStorage.getItem('recentSearches');
-    if (stored) {
-      try {
-        const parsed = JSON.parse(stored);
-        // Normalize to array of strings (handle old format with objects)
-        const normalized = Array.isArray(parsed)
-          ? parsed.map((item) =>
-              typeof item === 'string'
-                ? item
-                : item.query || item.content || String(item)
-            )
-          : [];
-        setRecentSearches(normalized);
-        // Update localStorage with normalized format
-        if (JSON.stringify(parsed) !== JSON.stringify(normalized)) {
-          localStorage.setItem('recentSearches', JSON.stringify(normalized));
-        }
-      } catch (e) {
-        console.error('Failed to load recent searches:', e);
-        localStorage.removeItem('recentSearches');
-      }
-    }
-  }, [mounted]);
-
-  // Save search to recent searches when a message is sent
-  useEffect(() => {
-    if (!mounted || messages.length === 0) return;
-    const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
-    if (lastUserMessage) {
-      const query = String(lastUserMessage.content);
-      const newSearches = [
-        query,
-        ...recentSearches.filter((s) => s !== query),
-      ].slice(0, 5);
-      setRecentSearches(newSearches);
-      localStorage.setItem('recentSearches', JSON.stringify(newSearches));
-    }
-  }, [messages, mounted]);
 
   // Handle query parameter for pre-filled queries
   useEffect(() => {
@@ -179,37 +136,10 @@ export default function ChatPage() {
               aria-label={t.accessibility.chatConversation}
             >
               {messages.length === 0 ? (
-                <div className="flex items-center justify-center h-full">
-                  <div className="max-w-2xl w-full px-4">
-                    {mounted && recentSearches.length > 0 ? (
-                      <div>
-                        <h2 className="text-xl font-semibold text-gray-700 mb-4">
-                          Recent Searches
-                        </h2>
-                        <div className="space-y-2">
-                          {recentSearches.map((search, index) => (
-                            <button
-                              key={index}
-                              onClick={() => {
-                                setInput(search);
-                                setTimeout(() => handleSendMessage(), 50);
-                              }}
-                              className="w-full text-left px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-[#EB0000] hover:shadow-md transition-all duration-200"
-                            >
-                              <div className="flex items-center gap-3">
-                                <span className="text-gray-400">🕐</span>
-                                <span className="text-gray-700">{search}</span>
-                              </div>
-                            </button>
-                          ))}
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="text-center text-gray-500">
-                        <p className="text-lg">{t.chat.inputPlaceholder}</p>
-                      </div>
-                    )}
-                  </div>
+                <div className="flex justify-center items-center h-full px-3 sm:px-6 py-4">
+                  <p className="text-gray-400 text-sm">
+                    {t.chat.inputPlaceholder}
+                  </p>
                 </div>
               ) : (
                 <MessageList
@@ -307,7 +237,7 @@ export default function ChatPage() {
                       ? t.accessibility.sendingMessage
                       : t.accessibility.sendMessage
                   }
-                  className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#EB0000] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+                  className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#EC0000] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>

@@ -25,7 +25,7 @@ export function MapProvider({ children }: { children: ReactNode }) {
   };
 
   const showTripOnMap = (points: [number, number][]) => {
-    setActiveRoute({ points, color: '#EB0000' });
+    setActiveRoute({ points, color: '#EC0000' });
     router.push('/map');
   };
 

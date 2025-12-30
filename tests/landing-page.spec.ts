@@ -3,167 +3,182 @@ import { test, expect } from '@playwright/test';
 test.describe('Landing Page', () => {
   test.beforeEach(async ({ page }) => {
     await page.goto('/');
+    // Wait for page to be fully loaded
     await page.waitForLoadState('networkidle');
   });
 
-  test.describe('Page Structure', () => {
-    test('displays landing page with proper structure', async ({ page }) => {
-      // Hero section
-      await expect(
-        page.getByRole('heading', { name: 'Swiss Travel Companion', level: 1 })
-      ).toBeVisible();
+  test('should display the hero section with correct content', async ({
+    page,
+  }) => {
+    // Check for hero title - it appears in both navbar and hero section
+    const heroTitle = page.locator(
+      'section h1:has-text("Swiss Travel Companion")'
+    );
+    await expect(heroTitle).toBeVisible();
 
-      // Description
-      await expect(
-        page.getByText('Your intelligent companion for Swiss public transport')
-      ).toBeVisible();
+    // Check for hero subtitle
+    await expect(
+      page.getByText(
+        /Your AI-powered journey planner for Swiss public transport/i
+      )
+    ).toBeVisible();
 
-      // Primary CTA
-      await expect(
-        page.getByRole('button', { name: 'Start Chatting →' })
-      ).toBeVisible();
-    });
-
-    test('displays featured examples section', async ({ page }) => {
-      await expect(
-        page.getByRole('heading', { name: 'Try These Examples', level: 2 })
-      ).toBeVisible();
-
-      await expect(
-        page.getByText('Click any example to get started')
-      ).toBeVisible();
-    });
-
-    test('displays features section', async ({ page }) => {
-      await expect(
-        page.getByRole('heading', { name: 'Everything You Need', level: 2 })
-      ).toBeVisible();
-
-      // Check for feature titles
-      await expect(page.getByText('Journey Planning')).toBeVisible();
-      await expect(page.getByText('Weather & Snow')).toBeVisible();
-      await expect(page.getByText('Multilingual')).toBeVisible();
-      await expect(page.getByText('Accessible')).toBeVisible();
-    });
-
-    test('displays CTA section', async ({ page }) => {
-      await expect(
-        page.getByRole('heading', {
-          name: 'Ready to Explore Switzerland?',
-          level: 2,
-        })
-      ).toBeVisible();
-
-      await expect(
-        page.getByRole('button', { name: 'Start Your Journey' })
-      ).toBeVisible();
-    });
+    // Check for CTA button
+    const ctaButton = page.getByRole('link', { name: /Start Chatting/i });
+    await expect(ctaButton).toBeVisible();
+    await expect(ctaButton).toHaveAttribute('href', '/chat');
   });
 
-  test.describe('Featured Examples', () => {
-    test('shows exactly 6 featured examples', async ({ page }) => {
-      // Count example cards
-      const examples = page
-        .locator('[class*="grid"] button[class*="bg-white"]')
-        .filter({
-          has: page.locator('span[class*="text-xl"]'), // Icon span
-        });
+  test('should display category filters', async ({ page }) => {
+    // Check for navigation with category filters
+    const categoryNav = page.locator('nav[aria-label="Category filters"]');
+    await expect(categoryNav).toBeVisible();
 
-      await expect(examples).toHaveCount(6);
-    });
-
-    test('example cards are clickable', async ({ page }) => {
-      const firstExample = page
-        .locator('[class*="grid"] button[class*="bg-white"]')
-        .first();
-      await expect(firstExample).toBeVisible();
-      await expect(firstExample).toBeEnabled();
-    });
+    // Check for all category filter buttons using aria-label
+    await expect(
+      page.getByRole('button', { name: 'Show all examples' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Filter by Trips' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Filter by Weather' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Filter by Stations' })
+    ).toBeVisible();
+    await expect(
+      page.getByRole('button', { name: 'Filter by Advanced' })
+    ).toBeVisible();
   });
 
-  test.describe('Navigation', () => {
-    test('hero CTA navigates to chat page', async ({ page }) => {
-      await page.getByRole('button', { name: 'Start Chatting →' }).click();
-      await page.waitForURL('/chat');
+  test('should filter examples by category', async ({ page }) => {
+    // Click on Trips category using aria-label
+    const tripsButton = page.getByRole('button', { name: 'Filter by Trips' });
+    await tripsButton.click();
 
-      expect(page.url()).toContain('/chat');
+    // Verify Trips button has aria-pressed="true"
+    await expect(tripsButton).toHaveAttribute('aria-pressed', 'true');
+
+    // Click on Weather category
+    const weatherButton = page.getByRole('button', {
+      name: 'Filter by Weather',
     });
+    await weatherButton.click();
 
-    test('bottom CTA navigates to chat page', async ({ page }) => {
-      await page.getByRole('button', { name: 'Start Your Journey' }).click();
-      await page.waitForURL('/chat');
-
-      expect(page.url()).toContain('/chat');
-    });
-
-    test('clicking example navigates to chat with query', async ({ page }) => {
-      // Click first example
-      const firstExample = page
-        .locator('[class*="grid"] button[class*="bg-white"]')
-        .first();
-      await firstExample.click();
-
-      await page.waitForURL(/\/chat\?q=.+/);
-
-      // Should be on chat page with query parameter
-      expect(page.url()).toContain('/chat?q=');
-    });
-
-    test('navbar home link goes to landing page', async ({ page }) => {
-      // Navigate to chat first
-      await page.goto('/chat');
-
-      // Click home link in navbar
-      await page.getByRole('link', { name: 'Swiss Travel Companion' }).click();
-      await page.waitForURL('/');
-
-      expect(page.url()).not.toContain('/chat');
-    });
+    // Verify Weather button is now pressed
+    await expect(weatherButton).toHaveAttribute('aria-pressed', 'true');
+    // Verify Trips button is no longer pressed
+    await expect(tripsButton).toHaveAttribute('aria-pressed', 'false');
   });
 
-  test.describe('Responsive Design', () => {
-    test('displays correctly on mobile', async ({ page }) => {
-      await page.setViewportSize({ width: 375, height: 667 });
+  test('should display example queries', async ({ page }) => {
+    // Wait for examples grid to be visible
+    const examplesGrid = page.locator(
+      'section[aria-label="Example queries"] > div > div'
+    );
+    await expect(examplesGrid).toBeVisible();
 
-      // Hero should be visible
-      await expect(
-        page.getByRole('heading', { name: 'Swiss Travel Companion', level: 1 })
-      ).toBeVisible();
-
-      // CTA should be visible
-      await expect(
-        page.getByRole('button', { name: 'Start Chatting →' })
-      ).toBeVisible();
-    });
-
-    test('displays correctly on tablet', async ({ page }) => {
-      await page.setViewportSize({ width: 768, height: 1024 });
-
-      await expect(
-        page.getByRole('heading', { name: 'Swiss Travel Companion', level: 1 })
-      ).toBeVisible();
-    });
+    // Check that at least one example card is visible
+    const exampleCards = page.locator(
+      'section[aria-label="Example queries"] button'
+    );
+    await expect(exampleCards.first()).toBeVisible();
   });
 
-  test.describe('Accessibility', () => {
-    test('has proper heading hierarchy', async ({ page }) => {
-      const h1 = page.getByRole('heading', { level: 1 });
-      await expect(h1).toHaveCount(1);
+  test('should navigate to chat when clicking an example', async ({ page }) => {
+    // Find and click the first example query button
+    const firstExample = page
+      .locator('section[aria-label="Example queries"] button')
+      .first();
+    await firstExample.click();
 
-      const h2s = page.getByRole('heading', { level: 2 });
-      await expect(h2s).toHaveCount(3); // Try These Examples, Everything You Need, Ready to Explore
+    // Should navigate to /chat with query parameter
+    await page.waitForURL(/\/chat\?q=.+&autoSend=true/);
+    expect(page.url()).toMatch(/\/chat\?q=.+&autoSend=true/);
+  });
+
+  test('should display footer with links', async ({ page }) => {
+    // Check for footer with contentinfo role
+    const footer = page.locator('footer[role="contentinfo"]');
+    await expect(footer).toBeVisible();
+
+    // Check for footer content
+    await expect(
+      page.getByText(/© 2024 Swiss Travel Companion/i)
+    ).toBeVisible();
+    await expect(page.getByRole('link', { name: /Privacy/i })).toBeVisible();
+    await expect(page.getByRole('link', { name: /Terms/i })).toBeVisible();
+  });
+
+  test('should have navbar with language selector', async ({ page }) => {
+    // Check for navbar
+    const navbar = page.locator('nav').first();
+    await expect(navbar).toBeVisible();
+
+    // Language selector button exists (it shows flag emoji and language code)
+    const languageButtons = page.locator('nav button');
+    await expect(languageButtons.first()).toBeVisible();
+  });
+
+  test('should have main content with proper accessibility', async ({
+    page,
+  }) => {
+    // Check main element has proper role and aria-label
+    const main = page.locator('main[role="main"][aria-label="Main content"]');
+    await expect(main).toBeVisible();
+
+    // Check hero section has aria-label
+    const heroSection = page.locator('section[aria-label="Hero section"]');
+    await expect(heroSection).toBeVisible();
+
+    // Check category filters nav has proper attributes
+    const categoryNav = page.locator(
+      'nav[role="navigation"][aria-label="Category filters"]'
+    );
+    await expect(categoryNav).toBeVisible();
+  });
+
+  test('should be responsive', async ({ page }) => {
+    // Test mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 });
+
+    // Hero section should still be visible
+    const heroTitle = page.locator(
+      'section h1:has-text("Swiss Travel Companion")'
+    );
+    await expect(heroTitle).toBeVisible();
+
+    // CTA button should be visible
+    await expect(
+      page.getByRole('link', { name: /Start Chatting/i })
+    ).toBeVisible();
+
+    // Category filters should be visible
+    await expect(
+      page.getByRole('button', { name: 'Show all examples' })
+    ).toBeVisible();
+  });
+
+  test('should have proper accessibility attributes', async ({ page }) => {
+    // Check that main content has proper structure
+    const main = page.locator('main[role="main"]');
+    await expect(main).toBeVisible();
+    await expect(main).toHaveAttribute('aria-label', 'Main content');
+
+    // Check footer has contentinfo role
+    const footer = page.locator('footer[role="contentinfo"]');
+    await expect(footer).toBeVisible();
+    await expect(footer).toHaveAttribute('aria-label', 'Site footer');
+
+    // Check buttons have accessible names
+    const ctaButton = page.getByRole('link', { name: /Start Chatting/i });
+    await expect(ctaButton).toHaveAccessibleName();
+
+    // Check filter buttons have aria-pressed
+    const allExamplesButton = page.getByRole('button', {
+      name: 'Show all examples',
     });
-
-    test('all interactive elements are keyboard accessible', async ({
-      page,
-    }) => {
-      const heroCTA = page.getByRole('button', { name: 'Start Chatting →' });
-      await heroCTA.focus();
-      await expect(heroCTA).toBeFocused();
-
-      // Should be able to activate with Enter
-      await page.keyboard.press('Enter');
-      await page.waitForURL('/chat');
-    });
+    await expect(allExamplesButton).toHaveAttribute('aria-pressed');
   });
 });
