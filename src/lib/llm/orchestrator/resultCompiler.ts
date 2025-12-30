@@ -3,68 +3,84 @@
  */
 
 import type { ExecutionPlan, StepResults } from './types';
+import type { PlanSummary, TripResult, EventResult, StationResult } from '../types/common';
 
 /**
  * Compile results into a structured summary
  */
-export function compilePlanSummary(plan: ExecutionPlan, results: StepResults): any {
-  const summary: any = {
-    planName: plan.name,
-    description: plan.description,
+export function compilePlanSummary(plan: ExecutionPlan, results: StepResults): PlanSummary {
+  const summary: Partial<PlanSummary> = {
+    steps: Array.from(results.values()).map(r => ({
+      stepId: r.stepId,
+      toolName: r.toolName,
+      success: r.success,
+      duration: r.duration,
+    })),
+    totalDuration: Array.from(results.values()).reduce((sum, r) => sum + r.duration, 0),
+    successCount: Array.from(results.values()).filter(r => r.success).length,
+    failureCount: Array.from(results.values()).filter(r => !r.success).length,
   };
 
-  const trips = results.get('find-trips')?.data;
-  const ecoComparison = results.get('eco-comparison')?.data;
-  
-  // Merge eco comparison data into the first trip if available
-  if (trips && Array.isArray(trips) && trips.length > 0 && ecoComparison) {
-    trips[0] = {
-      ...trips[0],
-      trainCO2: ecoComparison.trainCO2,
-      carCO2: ecoComparison.carCO2,
-      planeCO2: ecoComparison.planeCO2,
-      savings: ecoComparison.savings,
-      co2Savings: ecoComparison.savings,
-      comparedTo: ecoComparison.planeCO2 ? 'plane' : ecoComparison.carCO2 ? 'car' : undefined,
-    };
-  }
-  
-  summary.trips = trips;
-  summary.ecoComparison = ecoComparison;
-  
-  // If we skipped explicit station finding, try to infer proper names from the trip result
-  let originInfo = results.get('find-origin')?.data?.[0];
-  let destInfo = results.get('find-destination')?.data?.[0];
-  
-  if (!originInfo && trips && trips.length > 0) {
-      originInfo = { name: trips[0].legs[0].start.place.name };
-  }
-  if (!destInfo && trips && trips.length > 0) {
-      const lastLeg = trips[0].legs[trips[0].legs.length - 1];
-      destInfo = { name: lastLeg.end.place.name };
-  }
+  const tripsData = results.get('find-trips')?.data;
+  const ecoComparisonData = results.get('eco-comparison')?.data;
 
-  summary.origin = originInfo;
-  summary.destination = destInfo;
+  // Type-safe trips handling
+  let trips: TripResult[] | undefined;
+  if (Array.isArray(tripsData)) {
+    trips = tripsData as TripResult[];
 
-  // Station events (departures/arrivals)
-  const findStationRes = results.get('find-station');
-  const getEventsRes = results.get('get-events');
-  const stationInfo = findStationRes?.data?.[0];
-  const events = getEventsRes?.data;
-  
-  if (events && typeof events === 'object' && stationInfo?.name) {
-    // Inject station name so cards can display it
-    try {
-      (events as any).stationName = stationInfo.name;
-      (events as any).stationId = stationInfo.id;
-    } catch (e) {
-      console.warn('Could not inject station info into events', e);
+    // Merge eco comparison data into the first trip if available
+    if (trips.length > 0 && ecoComparisonData && typeof ecoComparisonData === 'object') {
+      trips[0] = {
+        ...trips[0],
+        ...(ecoComparisonData as Record<string, unknown>),
+      };
     }
   }
 
-  summary.station = stationInfo;
-  summary.events = (events && typeof events === 'object') ? events : null;
+  summary.trips = trips;
+  summary.ecoComparison = ecoComparisonData;
+  
+  // Station events (departures/arrivals)
+  const findStationRes = results.get('find-station');
+  const getEventsRes = results.get('get-events');
+  const stationData = findStationRes?.data;
+  const eventsData = getEventsRes?.data;
 
-  return summary;
+  let stations: StationResult[] | undefined;
+  if (Array.isArray(stationData)) {
+    stations = stationData as StationResult[];
+  }
+
+  let events: EventResult | undefined;
+  if (eventsData && typeof eventsData === 'object' && !Array.isArray(eventsData)) {
+    events = {
+      ...(eventsData as EventResult),
+      stationName: stations?.[0]?.name,
+      stationId: stations?.[0]?.id,
+    } as EventResult;
+  }
+
+  summary.stations = stations;
+  summary.events = events;
+
+  // Weather data
+  const weatherData = results.get('get-weather')?.data;
+  if (weatherData && typeof weatherData === 'object' && !Array.isArray(weatherData)) {
+    summary.weather = weatherData as PlanSummary['weather'];
+  }
+
+  // Formation data
+  const formationData = results.get('get-formation')?.data;
+  if (formationData) {
+    summary.formation = formationData;
+  }
+
+  // Snow conditions
+  const snowData = results.get('get-snow')?.data;
+  if (snowData) {
+    summary.snowConditions = snowData;
+  }
+
+  return summary as PlanSummary;
 }

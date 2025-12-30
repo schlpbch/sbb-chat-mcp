@@ -34,12 +34,12 @@ export function deserializeContext(json: string): ConversationContext {
         : undefined,
       date: parsed.time.date ? new Date(parsed.time.date) : undefined,
     },
-    intentHistory: parsed.intentHistory.map((i: any) => ({
+    intentHistory: parsed.intentHistory.map((i: { timestamp: string; [key: string]: unknown }) => ({
       ...i,
       timestamp: new Date(i.timestamp),
     })),
     recentToolResults: new Map(
-      parsed.recentToolResults.map(([k, v]: [string, any]) => [
+      parsed.recentToolResults.map(([k, v]: [string, { timestamp: string; expiresAt: string; [key: string]: unknown }]) => [
         k,
         {
           ...v,
@@ -48,11 +48,11 @@ export function deserializeContext(json: string): ConversationContext {
         },
       ])
     ),
-    mentionedPlaces: parsed.mentionedPlaces.map((e: any) => ({
+    mentionedPlaces: parsed.mentionedPlaces.map((e: { mentionedAt: string; [key: string]: unknown }) => ({
       ...e,
       mentionedAt: new Date(e.mentionedAt),
     })),
-    mentionedTrips: parsed.mentionedTrips.map((e: any) => ({
+    mentionedTrips: parsed.mentionedTrips.map((e: { mentionedAt: string; [key: string]: unknown }) => ({
       ...e,
       mentionedAt: new Date(e.mentionedAt),
     })),

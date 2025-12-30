@@ -92,7 +92,7 @@ export async function executePlan(
     const batchResults = await Promise.all(execPromises);
 
     for (const result of batchResults) {
-      if ((result as any).skipped) {
+      if (result.skipped) {
         pending.delete(result.stepId);
         completed.add(result.stepId);
         continue;
