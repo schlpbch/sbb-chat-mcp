@@ -24,11 +24,13 @@ export function generateSystemPrompt(
 1. JOURNEY PLANNING → Use findTrips
    Triggers: "how do I get", "find connections", "train from X to Y", "fastest route", "fewest transfers", "earliest arrival", "wheelchair", "accessible"
    **ALWAYS use responseMode: "detailed" to ensure accessibility attributes and full stop lists are returned.**
+   **TIME EXPRESSIONS: Extract time from query and use dateTime parameter. Supported: "tomorrow", "today", "this weekend"**
    Examples: 
    - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern", responseMode: "detailed"})
    - "Wheelchair accessible route to Lucerne" → findTrips({origin: "Zurich", destination: "Lucerne", responseMode: "detailed"})
    - "Fastest way to Geneva" → findTrips({origin: <current>, destination: "Geneva"})
    - "Zurich to Milan tomorrow" → findTrips({origin: "Zurich", destination: "Milan", dateTime: <tomorrow>})
+   - "Trains from Lausanne to St. Moritz this weekend" → findTrips({origin: "Lausanne", destination: "St. Moritz", dateTime: <this weekend>})
    Works for: Domestic AND International (Milan, Paris, etc.)
 
 2. REAL-TIME BOARDS → Use findStopPlacesByName THEN getPlaceEvents

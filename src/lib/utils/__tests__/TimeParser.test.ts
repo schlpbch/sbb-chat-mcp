@@ -98,6 +98,71 @@ describe('TimeParser', () => {
       });
     });
 
+    describe('weekend expressions', () => {
+      it('parses "this weekend" in English (from Monday)', () => {
+        const monday = new Date('2025-01-06T10:00:00'); // Monday
+        const result = TimeParser.parseDate('this weekend', monday);
+        expect(result.getDay()).toBe(6); // Saturday
+        expect(result.getDate()).toBe(11); // Next Saturday
+      });
+
+      it('parses "weekend" in English', () => {
+        const wednesday = new Date('2025-01-08T10:00:00'); // Wednesday
+        const result = TimeParser.parseDate('weekend', wednesday);
+        expect(result.getDay()).toBe(6); // Saturday
+      });
+
+      it('parses "dieses wochenende" in German', () => {
+        const thursday = new Date('2025-01-09T10:00:00'); // Thursday
+        const result = TimeParser.parseDate('dieses wochenende', thursday);
+        expect(result.getDay()).toBe(6); // Saturday
+      });
+
+      it('parses "wochenende" in German', () => {
+        const friday = new Date('2025-01-10T10:00:00'); // Friday
+        const result = TimeParser.parseDate('wochenende', friday);
+        expect(result.getDay()).toBe(6); // Saturday
+      });
+
+      it('parses "ce week-end" in French', () => {
+        const tuesday = new Date('2025-01-07T10:00:00'); // Tuesday
+        const result = TimeParser.parseDate('ce week-end', tuesday);
+        expect(result.getDay()).toBe(6); // Saturday
+      });
+
+      it('parses "week-end" in French', () => {
+        const monday = new Date('2025-01-06T10:00:00'); // Monday
+        const result = TimeParser.parseDate('week-end', monday);
+        expect(result.getDay()).toBe(6); // Saturday
+      });
+
+      it('parses "questo fine settimana" in Italian', () => {
+        const wednesday = new Date('2025-01-08T10:00:00'); // Wednesday
+        const result = TimeParser.parseDate('questo fine settimana', wednesday);
+        expect(result.getDay()).toBe(6); // Saturday
+      });
+
+      it('parses "fine settimana" in Italian', () => {
+        const thursday = new Date('2025-01-09T10:00:00'); // Thursday
+        const result = TimeParser.parseDate('fine settimana', thursday);
+        expect(result.getDay()).toBe(6); // Saturday
+      });
+
+      it('returns next Saturday when called on Saturday', () => {
+        const saturday = new Date('2025-01-11T10:00:00'); // Saturday
+        const result = TimeParser.parseDate('this weekend', saturday);
+        expect(result.getDay()).toBe(6); // Saturday
+        expect(result.getDate()).toBe(18); // Next Saturday (7 days later)
+      });
+
+      it('returns next Saturday when called on Sunday', () => {
+        const sunday = new Date('2025-01-12T10:00:00'); // Sunday
+        const result = TimeParser.parseDate('this weekend', sunday);
+        expect(result.getDay()).toBe(6); // Saturday
+        expect(result.getDate()).toBe(18); // Next Saturday (6 days later)
+      });
+    });
+
     describe('edge cases', () => {
       it('is case-insensitive', () => {
         const result1 = TimeParser.parseDate('TOMORROW', baseDate);

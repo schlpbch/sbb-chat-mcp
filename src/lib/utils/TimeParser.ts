@@ -46,6 +46,30 @@ export class TimeParser {
       return baseDate;
     }
 
+    // Handle "this weekend" - returns next Saturday
+    if (
+      lowerDate === 'this weekend' ||
+      lowerDate === 'weekend' ||
+      lowerDate === 'dieses wochenende' ||
+      lowerDate === 'wochenende' ||
+      lowerDate === 'ce week-end' ||
+      lowerDate === 'week-end' ||
+      lowerDate === 'questo fine settimana' ||
+      lowerDate === 'fine settimana'
+    ) {
+      const currentDay = baseDate.getDay(); // 0 = Sunday, 6 = Saturday
+      let daysUntilSaturday = 6 - currentDay;
+
+      // If today is Saturday or Sunday, get next Saturday
+      if (currentDay === 6 || currentDay === 0) {
+        daysUntilSaturday = currentDay === 6 ? 7 : 6;
+      }
+
+      return new Date(
+        baseDate.getTime() + daysUntilSaturday * 24 * 60 * 60 * 1000
+      );
+    }
+
     // Try parsing as ISO date or other standard format
     const parsed = new Date(dateStr);
     if (!isNaN(parsed.getTime())) {
