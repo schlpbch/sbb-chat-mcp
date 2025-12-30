@@ -1,13 +1,22 @@
 'use client';
 
-import type { ExampleQuery } from '@/lib/exampleQueries';
+interface LocalizedExampleQuery {
+  id: string;
+  text: string;
+  category: string;
+  icon: string;
+  description?: string;
+}
 
 interface ExampleQueryCardProps {
-  example: ExampleQuery;
+  example: LocalizedExampleQuery;
   onClick: (text: string) => void;
 }
 
-export default function ExampleQueryCard({ example, onClick }: ExampleQueryCardProps) {
+export default function ExampleQueryCard({
+  example,
+  onClick,
+}: ExampleQueryCardProps) {
   const handleClick = () => {
     onClick(example.text);
   };

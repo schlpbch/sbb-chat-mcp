@@ -14,13 +14,16 @@ import FeaturesList from './welcome/FeaturesList';
 import ExampleQueryCard from '../ExampleQueryCard';
 import { getExamplesByCategory, getRandomExamples } from '@/lib/exampleQueries';
 
-export default function WelcomeSection({ language, onSendMessage }: WelcomeSectionProps) {
+export default function WelcomeSection({
+  language,
+  onSendMessage,
+}: WelcomeSectionProps) {
   const [selectedCategory, setSelectedCategory] = useState<string | null>(null);
   const t = translations[language].welcome;
 
   // Show filtered or all actions
   const displayActions = selectedCategory
-    ? quickActions.filter(a => a.category === selectedCategory)
+    ? quickActions.filter((a) => a.category === selectedCategory)
     : quickActions;
 
   return (
@@ -46,21 +49,30 @@ export default function WelcomeSection({ language, onSendMessage }: WelcomeSecti
       {/* Example Queries Section */}
       <div className="w-full max-w-6xl">
         <h2 className="text-center text-lg sm:text-xl font-bold text-gray-900 mb-2">
-          {language === 'en' ? 'Try These Examples' : 
-           language === 'de' ? 'Probieren Sie diese Beispiele' :
-           language === 'fr' ? 'Essayez ces exemples' :
-           'Prova questi esempi'}
+          {language === 'en'
+            ? 'Try These Examples'
+            : language === 'de'
+            ? 'Probieren Sie diese Beispiele'
+            : language === 'fr'
+            ? 'Essayez ces exemples'
+            : 'Prova questi esempi'}
         </h2>
         <p className="text-center text-sm text-gray-600 mb-6">
-          {language === 'en' ? 'Click any example to get started' :
-           language === 'de' ? 'Klicken Sie auf ein Beispiel, um zu beginnen' :
-           language === 'fr' ? 'Cliquez sur un exemple pour commencer' :
-           'Clicca su un esempio per iniziare'}
+          {language === 'en'
+            ? 'Click any example to get started'
+            : language === 'de'
+            ? 'Klicken Sie auf ein Beispiel, um zu beginnen'
+            : language === 'fr'
+            ? 'Cliquez sur un exemple pour commencer'
+            : 'Clicca su un esempio per iniziare'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {(selectedCategory 
-            ? getExamplesByCategory(selectedCategory as any).slice(0, 6)
-            : getRandomExamples(6)
+          {(selectedCategory
+            ? getExamplesByCategory(selectedCategory as any, language).slice(
+                0,
+                6
+              )
+            : getRandomExamples(6, language)
           ).map((example) => (
             <ExampleQueryCard
               key={example.id}
@@ -75,7 +87,9 @@ export default function WelcomeSection({ language, onSendMessage }: WelcomeSecti
       <div className="w-full max-w-6xl">
         <h2 className="text-center text-xs sm:text-sm font-semibold text-gray-500 uppercase tracking-wider mb-3 sm:mb-4">
           {selectedCategory
-            ? `${t[categoryNameMap[selectedCategory] || 'allQuestions']} ${language === 'en' ? 'Questions' : ''}`
+            ? `${t[categoryNameMap[selectedCategory] || 'allQuestions']} ${
+                language === 'en' ? 'Questions' : ''
+              }`
             : t.exploreTitle}
         </h2>
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
