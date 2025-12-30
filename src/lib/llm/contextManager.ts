@@ -15,7 +15,11 @@ export type {
 } from './context/types';
 
 // Re-export cache management
-export { CACHE_TTL, cacheToolResult, getCachedResult } from './context/cacheManager';
+export {
+  CACHE_TTL,
+  cacheToolResult,
+  getCachedResult,
+} from './context/cacheManager';
 
 // Re-export intent extraction
 export { extractIntent } from './context/intentExtractor';
@@ -30,7 +34,12 @@ export { serializeContext, deserializeContext } from './context/serialization';
 export { buildContextualPrompt } from './context/promptBuilder';
 
 // Import types for local use
-import type { ConversationContext, UserPreferences, Intent } from './context/types';
+import type {
+  ConversationContext,
+  UserPreferences,
+  Intent,
+} from './context/types';
+import { TimeParser } from '../utils/TimeParser';
 
 /**
  * Create a new conversation context
@@ -81,62 +90,12 @@ export function updateContextFromMessage(
   }
 
   if (extractedData.date || extractedData.time) {
-    const now = new Date();
-    let baseDate = now;
-
-    if (extractedData.date) {
-      const lowerDate = extractedData.date.toLowerCase();
-      if (lowerDate === 'tomorrow' || lowerDate === 'morgen') {
-        baseDate = new Date(now.getTime() + 24 * 60 * 60 * 1000);
-      } else if (lowerDate === 'yesterday' || lowerDate === 'gestern') {
-        baseDate = new Date(now.getTime() - 24 * 60 * 60 * 1000);
-      } else if (lowerDate !== 'today' && lowerDate !== 'heute') {
-        const parsed = new Date(extractedData.date);
-        if (!isNaN(parsed.getTime())) {
-          baseDate = parsed;
-        }
-      }
-    }
-
-    const dateStr = baseDate.toISOString().split('T')[0];
-    let timeStr = extractedData.time || '09:00';
-    
-    // Normalize timeStr (e.g., "7:00" -> "07:00", "2pm" -> "14:00")
-    if (/(\d{1,2})([ap]m)/i.test(timeStr)) {
-      const match = timeStr.match(/(\d{1,2})([ap]m)/i);
-      if (match) {
-        let hour = parseInt(match[1]);
-        const ampm = match[2].toLowerCase();
-        if (ampm === 'pm' && hour < 12) hour += 12;
-        if (ampm === 'am' && hour === 12) hour = 0;
-        timeStr = (hour < 10 ? '0' : '') + hour + ':00';
-      }
-    } else if (/(\d{1,2}):(\d{2})\s*([ap]m)/i.test(timeStr)) {
-      const match = timeStr.match(/(\d{1,2}):(\d{2})\s*([ap]m)/i);
-      if (match) {
-        let hour = parseInt(match[1]);
-        const min = match[2];
-        const ampm = match[3].toLowerCase();
-        if (ampm === 'pm' && hour < 12) hour += 12;
-        if (ampm === 'am' && hour === 12) hour = 0;
-        timeStr = (hour < 10 ? '0' : '') + hour + ':' + min;
-      }
-    } else if (/^\d:\d{2}/.test(timeStr)) {
-      timeStr = '0' + timeStr;
-    } else if (/^\d$/.test(timeStr) || /^\d{2}$/.test(timeStr)) {
-      // Just a number like "7" or "19"
-      timeStr = (timeStr.length === 1 ? '0' : '') + timeStr + ':00';
-    }
-
-    const combined = new Date(`${dateStr}T${timeStr}`);
-    if (!isNaN(combined.getTime())) {
-      updated.time.departureTime = combined;
-      updated.time.date = new Date(dateStr);
-    } else {
-      // Fallback
-      updated.time.departureTime = new Date();
-      updated.time.date = new Date();
-    }
+    const { date, departureTime } = TimeParser.parseDatetime(
+      extractedData.date,
+      extractedData.time
+    );
+    updated.time.date = date;
+    updated.time.departureTime = departureTime;
   }
 
   if (extractedData.preferences) {

@@ -4,6 +4,7 @@
 
 import type { FunctionCallParams } from './functionDefinitions';
 import { withRetry } from './retryHandler';
+import { toolResolverRegistry } from './toolResolvers';
 
 export interface ToolExecutionResult {
   success: boolean;
@@ -23,91 +24,20 @@ export async function executeTool(
   try {
     console.log(`Executing tool: ${toolName}`, params);
 
-    // Special handling for getPlaceEvents - resolve station name to UIC code if needed
-    if (toolName === 'getPlaceEvents' && 'placeId' in params) {
-      const placeId = params.placeId as string;
-      // Check if placeId is NOT a UIC code (UIC codes are typically 7-8 digits)
-      if (!/^\d{7,8}$/.test(placeId)) {
-        console.log(`[toolExecutor] Resolving station name "${placeId}" to UIC code...`);
-        
-        // Call findStopPlacesByName to get the UIC code
-        const resolveResult = await executeTool('findStopPlacesByName', {
-          query: placeId,
-          limit: 1
-        } as any);
-
-        if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
-          const station = resolveResult.data[0];
-          const uicCode = station.id || station.uicCode;
-          
-          if (uicCode) {
-            console.log(`[toolExecutor] Resolved "${placeId}" to UIC code: ${uicCode}`);
-            params = { ...params, placeId: uicCode } as any;
-          } else {
-            console.warn(`[toolExecutor] Could not find UIC code for "${placeId}"`);
-          }
-        } else {
-          console.warn(`[toolExecutor] Failed to resolve station name "${placeId}"`);
-        }
+    // Apply parameter resolvers (station names → UIC codes, location names → coordinates, etc.)
+    const resolvedParams = await toolResolverRegistry.resolve(
+      toolName,
+      params,
+      // Pass executeTool as a callback for recursive resolution
+      async (name: string, p: any) => {
+        const result = await executeTool(name, p);
+        return result;
       }
-    }
-
-    // Special handling for getWeather and getSnowConditions - resolve location name to lat/lon if needed
-    if (toolName === 'getWeather' || toolName === 'getSnowConditions') {
-      const hasLatLon = 'latitude' in params && 'longitude' in params;
-      const hasLocationName = 'locationName' in params || 'location' in params;
-
-      console.log(`[toolExecutor] Weather/Snow tool called:`, { toolName, hasLatLon, hasLocationName, params });
-
-      if (!hasLatLon && hasLocationName) {
-        // Support both 'locationName' and 'location' parameter names
-        const locationName = (params as any).locationName || (params as any).location;
-        console.log(`[toolExecutor] Resolving location "${locationName}" to coordinates...`);
-        
-        // Use findPlaces for general locations (cities, ski resorts, etc.)
-        const resolveResult = await executeTool('findPlaces', {
-          nameMatch: locationName,
-          limit: 1
-        } as any);
-
-        console.log(`[toolExecutor] findPlaces result:`, { success: resolveResult.success, dataLength: resolveResult.data?.length, error: resolveResult.error });
-
-        if (resolveResult.success && resolveResult.data && resolveResult.data.length > 0) {
-          const place = resolveResult.data[0];
-          let lat: number | undefined;
-          let lon: number | undefined;
-
-          // Handle GeoJSON centroid from findPlaces (coordinates is [lon, lat])
-          if (place.centroid?.coordinates && Array.isArray(place.centroid.coordinates)) {
-             lon = place.centroid.coordinates[0];
-             lat = place.centroid.coordinates[1];
-          } 
-          // Handle location object from findStopPlacesByName (legacy/fallback)
-          else if (place.location) {
-             lat = place.location.latitude;
-             lon = place.location.longitude;
-          }
-          
-          console.log(`[toolExecutor] Extracted coordinates:`, { lat, lon, place });
-          
-          if (lat !== undefined && lon !== undefined) {
-            console.log(`[toolExecutor] Resolved "${locationName}" to coordinates: ${lat}, ${lon}`);
-            // Remove 'location' param if it exists (LLM sometimes uses this instead of locationName)
-            const { location, ...restParams } = params as any;
-            params = { ...restParams, latitude: lat, longitude: lon, locationName } as any;
-            console.log(`[toolExecutor] Updated params:`, params);
-          } else {
-            console.warn(`[toolExecutor] Could not find coordinates for "${locationName}"`);
-          }
-        } else {
-          console.warn(`[toolExecutor] Failed to resolve location "${locationName}"`, resolveResult.error);
-        }
-      }
-    }
+    );
 
     // Enforce detailed mode for findTrips to ensure accessibility and stop data
     if (toolName === 'findTrips') {
-       params = { ...(params as any), responseMode: 'detailed' };
+      (resolvedParams as any).responseMode = 'detailed';
     }
 
     // Construct absolute URL for server-side fetch
@@ -150,7 +80,9 @@ export async function executeTool(
     );
 
     if (!retryResult.success) {
-      throw new Error(retryResult.error || 'Tool execution failed after retries');
+      throw new Error(
+        retryResult.error || 'Tool execution failed after retries'
+      );
     }
 
     const data = retryResult.data;
@@ -163,7 +95,7 @@ export async function executeTool(
       success: true,
       data: parsedData,
       toolName,
-      params,
+      params: resolvedParams as FunctionCallParams,
     };
   } catch (error) {
     console.error(`Tool execution error for ${toolName}:`, error);
