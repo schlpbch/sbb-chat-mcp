@@ -27,7 +27,7 @@ export default function ExampleQueryCard({
       className="group w-full text-left bg-white hover:bg-gray-50 border border-gray-200 hover:border-sbb-red rounded-xl p-4 transition-all duration-200 hover:shadow-md"
     >
       <div className="flex items-start gap-3">
-        <span className="text-2xl shrink-0">{example.icon}</span>
+        <span className="text-xl shrink-0">{example.icon}</span>
         <div className="flex-1 min-w-0">
           <p className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
             {example.text.split('\n')[0]}
