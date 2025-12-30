@@ -4,6 +4,7 @@ import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 import HeroSection from '@/components/landing/HeroSection';
+import FeaturedExamples from '@/components/landing/FeaturedExamples';
 import FeaturesSection from '@/components/landing/FeaturesSection';
 
 export default function LandingPage() {
@@ -28,6 +29,7 @@ export default function LandingPage() {
 
       <main className="pt-16">
         <HeroSection />
+        <FeaturedExamples language={language} />
         <FeaturesSection />
       </main>
     </div>

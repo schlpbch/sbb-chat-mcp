@@ -114,10 +114,11 @@ export default function ChatPage() {
               aria-label={t.accessibility.chatConversation}
             >
               {messages.length === 0 ? (
-                <WelcomeSection
-                  language={language}
-                  onSendMessage={handleSendMessage}
-                />
+                <div className="flex items-center justify-center h-full">
+                  <div className="text-center text-gray-500">
+                    <p className="text-lg">{t.chat.inputPlaceholder}</p>
+                  </div>
+                </div>
               ) : (
                 <MessageList
                   messages={messages}
