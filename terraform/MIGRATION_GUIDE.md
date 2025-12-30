@@ -4,7 +4,7 @@ This guide helps you migrate your existing manually-created GCP infrastructure t
 
 ## Overview
 
-If you've already deployed the SBB Chat MCP application manually using `scripts/setup-gcp.sh` and `scripts/deploy-gcp.sh`, this guide will help you transition to Terraform without disrupting your running service.
+If you've already deployed the Swiss Travel Companion application manually using `scripts/setup-gcp.sh` and `scripts/deploy-gcp.sh`, this guide will help you transition to Terraform without disrupting your running service.
 
 ## Prerequisites
 
@@ -18,9 +18,11 @@ If you've already deployed the SBB Chat MCP application manually using `scripts/
 You have two options:
 
 ### Option A: Import Existing Resources (Recommended)
+
 Keep your existing resources and bring them under Terraform management.
 
 ### Option B: Fresh Deployment
+
 Create new resources with Terraform and migrate traffic (more disruptive).
 
 ---
@@ -50,6 +52,7 @@ gcloud iam service-accounts list
 ```
 
 Document the names and configurations of:
+
 - Cloud Run service name
 - Artifact Registry repository name
 - Secret names (gemini-api-key, mcp-server-url)
@@ -171,6 +174,7 @@ terraform plan
 **Expected output**: "No changes" or minimal cosmetic changes (labels, annotations).
 
 **Warning signs**:
+
 - Terraform wants to destroy and recreate resources
 - Major configuration differences detected
 
@@ -289,6 +293,7 @@ gcloud artifacts repositories delete sbb-chat-mcp --location=europe-west6
 ### Error: Resource Already Exists
 
 If you get "already exists" errors:
+
 1. Use `terraform import` to import the resource
 2. Or rename your Terraform resources to avoid conflicts
 
@@ -318,16 +323,19 @@ gcloud services enable secretmanager.googleapis.com
 If your state file becomes corrupted:
 
 1. **Backup state**:
+
    ```bash
    cp terraform.tfstate terraform.tfstate.backup
    ```
 
 2. **Remove problematic resource from state**:
+
    ```bash
    terraform state rm google_cloud_run_service.app
    ```
 
 3. **Re-import**:
+
    ```bash
    terraform import google_cloud_run_service.app \
      projects/$PROJECT_ID/locations/europe-west6/services/sbb-chat-mcp
@@ -361,6 +369,7 @@ terraform plan -refresh-only
 ## Best Practices After Migration
 
 1. **Use Remote State**: Configure GCS backend for team collaboration
+
    ```bash
    # See README.md for remote state setup
    ```
@@ -382,6 +391,7 @@ terraform plan -refresh-only
 If migration fails, you can rollback:
 
 1. **Stop using Terraform**:
+
    ```bash
    cd terraform
    terraform destroy -target=google_cloud_run_service_iam_member.public_access
@@ -389,6 +399,7 @@ If migration fails, you can rollback:
    ```
 
 2. **Continue with manual deployments**:
+
    ```bash
    ./scripts/deploy-gcp.sh
    ```
@@ -400,6 +411,7 @@ If migration fails, you can rollback:
 ## Support
 
 For migration assistance:
+
 - Review Terraform logs: `terraform plan -debug`
 - Check GCP audit logs: Cloud Console → Logging
 - Consult [Terraform Google Provider docs](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
@@ -409,6 +421,7 @@ For migration assistance:
 ## Next Steps
 
 After successful migration:
+
 1. Set up remote state (see [README.md](README.md))
 2. Configure CI/CD with Terraform (GitHub Actions, Cloud Build)
 3. Implement environment promotion workflow (dev → staging → prod)

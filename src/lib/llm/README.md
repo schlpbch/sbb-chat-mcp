@@ -1,6 +1,6 @@
 # LLM Library Documentation
 
-Comprehensive documentation for the `src/lib/llm` directory - the core AI/LLM integration layer of the SBB Chat MCP application.
+Comprehensive documentation for the `src/lib/llm` directory - the core AI/LLM integration layer of the Swiss Travel Companion application.
 
 ## Table of Contents
 
@@ -86,6 +86,7 @@ The LLM library provides a complete integration layer for Google's Gemini AI mod
 **Location**: `src/lib/llm/geminiService.ts` (25 lines)
 
 **Exports**:
+
 ```typescript
 // Session Management
 export { getSessionContext, setSessionContext, clearSessionContext, clearAllSessions }
@@ -98,6 +99,7 @@ export type { ChatMessage, ChatContext, ChatResponse }
 ```
 
 **Example**:
+
 ```typescript
 import { sendChatMessage } from '@/lib/llm/geminiService';
 
@@ -118,16 +120,19 @@ const response = await sendChatMessage(
 **Purpose**: Basic chat with optional function calling
 
 **Key Functions**:
+
 - `sendChatMessage()` - Full chat with tools
 - `sendSimpleChatMessage()` - Chat without tools
 
 **Features**:
+
 - System prompt generation
 - Function call handling
 - Multi-turn conversations
 - Tool result incorporation
 
 **Flow**:
+
 ```
 User Message → System Prompt → Gemini API
               ↓
@@ -143,9 +148,11 @@ User Message → System Prompt → Gemini API
 **Purpose**: Multi-step orchestration for complex queries
 
 **Key Functions**:
+
 - `sendOrchestratedChatMessage()` - Orchestrated workflow
 
 **Features**:
+
 - Intent detection
 - Plan creation (trip, eco, accessible, station events)
 - Parallel tool execution
@@ -153,12 +160,14 @@ User Message → System Prompt → Gemini API
 - LLM summarization
 
 **When Used**:
+
 - "Plan a trip from X to Y"
 - "Show departures from station"
 - "Eco-friendly routes"
 - Complex multi-step queries
 
 **Flow**:
+
 ```
 User Message → Extract Intent → Check Orchestration?
                     ↓                  ↓ NO
@@ -178,15 +187,18 @@ User Message → Extract Intent → Check Orchestration?
 **Purpose**: Server-Sent Events (SSE) streaming
 
 **Key Functions**:
+
 - `sendStreamingChatMessage()` - AsyncGenerator for streaming
 
 **Features**:
+
 - Real-time token streaming
 - Progressive UI updates
 - Tool call notifications
 - Error handling mid-stream
 
 **Event Types**:
+
 ```typescript
 { type: 'chunk', data: { text: string } }
 { type: 'tool_call', data: { toolName, params } }
@@ -200,9 +212,11 @@ User Message → Extract Intent → Check Orchestration?
 **Purpose**: Gemini model instance creation
 
 **Key Functions**:
+
 - `createModel(enableFunctionCalling)` - Creates configured model
 
 **Configuration**:
+
 - Model: `gemini-2.0-flash` (configurable via env)
 - Tools: MCP function declarations (optional)
 
@@ -215,6 +229,7 @@ User Message → Extract Intent → Check Orchestration?
 **Purpose**: TypeScript type definitions
 
 **Key Types**:
+
 ```typescript
 interface ConversationContext {
   sessionId: string;
@@ -237,15 +252,18 @@ interface ConversationContext {
 **Purpose**: Tool result caching with TTL
 
 **Key Functions**:
+
 - `cacheToolResult()` - Store result with expiration
 - `getCachedResult()` - Retrieve if not expired
 
 **Cache TTLs**:
+
 - Trips: 5 minutes
 - Weather: 30 minutes
 - Stations: 60 minutes
 
 **Benefits**:
+
 - Reduces API calls
 - Faster responses for follow-ups
 - Tracks mentioned entities for reference resolution
@@ -255,15 +273,18 @@ interface ConversationContext {
 **Purpose**: Extract user intent from messages
 
 **Key Functions**:
+
 - `extractIntent(message)` - Returns Intent object
 
 **Intent Types**:
+
 - `trip_planning` - Journey queries
 - `weather_check` - Weather/snow conditions
 - `station_search` - Station info, departures/arrivals
 - `general_info` - General questions
 
 **Entity Extraction**:
+
 - Origin/destination from "from X to Y"
 - Event type from "arrivals" or "departures"
 - Confidence scoring (0.5-0.9)
@@ -273,14 +294,17 @@ interface ConversationContext {
 **Purpose**: Resolve references like "the first one", "option 2"
 
 **Key Functions**:
+
 - `resolveReference(context, reference)` - Returns MentionedEntity
 
 **Supported References**:
+
 - Ordinal: "first", "second", "third", "1", "2", "3"
 - Relative: "last"
 - Typed: "first trip", "second station"
 
 **Example**:
+
 ```typescript
 User: "Find trips from Zurich to Bern"
 Bot:  [Shows 3 trips]
@@ -296,10 +320,12 @@ Returns: mentionedTrips[1]
 **Purpose**: JSON serialization for context persistence
 
 **Key Functions**:
+
 - `serializeContext(context)` - Context → JSON string
 - `deserializeContext(json)` - JSON string → Context
 
 **Handles**:
+
 - Date object conversion
 - Map serialization (recentToolResults)
 - Type safety restoration
@@ -309,9 +335,11 @@ Returns: mentionedTrips[1]
 **Purpose**: Build context-aware system prompts
 
 **Key Functions**:
+
 - `buildContextualPrompt(context)` - Returns enhanced prompt
 
 **Includes**:
+
 - Current origin/destination
 - Departure time
 - User preferences (eco, wheelchair, bike, first class)
@@ -326,6 +354,7 @@ Returns: mentionedTrips[1]
 **Purpose**: Orchestration type definitions
 
 **Key Types**:
+
 ```typescript
 interface ExecutionStep {
   id: string;
@@ -349,6 +378,7 @@ interface ExecutionPlan {
 **Purpose**: Create execution plans based on intent
 
 **Key Functions**:
+
 - `createExecutionPlan(intent, context)` - Main factory
 - `createTripPlan()` - Journey planning workflow
 - `createEcoFriendlyPlan()` - Eco-conscious routes
@@ -356,6 +386,7 @@ interface ExecutionPlan {
 - `createStationEventsPlan()` - Departure/arrival boards
 
 **Example Plan (Trip)**:
+
 ```typescript
 {
   id: "trip-123456",
@@ -388,9 +419,11 @@ interface ExecutionPlan {
 **Purpose**: Execute plans with dependency resolution
 
 **Key Functions**:
+
 - `executePlan(plan, context)` - Executes all steps
 
 **Features**:
+
 - Dependency graph resolution
 - Parallel execution where possible
 - Conditional step execution
@@ -398,6 +431,7 @@ interface ExecutionPlan {
 - Error handling (optional steps don't fail plan)
 
 **Execution Flow**:
+
 ```
 Initialize: pending = [all step IDs], completed = []
              ↓
@@ -415,9 +449,11 @@ Compile summary → Return results
 **Purpose**: Compile step results into structured summaries
 
 **Key Functions**:
+
 - `compilePlanSummary(plan, results)` - Creates summary object
 
 **Summary Structure**:
+
 ```typescript
 {
   planName: string;
@@ -436,9 +472,11 @@ Compile summary → Return results
 **Purpose**: Format results for human-readable display
 
 **Key Functions**:
+
 - `formatPlanResults(result, language)` - Returns markdown string
 
 **Output Examples**:
+
 ```markdown
 ## Connections from Zurich HB to Bern
 
@@ -453,9 +491,11 @@ Compile summary → Return results
 **Purpose**: Detect if orchestration is needed
 
 **Key Functions**:
+
 - `requiresOrchestration(message)` - Returns boolean
 
 **Keywords**:
+
 - plan, schedule, how to get
 - recommend, suggest, best way
 - complete, entire
@@ -470,6 +510,7 @@ Compile summary → Return results
 **Purpose**: Type definitions for tool parameters
 
 **Key Types**:
+
 ```typescript
 interface FindStopPlacesParams { query: string; limit?: number; }
 interface FindTripsParams { origin: string; destination: string; dateTime?: string; limit?: number; }
@@ -480,6 +521,7 @@ type FunctionCallParams = FindStopPlacesParams | FindTripsParams | ...
 #### 5.2 transportFunctions.ts
 
 **Tools Defined** (5):
+
 1. `findStopPlacesByName` - Search stations by name
 2. `findPlaces` - Search POIs and addresses
 3. `findTrips` - Journey planning
@@ -489,12 +531,14 @@ type FunctionCallParams = FindStopPlacesParams | FindTripsParams | ...
 #### 5.3 weatherFunctions.ts
 
 **Tools Defined** (2):
+
 1. `getWeather` - Weather forecasts
 2. `getSnowConditions` - Ski resort conditions
 
 #### 5.4 analyticsFunctions.ts
 
 **Tools Defined** (3):
+
 1. `getEcoComparison` - Environmental impact comparison
 2. `compareRoutes` - Route comparison by criteria
 3. `journeyRanking` - Rank journeys by preferences
@@ -502,6 +546,7 @@ type FunctionCallParams = FindStopPlacesParams | FindTripsParams | ...
 #### 5.5 stationFunctions.ts
 
 **Tools Defined** (2):
+
 1. `getPlaceEvents` - Real-time departure/arrival boards
 2. `getTrainFormation` - Train composition details
 
@@ -514,6 +559,7 @@ type FunctionCallParams = FindStopPlacesParams | FindTripsParams | ...
 **Purpose**: Manage conversation contexts per session
 
 **Key Functions**:
+
 - `getSessionContext(sessionId, language)` - Get or create
 - `setSessionContext(sessionId, context)` - Update
 - `clearSessionContext(sessionId)` - Remove
@@ -528,6 +574,7 @@ type FunctionCallParams = FindStopPlacesParams | FindTripsParams | ...
 **Purpose**: Main context operations (re-exports + core functions)
 
 **Key Functions**:
+
 - `createContext(sessionId, language)` - Create new context
 - `updateContextFromMessage(context, message, extractedData)` - Update
 
@@ -538,17 +585,20 @@ type FunctionCallParams = FindStopPlacesParams | FindTripsParams | ...
 **Purpose**: Execute MCP tools via proxy
 
 **Key Functions**:
+
 - `executeTool(toolName, params)` - Execute single tool
 - `executeTools(toolCalls)` - Execute multiple in parallel
 - `formatToolResult(result)` - Format for display
 
 **Special Handling**:
+
 - **Station name resolution**: Converts station names to UIC codes for `getPlaceEvents`
 - **Location resolution**: Converts location names to lat/lon for weather tools
 - **Retry logic**: Uses `retryHandler` with exponential backoff
 - **Error handling**: Returns structured error results
 
 **Flow**:
+
 ```
 toolName + params
       ↓
@@ -566,15 +616,18 @@ Parse response → Return ToolExecutionResult
 **Purpose**: Token bucket rate limiting
 
 **Configuration**:
+
 - **Per-user**: 1000 tokens/min, refill 100/min
 - **Global**: 5000 tokens/min, refill 500/min
 
 **Key Functions**:
+
 - `checkRateLimit(userId)` - Check if allowed
 - `withRateLimit(handler)` - Middleware wrapper
 - `getMetrics()` - Usage statistics
 
 **Headers**:
+
 ```
 X-RateLimit-Limit: 1000
 X-RateLimit-Remaining: 850
@@ -583,6 +636,7 @@ Retry-After: 60 (if rate limited)
 ```
 
 **Algorithm**: Token Bucket
+
 - Refills at constant rate
 - Bursts allowed up to capacity
 - Fair allocation across users
@@ -592,6 +646,7 @@ Retry-After: 60 (if rate limited)
 **Purpose**: Exponential backoff with circuit breakers
 
 **Configuration**:
+
 - Max attempts: 3
 - Initial delay: 1000ms
 - Max delay: 10000ms
@@ -599,15 +654,18 @@ Retry-After: 60 (if rate limited)
 - Jitter: ±10%
 
 **Key Functions**:
+
 - `withRetry(fn, serviceName, config)` - Retry wrapper
 - `resetCircuitBreaker(serviceName)` - Manual reset
 
 **Circuit Breaker**:
+
 - **Closed**: Normal operation
 - **Open**: After 5 failures, block for 60s
 - **Half-Open**: Test with 1 request after timeout
 
 **Retryable Errors**:
+
 - Network: ECONNRESET, ETIMEDOUT, ECONNREFUSED
 - HTTP: 429, 500, 502, 503, 504
 - Messages: "timeout", "network", "connection", "rate limit"
@@ -617,11 +675,13 @@ Retry-After: 60 (if rate limited)
 **Purpose**: Generate system prompts
 
 **Key Functions**:
+
 - `generateSystemPrompt(context, enableFunctionCalling)` - Returns prompt string
 
 **Template Location**: `system-prompt-template.txt`
 
 **Includes**:
+
 - Language specification
 - Current time and location
 - Tool usage rules (if enabled)
@@ -633,6 +693,7 @@ Retry-After: 60 (if rate limited)
 **Purpose**: MCP prompt template management
 
 **Templates Available**:
+
 - `plan-trip` - Comprehensive trip planning
 - `bike-trip-planning` - With bicycle transport
 - `luggage-restrictions` - Special luggage rules
@@ -645,6 +706,7 @@ Retry-After: 60 (if rate limited)
 - `seasonal-travel` - Season-specific guidance
 
 **Variable Substitution**:
+
 ```typescript
 const template = MCP_PROMPTS['plan-trip'];
 const prompt = template.template
@@ -976,17 +1038,20 @@ PORT=3000
 ### Model Configuration
 
 **Available Models**:
+
 - `gemini-2.0-flash` (default) - Fast, cost-effective
 - `gemini-1.5-pro` - More capable, slower
 - `gemini-1.5-flash` - Previous generation
 
 **Function Calling**:
+
 - Enabled by default in `simpleChatMode` and `streamingChatMode`
 - Disabled in orchestration (tools executed explicitly)
 
 ### Cache TTLs
 
 Adjust in `context/cacheManager.ts`:
+
 ```typescript
 const CACHE_TTL = {
   trips: 5 * 60 * 1000,      // 5 minutes
@@ -998,6 +1063,7 @@ const CACHE_TTL = {
 ### Circuit Breaker Settings
 
 Adjust in `retryHandler.ts`:
+
 ```typescript
 const CIRCUIT_BREAKER_CONFIG = {
   failureThreshold: 5,      // Open after 5 failures
@@ -1020,6 +1086,7 @@ console.error('[moduleName] Error description', error);
 ```
 
 **Key Log Prefixes**:
+
 - `[geminiService]` - Main service operations
 - `[toolExecutor]` - Tool execution and resolution
 - `[RetryHandler]` - Retry attempts and failures
@@ -1028,6 +1095,7 @@ console.error('[moduleName] Error description', error);
 ### Debug Mode
 
 Enable verbose logging:
+
 ```bash
 NODE_ENV=development npm run dev
 ```
@@ -1089,23 +1157,27 @@ console.log('Last failure:', new Date(status.lastFailure));
 ### Metrics
 
 **Average Response Times**:
+
 - Simple chat (no tools): 500-1000ms
 - Simple chat (with tools): 1500-3000ms
 - Orchestrated chat: 2000-5000ms
 - Streaming (first token): 200-500ms
 
 **Cache Hit Rate**:
+
 - Follow-up questions: ~60-80% cache hits
 - Reduces latency by 2-3x
 
 ### Scalability
 
 **Current Limits**:
+
 - **Per-user**: 1000 requests/minute
 - **Global**: 5000 requests/minute
 - **Sessions**: In-memory (100-1000 concurrent)
 
 **Scaling Recommendations**:
+
 - Use Redis for session storage (production)
 - Implement distributed rate limiting
 - Add caching layer (Redis/Memcached)
@@ -1122,6 +1194,7 @@ console.log('Last failure:', new Date(status.lastFailure));
 **Cause**: Too many requests from user or globally
 
 **Solution**:
+
 ```typescript
 // Increase limits in .env
 RATE_LIMIT_PER_USER_CAPACITY=2000
@@ -1133,6 +1206,7 @@ RATE_LIMIT_GLOBAL_CAPACITY=10000
 **Cause**: Multiple failures to external service
 
 **Solution**:
+
 ```typescript
 import { resetCircuitBreaker } from '@/lib/llm/retryHandler';
 resetCircuitBreaker('mcp-tool-findTrips');
@@ -1143,6 +1217,7 @@ resetCircuitBreaker('mcp-tool-findTrips');
 **Cause**: MCP proxy not responding
 
 **Solution**:
+
 - Check `MCP_SERVER_URL` environment variable
 - Verify MCP server is running
 - Check network connectivity
@@ -1153,6 +1228,7 @@ resetCircuitBreaker('mcp-tool-findTrips');
 **Cause**: Message doesn't match keyword patterns
 
 **Solution**:
+
 - Add keywords to `intentExtractor.ts`
 - Use more specific language
 - Manually specify intent in orchestration
@@ -1162,6 +1238,7 @@ resetCircuitBreaker('mcp-tool-findTrips');
 **Cause**: Session ID changing between requests
 
 **Solution**:
+
 - Ensure consistent session ID from client
 - Check session storage (use Redis in production)
 - Verify `getSessionContext()` calls
@@ -1173,17 +1250,20 @@ resetCircuitBreaker('mcp-tool-findTrips');
 ### From Old Structure to New
 
 **Before** (monolithic):
+
 ```typescript
 import { sendChatMessage } from '@/lib/llm/geminiService'; // 429 lines
 ```
 
 **After** (modular):
+
 ```typescript
 import { sendChatMessage } from '@/lib/llm/geminiService'; // 25 lines
 // All internals split into focused modules
 ```
 
 **Breaking Changes**: NONE
+
 - All exports maintained
 - Backward compatible 100%
 - Internal refactoring only
@@ -1191,6 +1271,7 @@ import { sendChatMessage } from '@/lib/llm/geminiService'; // 25 lines
 ### Adding New Tools
 
 1. Define in appropriate `functions/*.ts`:
+
 ```typescript
 // functions/customFunctions.ts
 export const customFunctions = [{
@@ -1200,7 +1281,8 @@ export const customFunctions = [{
 }];
 ```
 
-2. Update main export:
+1. Update main export:
+
 ```typescript
 // functionDefinitions.ts
 import { customFunctions } from './functions/customFunctions';
@@ -1211,11 +1293,12 @@ export const MCP_FUNCTION_DEFINITIONS = [
 ];
 ```
 
-3. Implement in MCP server or proxy
+1. Implement in MCP server or proxy
 
 ### Adding New Chat Mode
 
 1. Create module:
+
 ```typescript
 // chatModes/customChatMode.ts
 export async function sendCustomChatMessage(...) {
@@ -1223,7 +1306,8 @@ export async function sendCustomChatMessage(...) {
 }
 ```
 
-2. Re-export:
+1. Re-export:
+
 ```typescript
 // geminiService.ts
 export { sendCustomChatMessage } from './chatModes/customChatMode';
@@ -1243,6 +1327,7 @@ export { sendCustomChatMessage } from './chatModes/customChatMode';
 ### Adding Documentation
 
 Update this README when:
+
 - Adding new modules
 - Changing public APIs
 - Adding configuration options
@@ -1260,13 +1345,14 @@ Update this README when:
 
 ## License
 
-Part of SBB Chat MCP application.
+Part of Swiss Travel Companion application.
 
 ---
 
 ## Support
 
 For questions or issues:
+
 1. Check this documentation
 2. Review code comments
 3. Check console logs
@@ -1276,4 +1362,4 @@ For questions or issues:
 
 **Last Updated**: 2025-12-27
 **Version**: 1.0.0 (Post-refactoring)
-**Maintainer**: SBB Chat MCP Team
+**Maintainer**: Swiss Travel Companion Team

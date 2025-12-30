@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { Resend } from 'resend';
 
-
-
 export async function POST(request: NextRequest) {
   try {
     const data = await request.json();
@@ -36,7 +34,7 @@ export async function POST(request: NextRequest) {
 
     // Prepare email content
     const emailContent = `
-New Feedback Submission from SBB Chat MCP
+New Feedback Submission from Swiss Travel Companion
 
 Type: ${data.type.toUpperCase()}
 ${data.rating ? `Rating: ${data.rating}/5 stars ⭐` : ''}
@@ -68,9 +66,9 @@ Timestamp: ${new Date(data.timestamp).toLocaleString()}
       );
     }
 
-    return NextResponse.json({ 
+    return NextResponse.json({
       success: true,
-      id: emailResponse.data?.id 
+      id: emailResponse.data?.id,
     });
   } catch (error) {
     console.error('Feedback submission error:', error);

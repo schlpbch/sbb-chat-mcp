@@ -3,7 +3,7 @@
 # i18n Completion Script
 # This script completes the internationalization of remaining components
 
-echo "🌍 Completing i18n implementation for SBB Chat MCP"
+echo "🌍 Completing i18n implementation for Swiss Travel Companion"
 echo "=================================================="
 
 # Note: Due to the complexity of precise whitespace matching in automated edits,

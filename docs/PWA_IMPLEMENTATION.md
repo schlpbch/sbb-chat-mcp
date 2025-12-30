@@ -2,7 +2,7 @@
 
 ## Overview
 
-The SBB Chat MCP application now has full Progressive Web App (PWA) support, making it installable on devices and capable of working offline.
+The Swiss Travel Companion application now has full Progressive Web App (PWA) support, making it installable on devices and capable of working offline.
 
 ## Features Implemented
 
@@ -45,16 +45,19 @@ The SBB Chat MCP application now has full Progressive Web App (PWA) support, mak
 ## Caching Strategies
 
 ### Network First (API Calls)
+
 - Fresh data when online
 - Cached fallback when offline
 - Automatic cache updates
 
 ### Cache First (Static Assets)
+
 - CSS, JavaScript, fonts
 - Images and media
 - Faster load times
 
 ### Stale While Revalidate (HTML Pages)
+
 - Immediate cached response
 - Background update check
 - Best of both worlds
@@ -109,6 +112,7 @@ src/
 ### Manifest Customization
 
 Edit `/public/manifest.json` to customize:
+
 - App name and description
 - Theme colors
 - Icon paths
@@ -118,6 +122,7 @@ Edit `/public/manifest.json` to customize:
 ### Service Worker Customization
 
 Edit `/public/sw.js` to customize:
+
 - Cache names and versions
 - Caching strategies
 - Precached assets
@@ -126,6 +131,7 @@ Edit `/public/sw.js` to customize:
 ### Install Prompt Customization
 
 Edit `/src/components/PWAInstallPrompt.tsx` to customize:
+
 - Prompt appearance
 - Dismissal behavior
 - Timing and conditions
@@ -135,6 +141,7 @@ Edit `/src/components/PWAInstallPrompt.tsx` to customize:
 ### Local Testing
 
 1. **Build for production**:
+
    ```bash
    npm run build
    npm start
@@ -147,6 +154,7 @@ Edit `/src/components/PWAInstallPrompt.tsx` to customize:
    - Test offline mode
 
 3. **Lighthouse Audit**:
+
    ```bash
    npx lighthouse http://localhost:3000 --view
    ```
@@ -167,6 +175,7 @@ Edit `/src/components/PWAInstallPrompt.tsx` to customize:
 ### HTTPS Required
 
 PWAs require HTTPS in production. Ensure your deployment platform provides SSL:
+
 - Vercel: Automatic HTTPS
 - Netlify: Automatic HTTPS
 - Google Cloud Run: Configure HTTPS
@@ -181,12 +190,14 @@ Before deploying, generate proper icons:
 4. Update manifest.json paths if needed
 
 Recommended tools:
-- https://realfavicongenerator.net/
-- https://www.pwabuilder.com/imageGenerator
+
+- <https://realfavicongenerator.net/>
+- <https://www.pwabuilder.com/imageGenerator>
 
 ### Service Worker Updates
 
 When updating the service worker:
+
 1. Change `CACHE_NAME` version
 2. Users will get updates on next visit
 3. Old caches are automatically cleaned
@@ -196,6 +207,7 @@ When updating the service worker:
 ### Service Worker Status
 
 Check service worker status in browser:
+
 ```javascript
 navigator.serviceWorker.getRegistration().then(reg => {
   console.log('Service Worker:', reg);
@@ -205,6 +217,7 @@ navigator.serviceWorker.getRegistration().then(reg => {
 ### Cache Status
 
 View cached resources:
+
 ```javascript
 caches.keys().then(names => {
   console.log('Cache names:', names);
@@ -214,6 +227,7 @@ caches.keys().then(names => {
 ### Install Status
 
 Check if app is installed:
+
 ```javascript
 window.matchMedia('(display-mode: standalone)').matches
 ```

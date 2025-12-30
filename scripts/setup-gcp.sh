@@ -23,7 +23,7 @@ echo "📦 Creating Artifact Registry repository..."
 gcloud artifacts repositories create "${REPOSITORY}" \
   --repository-format=docker \
   --location="${REGION}" \
-  --description="SBB Chat MCP container images" \
+  --description="Swiss Travel Companion container images" \
   || echo "Repository already exists"
 
 # Create secrets (you'll need to set values manually)

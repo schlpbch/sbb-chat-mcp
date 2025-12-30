@@ -1,4 +1,4 @@
-# Terraform Variables for SBB Chat MCP
+# Terraform Variables for Swiss Travel Companion
 
 # Project Configuration
 variable "project_id" {

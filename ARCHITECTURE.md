@@ -1,4 +1,4 @@
-# SBB Chat MCP - Architecture Documentation
+# Swiss Travel Companion - Architecture Documentation
 
 ## Table of Contents
 
@@ -19,7 +19,7 @@
 
 ## Overview
 
-SBB Chat MCP is a modern web application for discovering tourist attractions in
+Swiss Travel Companion is a modern web application for discovering tourist attractions in
 Switzerland. Built with Next.js 16, React 19, and Tailwind CSS Plus, it provides
 an interactive map-based interface with powerful filtering and search
 capabilities across multiple languages.

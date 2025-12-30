@@ -21,7 +21,9 @@ test.describe('API - MCP Proxy', () => {
     await page.waitForLoadState('networkidle');
 
     // MCP test page should load successfully
-    await expect(page.getByRole('heading', { name: /MCP|Inspector|Test/i })).toBeVisible({ timeout: 10000 });
+    await expect(
+      page.getByRole('heading', { name: /MCP|Inspector|Test/i })
+    ).toBeVisible({ timeout: 10000 });
   });
 
   test('should list available MCP tools', async ({ page }) => {
@@ -46,7 +48,9 @@ test.describe('API - MCP Proxy', () => {
     await page.waitForTimeout(2000);
 
     // Try to find and execute a tool
-    const toolButtons = page.locator('button:has-text("Execute"), button:has-text("Run"), button:has-text("Test")');
+    const toolButtons = page.locator(
+      'button:has-text("Execute"), button:has-text("Run"), button:has-text("Test")'
+    );
     const count = await toolButtons.count();
 
     if (count > 0) {
@@ -66,7 +70,9 @@ test.describe('API - MCP Proxy', () => {
     await page.waitForLoadState('networkidle');
 
     // Page should load even if MCP server is unavailable
-    const heading = page.getByRole('heading', { name: /SBB Chat MCP/i });
+    const heading = page.getByRole('heading', {
+      name: /Swiss Travel Companion/i,
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -82,7 +88,9 @@ test.describe('API - MCP Proxy', () => {
       const select = selects.nth(i);
       const options = await select.locator('option').allTextContents();
 
-      if (options.some(opt => opt.includes('Staging') || opt.includes('Dev'))) {
+      if (
+        options.some((opt) => opt.includes('Staging') || opt.includes('Dev'))
+      ) {
         // Should be able to change server
         await select.selectOption({ index: 0 });
         await page.waitForTimeout(1000);
@@ -214,7 +222,9 @@ test.describe('API - Local Data', () => {
 
   test('should handle missing data files', async ({ request }) => {
     // Try to access endpoints that might not have data
-    const response = await request.get('/api/mcp/nonexistent').catch(() => null);
+    const response = await request
+      .get('/api/mcp/nonexistent')
+      .catch(() => null);
 
     // Should return 404 or handle gracefully
     if (response) {
@@ -233,9 +243,11 @@ test.describe('API - Error Handling', () => {
   });
 
   test('should handle malformed requests', async ({ request }) => {
-    const response = await request.post('/api/llm/chat', {
-      data: { invalid: 'data' }
-    }).catch(() => null);
+    const response = await request
+      .post('/api/llm/chat', {
+        data: { invalid: 'data' },
+      })
+      .catch(() => null);
 
     // Should return error status or handle gracefully
     if (response) {
@@ -247,9 +259,11 @@ test.describe('API - Error Handling', () => {
 
   test('should validate request parameters', async ({ request }) => {
     // Try to execute MCP tool without required parameters
-    const response = await request.post('/api/mcp-proxy/tools/someTool', {
-      data: {}
-    }).catch(() => null);
+    const response = await request
+      .post('/api/mcp-proxy/tools/someTool', {
+        data: {},
+      })
+      .catch(() => null);
 
     // Should return error or handle gracefully
     if (response) {
@@ -280,8 +294,8 @@ test.describe('API - CORS and Security', () => {
   test('should have proper CORS headers', async ({ request }) => {
     const response = await request.get('/api/llm/chat', {
       headers: {
-        'Origin': 'http://localhost:3000'
-      }
+        Origin: 'http://localhost:3000',
+      },
     });
 
     // Should allow requests from same origin
@@ -289,12 +303,14 @@ test.describe('API - CORS and Security', () => {
   });
 
   test('should validate Content-Type headers', async ({ request }) => {
-    const response = await request.post('/api/llm/chat', {
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      data: JSON.stringify({ messages: [] })
-    }).catch(() => null);
+    const response = await request
+      .post('/api/llm/chat', {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        data: JSON.stringify({ messages: [] }),
+      })
+      .catch(() => null);
 
     if (response) {
       expect(response.status()).toBeGreaterThanOrEqual(200);
@@ -371,7 +387,9 @@ test.describe('API - Performance', () => {
     await page.waitForLoadState('networkidle');
 
     // Should load faster on subsequent loads
-    const heading = page.getByRole('heading', { name: /SBB Chat MCP/i });
+    const heading = page.getByRole('heading', {
+      name: /Swiss Travel Companion/i,
+    });
     await expect(heading).toBeVisible({ timeout: 5000 });
   });
 });

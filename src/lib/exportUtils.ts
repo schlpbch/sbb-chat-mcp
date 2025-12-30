@@ -12,11 +12,13 @@ export interface ExportableMessage {
  * Export chat messages as a formatted text file
  */
 export function exportChatAsText(messages: ExportableMessage[]): void {
-  const content = messages.map(msg => {
-    const time = msg.timestamp.toLocaleString();
-    const sender = msg.role === 'user' ? 'You' : 'SBB Companion';
-    return `[${time}] ${sender}:\n${msg.content}\n`;
-  }).join('\n');
+  const content = messages
+    .map((msg) => {
+      const time = msg.timestamp.toLocaleString();
+      const sender = msg.role === 'user' ? 'You' : 'Swiss Travel Companion';
+      return `[${time}] ${sender}:\n${msg.content}\n`;
+    })
+    .join('\n');
 
   const blob = new Blob([content], { type: 'text/plain' });
   downloadFile(blob, `sbb-chat-${Date.now()}.txt`);
@@ -62,11 +64,15 @@ export function exportItineraryAsText(itinerary: any): void {
         }
 
         if (leg.departure) {
-          content += `  Departure: ${leg.departure.place?.name || ''} at ${new Date(leg.departure.time).toLocaleTimeString()}\n`;
+          content += `  Departure: ${
+            leg.departure.place?.name || ''
+          } at ${new Date(leg.departure.time).toLocaleTimeString()}\n`;
         }
 
         if (leg.arrival) {
-          content += `  Arrival: ${leg.arrival.place?.name || ''} at ${new Date(leg.arrival.time).toLocaleTimeString()}\n`;
+          content += `  Arrival: ${leg.arrival.place?.name || ''} at ${new Date(
+            leg.arrival.time
+          ).toLocaleTimeString()}\n`;
         }
 
         if (leg.duration) content += `  Duration: ${leg.duration}\n`;
@@ -160,8 +166,16 @@ export function exportItineraryAsPDF(itinerary: any): void {
         <h1>🇨🇭 SBB Travel Itinerary</h1>
         <div class="header">
           <div class="detail">Generated: ${new Date().toLocaleString()}</div>
-          ${itinerary.origin ? `<div class="detail"><strong>From:</strong> ${itinerary.origin}</div>` : ''}
-          ${itinerary.destination ? `<div class="detail"><strong>To:</strong> ${itinerary.destination}</div>` : ''}
+          ${
+            itinerary.origin
+              ? `<div class="detail"><strong>From:</strong> ${itinerary.origin}</div>`
+              : ''
+          }
+          ${
+            itinerary.destination
+              ? `<div class="detail"><strong>To:</strong> ${itinerary.destination}</div>`
+              : ''
+          }
         </div>
   `;
 
@@ -174,23 +188,32 @@ export function exportItineraryAsPDF(itinerary: any): void {
 
       if (leg.type === 'WalkLeg') {
         html += `<div class="detail">Type: Walking</div>`;
-        if (leg.duration) html += `<div class="detail">Duration: ${leg.duration}</div>`;
+        if (leg.duration)
+          html += `<div class="detail">Duration: ${leg.duration}</div>`;
       } else {
         const service = leg.serviceJourney?.serviceProducts?.[0];
         if (service) {
-          html += `<div class="detail"><strong>Service:</strong> ${service.name || 'Train'}</div>`;
-          if (service.number) html += `<div class="detail"><strong>Number:</strong> ${service.number}</div>`;
+          html += `<div class="detail"><strong>Service:</strong> ${
+            service.name || 'Train'
+          }</div>`;
+          if (service.number)
+            html += `<div class="detail"><strong>Number:</strong> ${service.number}</div>`;
         }
 
         if (leg.departure) {
-          html += `<div class="detail"><strong>Departure:</strong> ${leg.departure.place?.name || ''} at ${new Date(leg.departure.time).toLocaleTimeString()}</div>`;
+          html += `<div class="detail"><strong>Departure:</strong> ${
+            leg.departure.place?.name || ''
+          } at ${new Date(leg.departure.time).toLocaleTimeString()}</div>`;
         }
 
         if (leg.arrival) {
-          html += `<div class="detail"><strong>Arrival:</strong> ${leg.arrival.place?.name || ''} at ${new Date(leg.arrival.time).toLocaleTimeString()}</div>`;
+          html += `<div class="detail"><strong>Arrival:</strong> ${
+            leg.arrival.place?.name || ''
+          } at ${new Date(leg.arrival.time).toLocaleTimeString()}</div>`;
         }
 
-        if (leg.duration) html += `<div class="detail"><strong>Duration:</strong> ${leg.duration}</div>`;
+        if (leg.duration)
+          html += `<div class="detail"><strong>Duration:</strong> ${leg.duration}</div>`;
       }
 
       html += `</div>`;
@@ -203,14 +226,16 @@ export function exportItineraryAsPDF(itinerary: any): void {
       html += `<div class="detail"><strong>Price:</strong> CHF ${itinerary.price}</div>`;
     }
     if (itinerary.co2Emissions) {
-      html += `<div class="detail"><strong>CO₂ Emissions:</strong> ${itinerary.co2Emissions.toFixed(1)} kg</div>`;
+      html += `<div class="detail"><strong>CO₂ Emissions:</strong> ${itinerary.co2Emissions.toFixed(
+        1
+      )} kg</div>`;
     }
     html += `</div>`;
   }
 
   html += `
         <div class="footer">
-          <p>Generated by SBB Chat MCP - Your Swiss Travel Companion</p>
+          <p>Generated by Swiss Travel Companion - Your Swiss Travel Companion</p>
         </div>
       </body>
     </html>

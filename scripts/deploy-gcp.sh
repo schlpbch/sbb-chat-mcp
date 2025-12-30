@@ -6,7 +6,7 @@ REGION="europe-west6"
 SERVICE_NAME="sbb-chat-mcp"
 REPOSITORY="sbb-chat"
 
-echo "🚀 Deploying SBB Chat MCP to Cloud Run..."
+echo "🚀 Deploying Swiss Travel Companion to Cloud Run..."
 
 # Build and push image
 echo "📦 Building Docker image..."

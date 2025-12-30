@@ -161,7 +161,7 @@ Supported languages: `en`, `de`, `fr`, `it`, `zh`, `hi`
 
 - **SBB Red**: `#eb0000`
 - **Logo**: Red square with white "SBB" text
-- **App Name**: "SBB Chat MCP"
+- **App Name**: "Swiss Travel Companion"
 
 ## Known Issues
 

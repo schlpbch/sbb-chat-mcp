@@ -1,4 +1,4 @@
-// Service Worker for SBB Chat MCP
+// Service Worker for Swiss Travel Companion
 // Provides offline support and caching strategies
 
 const CACHE_NAME = 'sbb-chat-mcp-v1';
@@ -33,9 +33,11 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames
           .filter((cacheName) => {
-            return cacheName !== CACHE_NAME && 
-                   cacheName !== RUNTIME_CACHE && 
-                   cacheName !== IMAGE_CACHE;
+            return (
+              cacheName !== CACHE_NAME &&
+              cacheName !== RUNTIME_CACHE &&
+              cacheName !== IMAGE_CACHE
+            );
           })
           .map((cacheName) => {
             console.log('[ServiceWorker] Deleting old cache:', cacheName);
@@ -76,13 +78,14 @@ self.addEventListener('fetch', (event) => {
             }
             // Return offline page or error response
             return new Response(
-              JSON.stringify({ 
-                error: 'Offline', 
-                message: 'You are currently offline. Please check your connection.' 
+              JSON.stringify({
+                error: 'Offline',
+                message:
+                  'You are currently offline. Please check your connection.',
               }),
               {
                 status: 503,
-                headers: { 'Content-Type': 'application/json' }
+                headers: { 'Content-Type': 'application/json' },
               }
             );
           });
@@ -185,7 +188,7 @@ async function syncFavorites() {
 self.addEventListener('push', (event) => {
   console.log('[ServiceWorker] Push notification received');
   const data = event.data ? event.data.json() : {};
-  
+
   const options = {
     body: data.body || 'New update from SBB Chat',
     icon: '/icons/icon-192x192.png',
@@ -197,18 +200,21 @@ self.addEventListener('push', (event) => {
       {
         action: 'view',
         title: 'View',
-        icon: '/icons/action-view.png'
+        icon: '/icons/action-view.png',
       },
       {
         action: 'dismiss',
         title: 'Dismiss',
-        icon: '/icons/action-dismiss.png'
-      }
-    ]
+        icon: '/icons/action-dismiss.png',
+      },
+    ],
   };
 
   event.waitUntil(
-    self.registration.showNotification(data.title || 'SBB Chat MCP', options)
+    self.registration.showNotification(
+      data.title || 'Swiss Travel Companion',
+      options
+    )
   );
 });
 
@@ -218,20 +224,18 @@ self.addEventListener('notificationclick', (event) => {
   event.notification.close();
 
   if (event.action === 'view') {
-    event.waitUntil(
-      clients.openWindow('/')
-    );
+    event.waitUntil(clients.openWindow('/'));
   }
 });
 
 // Message handler for communication with the app
 self.addEventListener('message', (event) => {
   console.log('[ServiceWorker] Message received:', event.data);
-  
+
   if (event.data.type === 'SKIP_WAITING') {
     self.skipWaiting();
   }
-  
+
   if (event.data.type === 'CACHE_URLS') {
     event.waitUntil(
       caches.open(RUNTIME_CACHE).then((cache) => {

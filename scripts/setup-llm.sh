@@ -1,7 +1,7 @@
 #!/bin/bash
 # Quick Setup Script for LLM Integration
 
-echo "🚀 Setting up LLM Integration for SBB Chat MCP"
+echo "🚀 Setting up LLM Integration for Swiss Travel Companion"
 echo "================================================"
 echo ""
 

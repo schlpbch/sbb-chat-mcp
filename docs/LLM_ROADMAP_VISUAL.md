@@ -2,7 +2,7 @@
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                    SBB Chat MCP LLM INTEGRATION                        │
+│                    Swiss Travel Companion LLM INTEGRATION                        │
 │                         Journey to Intelligence                          │
 └─────────────────────────────────────────────────────────────────────────┘
 
@@ -312,7 +312,7 @@ User Query: "Plan a day trip to Zermatt"
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────┐
-│                    WHAT MAKES SBB Chat MCP UNIQUE                      │
+│                    WHAT MAKES Swiss Travel Companion UNIQUE                      │
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │  🧠 INTELLIGENCE                                                         │

@@ -11,7 +11,9 @@ test.describe('VoiceButton Component', () => {
     await page.waitForLoadState('networkidle');
   });
 
-  test('should display voice button if speech recognition is supported', async ({ page }) => {
+  test('should display voice button if speech recognition is supported', async ({
+    page,
+  }) => {
     // Check if voice button exists
     const voiceButton = page.getByTestId('voice-button');
     const count = await voiceButton.count();
@@ -20,7 +22,9 @@ test.describe('VoiceButton Component', () => {
     expect(count).toBeGreaterThanOrEqual(0);
   });
 
-  test('should hide voice button if speech recognition is not supported', async ({ page }) => {
+  test('should hide voice button if speech recognition is not supported', async ({
+    page,
+  }) => {
     // In browsers without speech recognition, button should be hidden
     // This is a passive test - we just verify the page loads
     await expect(page.getByTestId('chat-input')).toBeVisible();
@@ -28,7 +32,7 @@ test.describe('VoiceButton Component', () => {
 
   test('should toggle listening state when clicked', async ({ page }) => {
     const voiceButton = page.getByTestId('voice-button');
-    const exists = await voiceButton.count() > 0;
+    const exists = (await voiceButton.count()) > 0;
 
     if (exists) {
       // Click to start listening
@@ -37,7 +41,8 @@ test.describe('VoiceButton Component', () => {
 
       // Button should show listening state (animate-pulse)
       const className = await voiceButton.getAttribute('class');
-      const hasAnimation = className?.includes('animate-pulse') || className?.includes('bg-red');
+      const hasAnimation =
+        className?.includes('animate-pulse') || className?.includes('bg-red');
 
       // Click to stop listening
       await voiceButton.click();
@@ -51,7 +56,7 @@ test.describe('VoiceButton Component', () => {
 
   test('should have proper aria-label', async ({ page }) => {
     const voiceButton = page.getByTestId('voice-button');
-    const exists = await voiceButton.count() > 0;
+    const exists = (await voiceButton.count()) > 0;
 
     if (exists) {
       const ariaLabel = await voiceButton.getAttribute('aria-label');
@@ -64,7 +69,7 @@ test.describe('VoiceButton Component', () => {
 
   test('should show microphone icon', async ({ page }) => {
     const voiceButton = page.getByTestId('voice-button');
-    const exists = await voiceButton.count() > 0;
+    const exists = (await voiceButton.count()) > 0;
 
     if (exists) {
       const svg = voiceButton.locator('svg');
@@ -76,7 +81,7 @@ test.describe('VoiceButton Component', () => {
 
   test('should update when language changes', async ({ page }) => {
     const voiceButton = page.getByTestId('voice-button');
-    const exists = await voiceButton.count() > 0;
+    const exists = (await voiceButton.count()) > 0;
 
     if (exists) {
       // Change language
@@ -87,7 +92,7 @@ test.describe('VoiceButton Component', () => {
         const select = selects.nth(i);
         const options = await select.locator('option').allTextContents();
 
-        if (options.some(opt => opt.includes('Deutsch'))) {
+        if (options.some((opt) => opt.includes('Deutsch'))) {
           await select.selectOption('de');
           await page.waitForTimeout(500);
           break;
@@ -103,7 +108,7 @@ test.describe('VoiceButton Component', () => {
 
   test('should populate input with transcript', async ({ page }) => {
     const voiceButton = page.getByTestId('voice-button');
-    const exists = await voiceButton.count() > 0;
+    const exists = (await voiceButton.count()) > 0;
 
     if (exists) {
       // Note: We can't actually test speech recognition in automated tests
@@ -144,7 +149,7 @@ test.describe('ShareMenu Component', () => {
 
   test('should open share menu when clicked', async ({ page }) => {
     const shareButton = page.getByTestId('share-button').first();
-    const exists = await shareButton.count() > 0;
+    const exists = (await shareButton.count()) > 0;
 
     if (exists) {
       await shareButton.click();
@@ -152,7 +157,7 @@ test.describe('ShareMenu Component', () => {
 
       // Share menu options should be visible
       const copyLinkOption = page.getByTestId('copy-link-option');
-      const optionExists = await copyLinkOption.count() > 0;
+      const optionExists = (await copyLinkOption.count()) > 0;
 
       if (optionExists) {
         await expect(copyLinkOption).toBeVisible();
@@ -164,14 +169,14 @@ test.describe('ShareMenu Component', () => {
 
   test('should have copy link option', async ({ page }) => {
     const shareButton = page.getByTestId('share-button').first();
-    const exists = await shareButton.count() > 0;
+    const exists = (await shareButton.count()) > 0;
 
     if (exists) {
       await shareButton.click();
       await page.waitForTimeout(500);
 
       const copyLinkOption = page.getByTestId('copy-link-option');
-      const optionExists = await copyLinkOption.count() > 0;
+      const optionExists = (await copyLinkOption.count()) > 0;
 
       expect(optionExists).toBe(true);
     } else {
@@ -181,14 +186,14 @@ test.describe('ShareMenu Component', () => {
 
   test('should have copy text option', async ({ page }) => {
     const shareButton = page.getByTestId('share-button').first();
-    const exists = await shareButton.count() > 0;
+    const exists = (await shareButton.count()) > 0;
 
     if (exists) {
       await shareButton.click();
       await page.waitForTimeout(500);
 
       const copyTextOption = page.getByTestId('copy-text-option');
-      const optionExists = await copyTextOption.count() > 0;
+      const optionExists = (await copyTextOption.count()) > 0;
 
       expect(optionExists).toBe(true);
     } else {
@@ -196,9 +201,11 @@ test.describe('ShareMenu Component', () => {
     }
   });
 
-  test('should have native share option on supported devices', async ({ page }) => {
+  test('should have native share option on supported devices', async ({
+    page,
+  }) => {
     const shareButton = page.getByTestId('share-button').first();
-    const exists = await shareButton.count() > 0;
+    const exists = (await shareButton.count()) > 0;
 
     if (exists) {
       await shareButton.click();
@@ -216,7 +223,7 @@ test.describe('ShareMenu Component', () => {
 
   test('should close menu when clicking outside', async ({ page }) => {
     const shareButton = page.getByTestId('share-button').first();
-    const exists = await shareButton.count() > 0;
+    const exists = (await shareButton.count()) > 0;
 
     if (exists) {
       await shareButton.click();
@@ -239,17 +246,19 @@ test.describe('ShareMenu Component', () => {
 
   test('should copy link to clipboard', async ({ page }) => {
     // Grant clipboard permissions
-    await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
 
     const shareButton = page.getByTestId('share-button').first();
-    const exists = await shareButton.count() > 0;
+    const exists = (await shareButton.count()) > 0;
 
     if (exists) {
       await shareButton.click();
       await page.waitForTimeout(500);
 
       const copyLinkOption = page.getByTestId('copy-link-option');
-      const optionExists = await copyLinkOption.count() > 0;
+      const optionExists = (await copyLinkOption.count()) > 0;
 
       if (optionExists) {
         await copyLinkOption.click();
@@ -275,10 +284,14 @@ test.describe('Toast Component', () => {
 
   test('should display toast notifications', async ({ page }) => {
     // Trigger an action that shows a toast (e.g., copy operation)
-    await page.context().grantPermissions(['clipboard-read', 'clipboard-write']);
+    await page
+      .context()
+      .grantPermissions(['clipboard-read', 'clipboard-write']);
 
     // Look for any toast containers
-    const toast = page.locator('[role="alert"], [class*="toast"], [data-testid*="toast"]');
+    const toast = page.locator(
+      '[role="alert"], [class*="toast"], [data-testid*="toast"]'
+    );
     const count = await toast.count();
 
     // Toasts may or may not be present
@@ -287,7 +300,9 @@ test.describe('Toast Component', () => {
 
   test('should show success toast', async ({ page }) => {
     // Success toasts might appear after successful actions
-    const successToast = page.locator('[class*="success"], [data-type="success"]');
+    const successToast = page.locator(
+      '[class*="success"], [data-type="success"]'
+    );
     const count = await successToast.count();
 
     expect(count).toBeGreaterThanOrEqual(0);
@@ -314,7 +329,7 @@ test.describe('Features - Integration', () => {
 
     // Check if features are present
     const voiceButton = page.getByTestId('voice-button');
-    const voiceExists = await voiceButton.count() > 0;
+    const voiceExists = (await voiceButton.count()) > 0;
 
     // Send a query
     const input = page.getByTestId('chat-input');
@@ -339,7 +354,9 @@ test.describe('Features - Integration', () => {
     await expect(page.getByTestId('chat-input')).toBeVisible();
     await expect(page.getByTestId('send-button')).toBeVisible();
 
-    const heading = page.getByRole('heading', { name: /SBB Chat MCP/i });
+    const heading = page.getByRole('heading', {
+      name: /Swiss Travel Companion/i,
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -389,7 +406,7 @@ test.describe('Accessibility - Features', () => {
     await page.waitForLoadState('networkidle');
 
     const voiceButton = page.getByTestId('voice-button');
-    const exists = await voiceButton.count() > 0;
+    const exists = (await voiceButton.count()) > 0;
 
     if (exists) {
       const ariaLabel = await voiceButton.getAttribute('aria-label');
@@ -410,7 +427,7 @@ test.describe('Accessibility - Features', () => {
     await page.waitForTimeout(5000);
 
     const shareButton = page.getByTestId('share-button').first();
-    const exists = await shareButton.count() > 0;
+    const exists = (await shareButton.count()) > 0;
 
     if (exists) {
       const ariaLabel = await shareButton.getAttribute('aria-label');
@@ -425,7 +442,9 @@ test.describe('Accessibility - Features', () => {
     await page.waitForLoadState('networkidle');
 
     // Toast notifications should have role="alert" or aria-live
-    const alerts = page.locator('[role="alert"], [aria-live="polite"], [aria-live="assertive"]');
+    const alerts = page.locator(
+      '[role="alert"], [aria-live="polite"], [aria-live="assertive"]'
+    );
     const count = await alerts.count();
 
     expect(count).toBeGreaterThanOrEqual(0);
@@ -441,7 +460,7 @@ test.describe('Accessibility - Features', () => {
 
     // Focus should be on interactive elements
     const focusedElement = page.locator(':focus');
-    const exists = await focusedElement.count() > 0;
+    const exists = (await focusedElement.count()) > 0;
 
     expect(exists).toBe(true);
   });

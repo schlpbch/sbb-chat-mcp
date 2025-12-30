@@ -24,8 +24,8 @@ export interface ChatResponse {
     result: any;
   }>;
   debug?: {
-      intent?: any;
-      context?: any;
+    intent?: any;
+    context?: any;
   };
 }
 
@@ -43,7 +43,7 @@ export async function sendChatMessage(
 
     const model = createModel(enableFunctionCalling);
 
-    const systemPrompt = `You are a helpful Swiss travel Companion integrated into the SBB Chat MCP app.
+    const systemPrompt = `You are a helpful Swiss Travel Companion.
 
 CONTEXT:
 - User's language: ${context.language}
@@ -152,7 +152,8 @@ GUIDELINES:
       message: error instanceof Error ? error.message : String(error),
       stack: error instanceof Error ? error.stack : undefined,
     });
-    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    const errorMessage =
+      error instanceof Error ? error.message : 'Unknown error';
     throw new Error(`Failed to get AI response: ${errorMessage}`);
   }
 }

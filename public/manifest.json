@@ -1,5 +1,5 @@
 {
-  "name": "SBB Chat MCP - Swiss Travel Companion",
+  "name": "Swiss Travel Companion - Swiss Travel Companion",
   "short_name": "SBB Chat",
   "description": "Your intelligent Swiss travel companion for trains, weather, and journey planning",
   "start_url": "/",
@@ -25,14 +25,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "SBB Chat MCP Desktop View"
+      "label": "Swiss Travel Companion Desktop View"
     },
     {
       "src": "/screenshots/mobile-1.png",
       "sizes": "750x1334",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "SBB Chat MCP Mobile View"
+      "label": "Swiss Travel Companion Mobile View"
     }
   ],
   "shortcuts": [

@@ -9,23 +9,35 @@ test.describe('Chat Page', () => {
   test.describe('Page Structure', () => {
     test('displays page with proper semantic structure', async ({ page }) => {
       // Main landmark
-      await expect(page.getByRole('main', { name: 'Chat interface' })).toBeVisible();
+      await expect(
+        page.getByRole('main', { name: 'Chat interface' })
+      ).toBeVisible();
 
       // Header with title
-      await expect(page.getByRole('heading', { name: 'AI Travel Companion', level: 1 })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: 'AI Travel Companion', level: 1 })
+      ).toBeVisible();
 
       // Navbar branding
-      await expect(page.getByRole('heading', { name: 'SBB Chat MCP' })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: 'Swiss Travel Companion' })
+      ).toBeVisible();
     });
 
     test('displays welcome message when chat is empty', async ({ page }) => {
-      await expect(page.getByRole('heading', { name: 'Hello!', level: 2 })).toBeVisible();
-      await expect(page.getByText('Ask me anything about Swiss travel', { exact: true })).toBeVisible();
+      await expect(
+        page.getByRole('heading', { name: 'Hello!', level: 2 })
+      ).toBeVisible();
+      await expect(
+        page.getByText('Ask me anything about Swiss travel', { exact: true })
+      ).toBeVisible();
     });
 
     test('has accessible input form', async ({ page }) => {
       // Form with aria-label
-      await expect(page.getByRole('form', { name: 'Send a message' })).toBeVisible();
+      await expect(
+        page.getByRole('form', { name: 'Send a message' })
+      ).toBeVisible();
 
       // Input with proper labeling
       const input = page.getByTestId('chat-input');
@@ -41,7 +53,9 @@ test.describe('Chat Page', () => {
 
   test.describe('Quick Start Suggestions', () => {
     test('displays all quick start buttons', async ({ page }) => {
-      const suggestions = page.getByRole('navigation', { name: 'Quick start suggestions' });
+      const suggestions = page.getByRole('navigation', {
+        name: 'Quick start suggestions',
+      });
       await expect(suggestions).toBeVisible();
 
       await expect(page.getByTestId('quick-start-ski')).toBeVisible();
@@ -58,11 +72,15 @@ test.describe('Chat Page', () => {
       await expect(input).toHaveValue('Plan a day trip to Zermatt from Zurich');
     });
 
-    test('populates input when clicking ski resorts button', async ({ page }) => {
+    test('populates input when clicking ski resorts button', async ({
+      page,
+    }) => {
       await page.getByTestId('quick-start-ski').click();
 
       const input = page.getByTestId('chat-input');
-      await expect(input).toHaveValue('What are the best ski resorts in Switzerland?');
+      await expect(input).toHaveValue(
+        'What are the best ski resorts in Switzerland?'
+      );
     });
 
     test('quick start buttons have focus styles', async ({ page }) => {
@@ -126,7 +144,9 @@ test.describe('Chat Page', () => {
       await expect(userMessage).toContainText('Test message');
     });
 
-    test('shows loading indicator while waiting for response', async ({ page }) => {
+    test('shows loading indicator while waiting for response', async ({
+      page,
+    }) => {
       const input = page.getByTestId('chat-input');
       await input.fill('Test loading');
       await page.getByTestId('send-button').click();
@@ -191,7 +211,9 @@ test.describe('Chat Page', () => {
       await page.keyboard.press('Enter');
 
       const input = page.getByTestId('chat-input');
-      await expect(input).toHaveValue('What are the best ski resorts in Switzerland?');
+      await expect(input).toHaveValue(
+        'What are the best ski resorts in Switzerland?'
+      );
     });
   });
 
@@ -202,7 +224,9 @@ test.describe('Chat Page', () => {
       await expect(messagesRegion).toHaveAttribute('aria-live', 'polite');
     });
 
-    test('decorative emojis are hidden from screen readers', async ({ page }) => {
+    test('decorative emojis are hidden from screen readers', async ({
+      page,
+    }) => {
       const skiButton = page.getByTestId('quick-start-ski');
       const hiddenEmoji = skiButton.locator('span[aria-hidden="true"]');
       await expect(hiddenEmoji).toBeVisible();
@@ -220,7 +244,9 @@ test.describe('Chat Page - API Integration', () => {
     await page.getByTestId('send-button').click();
 
     // Wait for Companion response
-    await expect(page.getByTestId('message-Companion')).toBeVisible({ timeout: 30000 });
+    await expect(page.getByTestId('message-Companion')).toBeVisible({
+      timeout: 30000,
+    });
   });
 
   test.skip('shows tool execution for complex queries', async ({ page }) => {
@@ -234,6 +260,8 @@ test.describe('Chat Page - API Integration', () => {
     await expect(page.getByTestId('loading-indicator')).toBeVisible();
 
     // Wait for response
-    await expect(page.getByTestId('message-Companion')).toBeVisible({ timeout: 60000 });
+    await expect(page.getByTestId('message-Companion')).toBeVisible({
+      timeout: 60000,
+    });
   });
 });

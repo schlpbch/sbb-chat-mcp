@@ -1,7 +1,7 @@
 #!/bin/bash
 # LLM Integration Verification Script
 
-echo "🔍 SBB Chat MCP LLM Integration - Verification"
+echo "🔍 Swiss Travel Companion LLM Integration - Verification"
 echo "================================================"
 echo ""
 

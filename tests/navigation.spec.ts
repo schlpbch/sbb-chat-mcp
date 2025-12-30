@@ -9,8 +9,10 @@ test.describe('Navigation', () => {
   });
 
   test('should load the homepage', async ({ page }) => {
-    // Check that the nav with SBB Chat MCP heading is visible
-    const heading = page.getByRole('heading', { name: 'SBB Chat MCP' });
+    // Check that the nav with Swiss Travel Companion heading is visible
+    const heading = page.getByRole('heading', {
+      name: 'Swiss Travel Companion',
+    });
     await expect(heading).toBeVisible({ timeout: 10000 });
   });
 
@@ -20,13 +22,18 @@ test.describe('Navigation', () => {
     await expect(navbar).toBeVisible({ timeout: 10000 });
 
     // Check SBB branding
-    const heading = page.getByRole('heading', { name: 'SBB Chat MCP' });
+    const heading = page.getByRole('heading', {
+      name: 'Swiss Travel Companion',
+    });
     await expect(heading).toBeVisible({ timeout: 10000 });
   });
 
   test('should have MCP server selector', async ({ page }) => {
     // MCP server selector exists in navbar but may be hidden on mobile
-    const mcpSelector = page.locator('select').filter({ hasText: /Staging|Dev|Local/ }).first();
+    const mcpSelector = page
+      .locator('select')
+      .filter({ hasText: /Staging|Dev|Local/ })
+      .first();
     // Just check it exists in the DOM (may be hidden on small screens)
     const count = await mcpSelector.count();
     expect(count).toBeGreaterThanOrEqual(0);
@@ -46,7 +53,9 @@ test.describe('Navigation', () => {
 
     // Try to change language if this is the language selector
     const options = await languageSelector.locator('option').allTextContents();
-    if (options.some(opt => opt.includes('English') || opt.includes('Deutsch'))) {
+    if (
+      options.some((opt) => opt.includes('English') || opt.includes('Deutsch'))
+    ) {
       await languageSelector.selectOption('de');
       await page.waitForTimeout(500);
       await expect(languageSelector).toHaveValue('de');
@@ -114,10 +123,18 @@ test.describe('Menu', () => {
     await page.waitForTimeout(1000);
 
     // Check menu items exist
-    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible({ timeout: 5000 });
-    await expect(page.getByRole('link', { name: 'Chat' })).toBeVisible({ timeout: 5000 });
-    await expect(page.getByRole('link', { name: 'MCP Test' })).toBeVisible({ timeout: 5000 });
-    await expect(page.getByRole('link', { name: 'Health' })).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.getByRole('link', { name: 'Chat' })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.getByRole('link', { name: 'MCP Test' })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.getByRole('link', { name: 'Health' })).toBeVisible({
+      timeout: 5000,
+    });
   });
 
   test('should navigate to chat page', async ({ page }) => {

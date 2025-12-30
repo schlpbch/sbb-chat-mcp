@@ -1,6 +1,6 @@
-# SBB Chat MCP - Playwright Tests
+# Swiss Travel Companion - Playwright Tests
 
-This directory contains end-to-end tests for the SBB Chat MCP application using
+This directory contains end-to-end tests for the Swiss Travel Companion application using
 Playwright.
 
 ## Test Structure

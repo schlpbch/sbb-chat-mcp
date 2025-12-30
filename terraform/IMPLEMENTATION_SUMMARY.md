@@ -6,7 +6,7 @@
 
 ## Overview
 
-Successfully documented and established Terraform as the **master infrastructure configuration** for the SBB Chat MCP project. This implementation provides a complete Infrastructure as Code (IaC) solution for managing the Google Cloud Platform deployment.
+Successfully documented and established Terraform as the **master infrastructure configuration** for the Swiss Travel Companion project. This implementation provides a complete Infrastructure as Code (IaC) solution for managing the Google Cloud Platform deployment.
 
 ## What Was Created
 
@@ -63,30 +63,30 @@ The Terraform configuration manages the following GCP resources:
 
 ### Security & Identity
 
-3. **Service Account** (`google_service_account.cloudrun_sa`)
+1. **Service Account** (`google_service_account.cloudrun_sa`)
    - Dedicated identity per environment
    - Principle of least privilege
 
-4. **Secret Manager Secrets** (2 secrets)
+2. **Secret Manager Secrets** (2 secrets)
    - `gemini-api-key-{environment}`
    - `mcp-server-url-{environment}`
    - Automatic version management
 
-5. **IAM Bindings** (5 bindings)
+3. **IAM Bindings** (5 bindings)
    - Secret access for Cloud Run service
    - Cloud Build permissions
    - Public access policy (optional)
 
 ### CI/CD
 
-6. **Cloud Build Trigger** (`google_cloudbuild_trigger.app_trigger`)
+1. **Cloud Build Trigger** (`google_cloudbuild_trigger.app_trigger`)
    - Optional automatic deployments
    - GitHub integration
    - Branch-based triggers
 
 ### APIs
 
-7. **Enabled APIs** (6 APIs)
+1. **Enabled APIs** (6 APIs)
    - Cloud Run
    - Cloud Build
    - Artifact Registry
@@ -246,28 +246,33 @@ Before applying in production:
 ### Immediate Actions
 
 1. **Initialize Terraform**
+
    ```bash
    cd terraform
    terraform init
    ```
 
 2. **Configure Variables**
+
    ```bash
    cp terraform.tfvars.example terraform.tfvars
    # Edit terraform.tfvars with your values
    ```
 
 3. **Plan Infrastructure**
+
    ```bash
    terraform plan
    ```
 
 4. **Apply Configuration**
+
    ```bash
    terraform apply
    ```
 
 5. **Update Secrets**
+
    ```bash
    # Get commands from Terraform outputs
    terraform output update_gemini_key_command
@@ -290,8 +295,8 @@ Before applying in production:
 - **Quick Start:** [QUICKSTART.md](QUICKSTART.md)
 - **Migration Help:** [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)
 - **Infrastructure Overview:** [../INFRASTRUCTURE.md](../INFRASTRUCTURE.md)
-- **Terraform Docs:** https://www.terraform.io/docs
-- **GCP Provider Docs:** https://registry.terraform.io/providers/hashicorp/google/latest/docs
+- **Terraform Docs:** <https://www.terraform.io/docs>
+- **GCP Provider Docs:** <https://registry.terraform.io/providers/hashicorp/google/latest/docs>
 
 ## Conclusion
 

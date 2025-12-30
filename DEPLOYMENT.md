@@ -1,6 +1,6 @@
 # GCP Cloud Run Deployment
 
-This directory contains configuration and scripts for deploying the SBB Chat MCP application to Google Cloud Run.
+This directory contains configuration and scripts for deploying the Swiss Travel Companion application to Google Cloud Run.
 
 ## Deployment Methods
 

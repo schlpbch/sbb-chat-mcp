@@ -13,7 +13,9 @@ test.describe('Navbar Component', () => {
   });
 
   test('should display SBB branding', async ({ page }) => {
-    const heading = page.getByRole('heading', { name: 'SBB Chat MCP' });
+    const heading = page.getByRole('heading', {
+      name: 'Swiss Travel Companion',
+    });
     await expect(heading).toBeVisible({ timeout: 10000 });
   });
 
@@ -42,7 +44,14 @@ test.describe('Navbar Component', () => {
       const options = await select.locator('option').allTextContents();
 
       // Check if this is the language selector
-      if (options.some(opt => opt.includes('English') || opt.includes('Deutsch') || opt.includes('Français'))) {
+      if (
+        options.some(
+          (opt) =>
+            opt.includes('English') ||
+            opt.includes('Deutsch') ||
+            opt.includes('Français')
+        )
+      ) {
         const currentValue = await select.inputValue();
 
         // Change to a different language
@@ -67,7 +76,11 @@ test.describe('Navbar Component', () => {
       const options = await select.locator('option').allTextContents();
 
       // Check if this is the language selector
-      if (options.some(opt => opt.includes('English') || opt.includes('Deutsch'))) {
+      if (
+        options.some(
+          (opt) => opt.includes('English') || opt.includes('Deutsch')
+        )
+      ) {
         const optionCount = await select.locator('option').count();
 
         // Should support at least 3 languages (en, de, fr)
@@ -94,7 +107,14 @@ test.describe('Navbar Component', () => {
       const select = selects.nth(i);
       const options = await select.locator('option').allTextContents();
 
-      if (options.some(opt => opt.includes('Staging') || opt.includes('Dev') || opt.includes('Local'))) {
+      if (
+        options.some(
+          (opt) =>
+            opt.includes('Staging') ||
+            opt.includes('Dev') ||
+            opt.includes('Local')
+        )
+      ) {
         await expect(select).toBeVisible();
         break;
       }
@@ -124,11 +144,15 @@ test.describe('Navbar Component', () => {
   });
 
   test('should have proper SBB red color', async ({ page }) => {
-    const heading = page.getByRole('heading', { name: 'SBB Chat MCP' });
+    const heading = page.getByRole('heading', {
+      name: 'Swiss Travel Companion',
+    });
     await expect(heading).toBeVisible();
 
     // Check for SBB red in the navbar (logo background)
-    const redElements = page.locator('[class*="bg-sbb-red"], [style*="#eb0000"]');
+    const redElements = page.locator(
+      '[class*="bg-sbb-red"], [style*="#eb0000"]'
+    );
     const count = await redElements.count();
 
     expect(count).toBeGreaterThan(0);
@@ -142,7 +166,11 @@ test.describe('Navbar Component', () => {
       const select = selects.nth(i);
       const options = await select.locator('option').allTextContents();
 
-      if (options.some(opt => opt.includes('English') || opt.includes('Deutsch'))) {
+      if (
+        options.some(
+          (opt) => opt.includes('English') || opt.includes('Deutsch')
+        )
+      ) {
         await select.selectOption('de');
         await page.waitForTimeout(1000);
 
@@ -200,10 +228,18 @@ test.describe('Menu Component', () => {
     await page.waitForTimeout(1000);
 
     // Check for navigation links
-    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible({ timeout: 5000 });
-    await expect(page.getByRole('link', { name: 'Chat' })).toBeVisible({ timeout: 5000 });
-    await expect(page.getByRole('link', { name: 'MCP Test' })).toBeVisible({ timeout: 5000 });
-    await expect(page.getByRole('link', { name: 'Health' })).toBeVisible({ timeout: 5000 });
+    await expect(page.getByRole('link', { name: 'Home' })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.getByRole('link', { name: 'Chat' })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.getByRole('link', { name: 'MCP Test' })).toBeVisible({
+      timeout: 5000,
+    });
+    await expect(page.getByRole('link', { name: 'Health' })).toBeVisible({
+      timeout: 5000,
+    });
   });
 
   test('should navigate to Home page', async ({ page }) => {
@@ -271,7 +307,9 @@ test.describe('Menu Component', () => {
     await page.waitForTimeout(1000);
 
     // Menu should be visible over content
-    const menu = page.locator('aside, [role="navigation"]').filter({ hasText: 'Home' });
+    const menu = page
+      .locator('aside, [role="navigation"]')
+      .filter({ hasText: 'Home' });
     const count = await menu.count();
 
     expect(count).toBeGreaterThan(0);
@@ -298,7 +336,11 @@ test.describe('Menu Component', () => {
       const select = selects.nth(i);
       const options = await select.locator('option').allTextContents();
 
-      if (options.some(opt => opt.includes('English') || opt.includes('Deutsch'))) {
+      if (
+        options.some(
+          (opt) => opt.includes('English') || opt.includes('Deutsch')
+        )
+      ) {
         await select.selectOption('de');
         await page.waitForTimeout(1000);
         break;
@@ -351,7 +393,7 @@ test.describe('Navbar and Menu - Integration', () => {
       const select = selects.nth(i);
       const options = await select.locator('option').allTextContents();
 
-      if (options.some(opt => opt.includes('English'))) {
+      if (options.some((opt) => opt.includes('English'))) {
         await select.selectOption('de');
         await page.waitForTimeout(500);
         break;
@@ -373,7 +415,7 @@ test.describe('Navbar and Menu - Integration', () => {
       const select = selects.nth(i);
       const options = await select.locator('option').allTextContents();
 
-      if (options.some(opt => opt.includes('Deutsch'))) {
+      if (options.some((opt) => opt.includes('Deutsch'))) {
         const value = await select.inputValue();
         // Language might persist (depends on implementation)
         expect(value).toBeTruthy();

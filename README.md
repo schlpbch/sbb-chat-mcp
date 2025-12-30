@@ -1,4 +1,4 @@
-# SBB Chat MCP
+# Swiss Travel Companion
 
 An intelligent travel discovery platform for Switzerland, powered by AI and the
 Model Context Protocol (MCP).

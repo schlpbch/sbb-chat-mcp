@@ -1,10 +1,11 @@
 # Terraform Infrastructure Configuration
 
-This directory contains the Infrastructure as Code (IaC) configuration for the SBB Chat MCP application deployed on Google Cloud Platform.
+This directory contains the Infrastructure as Code (IaC) configuration for the Swiss Travel Companion application deployed on Google Cloud Platform.
 
 ## Overview
 
 The Terraform configuration manages:
+
 - Cloud Run service for the Next.js application
 - Artifact Registry repository for Docker images
 - Secret Manager secrets for API keys and configuration
@@ -15,6 +16,7 @@ The Terraform configuration manages:
 ## Prerequisites
 
 1. **Terraform**: Install Terraform >= 1.0
+
    ```bash
    # macOS
    brew install terraform
@@ -29,6 +31,7 @@ The Terraform configuration manages:
    ```
 
 2. **Google Cloud SDK**: Install and authenticate
+
    ```bash
    gcloud auth login
    gcloud auth application-default login
@@ -75,6 +78,7 @@ cp terraform.tfvars.example terraform.tfvars
 ```
 
 Edit `terraform.tfvars` with your specific values:
+
 - `project_id`: Your GCP project ID
 - `gemini_api_key`: Your Google Gemini API key
 - `mcp_server_url`: Your MCP server endpoint
@@ -228,12 +232,14 @@ By default, Terraform state is stored locally in `terraform.tfstate`. This is su
 Configure GCS backend for shared state:
 
 1. Create a GCS bucket for state:
+
    ```bash
    gsutil mb -p YOUR_PROJECT_ID -l europe-west6 gs://YOUR_PROJECT_ID-terraform-state
    gsutil versioning set on gs://YOUR_PROJECT_ID-terraform-state
    ```
 
 2. Create `backend.tf`:
+
    ```hcl
    terraform {
      backend "gcs" {
@@ -244,6 +250,7 @@ Configure GCS backend for shared state:
    ```
 
 3. Re-initialize:
+
    ```bash
    terraform init -migrate-state
    ```
@@ -251,6 +258,7 @@ Configure GCS backend for shared state:
 ## Resource Naming Convention
 
 Resources follow this pattern:
+
 - Development: `sbb-chat-mcp-dev-*`
 - Staging: `sbb-chat-mcp-staging-*`
 - Production: `sbb-chat-mcp-*`
@@ -265,6 +273,7 @@ infracost breakdown --path .
 ```
 
 Expected monthly costs (staging):
+
 - Cloud Run: ~$5-20 (with scale-to-zero)
 - Artifact Registry: ~$0.10/GB
 - Secret Manager: ~$0.06/secret/month
@@ -327,6 +336,7 @@ terraform force-unlock LOCK_ID
 If you already have resources created manually:
 
 1. **Audit existing resources**:
+
    ```bash
    gcloud run services list
    gcloud artifacts repositories list
@@ -334,12 +344,14 @@ If you already have resources created manually:
    ```
 
 2. **Import existing resources**:
+
    ```bash
    terraform import google_cloud_run_service.app projects/YOUR_PROJECT_ID/locations/europe-west6/services/sbb-chat-mcp
    terraform import google_artifact_registry_repository.repo projects/YOUR_PROJECT_ID/locations/europe-west6/repositories/sbb-chat-mcp
    ```
 
 3. **Verify with plan**:
+
    ```bash
    terraform plan
    ```
@@ -349,6 +361,7 @@ If you already have resources created manually:
 ## Support
 
 For issues or questions:
+
 - Check the [GCP Terraform Provider documentation](https://registry.terraform.io/providers/hashicorp/google/latest/docs)
 - Review Cloud Run [best practices](https://cloud.google.com/run/docs/best-practices)
 - Open an issue in the project repository

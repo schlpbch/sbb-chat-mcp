@@ -1,4 +1,4 @@
-# LLM Integration Plan - SBB Chat MCP Next
+# LLM Integration Plan - Swiss Travel Companion Next
 
 **Version**: 2.0  
 **Date**: 2025-12-27  
@@ -8,7 +8,7 @@
 
 ## Executive Summary
 
-This document outlines the comprehensive roadmap for advancing the SBB Chat MCP
+This document outlines the comprehensive roadmap for advancing the Swiss Travel Companion
 LLM integration from its current state (Phase 3: Complete) through to
 production-ready intelligent travel assistance (Phase 5). The plan builds upon
 the successful completion of multi-tool orchestration, itinerary generation,
@@ -662,7 +662,7 @@ readiness.
 
 ## Conclusion
 
-This plan provides a clear, actionable roadmap to transform SBB Chat MCP from a
+This plan provides a clear, actionable roadmap to transform Swiss Travel Companion from a
 functional LLM-integrated app into a production-ready, intelligent travel
 Companion. By focusing on orchestration, rich UX, and production optimization,
 we'll create a best-in-class experience that leverages the full power of the MCP

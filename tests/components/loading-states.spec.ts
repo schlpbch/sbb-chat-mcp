@@ -82,7 +82,9 @@ test.describe('SkeletonCard Component', () => {
 });
 
 test.describe('TypingIndicator Component', () => {
-  test('should display typing indicator with bouncing dots', async ({ page }) => {
+  test('should display typing indicator with bouncing dots', async ({
+    page,
+  }) => {
     const testHtml = `
       <!DOCTYPE html>
       <html>
@@ -447,10 +449,14 @@ test.describe('LoadingOverlay Component', () => {
 
     const message = page.getByTestId('custom-message');
     await expect(message).toBeVisible();
-    await expect(message).toHaveText('Please wait while we process your request...');
+    await expect(message).toHaveText(
+      'Please wait while we process your request...'
+    );
   });
 
-  test('should center content vertically and horizontally', async ({ page }) => {
+  test('should center content vertically and horizontally', async ({
+    page,
+  }) => {
     const testHtml = `
       <!DOCTYPE html>
       <html>
@@ -483,12 +489,16 @@ test.describe('LoadingStates - Integration', () => {
     await expect(chatInput).toBeVisible();
   });
 
-  test('should show appropriate loading state for different operations', async ({ page }) => {
+  test('should show appropriate loading state for different operations', async ({
+    page,
+  }) => {
     await page.goto('/chat');
     await page.waitForLoadState('networkidle');
 
     // Verify the page is interactive after loading
-    const heading = page.getByRole('heading', { name: /SBB Chat MCP/i });
+    const heading = page.getByRole('heading', {
+      name: /Swiss Travel Companion/i,
+    });
     await expect(heading).toBeVisible();
   });
 });

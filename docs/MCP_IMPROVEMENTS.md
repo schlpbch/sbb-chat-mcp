@@ -1,12 +1,13 @@
 # MCP Capabilities & Improvement Suggestions
 
-Comprehensive analysis and recommendations for enhancing the Model Context Protocol (MCP) integration in SBB Chat MCP.
+Comprehensive analysis and recommendations for enhancing the Model Context Protocol (MCP) integration in Swiss Travel Companion.
 
 ## Current MCP Capabilities
 
 ### Existing Tools (11 total)
 
 #### Transport Tools (5)
+
 1. ✅ `findStopPlacesByName` - Search stations by name
 2. ✅ `findPlaces` - Search POIs and addresses
 3. ✅ `findTrips` - Journey planning
@@ -14,17 +15,20 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 5. ✅ `findPlacesByLocation` - Nearby stations by coordinates
 
 #### Weather Tools (2)
+
 6. ✅ `getWeather` - Weather forecasts
-7. ✅ `getSnowConditions` - Ski resort conditions
+2. ✅ `getSnowConditions` - Ski resort conditions
 
 #### Analytics Tools (3)
+
 8. ✅ `getEcoComparison` - Environmental impact
-9. ✅ `compareRoutes` - Route comparison
-10. ✅ `journeyRanking` - Journey ranking
+2. ✅ `compareRoutes` - Route comparison
+3. ✅ `journeyRanking` - Journey ranking
 
 #### Station Tools (2)
+
 11. ✅ `getPlaceEvents` - Departure/arrival boards
-12. ✅ `getTrainFormation` - Train composition
+2. ✅ `getTrainFormation` - Train composition
 
 ---
 
@@ -33,11 +37,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ### Priority 1: Essential Missing Capabilities
 
 #### 1.1 Real-Time Service Disruptions
+
 **Tool**: `getServiceDisruptions`
 
 **Rationale**: Critical for travel planning - users need to know about delays, cancellations, and alternative routes.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getServiceDisruptions',
@@ -82,12 +88,14 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Proactive disruption alerts
 - Alternative route suggestions
 - Better user experience during service issues
 - Reduced frustration from unexpected delays
 
 **Integration**:
+
 - Add to orchestrator for automatic checking
 - Display in departure boards
 - Include in trip planning
@@ -95,11 +103,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 1.2 Ticket Pricing & Availability
+
 **Tool**: `getTicketPricing`
 
 **Rationale**: Users want to know costs before booking. Currently missing from journey results.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getTicketPricing',
@@ -144,6 +154,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Complete journey planning (route + price)
 - Discount optimization
 - Budget-conscious route selection
@@ -152,11 +163,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 1.3 Station Facilities & Accessibility
+
 **Tool**: `getStationFacilities`
 
 **Rationale**: Essential for accessibility planning and user convenience.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getStationFacilities',
@@ -194,6 +207,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Better accessibility planning
 - Complete travel information
 - Waiting time utilization (shops, services)
@@ -202,11 +216,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 1.4 Seat Reservations
+
 **Tool**: `checkSeatAvailability`
 
 **Rationale**: Required for long-distance and international travel.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'checkSeatAvailability',
@@ -243,6 +259,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Informed booking decisions
 - Mandatory reservation awareness
 - Preference-based seat selection
@@ -253,11 +270,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ### Priority 2: Enhanced User Experience
 
 #### 2.1 Multi-Modal Journey Planning
+
 **Tool**: `findMultiModalTrips`
 
 **Rationale**: Integrate P+R, bike sharing, car sharing, taxi for first/last mile.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'findMultiModalTrips',
@@ -312,6 +331,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Door-to-door journey planning
 - Rural area coverage
 - First/last mile optimization
@@ -320,11 +340,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 2.2 Live Train Tracking
+
 **Tool**: `getTrainPosition`
 
 **Rationale**: Real-time train location for better transfer planning and peace of mind.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getTrainPosition',
@@ -359,6 +381,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Transfer confidence
 - Real-time arrival estimates
 - Platform change notifications
@@ -367,11 +390,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 2.3 Journey History & Favorites
+
 **Tool**: `manageJourneyHistory`
 
 **Rationale**: Personalization and quick rebooking of frequent routes.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'manageJourneyHistory',
@@ -412,6 +437,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - One-click rebooking
 - Commuter convenience
 - Personalized suggestions
@@ -420,11 +446,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 2.4 Group Travel Planning
+
 **Tool**: `planGroupTravel`
 
 **Rationale**: Families and groups need coordination tools.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'planGroupTravel',
@@ -463,6 +491,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Group coordination
 - Seating guarantees
 - Discount optimization
@@ -473,11 +502,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ### Priority 3: Advanced Analytics
 
 #### 3.1 Crowding Predictions
+
 **Tool**: `getPredictedCrowding`
 
 **Rationale**: COVID-era feature that remains valuable for comfort.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getPredictedCrowding',
@@ -519,6 +550,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Comfort optimization
 - Earlier/later train suggestions
 - Reduced stress
@@ -527,11 +559,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 3.2 Carbon Footprint Tracking
+
 **Tool**: `trackCarbonFootprint`
 
 **Rationale**: Sustainability metrics and gamification.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'trackCarbonFootprint',
@@ -571,6 +605,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Sustainability awareness
 - Gamification ("You saved X kg CO2 this month!")
 - Behavioral change incentives
@@ -579,11 +614,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 3.3 Route Reliability Score
+
 **Tool**: `getRouteReliability`
 
 **Rationale**: Historical performance data helps users choose reliable routes.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getRouteReliability',
@@ -617,6 +654,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Informed route choice
 - Buffer time recommendations
 - Commuter planning
@@ -627,11 +665,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ### Priority 4: Accessibility & Inclusion
 
 #### 4.1 Accessibility Route Planning
+
 **Tool**: `findAccessibleRoutes`
 
 **Rationale**: Enhanced support beyond basic wheelchair filter.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'findAccessibleRoutes',
@@ -682,6 +722,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Inclusive travel
 - Assistance coordination
 - Reduced anxiety
@@ -690,11 +731,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 4.2 Multi-Language Support Enhancement
+
 **Tool**: `getLocalizedContent`
 
 **Rationale**: Better support for tourists and non-official language speakers.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getLocalizedContent',
@@ -732,6 +775,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Tourism support
 - International accessibility
 - Reduced confusion
@@ -742,11 +786,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ### Priority 5: Integration & Ecosystem
 
 #### 5.1 Calendar Integration
+
 **Tool**: `exportToCalendar`
 
 **Rationale**: Seamless integration with personal planning tools.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'exportToCalendar',
@@ -785,6 +831,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Integrated planning
 - Automatic reminders
 - Reduced missed trains
@@ -793,11 +840,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 5.2 Payment Integration
+
 **Tool**: `initiatePayment`
 
 **Rationale**: End-to-end booking in-app.
 
 **Implementation**:
+
 ```typescript
 {
   name: 'initiatePayment',
@@ -839,6 +888,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - Complete booking flow
 - Revenue opportunity
 - User convenience
@@ -847,11 +897,13 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ---
 
 #### 5.3 Third-Party Service Integration
+
 **Tool**: `getConnectedServices`
 
 **Rationale**: Ecosystem partnerships (hotels, car rentals, events).
 
 **Implementation**:
+
 ```typescript
 {
   name: 'getConnectedServices',
@@ -902,6 +954,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ```
 
 **Benefits**:
+
 - One-stop planning
 - Partner revenue
 - Enhanced value proposition
@@ -912,6 +965,7 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ## Implementation Roadmap
 
 ### Phase 1: Critical Foundations (Months 1-2)
+
 **Priority**: High-impact, user-facing features
 
 1. ✅ **Service Disruptions** - Most requested feature
@@ -933,84 +987,88 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
    - Estimated effort: 2 weeks
 
 ### Phase 2: User Experience (Months 3-4)
+
 **Priority**: Differentiation and personalization
 
-4. ✅ **Seat Reservations** - Premium experience
+1. ✅ **Seat Reservations** - Premium experience
    - Availability check
    - Preference matching
    - Reservation API
    - Estimated effort: 2 weeks
 
-5. ✅ **Live Train Tracking** - Peace of mind feature
+2. ✅ **Live Train Tracking** - Peace of mind feature
    - Real-time position API
    - Map visualization
    - Push notifications
    - Estimated effort: 3 weeks
 
-6. ✅ **Multi-Modal Planning** - Door-to-door
+3. ✅ **Multi-Modal Planning** - Door-to-door
    - P+R integration
    - Bike/car sharing APIs
    - Walking directions
    - Estimated effort: 4 weeks
 
 ### Phase 3: Personalization (Months 5-6)
+
 **Priority**: Engagement and retention
 
-7. ✅ **Journey History** - User stickiness
+1. ✅ **Journey History** - User stickiness
    - User database
    - Favorites system
    - Quick rebooking
    - Estimated effort: 2 weeks
 
-8. ✅ **Group Travel** - Family/corporate market
+2. ✅ **Group Travel** - Family/corporate market
    - Group logic
    - Discount calculator
    - Seating algorithm
    - Estimated effort: 3 weeks
 
-9. ✅ **Crowding Predictions** - Comfort optimization
+3. ✅ **Crowding Predictions** - Comfort optimization
    - Historical data analysis
    - ML prediction model
    - UI integration
    - Estimated effort: 4 weeks
 
 ### Phase 4: Advanced Features (Months 7-9)
+
 **Priority**: Premium tier / competitive advantage
 
-10. ✅ **Carbon Tracking** - Sustainability focus
+1. ✅ **Carbon Tracking** - Sustainability focus
     - Calculation engine
     - User dashboard
     - Gamification
     - Estimated effort: 3 weeks
 
-11. ✅ **Route Reliability** - Data-driven decisions
+2. ✅ **Route Reliability** - Data-driven decisions
     - Historical analysis
     - Scoring algorithm
     - Visualization
     - Estimated effort: 3 weeks
 
-12. ✅ **Accessibility Routes** - Inclusive platform
+3. ✅ **Accessibility Routes** - Inclusive platform
     - Specialized routing
     - Assistance coordination
     - Testing with users
     - Estimated effort: 4 weeks
 
 ### Phase 5: Ecosystem (Months 10-12)
+
 **Priority**: Platform play and monetization
 
-13. ✅ **Calendar Integration** - Modern UX
+1. ✅ **Calendar Integration** - Modern UX
     - Export formats
     - Reminder system
     - OAuth integration
     - Estimated effort: 2 weeks
 
-14. ✅ **Payment Integration** - Revenue generation
+2. ✅ **Payment Integration** - Revenue generation
     - Payment gateway
     - Security compliance
     - Ticket delivery
     - Estimated effort: 6 weeks
 
-15. ✅ **Partner Services** - Ecosystem expansion
+3. ✅ **Partner Services** - Ecosystem expansion
     - Partner APIs
     - Booking engine
     - Revenue sharing
@@ -1023,9 +1081,11 @@ Comprehensive analysis and recommendations for enhancing the Model Context Proto
 ### MCP Server Enhancements
 
 #### 1. Caching Layer
+
 **Problem**: Repeated calls to same endpoints waste resources
 
 **Solution**:
+
 ```typescript
 // Add to toolExecutor.ts
 interface CacheConfig {
@@ -1038,15 +1098,18 @@ interface CacheConfig {
 ```
 
 **Benefits**:
+
 - 60-80% reduction in API calls
 - Faster response times
 - Lower costs
 - Better rate limit management
 
 #### 2. Request Batching
+
 **Problem**: Orchestrator makes sequential calls that could be parallel
 
 **Solution**:
+
 ```typescript
 // Enhanced planExecutor.ts
 async function executePlanOptimized(plan: ExecutionPlan) {
@@ -1061,14 +1124,17 @@ async function executePlanOptimized(plan: ExecutionPlan) {
 ```
 
 **Benefits**:
+
 - 40-60% faster orchestration
 - Better resource utilization
 - Improved UX
 
 #### 3. Webhook Support
+
 **Problem**: Polling for disruptions/delays is inefficient
 
 **Solution**:
+
 ```typescript
 // Add webhook registration
 {
@@ -1087,14 +1153,17 @@ async function executePlanOptimized(plan: ExecutionPlan) {
 ```
 
 **Benefits**:
+
 - Real-time notifications
 - Reduced polling overhead
 - Better user experience
 
 #### 4. GraphQL Support
+
 **Problem**: Over-fetching data with REST endpoints
 
 **Solution**:
+
 ```graphql
 query TripPlan {
   trip(origin: "Zurich", destination: "Bern") {
@@ -1118,6 +1187,7 @@ query TripPlan {
 ```
 
 **Benefits**:
+
 - Precise data fetching
 - Reduced bandwidth
 - Flexible queries
@@ -1130,6 +1200,7 @@ query TripPlan {
 ### Key Metrics to Track
 
 #### 1. Tool Usage Analytics
+
 ```typescript
 interface ToolMetrics {
   toolName: string;
@@ -1143,12 +1214,14 @@ interface ToolMetrics {
 ```
 
 **Track**:
+
 - Most/least used tools
 - Performance bottlenecks
 - Error patterns
 - User preferences
 
 #### 2. Orchestration Metrics
+
 ```typescript
 interface OrchestrationMetrics {
   planType: string;
@@ -1161,11 +1234,13 @@ interface OrchestrationMetrics {
 ```
 
 **Track**:
+
 - Plan success rates
 - Optimization opportunities
 - User satisfaction correlation
 
 #### 3. Business Metrics
+
 ```typescript
 interface BusinessMetrics {
   conversionRate: number;      // Browse → Book
@@ -1181,12 +1256,14 @@ interface BusinessMetrics {
 ## Security & Privacy Considerations
 
 ### 1. Data Protection
+
 - ✅ GDPR compliance for journey history
 - ✅ Anonymize analytics data
 - ✅ Secure payment handling (PCI DSS)
 - ✅ End-to-end encryption for sensitive data
 
 ### 2. Rate Limiting Enhancements
+
 ```typescript
 // Per-tool rate limits
 const TOOL_RATE_LIMITS = {
@@ -1197,6 +1274,7 @@ const TOOL_RATE_LIMITS = {
 ```
 
 ### 3. API Key Management
+
 - Rotate MCP server credentials
 - Implement API key scoping
 - Monitor for abuse
@@ -1220,12 +1298,14 @@ const TOOL_RATE_LIMITS = {
 ### Expected ROI
 
 **Year 1**:
+
 - 📈 +40% user engagement (history, favorites)
 - 💰 +25% conversion rate (pricing transparency)
 - 👥 +60% new user acquisition (accessibility, multi-modal)
 - 🎯 +30% user retention (disruption alerts, tracking)
 
 **Revenue Impact**:
+
 - Direct bookings: +CHF 2M/year
 - Partner commissions: +CHF 500k/year
 - Premium features: +CHF 300k/year

@@ -1,4 +1,4 @@
-# Terraform Outputs for SBB Chat MCP
+# Terraform Outputs for Swiss Travel Companion
 
 output "project_id" {
   description = "GCP Project ID"

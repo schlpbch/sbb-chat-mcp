@@ -2,11 +2,11 @@
 
 **Last Updated:** 2025-12-30
 
-This document provides a comprehensive overview of the SBB Chat MCP cloud infrastructure.
+This document provides a comprehensive overview of the Swiss Travel Companion cloud infrastructure.
 
 ## Executive Summary
 
-The SBB Chat MCP application is deployed on **Google Cloud Platform** using a modern serverless architecture. The infrastructure is fully managed through **Terraform** (Infrastructure as Code), ensuring reproducibility, version control, and team collaboration.
+The Swiss Travel Companion application is deployed on **Google Cloud Platform** using a modern serverless architecture. The infrastructure is fully managed through **Terraform** (Infrastructure as Code), ensuring reproducibility, version control, and team collaboration.
 
 ### Key Metrics
 
@@ -107,6 +107,7 @@ The SBB Chat MCP application is deployed on **Google Cloud Platform** using a mo
 - Configurable per environment
 
 **Managed by:**
+
 - Pipeline: `cloudbuild.yaml`
 - Trigger: `terraform/main.tf` → `google_cloudbuild_trigger.app_trigger`
 
@@ -511,8 +512,8 @@ terraform force-unlock LOCK_ID
 ### Support Contacts
 
 - **Infrastructure Issues:** Check [terraform/README.md](terraform/README.md)
-- **GCP Support:** https://cloud.google.com/support
-- **Terraform Issues:** https://github.com/hashicorp/terraform/issues
+- **GCP Support:** <https://cloud.google.com/support>
+- **Terraform Issues:** <https://github.com/hashicorp/terraform/issues>
 
 ---
 

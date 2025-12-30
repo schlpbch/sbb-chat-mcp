@@ -452,10 +452,22 @@ test.describe('Input Component', () => {
 
     await page.setContent(testHtml);
 
-    await expect(page.getByTestId('email-input')).toHaveAttribute('type', 'email');
-    await expect(page.getByTestId('password-input')).toHaveAttribute('type', 'password');
-    await expect(page.getByTestId('number-input')).toHaveAttribute('type', 'number');
-    await expect(page.getByTestId('date-input')).toHaveAttribute('type', 'date');
+    await expect(page.getByTestId('email-input')).toHaveAttribute(
+      'type',
+      'email'
+    );
+    await expect(page.getByTestId('password-input')).toHaveAttribute(
+      'type',
+      'password'
+    );
+    await expect(page.getByTestId('number-input')).toHaveAttribute(
+      'type',
+      'number'
+    );
+    await expect(page.getByTestId('date-input')).toHaveAttribute(
+      'type',
+      'date'
+    );
   });
 });
 
@@ -644,12 +656,16 @@ test.describe('UI Components - Integration', () => {
     await expect(sendButton).toBeVisible();
   });
 
-  test('should maintain consistent styling across components', async ({ page }) => {
+  test('should maintain consistent styling across components', async ({
+    page,
+  }) => {
     await page.goto('/chat');
     await page.waitForLoadState('networkidle');
 
     // Check that SBB branding is consistent
-    const heading = page.getByRole('heading', { name: /SBB Chat MCP/i });
+    const heading = page.getByRole('heading', {
+      name: /Swiss Travel Companion/i,
+    });
     await expect(heading).toBeVisible();
   });
 });

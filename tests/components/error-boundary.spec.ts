@@ -6,7 +6,9 @@ import { test, expect } from '@playwright/test';
  */
 
 test.describe('ErrorBoundary Component', () => {
-  test('should display error fallback UI when error occurs', async ({ page }) => {
+  test('should display error fallback UI when error occurs', async ({
+    page,
+  }) => {
     // Navigate to a test page that will trigger an error
     await page.goto('/chat');
     await page.waitForLoadState('networkidle');
@@ -36,7 +38,9 @@ test.describe('ErrorBoundary Component', () => {
     await page.waitForLoadState('networkidle');
 
     // Verify the page loads without immediate errors
-    const heading = await page.getByRole('heading', { name: /SBB Chat MCP/i });
+    const heading = await page.getByRole('heading', {
+      name: /Swiss Travel Companion/i,
+    });
     await expect(heading).toBeVisible();
   });
 
@@ -97,10 +101,15 @@ test.describe('ErrorBoundary Component', () => {
 
     const refreshBtn = page.getByTestId('refresh-btn');
     await expect(refreshBtn).toBeVisible();
-    await expect(refreshBtn).toHaveAttribute('onclick', 'window.location.reload()');
+    await expect(refreshBtn).toHaveAttribute(
+      'onclick',
+      'window.location.reload()'
+    );
   });
 
-  test('should show technical details in collapsible section', async ({ page }) => {
+  test('should show technical details in collapsible section', async ({
+    page,
+  }) => {
     const testHtml = `
       <!DOCTYPE html>
       <html>
@@ -212,7 +221,9 @@ test.describe('ErrorBoundary - Integration', () => {
     await page.waitForLoadState('networkidle');
 
     // App should work normally when no errors occur
-    const heading = page.getByRole('heading', { name: /SBB Chat MCP/i });
+    const heading = page.getByRole('heading', {
+      name: /Swiss Travel Companion/i,
+    });
     await expect(heading).toBeVisible();
 
     const chatInput = page.getByTestId('chat-input');
@@ -225,7 +236,9 @@ test.describe('ErrorBoundary - Integration', () => {
 
     // Multiple error boundaries can exist in the component tree
     // Each catches errors in its own subtree
-    const page_exists = await page.evaluate(() => typeof document !== 'undefined');
+    const page_exists = await page.evaluate(
+      () => typeof document !== 'undefined'
+    );
     expect(page_exists).toBe(true);
   });
 

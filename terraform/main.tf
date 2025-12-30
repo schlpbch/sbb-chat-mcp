@@ -1,4 +1,4 @@
-# SBB Chat MCP - Terraform Configuration
+# Swiss Travel Companion - Terraform Configuration
 # Google Cloud Platform Infrastructure
 
 terraform {
@@ -37,7 +37,7 @@ resource "google_project_service" "required_apis" {
 resource "google_artifact_registry_repository" "repo" {
   location      = var.region
   repository_id = var.artifact_registry_repo_id
-  description   = "SBB Chat MCP container images"
+  description   = "Swiss Travel Companion container images"
   format        = "DOCKER"
 
   labels = {

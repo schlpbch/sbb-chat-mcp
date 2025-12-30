@@ -1,6 +1,6 @@
 # Terraform Quick Start Guide
 
-Get your SBB Chat MCP infrastructure up and running in 10 minutes.
+Get your Swiss Travel Companion infrastructure up and running in 10 minutes.
 
 ## Prerequisites
 
@@ -21,7 +21,7 @@ gcloud auth application-default login
 
 ```bash
 # Create a new project (optional)
-gcloud projects create sbb-chat-mcp-project --name="SBB Chat MCP"
+gcloud projects create sbb-chat-mcp-project --name="Swiss Travel Companion"
 
 # Set the project
 export PROJECT_ID="sbb-chat-mcp-project"
@@ -67,6 +67,7 @@ terraform apply
 Type `yes` when prompted.
 
 **This creates**:
+
 - Cloud Run service
 - Artifact Registry repository
 - Secret Manager secrets (with placeholders)
@@ -125,7 +126,8 @@ start $SERVICE_URL  # Windows
 
 ## That's It! 🎉
 
-Your SBB Chat MCP application is now running on Cloud Run with:
+Your Swiss Travel Companion application is now running on Cloud Run with:
+
 - Auto-scaling (0-10 instances)
 - HTTPS enabled
 - Secrets managed securely
@@ -241,6 +243,7 @@ gcloud secrets versions access latest --secret=mcp-server-url-staging
 ## Cost Estimation
 
 With default settings (staging environment):
+
 - **Cloud Run**: $5-20/month (scales to zero when idle)
 - **Artifact Registry**: ~$0.10/GB storage
 - **Secret Manager**: ~$0.06/secret/month
@@ -252,5 +255,5 @@ With default settings (staging environment):
 
 - Full documentation: [README.md](README.md)
 - Migration guide: [MIGRATION_GUIDE.md](MIGRATION_GUIDE.md)
-- Terraform docs: https://www.terraform.io/docs
-- GCP Provider docs: https://registry.terraform.io/providers/hashicorp/google/latest/docs
+- Terraform docs: <https://www.terraform.io/docs>
+- GCP Provider docs: <https://registry.terraform.io/providers/hashicorp/google/latest/docs>

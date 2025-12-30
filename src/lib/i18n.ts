@@ -10,9 +10,10 @@ export const translations = {
       about: 'About',
     },
     welcome: {
-      title: 'Your Swiss Travel',
-      subtitle: 'Companion',
-      description: 'Discover connections, check weather, explore stations, and plan eco-friendly journeys across Switzerland.',
+      title: 'Swiss Travel Companion',
+      subtitle: 'Your intelligent companion for Swiss public transport',
+      description:
+        'Discover connections, check weather, explore stations, and plan eco-friendly journeys across Switzerland.',
       exploreTitle: 'Explore 25 Ways to Travel Smarter',
       allQuestions: 'All',
       categoryJourneyPlanning: 'Journey Planning',
@@ -23,7 +24,8 @@ export const translations = {
       categoryAccessibility: 'Accessibility',
     },
     chat: {
-      inputPlaceholder: 'Ask about trains, stations, or travel plans... (Markdown supported)',
+      inputPlaceholder:
+        'Ask about trains, stations, or travel plans...',
       send: 'Send',
       thinking: 'Thinking...',
       pressEnter: 'Press Enter to send, Shift+Enter for new line',
@@ -199,7 +201,8 @@ export const translations = {
     },
     onboarding: {
       welcome: 'Welcome to SBB Chat Companion!',
-      welcomeDesc: 'Your intelligent companion for Swiss public transport journeys and station information.',
+      welcomeDesc:
+        'Your intelligent companion for Swiss public transport journeys and station information.',
       capabilities: 'I can help you with:',
       findTrains: 'Finding train connections across Switzerland',
       checkWeather: 'Checking weather forecasts for your destination',
@@ -212,9 +215,11 @@ export const translations = {
       example2: "What's the weather in St. Moritz?",
       example3: 'Show departures from Geneva',
       proTip: 'Pro Tip:',
-      proTipDesc: 'Use markdown formatting for complex queries with preferences and multiple questions!',
+      proTipDesc:
+        'Use markdown formatting for complex queries with preferences and multiple questions!',
       richResponses: 'Rich Responses',
-      richResponsesDesc: 'Get beautiful, interactive cards with all the information you need.',
+      richResponsesDesc:
+        'Get beautiful, interactive cards with all the information you need.',
       responses: 'I provide rich, visual responses including:',
       tripCards: 'Trip Cards',
       tripCardsDesc: 'Detailed journey information with times and platforms',
@@ -227,9 +232,11 @@ export const translations = {
       quickTips: 'Quick Tips',
       quickTipsDesc: 'Make the most of your SBB Chat Companion experience.',
       tip1Title: 'Use Example Queries',
-      tip1Desc: 'Click any example on the welcome screen to get started quickly',
+      tip1Desc:
+        'Click any example on the welcome screen to get started quickly',
       tip2Title: 'Try Markdown Formatting',
-      tip2Desc: 'Use **bold** for stations, lists for preferences, and headings for multi-part queries',
+      tip2Desc:
+        'Use **bold** for stations, lists for preferences, and headings for multi-part queries',
       tip3Title: 'Switch Languages',
       tip3Desc: 'Use the language selector for EN, DE, FR, IT, ZH, or HI',
       tip4Title: 'Need Help?',
@@ -298,7 +305,7 @@ export const translations = {
       systemStatus: 'System status',
     },
     navbar: {
-      appTitle: 'SBB Chat MCP',
+      appTitle: 'Swiss Travel Companion',
       travelCompanion: 'Travel Companion',
       toggleMenu: 'Toggle menu',
       mcpServer: {
@@ -336,7 +343,7 @@ export const translations = {
       developer: 'Developer',
       mcpServerEnvironment: 'MCP Server Environment',
       mcpServerNote: 'Changing this will reload the application.',
-      versionInfo: 'SBB Chat MCP v2.2.0 • Local Data Only',
+      versionInfo: 'Swiss Travel Companion v2.2.0 • Local Data Only',
     },
     common: {
       close: 'Close',
@@ -370,7 +377,8 @@ export const translations = {
     welcome: {
       title: 'Ihr Schweizer Reise',
       subtitle: 'Begleiter',
-      description: 'Verbindungen finden, Wetter prüfen, Bahnhöfe erkunden und umweltfreundliche Reisen in der Schweiz planen.',
+      description:
+        'Verbindungen finden, Wetter prüfen, Bahnhöfe erkunden und umweltfreundliche Reisen in der Schweiz planen.',
       exploreTitle: '25 Wege zu intelligentem Reisen',
       allQuestions: 'Alle',
       categoryJourneyPlanning: 'Reiseplanung',
@@ -381,7 +389,8 @@ export const translations = {
       categoryAccessibility: 'Barrierefreiheit',
     },
     chat: {
-      inputPlaceholder: 'Fragen Sie nach Zügen, Bahnhöfen oder Reiseplänen... (Markdown unterstützt)',
+      inputPlaceholder:
+        'Fragen Sie nach Zügen, Bahnhöfen oder Reiseplänen... (Markdown unterstützt)',
       send: 'Senden',
       thinking: 'Denke nach...',
       pressEnter: 'Enter zum Senden, Shift+Enter für neue Zeile',
@@ -543,10 +552,12 @@ export const translations = {
     errors: {
       network: 'Keine Internetverbindung. Bitte überprüfen Sie Ihr Netzwerk.',
       api: 'Dienst vorübergehend nicht verfügbar. Bitte versuchen Sie es erneut.',
-      timeout: 'Anfrage hat zu lange gedauert. Versuchen Sie eine einfachere Abfrage.',
+      timeout:
+        'Anfrage hat zu lange gedauert. Versuchen Sie eine einfachere Abfrage.',
       server: 'Reisedaten vorübergehend nicht verfügbar.',
       validation: 'Ungültige Eingabe. Bitte überprüfen Sie Ihre Anfrage.',
-      general: 'Entschuldigung, ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
+      general:
+        'Entschuldigung, ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut.',
       retry: 'Wiederholen',
       dismiss: 'Schließen',
       showDetails: 'Details anzeigen',
@@ -557,22 +568,26 @@ export const translations = {
     },
     onboarding: {
       welcome: 'Willkommen beim SBB Chat-Assistenten!',
-      welcomeDesc: 'Ihr intelligenter Begleiter für Schweizer öffentliche Verkehrsreisen und Bahnhofsinformationen.',
+      welcomeDesc:
+        'Ihr intelligenter Begleiter für Schweizer öffentliche Verkehrsreisen und Bahnhofsinformationen.',
       capabilities: 'Ich kann Ihnen helfen mit:',
       findTrains: 'Zugverbindungen in der ganzen Schweiz finden',
       checkWeather: 'Wettervorhersagen für Ihr Ziel prüfen',
       stationInfo: 'Bahnhofsinformationen und Live-Abfahrten abrufen',
       discoverAttractions: 'Touristenattraktionen und Skigebiete entdecken',
       howToAsk: 'Wie man Fragen stellt',
-      howToAskDesc: 'Tippen Sie einfach natürlich - ich verstehe normale Sprache!',
+      howToAskDesc:
+        'Tippen Sie einfach natürlich - ich verstehe normale Sprache!',
       simpleExamples: 'Einfache Beispiele:',
       example1: 'Finde Züge von Zürich nach Bern morgen um 9 Uhr',
       example2: 'Wie ist das Wetter in St. Moritz?',
       example3: 'Zeige Abfahrten von Genf',
       proTip: 'Profi-Tipp:',
-      proTipDesc: 'Verwenden Sie Markdown-Formatierung für komplexe Anfragen mit Präferenzen und mehreren Fragen!',
+      proTipDesc:
+        'Verwenden Sie Markdown-Formatierung für komplexe Anfragen mit Präferenzen und mehreren Fragen!',
       richResponses: 'Umfangreiche Antworten',
-      richResponsesDesc: 'Erhalten Sie schöne, interaktive Karten mit allen benötigten Informationen.',
+      richResponsesDesc:
+        'Erhalten Sie schöne, interaktive Karten mit allen benötigten Informationen.',
       responses: 'Ich biete umfangreiche, visuelle Antworten, einschließlich:',
       tripCards: 'Reisekarten',
       tripCardsDesc: 'Detaillierte Reiseinformationen mit Zeiten und Gleisen',
@@ -583,15 +598,20 @@ export const translations = {
       touristCards: 'Touristeninfo',
       touristCardsDesc: 'Sehenswürdigkeiten und Aktivitäten',
       quickTips: 'Schnelle Tipps',
-      quickTipsDesc: 'Holen Sie das Beste aus Ihrem SBB Chat-Assistenten heraus.',
+      quickTipsDesc:
+        'Holen Sie das Beste aus Ihrem SBB Chat-Assistenten heraus.',
       tip1Title: 'Beispielabfragen verwenden',
-      tip1Desc: 'Klicken Sie auf ein Beispiel auf dem Willkommensbildschirm, um schnell zu beginnen',
+      tip1Desc:
+        'Klicken Sie auf ein Beispiel auf dem Willkommensbildschirm, um schnell zu beginnen',
       tip2Title: 'Markdown-Formatierung ausprobieren',
-      tip2Desc: 'Verwenden Sie **fett** für Stationen, Listen für Präferenzen und Überschriften für mehrteilige Abfragen',
+      tip2Desc:
+        'Verwenden Sie **fett** für Stationen, Listen für Präferenzen und Überschriften für mehrteilige Abfragen',
       tip3Title: 'Sprachen wechseln',
-      tip3Desc: 'Verwenden Sie den Sprachauswähler für DE, EN, FR, IT, ZH oder HI',
+      tip3Desc:
+        'Verwenden Sie den Sprachauswähler für DE, EN, FR, IT, ZH oder HI',
       tip4Title: 'Brauchen Sie Hilfe?',
-      tip4Desc: 'Klicken Sie jederzeit auf die Hilfe-Schaltfläche (?), um dieses Tutorial erneut zu sehen',
+      tip4Desc:
+        'Klicken Sie jederzeit auf die Hilfe-Schaltfläche (?), um dieses Tutorial erneut zu sehen',
       previous: 'Zurück',
       next: 'Weiter',
       skip: 'Überspringen',
@@ -606,8 +626,10 @@ export const translations = {
       feature: 'Funktion',
       experience: 'Wie ist Ihre Erfahrung? (optional)',
       tellUsMore: 'Erzählen Sie uns mehr',
-      bugPlaceholder: 'Beschreiben Sie den Fehler und die Schritte zur Reproduktion...',
-      featurePlaceholder: 'Beschreiben Sie die Funktion, die Sie gerne sehen würden...',
+      bugPlaceholder:
+        'Beschreiben Sie den Fehler und die Schritte zur Reproduktion...',
+      featurePlaceholder:
+        'Beschreiben Sie die Funktion, die Sie gerne sehen würden...',
       generalPlaceholder: 'Teilen Sie Ihre Gedanken...',
       emailOptional: 'E-Mail (optional, für Rückfragen)',
       emailPlaceholder: 'ihre@email.com',
@@ -629,15 +651,19 @@ export const translations = {
       heading: 'Überschrift - Komplexe Abfragen organisieren',
       examples: 'Beispiele',
       simpleTrip: 'Einfache Reiseabfrage',
-      simpleTripDesc: 'Verwenden Sie **fett** für Stationen und `Code` für Zeiten',
+      simpleTripDesc:
+        'Verwenden Sie **fett** für Stationen und `Code` für Zeiten',
       withPreferences: 'Mit Präferenzen',
       withPreferencesDesc: 'Verwenden Sie Aufzählungslisten für Präferenzen',
       multiPart: 'Mehrteilige Abfrage',
       multiPartDesc: 'Verwenden Sie Überschriften und nummerierte Listen',
       proTips: 'Profi-Tipps',
-      proTip1: 'Markdown hilft der KI, Ihre Abfragestruktur besser zu verstehen',
-      proTip2: 'Sie können mehrere Formatierungstypen in einer Abfrage kombinieren',
-      proTip3: 'Einfache Textabfragen funktionieren auch hervorragend - Markdown ist optional!',
+      proTip1:
+        'Markdown hilft der KI, Ihre Abfragestruktur besser zu verstehen',
+      proTip2:
+        'Sie können mehrere Formatierungstypen in einer Abfrage kombinieren',
+      proTip3:
+        'Einfache Textabfragen funktionieren auch hervorragend - Markdown ist optional!',
     },
     help: {
       needHelp: 'Brauchen Sie Hilfe?',
@@ -656,7 +682,7 @@ export const translations = {
       systemStatus: 'Systemstatus',
     },
     navbar: {
-      appTitle: 'SBB Chat MCP',
+      appTitle: 'Swiss Travel Companion',
       travelCompanion: 'Reiseassistent',
       toggleMenu: 'Menü umschalten',
       mcpServer: {
@@ -694,7 +720,7 @@ export const translations = {
       developer: 'Entwickler',
       mcpServerEnvironment: 'MCP-Serverumgebung',
       mcpServerNote: 'Das Ändern dieser Einstellung lädt die Anwendung neu.',
-      versionInfo: 'SBB Chat MCP v2.2.0 • Nur lokale Daten',
+      versionInfo: 'Swiss Travel Companion v2.2.0 • Nur lokale Daten',
     },
     common: {
       close: 'Schließen',
@@ -728,7 +754,8 @@ export const translations = {
     welcome: {
       title: 'Votre Compagnon',
       subtitle: 'de Voyage Suisse',
-      description: 'Découvrez les connexions, consultez la météo, explorez les gares et planifiez des voyages écologiques en Suisse.',
+      description:
+        'Découvrez les connexions, consultez la météo, explorez les gares et planifiez des voyages écologiques en Suisse.',
       exploreTitle: 'Découvrez 25 Façons de Voyager Intelligemment',
       allQuestions: 'Tout',
       categoryJourneyPlanning: 'Planification',
@@ -739,7 +766,8 @@ export const translations = {
       categoryAccessibility: 'Accessibilité',
     },
     chat: {
-      inputPlaceholder: 'Posez des questions sur les trains, les gares ou les plans de voyage... (Markdown pris en charge)',
+      inputPlaceholder:
+        'Posez des questions sur les trains, les gares ou les plans de voyage... (Markdown pris en charge)',
       send: 'Envoyer',
       thinking: 'Réflexion...',
       pressEnter: 'Entrée pour envoyer, Shift+Entrée pour nouvelle ligne',
@@ -836,7 +864,7 @@ export const translations = {
       treesPerYear: 'arbres/an',
     },
     compare: {
-      routeComparison: 'Comparaison d\'itinéraires',
+      routeComparison: "Comparaison d'itinéraires",
       comparing: 'Comparaison',
       options: 'options',
       option: 'Option',
@@ -901,39 +929,47 @@ export const translations = {
     errors: {
       network: 'Pas de connexion Internet. Veuillez vérifier votre réseau.',
       api: 'Service temporairement indisponible. Veuillez réessayer.',
-      timeout: 'La requête a pris trop de temps. Essayez une requête plus simple.',
+      timeout:
+        'La requête a pris trop de temps. Essayez une requête plus simple.',
       server: 'Données de voyage temporairement indisponibles.',
       validation: 'Entrée invalide. Veuillez vérifier votre requête.',
-      general: 'Désolé, une erreur s\'est produite. Veuillez réessayer.',
+      general: "Désolé, une erreur s'est produite. Veuillez réessayer.",
       retry: 'Réessayer',
       dismiss: 'Fermer',
       showDetails: 'Afficher les détails',
       hideDetails: 'Masquer les détails',
-      somethingWentWrong: 'Quelque chose s\'est mal passé',
+      somethingWentWrong: "Quelque chose s'est mal passé",
       refreshPage: 'Actualiser la page',
       tryAgain: 'Réessayer',
     },
     onboarding: {
-      welcome: 'Bienvenue sur l\'Companion Chat CFF!',
-      welcomeDesc: 'Votre compagnon intelligent pour les voyages en transports publics suisses et les informations sur les gares.',
+      welcome: "Bienvenue sur l'Companion Chat CFF!",
+      welcomeDesc:
+        'Votre compagnon intelligent pour les voyages en transports publics suisses et les informations sur les gares.',
       capabilities: 'Je peux vous aider avec:',
       findTrains: 'Trouver des connexions ferroviaires dans toute la Suisse',
       checkWeather: 'Vérifier les prévisions météo pour votre destination',
-      stationInfo: 'Obtenir des informations sur les gares et les départs en direct',
-      discoverAttractions: 'Découvrir les attractions touristiques et les stations de ski',
+      stationInfo:
+        'Obtenir des informations sur les gares et les départs en direct',
+      discoverAttractions:
+        'Découvrir les attractions touristiques et les stations de ski',
       howToAsk: 'Comment poser des questions',
-      howToAskDesc: 'Tapez simplement naturellement - je comprends le langage courant!',
+      howToAskDesc:
+        'Tapez simplement naturellement - je comprends le langage courant!',
       simpleExamples: 'Exemples simples:',
       example1: 'Trouver des trains de Zurich à Berne demain à 9h',
       example2: 'Quel temps fait-il à St-Moritz?',
       example3: 'Afficher les départs de Genève',
       proTip: 'Conseil de pro:',
-      proTipDesc: 'Utilisez le formatage Markdown pour des requêtes complexes avec des préférences et plusieurs questions!',
+      proTipDesc:
+        'Utilisez le formatage Markdown pour des requêtes complexes avec des préférences et plusieurs questions!',
       richResponses: 'Réponses enrichies',
-      richResponsesDesc: 'Obtenez de belles cartes interactives avec toutes les informations dont vous avez besoin.',
+      richResponsesDesc:
+        'Obtenez de belles cartes interactives avec toutes les informations dont vous avez besoin.',
       responses: 'Je fournis des réponses riches et visuelles, notamment:',
       tripCards: 'Cartes de voyage',
-      tripCardsDesc: 'Informations détaillées sur le voyage avec horaires et quais',
+      tripCardsDesc:
+        'Informations détaillées sur le voyage avec horaires et quais',
       weatherCards: 'Cartes météo',
       weatherCardsDesc: 'Conditions actuelles et prévisions',
       stationCards: 'Info gare',
@@ -943,13 +979,16 @@ export const translations = {
       quickTips: 'Conseils rapides',
       quickTipsDesc: 'Tirez le meilleur parti de votre Companion Chat CFF.',
       tip1Title: 'Utiliser les exemples de requêtes',
-      tip1Desc: 'Cliquez sur un exemple sur l\'écran d\'accueil pour commencer rapidement',
+      tip1Desc:
+        "Cliquez sur un exemple sur l'écran d'accueil pour commencer rapidement",
       tip2Title: 'Essayer le formatage Markdown',
-      tip2Desc: 'Utilisez **gras** pour les gares, des listes pour les préférences et des titres pour les requêtes en plusieurs parties',
+      tip2Desc:
+        'Utilisez **gras** pour les gares, des listes pour les préférences et des titres pour les requêtes en plusieurs parties',
       tip3Title: 'Changer de langue',
       tip3Desc: 'Utilisez le sélecteur de langue pour FR, EN, DE, IT, ZH ou HI',
-      tip4Title: 'Besoin d\'aide?',
-      tip4Desc: 'Cliquez sur le bouton d\'aide (?) à tout moment pour revoir ce tutoriel',
+      tip4Title: "Besoin d'aide?",
+      tip4Desc:
+        "Cliquez sur le bouton d'aide (?) à tout moment pour revoir ce tutoriel",
       previous: 'Précédent',
       next: 'Suivant',
       skip: 'Passer',
@@ -965,7 +1004,8 @@ export const translations = {
       experience: 'Comment est votre expérience? (optionnel)',
       tellUsMore: 'Dites-nous en plus',
       bugPlaceholder: 'Décrivez le bug et les étapes pour le reproduire...',
-      featurePlaceholder: 'Décrivez la fonctionnalité que vous aimeriez voir...',
+      featurePlaceholder:
+        'Décrivez la fonctionnalité que vous aimeriez voir...',
       generalPlaceholder: 'Partagez vos pensées...',
       emailOptional: 'Email (optionnel, pour le suivi)',
       emailPlaceholder: 'votre@email.com',
@@ -987,34 +1027,38 @@ export const translations = {
       heading: 'Titre - Organiser les requêtes complexes',
       examples: 'Exemples',
       simpleTrip: 'Requête de voyage simple',
-      simpleTripDesc: 'Utilisez **gras** pour les gares et `code` pour les heures',
+      simpleTripDesc:
+        'Utilisez **gras** pour les gares et `code` pour les heures',
       withPreferences: 'Avec préférences',
       withPreferencesDesc: 'Utilisez des listes à puces pour les préférences',
       multiPart: 'Requête en plusieurs parties',
       multiPartDesc: 'Utilisez des titres et des listes numérotées',
       proTips: 'Conseils de pro',
-      proTip1: 'Markdown aide l\'IA à mieux comprendre la structure de votre requête',
-      proTip2: 'Vous pouvez combiner plusieurs types de formatage dans une seule requête',
-      proTip3: 'Les requêtes en texte brut fonctionnent aussi très bien - Markdown est optionnel!',
+      proTip1:
+        "Markdown aide l'IA à mieux comprendre la structure de votre requête",
+      proTip2:
+        'Vous pouvez combiner plusieurs types de formatage dans une seule requête',
+      proTip3:
+        'Les requêtes en texte brut fonctionnent aussi très bien - Markdown est optionnel!',
     },
     help: {
-      needHelp: 'Besoin d\'aide?',
-      helpTooltip: 'Besoin d\'aide? Cliquez pour voir le tutoriel',
+      needHelp: "Besoin d'aide?",
+      helpTooltip: "Besoin d'aide? Cliquez pour voir le tutoriel",
     },
     menu: {
       menu: 'Menu',
       navigation: 'Navigation',
       home: 'Accueil',
-      landingPage: 'Page d\'accueil',
+      landingPage: "Page d'accueil",
       map: 'Carte',
       interactiveMap: 'Vue carte interactive',
       mcpTest: 'Test MCP',
-      testMcpIntegration: 'Tester l\'intégration MCP',
+      testMcpIntegration: "Tester l'intégration MCP",
       health: 'État',
       systemStatus: 'État du système',
     },
     navbar: {
-      appTitle: 'SBB Chat MCP',
+      appTitle: 'Swiss Travel Companion',
       travelCompanion: 'Companion Voyage',
       toggleMenu: 'Basculer le menu',
       mcpServer: {
@@ -1051,8 +1095,8 @@ export const translations = {
       reducedMotionDesc: 'Désactiver les animations complexes',
       developer: 'Développeur',
       mcpServerEnvironment: 'Environnement Serveur MCP',
-      mcpServerNote: 'Changer ceci rechargera l\'application.',
-      versionInfo: 'SBB Chat MCP v2.2.0 • Données locales uniquement',
+      mcpServerNote: "Changer ceci rechargera l'application.",
+      versionInfo: 'Swiss Travel Companion v2.2.0 • Données locales uniquement',
     },
     common: {
       close: 'Fermer',
@@ -1086,7 +1130,8 @@ export const translations = {
     welcome: {
       title: 'Il Tuo Compagno',
       subtitle: 'di Viaggio Svizzero',
-      description: 'Scopri connessioni, controlla il meteo, esplora stazioni e pianifica viaggi ecologici in Svizzera.',
+      description:
+        'Scopri connessioni, controlla il meteo, esplora stazioni e pianifica viaggi ecologici in Svizzera.',
       exploreTitle: 'Esplora 25 Modi per Viaggiare in Modo Intelligente',
       allQuestions: 'Tutto',
       categoryJourneyPlanning: 'Pianificazione',
@@ -1097,7 +1142,8 @@ export const translations = {
       categoryAccessibility: 'Accessibilità',
     },
     chat: {
-      inputPlaceholder: 'Chiedi informazioni su treni, stazioni o piani di viaggio... (Markdown supportato)',
+      inputPlaceholder:
+        'Chiedi informazioni su treni, stazioni o piani di viaggio... (Markdown supportato)',
       send: 'Invia',
       thinking: 'Pensando...',
       pressEnter: 'Invio per inviare, Shift+Invio per nuova riga',
@@ -1259,7 +1305,8 @@ export const translations = {
     errors: {
       network: 'Nessuna connessione Internet. Controlla la tua rete.',
       api: 'Servizio temporaneamente non disponibile. Riprova.',
-      timeout: 'La richiesta ha impiegato troppo tempo. Prova una query più semplice.',
+      timeout:
+        'La richiesta ha impiegato troppo tempo. Prova una query più semplice.',
       server: 'Dati di viaggio temporaneamente non disponibili.',
       validation: 'Input non valido. Controlla la tua richiesta.',
       general: 'Spiacenti, si è verificato un errore. Riprova.',
@@ -1272,23 +1319,28 @@ export const translations = {
       tryAgain: 'Riprova',
     },
     onboarding: {
-      welcome: 'Benvenuto nell\'Assistente Chat FFS!',
-      welcomeDesc: 'Il tuo compagno intelligente per i viaggi sui trasporti pubblici svizzeri e le informazioni sulle stazioni.',
+      welcome: "Benvenuto nell'Assistente Chat FFS!",
+      welcomeDesc:
+        'Il tuo compagno intelligente per i viaggi sui trasporti pubblici svizzeri e le informazioni sulle stazioni.',
       capabilities: 'Posso aiutarti con:',
       findTrains: 'Trovare collegamenti ferroviari in tutta la Svizzera',
       checkWeather: 'Controllare le previsioni meteo per la tua destinazione',
       stationInfo: 'Ottenere informazioni sulle stazioni e partenze in diretta',
-      discoverAttractions: 'Scoprire attrazioni turistiche e stazioni sciistiche',
+      discoverAttractions:
+        'Scoprire attrazioni turistiche e stazioni sciistiche',
       howToAsk: 'Come fare domande',
-      howToAskDesc: 'Digita semplicemente in modo naturale - capisco il linguaggio comune!',
+      howToAskDesc:
+        'Digita semplicemente in modo naturale - capisco il linguaggio comune!',
       simpleExamples: 'Esempi semplici:',
       example1: 'Trova treni da Zurigo a Berna domani alle 9',
       example2: 'Che tempo fa a St. Moritz?',
       example3: 'Mostra partenze da Ginevra',
       proTip: 'Suggerimento:',
-      proTipDesc: 'Usa la formattazione Markdown per query complesse con preferenze e domande multiple!',
+      proTipDesc:
+        'Usa la formattazione Markdown per query complesse con preferenze e domande multiple!',
       richResponses: 'Risposte ricche',
-      richResponsesDesc: 'Ottieni belle schede interattive con tutte le informazioni di cui hai bisogno.',
+      richResponsesDesc:
+        'Ottieni belle schede interattive con tutte le informazioni di cui hai bisogno.',
       responses: 'Fornisco risposte ricche e visive, tra cui:',
       tripCards: 'Schede viaggio',
       tripCardsDesc: 'Informazioni dettagliate sul viaggio con orari e binari',
@@ -1301,13 +1353,16 @@ export const translations = {
       quickTips: 'Suggerimenti rapidi',
       quickTipsDesc: 'Ottieni il massimo dal tuo Assistente Chat FFS.',
       tip1Title: 'Usa query di esempio',
-      tip1Desc: 'Clicca su un esempio nella schermata di benvenuto per iniziare rapidamente',
+      tip1Desc:
+        'Clicca su un esempio nella schermata di benvenuto per iniziare rapidamente',
       tip2Title: 'Prova la formattazione Markdown',
-      tip2Desc: 'Usa **grassetto** per le stazioni, elenchi per le preferenze e titoli per query in più parti',
+      tip2Desc:
+        'Usa **grassetto** per le stazioni, elenchi per le preferenze e titoli per query in più parti',
       tip3Title: 'Cambia lingua',
       tip3Desc: 'Usa il selettore lingua per IT, EN, DE, FR, ZH o HI',
       tip4Title: 'Serve aiuto?',
-      tip4Desc: 'Clicca sul pulsante aiuto (?) in qualsiasi momento per rivedere questo tutorial',
+      tip4Desc:
+        'Clicca sul pulsante aiuto (?) in qualsiasi momento per rivedere questo tutorial',
       previous: 'Precedente',
       next: 'Avanti',
       skip: 'Salta',
@@ -1320,7 +1375,7 @@ export const translations = {
       general: 'Generale',
       bug: 'Bug',
       feature: 'Funzionalità',
-      experience: 'Com\'è la tua esperienza? (opzionale)',
+      experience: "Com'è la tua esperienza? (opzionale)",
       tellUsMore: 'Raccontaci di più',
       bugPlaceholder: 'Descrivi il bug e i passaggi per riprodurlo...',
       featurePlaceholder: 'Descrivi la funzionalità che vorresti vedere...',
@@ -1345,15 +1400,18 @@ export const translations = {
       heading: 'Intestazione - Organizza query complesse',
       examples: 'Esempi',
       simpleTrip: 'Query viaggio semplice',
-      simpleTripDesc: 'Usa **grassetto** per le stazioni e `codice` per gli orari',
+      simpleTripDesc:
+        'Usa **grassetto** per le stazioni e `codice` per gli orari',
       withPreferences: 'Con preferenze',
       withPreferencesDesc: 'Usa elenchi puntati per le preferenze',
       multiPart: 'Query in più parti',
       multiPartDesc: 'Usa intestazioni ed elenchi numerati',
       proTips: 'Suggerimenti',
-      proTip1: 'Markdown aiuta l\'IA a comprendere meglio la struttura della tua query',
+      proTip1:
+        "Markdown aiuta l'IA a comprendere meglio la struttura della tua query",
       proTip2: 'Puoi combinare più tipi di formattazione in una singola query',
-      proTip3: 'Le query in testo semplice funzionano benissimo - Markdown è opzionale!',
+      proTip3:
+        'Le query in testo semplice funzionano benissimo - Markdown è opzionale!',
     },
     help: {
       needHelp: 'Serve aiuto?',
@@ -1372,7 +1430,7 @@ export const translations = {
       systemStatus: 'Stato del sistema',
     },
     navbar: {
-      appTitle: 'SBB Chat MCP',
+      appTitle: 'Swiss Travel Companion',
       travelCompanion: 'Assistente Viaggio',
       toggleMenu: 'Attiva/disattiva menu',
       mcpServer: {
@@ -1383,7 +1441,7 @@ export const translations = {
     },
     accessibility: {
       skipToMain: 'Salta al contenuto principale',
-      skipToChat: 'Salta all\'input della chat',
+      skipToChat: "Salta all'input della chat",
       chatApplication: 'Applicazione chat',
       chatConversation: 'Conversazione chat',
       typeYourMessage: 'Digita il tuo messaggio',
@@ -1409,8 +1467,9 @@ export const translations = {
       reducedMotionDesc: 'Disattiva animazioni complesse',
       developer: 'Sviluppatore',
       mcpServerEnvironment: 'Ambiente Server MCP',
-      mcpServerNote: 'Modificare questa impostazione ricaricherà l\'applicazione.',
-      versionInfo: 'SBB Chat MCP v2.2.0 • Solo dati locali',
+      mcpServerNote:
+        "Modificare questa impostazione ricaricherà l'applicazione.",
+      versionInfo: 'Swiss Travel Companion v2.2.0 • Solo dati locali',
     },
     common: {
       close: 'Chiudi',
@@ -1616,15 +1675,15 @@ export const translations = {
     },
     feedback: {
       sendFeedback: '发送反馈',
-      feedbackDesc: "我们很想听听您的意见！",
+      feedbackDesc: '我们很想听听您的意见！',
       feedbackType: '反馈类型？',
       general: '常规',
       bug: '缺陷',
       feature: '功能',
-      experience: "您的体验如何？（可选）",
+      experience: '您的体验如何？（可选）',
       tellUsMore: '请告诉我们更多',
       bugPlaceholder: '描述缺陷和重现步骤...',
-      featurePlaceholder: "描述您想看到的功能...",
+      featurePlaceholder: '描述您想看到的功能...',
       generalPlaceholder: '分享您的想法...',
       emailOptional: '电子邮箱（可选，用于后续跟进）',
     },
@@ -1645,7 +1704,7 @@ export const translations = {
       systemStatus: '系统状态',
     },
     navbar: {
-      appTitle: 'SBB Chat MCP',
+      appTitle: 'Swiss Travel Companion',
       travelCompanion: '出行助手',
       toggleMenu: '切换菜单',
       mcpServer: {
@@ -1683,7 +1742,7 @@ export const translations = {
       developer: '开发者',
       mcpServerEnvironment: 'MCP 服务器环境',
       mcpServerNote: '更改此设置将重新加载应用程序。',
-      versionInfo: 'SBB Chat MCP v2.2.0 • 仅本地数据',
+      versionInfo: 'Swiss Travel Companion v2.2.0 • 仅本地数据',
     },
     common: {
       close: '关闭',
@@ -1717,7 +1776,8 @@ export const translations = {
     welcome: {
       title: 'आपका स्विस यात्रा',
       subtitle: 'साथी',
-      description: 'कनेक्शन खोजें, मौसम जांचें, स्टेशन तलाशें, और स्विट्जरलैंड में पर्यावरण के अनुकूल यात्राओं की योजना बनाएं।',
+      description:
+        'कनेक्शन खोजें, मौसम जांचें, स्टेशन तलाशें, और स्विट्जरलैंड में पर्यावरण के अनुकूल यात्राओं की योजना बनाएं।',
       exploreTitle: 'स्मार्ट यात्रा के 25 तरीके खोजें',
       allQuestions: 'सभी',
       categoryJourneyPlanning: 'यात्रा योजना',
@@ -1788,7 +1848,8 @@ export const translations = {
       addedToFavorites: 'पसंदीदा में जोड़ा गया',
       removedFromFavorites: 'पसंदीदा से हटाया गया',
       maxFavoritesReached: 'अधिकतम 10 पसंदीदा की सीमा तक पहुँच गए',
-      invalidStation: 'बिना आईडी या नाम के स्टेशन को पसंदीदा नहीं बनाया जा सकता',
+      invalidStation:
+        'बिना आईडी या नाम के स्टेशन को पसंदीदा नहीं बनाया जा सकता',
       stationLabel: 'स्टेशन',
     },
     weather: {
@@ -1889,15 +1950,15 @@ export const translations = {
     },
     feedback: {
       sendFeedback: 'प्रतिक्रिया भेजें',
-      feedbackDesc: "हमें आपसे सुनना अच्छा लगेगा!",
+      feedbackDesc: 'हमें आपसे सुनना अच्छा लगेगा!',
       feedbackType: 'प्रतिक्रिया का प्रकार?',
       general: 'सामान्य',
       bug: 'बग',
       feature: 'सुविधा',
-      experience: "आपका अनुभव कैसा रहा? (वैकल्पिक)",
+      experience: 'आपका अनुभव कैसा रहा? (वैकल्पिक)',
       tellUsMore: 'हमें और बताएं',
       bugPlaceholder: 'बग और उसे दोहराने के चरणों का वर्णन करें...',
-      featurePlaceholder: "उस सुविधा का वर्णन करें जिसे आप देखना चाहते हैं...",
+      featurePlaceholder: 'उस सुविधा का वर्णन करें जिसे आप देखना चाहते हैं...',
       generalPlaceholder: 'अपने विचार साझा करें...',
       emailOptional: 'ईमेल (वैकल्पिक, फॉलो-अप के लिए)',
     },
@@ -1918,7 +1979,7 @@ export const translations = {
       systemStatus: 'सिस्टम स्थिति',
     },
     navbar: {
-      appTitle: 'SBB Chat MCP',
+      appTitle: 'Swiss Travel Companion',
       travelCompanion: 'यात्रा सहायक',
       toggleMenu: 'मेनू टॉगल करें',
       mcpServer: {
@@ -1956,7 +2017,7 @@ export const translations = {
       developer: 'डेवलपर',
       mcpServerEnvironment: 'MCP सर्वर वातावरण',
       mcpServerNote: 'इसे बदलने से एप्लिकेशन पुनः लोड होगा।',
-      versionInfo: 'SBB Chat MCP v2.2.0 • केवल स्थानीय डेटा',
+      versionInfo: 'Swiss Travel Companion v2.2.0 • केवल स्थानीय डेटा',
     },
     common: {
       close: 'बंद करें',

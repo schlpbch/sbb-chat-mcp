@@ -12,9 +12,10 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'SBB Chat MCP - Swiss Travel Companion',
-  description: 'Your intelligent companion for Swiss public transport journeys, weather, and station information',
-  applicationName: 'SBB Chat MCP',
+  title: 'Swiss Travel Companion',
+  description:
+    'Your intelligent companion for Swiss public transport journeys, weather, and station information',
+  applicationName: 'Swiss Travel Companion',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -25,23 +26,19 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   icons: {
-    icon: [
-      { url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' },
-    ],
-    apple: [
-      { url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' },
-    ],
+    icon: [{ url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' }],
+    apple: [{ url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' }],
   },
   openGraph: {
     type: 'website',
-    siteName: 'SBB Chat MCP',
-    title: 'SBB Chat MCP - Swiss Travel Companion',
+    siteName: 'Swiss Travel Companion',
+    title: 'Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
     images: ['/SBB-chat-MCP.png'],
   },
   twitter: {
     card: 'summary',
-    title: 'SBB Chat MCP',
+    title: 'Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
     images: ['/SBB-chat-MCP.png'],
   },
@@ -72,10 +69,7 @@ export default function RootLayout({
       <body className="antialiased font-sans">
         <SettingsProvider>
           <MapProvider>
-            <ToastProvider>
-              {children}
-
-            </ToastProvider>
+            <ToastProvider>{children}</ToastProvider>
           </MapProvider>
         </SettingsProvider>
       </body>

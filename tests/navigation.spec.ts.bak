@@ -7,7 +7,7 @@ test.describe('Navigation', () => {
 
   test('should load the homepage', async ({ page }) => {
     // Check that the main heading is visible
-    await expect(page.locator('h1')).toContainText('SBB Chat MCP');
+    await expect(page.locator('h1')).toContainText('Swiss Travel Companion');
   });
 
   test('should have a navbar with language selector', async ({ page }) => {
@@ -127,7 +127,7 @@ test.describe('Menu', () => {
     await page.waitForTimeout(300);
 
     // Check that menu panel is visible
-    const menuPanel = page.locator('div').filter({ hasText: /SBB Chat MCP/ }).first();
+    const menuPanel = page.locator('div').filter({ hasText: /Swiss Travel Companion/ }).first();
     await expect(menuPanel).toBeVisible();
 
     // Click to close menu
