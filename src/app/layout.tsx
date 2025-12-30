@@ -12,6 +12,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_BASE_URL || 'https://sbb-chat-mcp.web.app'
+  ),
   title: 'Swiss Travel Companion',
   description:
     'Your intelligent companion for Swiss public transport journeys, weather, and station information',
