@@ -16,34 +16,38 @@ steps:
     args:
       - 'build'
       - '-t'
-      - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:$COMMIT_SHA'
+      - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:$SHORT_SHA'
       - '-t'
       - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:latest'
       - '.'
-    
+
   # Push the container image to Artifact Registry
   - name: 'gcr.io/cloud-builders/docker'
     args:
       - 'push'
       - '--all-tags'
       - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp'
-  
+
   # Deploy to Cloud Run
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: gcloud
     args:
       - 'run'
       - 'deploy'
-      - 'sbb-chat-mcp'
+      - 'sbb-chat-mcp-staging'
       - '--image'
-      - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:$COMMIT_SHA'
+      - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:$SHORT_SHA'
       - '--region'
       - 'europe-west6'
       - '--platform'
       - 'managed'
       - '--allow-unauthenticated'
+      - '--service-account'
+      - 'sbb-chat-mcp-staging-sa@$PROJECT_ID.iam.gserviceaccount.com'
+      - '--set-env-vars'
+      - 'GEMINI_MODEL=gemini-2.0-flash-exp,NEXT_PUBLIC_MCP_ENV=staging,NODE_ENV=production,GCP_PROJECT_ID=$PROJECT_ID'
       - '--set-secrets'
-      - 'GEMINI_API_KEY=gemini-api-key:latest,MCP_SERVER_URL=mcp-server-url:latest'
+      - 'GEMINI_API_KEY=gemini-api-key:latest,GOOGLE_CLOUD_KEY=gemini-api-key:latest,MCP_SERVER_URL=mcp-server-url:latest'
       - '--memory'
       - '512Mi'
       - '--cpu'
@@ -62,9 +66,9 @@ steps:
       - '-c'
       - |
         # Get the URL of the deployed service
-        SERVICE_URL=$(gcloud run services describe sbb-chat-mcp --region europe-west6 --format 'value(status.url)')
+        SERVICE_URL=$(gcloud run services describe sbb-chat-mcp-staging --region europe-west6 --format 'value(status.url)')
         echo "Verifying deployment at $$SERVICE_URL..."
-        
+
         # Poll the health endpoint (up to 5 attempts)
         for i in {1..5}; do
           if curl -s -f "$$SERVICE_URL/api/health" | grep -q '"status":"ok"'; then
@@ -74,12 +78,12 @@ steps:
           echo "Waiting for service to be healthy... (attempt $$i)"
           sleep 10
         done
-        
+
         echo "❌ Deployment verification failed!"
         exit 1
 
 images:
-  - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:$COMMIT_SHA'
+  - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:$SHORT_SHA'
   - 'europe-west6-docker.pkg.dev/$PROJECT_ID/sbb-chat/sbb-chat-mcp:latest'
 
 options:

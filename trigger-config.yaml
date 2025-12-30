@@ -1,0 +1,30 @@
+# Cloud Build Trigger Configuration for SBB Chat MCP
+name: sbb-chat-mcp-staging-trigger
+description: "Auto-deploy SBB Chat MCP on push to main branch"
+
+github:
+  owner: schlpbch
+  name: sbb-chat-mcp
+  push:
+    branch: ^main$
+
+filename: cloudbuild.yaml
+
+substitutions:
+  _REGION: europe-west6
+  _SERVICE: sbb-chat-mcp-staging
+
+includedFiles:
+  - "src/**"
+  - "public/**"
+  - "package.json"
+  - "pnpm-lock.yaml"
+  - "next.config.ts"
+  - "tsconfig.json"
+  - "Dockerfile"
+  - "cloudbuild.yaml"
+
+tags:
+  - sbb-chat-mcp
+  - staging
+  - auto-deploy

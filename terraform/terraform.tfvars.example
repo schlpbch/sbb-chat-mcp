@@ -1,0 +1,42 @@
+# Example Terraform Variables File
+# Copy this file to terraform.tfvars and fill in your values
+# DO NOT commit terraform.tfvars with real secrets!
+
+# Required: GCP Project Configuration
+project_id = "your-gcp-project-id"
+
+# Optional: Override default region (default: europe-west6)
+# region = "europe-west6"
+
+# Optional: Override environment (default: staging)
+# environment = "staging"
+
+# Optional: Override app name (default: sbb-chat-mcp)
+# app_name = "sbb-chat-mcp"
+
+# Secrets (leave empty to create placeholders, then update via gcloud)
+gemini_api_key  = ""  # Your Google Gemini API key
+mcp_server_url  = ""  # Your MCP server URL (e.g., https://journey-service-mcp-staging-xxx.run.app)
+
+# Cloud Run Configuration
+cloud_run_cpu           = "1"      # CPU allocation (1, 2, 4)
+cloud_run_memory        = "512Mi"  # Memory allocation (512Mi, 1Gi, 2Gi)
+cloud_run_timeout       = 300      # Request timeout in seconds
+cloud_run_min_instances = "0"      # Min instances (0 for scale-to-zero)
+cloud_run_max_instances = "10"     # Max instances
+allow_public_access     = true     # Allow unauthenticated access
+
+# Application Configuration
+gemini_model = "gemini-2.0-flash-exp"  # Gemini model to use
+
+# Cloud Build Trigger (for CI/CD automation)
+enable_cloud_build_trigger = false  # Set to true to enable automatic deployments
+github_owner               = "your-github-username-or-org"
+github_repo                = "sbb-chat-mcp"
+git_branch                 = "main"
+
+# Additional Labels (optional)
+labels = {
+  # cost_center = "engineering"
+  # team        = "platform"
+}

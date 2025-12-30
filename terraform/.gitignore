@@ -1,0 +1,40 @@
+# Terraform gitignore
+
+# Local .terraform directories
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+crash.*.log
+
+# Exclude all .tfvars files, which might contain sensitive data
+*.tfvars
+*.tfvars.json
+
+# Ignore override files as they are usually used to override resources locally
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Include example tfvars files
+!terraform.tfvars.example
+!environments/*.tfvars
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Lock files (optional - team preference)
+# Uncomment if you want to ignore lock files
+# .terraform.lock.hcl
+
+# Backup files
+*.backup
+
+# Environment-specific backend configs
+backend-*.hcl

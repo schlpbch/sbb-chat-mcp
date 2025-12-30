@@ -2,15 +2,49 @@
 
 This directory contains configuration and scripts for deploying the SBB Chat MCP application to Google Cloud Run.
 
-## Quick Start
+## Deployment Methods
 
-### 1. Prerequisites
+We offer two approaches to deploy your infrastructure:
+
+### Method 1: Terraform (Recommended - Infrastructure as Code)
+
+Terraform provides declarative, version-controlled infrastructure management.
+
+**Quick Start:**
+
+```bash
+cd terraform
+terraform init
+terraform apply
+```
+
+**Documentation:**
+
+- [Terraform Quick Start](terraform/QUICKSTART.md) - Get started in 10 minutes
+- [Terraform README](terraform/README.md) - Full documentation
+- [Migration Guide](terraform/MIGRATION_GUIDE.md) - Migrate from manual setup
+
+**Advantages:**
+
+- Infrastructure as code (version controlled)
+- Reproducible deployments
+- Easy multi-environment management
+- State tracking and drift detection
+- Team collaboration support
+
+### Method 2: Manual Scripts (Legacy)
+
+Traditional bash scripts for quick manual deployments.
+
+**Quick Start:**
+
+#### 1. Prerequisites
 
 - Google Cloud account with billing enabled
 - `gcloud` CLI installed and configured
 - Project ID ready
 
-### 2. Initial Setup
+#### 2. Initial Setup
 
 ```bash
 # Set your project ID
@@ -20,7 +54,7 @@ export GCP_PROJECT_ID="your-project-id"
 ./scripts/setup-gcp.sh
 ```
 
-### 3. Configure Secrets
+#### 3. Configure Secrets
 
 ```bash
 # Update Gemini API key
@@ -30,7 +64,7 @@ echo -n 'YOUR_GEMINI_API_KEY' | gcloud secrets versions add gemini-api-key --dat
 echo -n 'https://your-mcp-server-url' | gcloud secrets versions add mcp-server-url --data-file=-
 ```
 
-### 4. Deploy
+#### 4. Deploy
 
 ```bash
 # Deploy to Cloud Run
@@ -133,6 +167,53 @@ gcloud run domain-mappings create \
   --region europe-west6
 ```
 
+## Infrastructure as Code - Terraform is the Master
+
+**IMPORTANT**: As of this update, Terraform is the **master source of truth** for infrastructure configuration.
+
+### Why Terraform is Master
+
+1. **Version Control**: All infrastructure changes are tracked in git
+2. **Declarative**: Infrastructure defined as code, not imperative scripts
+3. **State Management**: Terraform tracks the actual state of resources
+4. **Reproducibility**: Identical infrastructure across environments
+5. **Team Collaboration**: Multiple team members can safely manage infrastructure
+6. **Drift Detection**: Automatically detect manual changes made outside Terraform
+
+### Migration Path
+
+If you're currently using manual scripts ([scripts/setup-gcp.sh](scripts/setup-gcp.sh), [scripts/deploy-gcp.sh](scripts/deploy-gcp.sh)):
+
+1. **Review** the [Migration Guide](terraform/MIGRATION_GUIDE.md)
+2. **Import** your existing resources into Terraform state
+3. **Verify** with `terraform plan` (should show no changes)
+4. **Transition** to Terraform for all infrastructure changes
+5. **Deprecate** manual scripts (keep for application deployments only)
+
+### What to Use When
+
+| Task                         | Use This                          | Example                           |
+| ---------------------------- | --------------------------------- | --------------------------------- |
+| Create/modify infrastructure | **Terraform**                     | `terraform apply`                 |
+| Deploy application code      | **Deploy script or Cloud Build**  | `./scripts/deploy-gcp.sh`         |
+| Update secrets               | **gcloud CLI**                    | `gcloud secrets versions add`     |
+| View infrastructure          | **Terraform**                     | `terraform show`                  |
+| Multi-environment setup      | **Terraform workspaces**          | `terraform workspace new prod`    |
+
+### Legacy Scripts Status
+
+The following scripts are **legacy** and maintained only for backward compatibility:
+
+- [scripts/setup-gcp.sh](scripts/setup-gcp.sh) - Use `terraform apply` instead
+- Manual secret creation - Use Terraform + gcloud for updates
+
+The following scripts remain **actively used**:
+
+- [scripts/deploy-gcp.sh](scripts/deploy-gcp.sh) - For application deployments (not infrastructure)
+- [cloudbuild.yaml](cloudbuild.yaml) - CI/CD pipeline definition
+
 ## Support
 
-For detailed documentation, see: `/home/schlpbch/.gemini/antigravity/brain/f8b53291-e820-4b12-85a0-94a09b2acacb/gcp_cloud_run_plan.md`
+- Terraform documentation: [terraform/README.md](terraform/README.md)
+- Quick start guide: [terraform/QUICKSTART.md](terraform/QUICKSTART.md)
+- Migration help: [terraform/MIGRATION_GUIDE.md](terraform/MIGRATION_GUIDE.md)
