@@ -22,6 +22,7 @@ export default function ChatPage() {
   const [language, setLanguage] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
+  const [mounted, setMounted] = useState(false);
 
   const {
     messages,
@@ -59,8 +60,14 @@ export default function ChatPage() {
 
   const t = translations[language];
 
+  // Set mounted state to prevent hydration mismatch
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
   // Load recent searches from localStorage
   useEffect(() => {
+    if (!mounted) return;
     const stored = localStorage.getItem('recentSearches');
     if (stored) {
       try {
@@ -69,22 +76,21 @@ export default function ChatPage() {
         console.error('Failed to load recent searches:', e);
       }
     }
-  }, []);
+  }, [mounted]);
 
   // Save search to recent searches when a message is sent
   useEffect(() => {
-    if (messages.length > 0) {
-      const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
-      if (lastUserMessage) {
-        const newSearches = [
-          lastUserMessage.content,
-          ...recentSearches.filter((s) => s !== lastUserMessage.content),
-        ].slice(0, 5);
-        setRecentSearches(newSearches);
-        localStorage.setItem('recentSearches', JSON.stringify(newSearches));
-      }
+    if (!mounted || messages.length === 0) return;
+    const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
+    if (lastUserMessage) {
+      const newSearches = [
+        lastUserMessage.content,
+        ...recentSearches.filter((s) => s !== lastUserMessage.content),
+      ].slice(0, 5);
+      setRecentSearches(newSearches);
+      localStorage.setItem('recentSearches', JSON.stringify(newSearches));
     }
-  }, [messages]);
+  }, [messages, mounted]);
 
   // Handle query parameter for pre-filled queries
   useEffect(() => {
@@ -144,7 +150,7 @@ export default function ChatPage() {
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
                   <div className="max-w-2xl w-full px-4">
-                    {recentSearches.length > 0 ? (
+                    {mounted && recentSearches.length > 0 ? (
                       <div>
                         <h2 className="text-xl font-semibold text-gray-700 mb-4">
                           Recent Searches
