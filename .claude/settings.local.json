@@ -24,7 +24,18 @@
       "Bash(findstr:*)",
       "Bash(dir /s /b \"c:\\\\Users\\\\schlp\\\\code\\\\sbb-chat-mcp\\\\src\")",
       "Bash(node -e:*)",
-      "Bash(node test-keywords.js:*)"
+      "Bash(node test-keywords.js:*)",
+      "Bash(gcloud artifacts repositories list:*)",
+      "Bash(gcloud secrets:*)",
+      "Bash(terraform import:*)",
+      "Bash(terraform plan:*)",
+      "Bash(gcloud builds submit:*)",
+      "Bash(docker build:*)",
+      "Bash(gcloud beta builds triggers list:*)",
+      "Bash(gcloud beta builds triggers create github:*)",
+      "Bash(gcloud alpha builds repositories list:*)",
+      "Bash(gcloud beta builds triggers describe:*)",
+      "Bash(terraform apply:*)"
     ]
   }
 }

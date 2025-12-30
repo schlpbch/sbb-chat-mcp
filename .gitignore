@@ -46,3 +46,19 @@ next-env.d.ts
 
 # local test results
 /test-results
+
+# Terraform
+**/.terraform/*
+*.tfstate
+*.tfstate.*
+*.tfvars
+!terraform.tfvars.example
+!terraform/environments/*.tfvars
+crash.log
+crash.*.log
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+.terraformrc
+terraform.rc

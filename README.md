@@ -154,6 +154,34 @@ pnpm test:headed      # Run tests in headed mode
 ./scripts/setup-llm.sh           # Quick LLM setup
 ```
 
+## Deployment
+
+### Cloud Infrastructure (GCP Cloud Run)
+
+This project uses **Terraform as the master infrastructure configuration**.
+
+**Quick Deploy:**
+
+```bash
+cd terraform
+terraform init
+terraform apply
+```
+
+**Documentation:**
+
+- [Terraform Quick Start](terraform/QUICKSTART.md) - Deploy in 10 minutes
+- [Full Deployment Guide](DEPLOYMENT.md) - Complete deployment documentation
+- [Migration Guide](terraform/MIGRATION_GUIDE.md) - Migrate from manual setup
+
+**Features:**
+
+- Infrastructure as Code (IaC) with version control
+- Multi-environment support (dev/staging/production)
+- Automated deployments with Cloud Build
+- Secret management with Google Secret Manager
+- Auto-scaling Cloud Run service
+
 ## Environment Variables
 
 See `.env.example` for all available configuration options.
