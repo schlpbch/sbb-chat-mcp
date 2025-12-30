@@ -160,6 +160,50 @@ export const exampleQueries: ExampleQuery[] = [
     },
   },
 
+  // Station queries
+  {
+    id: 'station-1',
+    text: {
+      en: 'Show departures from Zurich HB',
+      de: 'Zeige Abfahrten von Zürich HB',
+      fr: 'Affiche les départs de Zurich HB',
+      it: 'Mostra le partenze da Zurigo HB',
+      zh: '显示苏黎世中央车站的出发',
+      hi: 'ज्यूरिख एचबी से प्रस्थान दिखाएं',
+    },
+    category: 'stations',
+    icon: '🏢',
+    description: {
+      en: 'Live departures',
+      de: 'Live-Abfahrten',
+      fr: 'Départs en direct',
+      it: 'Partenze in tempo reale',
+      zh: '实时出发',
+      hi: 'लाइव प्रस्थान',
+    },
+  },
+  {
+    id: 'station-3',
+    text: {
+      en: 'Next trains arriving at Geneva Airport',
+      de: 'Nächste Züge am Flughafen Genf',
+      fr: "Prochains trains arrivant à l'aéroport de Genève",
+      it: "Prossimi treni in arrivo all'aeroporto di Ginevra",
+      zh: '到达日内瓦机场的下一班火车',
+      hi: 'जिनेवा हवाई अड्डे पर आने वाली अगली ट्रेनें',
+    },
+    category: 'stations',
+    icon: '✈️',
+    description: {
+      en: 'Airport connections',
+      de: 'Flughafenverbindungen',
+      fr: 'Connexions aéroport',
+      it: 'Connessioni aeroporto',
+      zh: '机场连接',
+      hi: 'हवाई अड्डा कनेक्शन',
+    },
+  },
+
   // Markdown examples
   {
     id: 'markdown-1',
