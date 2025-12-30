@@ -55,7 +55,7 @@ export async function executeTool(
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(params),
+          body: JSON.stringify(resolvedParams),
         });
 
         if (!response.ok) {
