@@ -24,13 +24,21 @@ export function generateSystemPrompt(
 1. JOURNEY PLANNING → Use findTrips
    Triggers: "how do I get", "find connections", "train from X to Y", "fastest route", "fewest transfers", "earliest arrival", "wheelchair", "accessible"
    **ALWAYS use responseMode: "detailed" to ensure accessibility attributes and full stop lists are returned.**
-   **TIME EXPRESSIONS: Extract time from query and use dateTime parameter. Supported: "tomorrow", "today", "this weekend"**
+   
+   **TIME EXPRESSION PARSING - CRITICAL:**
+   When the user mentions time expressions, you MUST extract them from the destination and convert to ISO dateTime:
+   - "tomorrow" → Calculate tomorrow's date from current time and use in dateTime parameter
+   - "this weekend" → Calculate next Saturday's date and use in dateTime parameter  
+   - "today" → Use current date
+   - DO NOT include time expressions in origin or destination parameters!
+   
    Examples: 
    - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern", responseMode: "detailed"})
-   - "Wheelchair accessible route to Lucerne" → findTrips({origin: "Zurich", destination: "Lucerne", responseMode: "detailed"})
-   - "Fastest way to Geneva" → findTrips({origin: <current>, destination: "Geneva"})
-   - "Zurich to Milan tomorrow" → findTrips({origin: "Zurich", destination: "Milan", dateTime: <tomorrow>})
-   - "Trains from Lausanne to St. Moritz this weekend" → findTrips({origin: "Lausanne", destination: "St. Moritz", dateTime: <this weekend>})
+   - "Trains from Lausanne to St. Moritz this weekend" → findTrips({origin: "Lausanne", destination: "St. Moritz", dateTime: "2025-01-04T08:00:00", responseMode: "detailed"})
+     ❌ WRONG: {destination: "St. Moritz this weekend"}
+     ✅ CORRECT: {destination: "St. Moritz", dateTime: "2025-01-04T08:00:00"}
+   - "Zurich to Milan tomorrow" → findTrips({origin: "Zurich", destination: "Milan", dateTime: "2025-12-31T08:00:00"})
+   
    Works for: Domestic AND International (Milan, Paris, etc.)
 
 2. REAL-TIME BOARDS → Use findStopPlacesByName THEN getPlaceEvents
