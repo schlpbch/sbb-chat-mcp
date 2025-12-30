@@ -2,8 +2,11 @@
  * Planning Orchestrator Type Definitions
  */
 
-// Use Record<string, any> for flexible params since tools have varying schemas
-export type ToolParams = Record<string, any>;
+import type { ToolResultData, PlanSummary } from '../types/common';
+import type { FunctionCallParams } from '../functionDefinitions';
+
+// Tool params are flexible but constrained to known function parameters
+export type ToolParams = Partial<FunctionCallParams> | Record<string, unknown>;
 
 export interface ExecutionStep {
   id: string;
@@ -25,10 +28,11 @@ export interface StepResult {
   stepId: string;
   toolName: string;
   success: boolean;
-  data?: any;
+  data?: ToolResultData;
   error?: string;
-  params?: any;
+  params?: ToolParams;
   duration: number;
+  skipped?: boolean; // Added to avoid type assertions
 }
 
 export type StepResults = Map<string, StepResult>;
@@ -37,6 +41,6 @@ export interface PlanExecutionResult {
   planId: string;
   success: boolean;
   results: StepResult[];
-  summary: any;
+  summary: PlanSummary;
   totalDuration: number;
 }

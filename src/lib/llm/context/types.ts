@@ -2,6 +2,10 @@
  * Context Manager Type Definitions
  */
 
+import type { ExtractedEntities } from '../types/common';
+import type { FunctionCallParams } from '../functionDefinitions';
+import type { ToolResultData } from '../types/common';
+
 export interface UserPreferences {
   travelStyle: 'fastest' | 'cheapest' | 'eco' | 'comfortable' | 'balanced';
   accessibility?: {
@@ -76,7 +80,7 @@ export interface Intent {
     | 'train_formation'
     | 'general_info';
   confidence: number;
-  extractedEntities: Record<string, any>;
+  extractedEntities: ExtractedEntities;
   timestamp: Date;
   detectedLanguages?: string[]; // Languages detected in the message
   matchedKeywords?: string[]; // Keywords that matched (for debugging)
@@ -85,8 +89,8 @@ export interface Intent {
 
 export interface ToolResultCache {
   toolName: string;
-  params: any;
-  result: any;
+  params: Partial<FunctionCallParams>;
+  result: ToolResultData;
   timestamp: Date;
   expiresAt: Date;
 }

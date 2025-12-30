@@ -7,6 +7,8 @@
 
 import { createModel } from '../../chatModes/modelFactory';
 import { getLanguageName } from '../../types/language';
+import type { PlanSummary } from '../../types/common';
+import type { Language } from '@/lib/i18n';
 
 export class ResponseSynthesisService {
   /**
@@ -21,8 +23,8 @@ export class ResponseSynthesisService {
   async synthesizeResponse(
     message: string,
     formattedResults: string,
-    planSummary: any,
-    language: string
+    planSummary: PlanSummary,
+    language: Language | string
   ): Promise<string> {
     const model = createModel(false);
 
@@ -49,8 +51,8 @@ export class ResponseSynthesisService {
   private buildPrompt(
     message: string,
     formattedResults: string,
-    planSummary: any,
-    language: string
+    planSummary: PlanSummary,
+    language: Language | string
   ): string {
     const { PromptLoader } = require('../../prompts/PromptLoader');
     const template = PromptLoader.getPrompt(
@@ -97,8 +99,8 @@ export class ResponseSynthesisService {
   private buildFallbackPrompt(
     message: string,
     formattedResults: string,
-    planSummary: any,
-    language: string
+    planSummary: PlanSummary,
+    language: Language | string
   ): string {
     const languageName = getLanguageName(language);
 

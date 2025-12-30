@@ -4,9 +4,11 @@
 
 import { executeTool } from '../toolExecutor';
 import type { FunctionCallParams } from '../functionDefinitions';
+import type { ToolResultData } from '../types/common';
 import { createModel } from './modelFactory';
 import { getLanguageName } from '../types/language';
 import type { Language } from '@/lib/i18n';
+import type { Intent, ConversationContext } from '../context/types';
 
 export interface ChatMessage {
   role: 'user' | 'Companion';
@@ -22,12 +24,12 @@ export interface ChatResponse {
   response: string;
   toolCalls?: Array<{
     toolName: string;
-    params: any;
-    result: any;
+    params: Partial<FunctionCallParams>;
+    result: ToolResultData;
   }>;
   debug?: {
-    intent?: any;
-    context?: any;
+    intent?: Intent;
+    context?: ConversationContext;
   };
 }
 

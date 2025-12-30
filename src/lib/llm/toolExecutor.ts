@@ -3,12 +3,13 @@
  */
 
 import type { FunctionCallParams } from './functionDefinitions';
+import type { ToolResultData, WeatherResult } from './types/common';
 import { withRetry } from './retryHandler';
 import { toolResolverRegistry } from './toolResolvers';
 
 export interface ToolExecutionResult {
   success: boolean;
-  data?: any;
+  data?: ToolResultData;
   error?: string;
   toolName: string;
   params: FunctionCallParams;
@@ -29,15 +30,15 @@ export async function executeTool(
       toolName,
       params,
       // Pass executeTool as a callback for recursive resolution
-      async (name: string, p: any) => {
+      async (name: string, p: FunctionCallParams) => {
         const result = await executeTool(name, p);
         return result;
       }
     );
 
     // Enforce detailed mode for findTrips to ensure accessibility and stop data
-    if (toolName === 'findTrips') {
-      (resolvedParams as any).responseMode = 'detailed';
+    if (toolName === 'findTrips' && resolvedParams) {
+      resolvedParams.responseMode = 'detailed';
     }
 
     // Construct absolute URL for server-side fetch
@@ -156,9 +157,10 @@ export function formatToolResult(result: ToolExecutionResult): string {
       break;
 
     case 'getWeather':
-      if (result.data) {
-        return `🌡️ ${result.data.temperature || 'N/A'}°C | ${
-          result.data.condition || 'N/A'
+      if (result.data && typeof result.data === 'object' && !Array.isArray(result.data)) {
+        const weatherData = result.data as WeatherResult;
+        return `🌡️ ${(weatherData as any).temperature || 'N/A'}°C | ${
+          (weatherData as any).condition || 'N/A'
         }`;
       }
       break;
