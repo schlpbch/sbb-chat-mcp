@@ -7,6 +7,7 @@ import { executeTool } from '../toolExecutor';
 import type { FunctionCallParams } from '../functionDefinitions';
 import { createModel } from './modelFactory';
 import type { ChatMessage, ChatContext } from './simpleChatMode';
+import { getLanguageName } from '../types/language';
 
 /**
  * Streaming chat with SSE support
@@ -29,19 +30,7 @@ CONTEXT:
 - Current time: ${new Date().toISOString()}
 
 GUIDELINES:
-- Always respond in ${
-      context.language === 'de'
-        ? 'German'
-        : context.language === 'fr'
-        ? 'French'
-        : context.language === 'it'
-        ? 'Italian'
-        : context.language === 'zh'
-        ? 'Simplified Chinese'
-        : context.language === 'hi'
-        ? 'Hindi'
-        : 'English'
-    }
+- Always respond in ${getLanguageName(context.language)}
 - Be concise and professional`;
 
     const chatHistory = history.map((msg) => ({

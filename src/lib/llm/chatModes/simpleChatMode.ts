@@ -5,6 +5,8 @@
 import { executeTool } from '../toolExecutor';
 import type { FunctionCallParams } from '../functionDefinitions';
 import { createModel } from './modelFactory';
+import { getLanguageName } from '../types/language';
+import type { Language } from '@/lib/i18n';
 
 export interface ChatMessage {
   role: 'user' | 'Companion';
@@ -12,7 +14,7 @@ export interface ChatMessage {
 }
 
 export interface ChatContext {
-  language: string;
+  language: Language | string;
   currentLocation?: { lat: number; lon: number };
 }
 
@@ -68,19 +70,7 @@ ${
 }
 
 GUIDELINES:
-- Always respond in ${
-      context.language === 'de'
-        ? 'German'
-        : context.language === 'fr'
-        ? 'French'
-        : context.language === 'it'
-        ? 'Italian'
-        : context.language === 'zh'
-        ? 'Simplified Chinese'
-        : context.language === 'hi'
-        ? 'Hindi'
-        : 'English'
-    }
+- Always respond in ${getLanguageName(context.language)}
 - Be concise and professional
 - Use tools when you need real-time data
 - Prioritize sustainable travel options`;

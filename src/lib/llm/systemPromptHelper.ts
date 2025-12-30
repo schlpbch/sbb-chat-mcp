@@ -1,20 +1,14 @@
+import { getLanguageName } from './types/language';
+import type { Language } from '@/lib/i18n';
+
 /**
  * Generate improved system prompt with explicit tool usage guidance
  */
 export function generateSystemPrompt(
-  context: { language: string; currentLocation?: { lat: number; lon: number } },
+  context: { language: Language | string; currentLocation?: { lat: number; lon: number } },
   enableFunctionCalling: boolean
 ): string {
-  const languageMap: Record<string, string> = {
-    de: 'German',
-    fr: 'French',
-    it: 'Italian',
-    zh: 'Simplified Chinese',
-    hi: 'Hindi',
-    en: 'English',
-  };
-
-  const responseLanguage = languageMap[context.language] || 'English';
+  const responseLanguage = getLanguageName(context.language);
   const currentTime = new Date();
 
   // Calculate next Saturday for "this weekend" queries

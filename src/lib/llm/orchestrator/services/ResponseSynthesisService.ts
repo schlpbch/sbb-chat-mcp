@@ -6,6 +6,7 @@
  */
 
 import { createModel } from '../../chatModes/modelFactory';
+import { getLanguageName } from '../../types/language';
 
 export class ResponseSynthesisService {
   /**
@@ -70,7 +71,7 @@ export class ResponseSynthesisService {
     }
 
     // Substitute variables in template
-    const languageName = this.getLanguageName(language);
+    const languageName = getLanguageName(language);
     let result = template.template;
 
     const variables: Record<string, string> = {
@@ -99,7 +100,7 @@ export class ResponseSynthesisService {
     planSummary: any,
     language: string
   ): string {
-    const languageName = this.getLanguageName(language);
+    const languageName = getLanguageName(language);
 
     return `You are a Swiss travel Companion. The user asked: "${message}"
 
@@ -113,25 +114,4 @@ ${JSON.stringify(planSummary, null, 2)}
 IMPORTANT: The information will be displayed as visual cards to the user. Do NOT repeat or summarize the trip details (times, stations, connections, etc.) in text form. Keep your response extremely brief - just a short greeting or acknowledgment if needed, or respond with an empty string. The cards will show all the details. Respond in ${languageName}.`;
   }
 
-  /**
-   * Get language name from code
-   *
-   * @private
-   */
-  private getLanguageName(language: string): string {
-    switch (language) {
-      case 'de':
-        return 'German';
-      case 'fr':
-        return 'French';
-      case 'it':
-        return 'Italian';
-      case 'zh':
-        return 'Simplified Chinese';
-      case 'hi':
-        return 'Hindi';
-      default:
-        return 'English';
-    }
-  }
 }
