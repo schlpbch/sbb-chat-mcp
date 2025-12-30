@@ -36,6 +36,10 @@ GUIDELINES:
         ? 'French'
         : context.language === 'it'
         ? 'Italian'
+        : context.language === 'zh'
+        ? 'Simplified Chinese'
+        : context.language === 'hi'
+        ? 'Hindi'
         : 'English'
     }
 - Be concise and professional`;

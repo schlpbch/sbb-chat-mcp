@@ -9,6 +9,8 @@ export function generateSystemPrompt(
     de: 'German',
     fr: 'French',
     it: 'Italian',
+    zh: 'Simplified Chinese',
+    hi: 'Hindi',
     en: 'English',
   };
 
