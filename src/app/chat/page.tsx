@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
-import WelcomeSection from '@/components/chat/WelcomeSection';
+
 import MessageList from '@/components/chat/MessageList';
 import VoiceButton from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';

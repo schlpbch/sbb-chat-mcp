@@ -40,6 +40,7 @@ export const translations = {
         planning: 'Journey planning',
       },
       tryExample: 'Try: "Find trains from Zurich to Bern tomorrow at 2pm"',
+      allQuestions: 'All',
     },
     chat: {
       inputPlaceholder: 'Ask about trains, weather, or travel plans...',
@@ -435,6 +436,7 @@ export const translations = {
       },
       tryExample:
         'Versuchen Sie: "Finde Züge von Zürich nach Bern morgen um 14 Uhr"',
+      allQuestions: 'Alle',
     },
     chat: {
       inputPlaceholder: 'Fragen Sie nach Zügen, Wetter oder Reiseplänen...',
@@ -843,6 +845,7 @@ export const translations = {
       },
       tryExample:
         'Essayez: "Trouver des trains de Zurich à Berne demain à 14h"',
+      allQuestions: 'Tout',
     },
     chat: {
       inputPlaceholder:
@@ -1250,6 +1253,7 @@ export const translations = {
         planning: 'Pianificazione del viaggio',
       },
       tryExample: 'Prova: "Trova treni da Zurigo a Berna domani alle 14"',
+      allQuestions: 'Tutti',
     },
     chat: {
       inputPlaceholder:
@@ -1645,12 +1649,6 @@ export const translations = {
       description: '发现路线、查看天气、探索车站，并在瑞士规划环保旅程。',
       exploreTitle: '探索25种智能出行方式',
       allQuestions: '全部',
-      categoryJourneyPlanning: '行程规划',
-      categoryRealTime: '实时信息',
-      categoryStations: '车站',
-      categoryEco: '环保与可持续',
-      categoryWeather: '天气',
-      categoryAccessibility: '无障碍',
     },
     chat: {
       inputPlaceholder: '询问火车、天气或旅行计划...',
@@ -1940,12 +1938,6 @@ export const translations = {
         'कनेक्शन खोजें, मौसम जांचें, स्टेशन तलाशें, और स्विट्जरलैंड में पर्यावरण के अनुकूल यात्राओं की योजना बनाएं।',
       exploreTitle: 'स्मार्ट यात्रा के 25 तरीके खोजें',
       allQuestions: 'सभी',
-      categoryJourneyPlanning: 'यात्रा योजना',
-      categoryRealTime: 'रियल-टाइम',
-      categoryStations: 'स्टेशन',
-      categoryEco: 'पर्यावरण और स्थिरता',
-      categoryWeather: 'मौसम',
-      categoryAccessibility: 'सुलभता',
     },
     chat: {
       inputPlaceholder: 'ट्रेनों, मौसम या यात्रा योजनाओं के बारे में पूछें...',
