@@ -21,6 +21,7 @@ export default function ChatPage() {
   const searchParams = useSearchParams();
   const [language, setLanguage] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [recentSearches, setRecentSearches] = useState<string[]>([]);
 
   const {
     messages,
@@ -57,6 +58,33 @@ export default function ChatPage() {
   } = useFeedback();
 
   const t = translations[language];
+
+  // Load recent searches from localStorage
+  useEffect(() => {
+    const stored = localStorage.getItem('recentSearches');
+    if (stored) {
+      try {
+        setRecentSearches(JSON.parse(stored));
+      } catch (e) {
+        console.error('Failed to load recent searches:', e);
+      }
+    }
+  }, []);
+
+  // Save search to recent searches when a message is sent
+  useEffect(() => {
+    if (messages.length > 0) {
+      const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
+      if (lastUserMessage) {
+        const newSearches = [
+          lastUserMessage.content,
+          ...recentSearches.filter((s) => s !== lastUserMessage.content),
+        ].slice(0, 5);
+        setRecentSearches(newSearches);
+        localStorage.setItem('recentSearches', JSON.stringify(newSearches));
+      }
+    }
+  }, [messages]);
 
   // Handle query parameter for pre-filled queries
   useEffect(() => {
@@ -115,8 +143,32 @@ export default function ChatPage() {
             >
               {messages.length === 0 ? (
                 <div className="flex items-center justify-center h-full">
-                  <div className="text-center text-gray-500">
-                    <p className="text-lg">{t.chat.inputPlaceholder}</p>
+                  <div className="max-w-2xl w-full px-4">
+                    {recentSearches.length > 0 ? (
+                      <div>
+                        <h2 className="text-xl font-semibold text-gray-700 mb-4">
+                          Recent Searches
+                        </h2>
+                        <div className="space-y-2">
+                          {recentSearches.map((search, index) => (
+                            <button
+                              key={index}
+                              onClick={() => setInput(search)}
+                              className="w-full text-left px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-[#EB0000] hover:shadow-md transition-all duration-200"
+                            >
+                              <div className="flex items-center gap-3">
+                                <span className="text-gray-400">🕐</span>
+                                <span className="text-gray-700">{search}</span>
+                              </div>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="text-center text-gray-500">
+                        <p className="text-lg">{t.chat.inputPlaceholder}</p>
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (
