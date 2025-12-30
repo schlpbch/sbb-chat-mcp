@@ -15,6 +15,18 @@ export function generateSystemPrompt(
   const responseLanguage = languageMap[context.language] || 'English';
   const currentTime = new Date();
 
+  // Calculate next Saturday for "this weekend" queries
+  const currentDay = currentTime.getDay(); // 0 = Sunday, 6 = Saturday
+  let daysUntilSaturday = 6 - currentDay;
+  if (currentDay === 6 || currentDay === 0) {
+    daysUntilSaturday = currentDay === 6 ? 7 : 6;
+  }
+  const nextSaturday = new Date(
+    currentTime.getTime() + daysUntilSaturday * 24 * 60 * 60 * 1000
+  );
+  nextSaturday.setHours(8, 0, 0, 0); // Set to 8 AM
+  const weekendDate = nextSaturday.toISOString();
+
   let toolGuidance = 'No tools available in this mode';
 
   if (enableFunctionCalling) {
@@ -27,16 +39,16 @@ export function generateSystemPrompt(
    
    **TIME EXPRESSION PARSING - CRITICAL:**
    When the user mentions time expressions, you MUST extract them from the destination and convert to ISO dateTime:
-   - "tomorrow" → Calculate tomorrow's date from current time and use in dateTime parameter
-   - "this weekend" → Calculate next Saturday's date and use in dateTime parameter  
+   - "tomorrow" → Add 1 day to current time
+   - "this weekend" → Use the "Next Saturday" date from CONTEXT above
    - "today" → Use current date
    - DO NOT include time expressions in origin or destination parameters!
    
    Examples: 
    - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern", responseMode: "detailed"})
-   - "Trains from Lausanne to St. Moritz this weekend" → findTrips({origin: "Lausanne", destination: "St. Moritz", dateTime: "2025-01-04T08:00:00", responseMode: "detailed"})
+   - "Trains from Lausanne to St. Moritz this weekend" → findTrips({origin: "Lausanne", destination: "St. Moritz", dateTime: "${weekendDate}", responseMode: "detailed"})
      ❌ WRONG: {destination: "St. Moritz this weekend"}
-     ✅ CORRECT: {destination: "St. Moritz", dateTime: "2025-01-04T08:00:00"}
+     ✅ CORRECT: {destination: "St. Moritz", dateTime: "${weekendDate}"}
    - "Zurich to Milan tomorrow" → findTrips({origin: "Zurich", destination: "Milan", dateTime: "2025-12-31T08:00:00"})
    
    Works for: Domestic AND International (Milan, Paris, etc.)
@@ -101,6 +113,7 @@ Lausanne: 8501120, Lucerne: 8505000, Thun: 8507100, Interlaken Ost: 8507492`;
 CONTEXT:
 - User's language: ${context.language}
 - Current time: ${currentTime.toISOString()} (${currentTime.toLocaleString()})
+- Next Saturday ("this weekend"): ${weekendDate}
 - Current location: ${
     context.currentLocation
       ? `${context.currentLocation.lat}, ${context.currentLocation.lon}`
