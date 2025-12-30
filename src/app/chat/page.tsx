@@ -71,9 +71,23 @@ export default function ChatPage() {
     const stored = localStorage.getItem('recentSearches');
     if (stored) {
       try {
-        setRecentSearches(JSON.parse(stored));
+        const parsed = JSON.parse(stored);
+        // Normalize to array of strings (handle old format with objects)
+        const normalized = Array.isArray(parsed)
+          ? parsed.map((item) =>
+              typeof item === 'string'
+                ? item
+                : item.query || item.content || String(item)
+            )
+          : [];
+        setRecentSearches(normalized);
+        // Update localStorage with normalized format
+        if (JSON.stringify(parsed) !== JSON.stringify(normalized)) {
+          localStorage.setItem('recentSearches', JSON.stringify(normalized));
+        }
       } catch (e) {
         console.error('Failed to load recent searches:', e);
+        localStorage.removeItem('recentSearches');
       }
     }
   }, [mounted]);
@@ -83,9 +97,10 @@ export default function ChatPage() {
     if (!mounted || messages.length === 0) return;
     const lastUserMessage = messages.filter((m) => m.role === 'user').pop();
     if (lastUserMessage) {
+      const query = String(lastUserMessage.content);
       const newSearches = [
-        lastUserMessage.content,
-        ...recentSearches.filter((s) => s !== lastUserMessage.content),
+        query,
+        ...recentSearches.filter((s) => s !== query),
       ].slice(0, 5);
       setRecentSearches(newSearches);
       localStorage.setItem('recentSearches', JSON.stringify(newSearches));
