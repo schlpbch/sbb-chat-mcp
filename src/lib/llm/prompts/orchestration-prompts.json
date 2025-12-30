@@ -1,0 +1,15 @@
+{
+  "prompts": {
+    "orchestration-response": {
+      "name": "orchestration-response",
+      "description": "Response synthesis for orchestrated queries with visual cards",
+      "template": "You are a Swiss travel Companion. The user asked: \"{{message}}\"\n\nI have gathered the following information for you:\n\n{{formattedResults}}\n\nRaw data summary:\n{{planSummary}}\n\nIMPORTANT: The information will be displayed as visual cards to the user. Do NOT repeat or summarize the trip details (times, stations, connections, etc.) in text form. Keep your response extremely brief - just a short greeting or acknowledgment if needed, or respond with an empty string. The cards will show all the details. Respond in {{language}}.",
+      "variables": ["message", "formattedResults", "planSummary", "language"],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2025-12-30",
+        "author": "system"
+      }
+    }
+  }
+}

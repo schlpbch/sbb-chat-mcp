@@ -51,6 +51,54 @@ export class ResponseSynthesisService {
     planSummary: any,
     language: string
   ): string {
+    const { PromptLoader } = require('../../prompts/PromptLoader');
+    const template = PromptLoader.getPrompt(
+      'orchestration',
+      'orchestration-response'
+    );
+
+    if (!template) {
+      console.warn(
+        '[ResponseSynthesisService] Orchestration prompt not found, using fallback'
+      );
+      return this.buildFallbackPrompt(
+        message,
+        formattedResults,
+        planSummary,
+        language
+      );
+    }
+
+    // Substitute variables in template
+    const languageName = this.getLanguageName(language);
+    let result = template.template;
+
+    const variables: Record<string, string> = {
+      message,
+      formattedResults,
+      planSummary: JSON.stringify(planSummary, null, 2),
+      language: languageName,
+    };
+
+    for (const [key, value] of Object.entries(variables)) {
+      const pattern = new RegExp(`\\{\\{${key}\\}\\}`, 'g');
+      result = result.replace(pattern, value || '');
+    }
+
+    return result;
+  }
+
+  /**
+   * Fallback prompt if JSON loading fails
+   *
+   * @private
+   */
+  private buildFallbackPrompt(
+    message: string,
+    formattedResults: string,
+    planSummary: any,
+    language: string
+  ): string {
     const languageName = this.getLanguageName(language);
 
     return `You are a Swiss travel Companion. The user asked: "${message}"

@@ -1,0 +1,90 @@
+{
+  "prompts": {
+    "plan-trip": {
+      "name": "plan-trip",
+      "description": "Comprehensive trip planning with multiple considerations",
+      "template": "You are helping plan a trip from {{origin}} to {{destination}}.\n\nCurrent context:\n- Departure time: {{departureTime}}\n- Travel preferences: {{travelStyle}}\n- Special requirements: {{requirements}}\n\nPlease provide:\n1. Recommended departure times and connections\n2. Total travel duration and number of transfers\n3. Ticket pricing information\n4. Weather conditions at destination\n5. Map guidance and station information\n6. Practical travel tips\n\nFocus on {{travelStyle}} options and ensure all information is accurate and up-to-date.",
+      "variables": [
+        "origin",
+        "destination",
+        "departureTime",
+        "travelStyle",
+        "requirements"
+      ],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2025-12-30",
+        "author": "system"
+      }
+    },
+    "bike-trip-planning": {
+      "name": "bike-trip-planning",
+      "description": "Planning trips with bicycle transport",
+      "template": "You are helping plan a trip with bicycle transport from {{origin}} to {{destination}}.\n\nIMPORTANT BIKE TRANSPORT RULES:\n- Bikes are allowed on most regional trains and S-Bahn\n- IC/ICN trains require bike reservation (CHF 5)\n- Peak hours (Mon-Fri 6-9 AM, 4-7 PM) may have restrictions\n- Maximum 3 bikes per carriage on regional trains\n- Folding bikes (packed) count as regular luggage\n\nFor this journey:\n1. Check bike transport availability on suggested connections\n2. Identify any required reservations\n3. Note any time restrictions or peak hour limitations\n4. Provide alternative routes if bike transport is limited\n5. Provide transit options for cyclists at {{destination}}\n\nDeparture: {{departureTime}}",
+      "variables": ["origin", "destination", "departureTime"],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2025-12-30",
+        "author": "system"
+      }
+    },
+    "luggage-restrictions": {
+      "name": "luggage-restrictions",
+      "description": "Information about special luggage rules",
+      "template": "You are providing information about luggage restrictions for Swiss public transport.\n\nGENERAL LUGGAGE RULES:\n- Standard luggage (suitcases, backpacks): Free and unlimited\n- Oversized items (skis, snowboards, surfboards): Allowed but may require special positioning\n- Strollers and wheelchairs: Always allowed, priority spaces available\n- Musical instruments: Large instruments may need their own seat/ticket\n\nSPECIAL ITEMS:\n- Skis/Snowboards: Free transport, use designated racks\n- Bikes: See bike transport rules (reservation may be required)\n- Pets: Small pets in carriers free, dogs require half-fare ticket\n\nFor your journey from {{origin}} to {{destination}}:\n{{specialLuggage}}\n\nPlease ensure you:\n1. Position oversized items safely without blocking aisles\n2. Use designated storage areas when available\n3. Keep luggage with you at all times",
+      "variables": ["origin", "destination", "specialLuggage"],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2025-12-30",
+        "author": "system"
+      }
+    },
+    "accessibility-guidance": {
+      "name": "accessibility-guidance",
+      "description": "Wheelchair and mobility accessibility information",
+      "template": "You are providing accessibility information for travelers with mobility requirements.\n\nJourney: {{origin}} to {{destination}}\nDeparture: {{departureTime}}\n\nACCESSIBILITY FEATURES TO CHECK:\n1. Station accessibility:\n   - Elevator/lift availability at both stations\n   - Platform access (step-free routes)\n   - Accessible toilets\n\n2. Train accessibility:\n   - Low-floor trains or wheelchair lifts\n   - Designated wheelchair spaces\n   - Accessible toilets on board\n\n3. Transfer assistance:\n   - SBB Call Center Handicap: 0800 007 102\n   - Advance booking recommended (24h notice)\n   - Platform assistance available\n\n4. Connection considerations:\n   - Minimum transfer time for wheelchair users: 10-15 minutes\n   - Avoid connections requiring platform changes via stairs\n\nPlease provide:\n- Fully accessible route options\n- Platform numbers and accessibility features\n- Transfer assistance contact information\n- Alternative routes if primary route has accessibility issues",
+      "variables": ["origin", "destination", "departureTime"],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2025-12-30",
+        "author": "system"
+      }
+    },
+    "eco-friendly-travel": {
+      "name": "eco-friendly-travel",
+      "description": "Sustainable travel options and environmental impact",
+      "template": "You are helping plan an eco-friendly trip from {{origin}} to {{destination}}.\n\nSUSTAINABILITY PRIORITIES:\n1. Prefer direct trains over connections (less energy per km)\n2. Choose electric trains over diesel (most Swiss trains are electric)\n3. Avoid unnecessary transfers\n4. Consider travel time vs. environmental impact\n\nFor this journey:\n1. Recommend the most sustainable route\n2. Calculate CO2 savings vs. car travel\n3. Highlight any particularly eco-friendly features (e.g., 100% renewable energy)\n4. Suggest eco-friendly transit connections at destination\n5. Provide tips for reducing environmental impact\n\nDeparture: {{departureTime}}\nTravel style: Eco-conscious\n\nEnvironmental comparison:\n- Train: ~{{trainCO2}}g CO2\n- Car: ~{{carCO2}}g CO2\n- Savings: ~{{savings}}g CO2 ({{savingsPercent}}% reduction)",
+      "variables": [
+        "origin",
+        "destination",
+        "departureTime",
+        "trainCO2",
+        "carCO2",
+        "savings",
+        "savingsPercent"
+      ],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2025-12-30",
+        "author": "system"
+      }
+    },
+    "family-friendly-travel": {
+      "name": "family-friendly-travel",
+      "description": "Family-oriented travel planning",
+      "template": "You are helping plan a family-friendly trip from {{origin}} to {{destination}}.\n\nFAMILY TRAVEL CONSIDERATIONS:\n1. Prefer direct connections (avoid multiple transfers with children)\n2. Choose trains with family zones/compartments\n3. Consider travel duration (shorter is better for young children)\n4. Look for trains with dining cars or food service\n5. Ensure adequate time for transfers (minimum 8-10 minutes)\n\nFor this journey:\n1. Recommend family-friendly connections\n2. Identify trains with family compartments\n3. Suggest family-friendly stations and facilities\n4. Provide tips for traveling with children\n5. Note facilities (changing tables, play areas at stations)\n\nDeparture: {{departureTime}}\nFamily size: {{familySize}}\nChildren ages: {{childrenAges}}\n\nFAMILY BENEFITS:\n- Children under 6: Free travel\n- Children 6-16: Free with Junior Card or Family Card\n- Family compartments available on many IC/ICN trains",
+      "variables": [
+        "origin",
+        "destination",
+        "departureTime",
+        "familySize",
+        "childrenAges"
+      ],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2025-12-30",
+        "author": "system"
+      }
+    }
+  }
+}
