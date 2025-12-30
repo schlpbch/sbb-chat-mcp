@@ -28,8 +28,10 @@ export default function CategoryFilter({
       >
         {t.allQuestions} ({quickActions.length})
       </button>
-      {groupedActions.map(group => {
-        const translationKey = categoryNameMap[group.name];
+      {groupedActions.map((group) => {
+        const translationKey = categoryNameMap[group.name] as
+          | keyof typeof t
+          | undefined;
         const categoryName = translationKey ? t[translationKey] : group.name;
         return (
           <button
