@@ -37,7 +37,7 @@ export async function executePlan(
           stepId: step.id,
           toolName: step.toolName,
           success: true,
-          data: null,
+          data: undefined,
           duration: 0,
           skipped: true,
         };

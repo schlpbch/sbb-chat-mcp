@@ -12,7 +12,7 @@ export interface ToolExecutionResult {
   data?: ToolResultData;
   error?: string;
   toolName: string;
-  params: FunctionCallParams;
+  params?: Partial<FunctionCallParams> | Record<string, unknown>;
 }
 
 /**
@@ -20,7 +20,7 @@ export interface ToolExecutionResult {
  */
 export async function executeTool(
   toolName: string,
-  params: FunctionCallParams
+  params: Partial<FunctionCallParams> | Record<string, unknown>
 ): Promise<ToolExecutionResult> {
   try {
     console.log(`Executing tool: ${toolName}`, params);
@@ -30,7 +30,7 @@ export async function executeTool(
       toolName,
       params,
       // Pass executeTool as a callback for recursive resolution
-      async (name: string, p: FunctionCallParams) => {
+      async (name: string, p: Partial<FunctionCallParams> | Record<string, unknown>) => {
         const result = await executeTool(name, p);
         return result;
       }

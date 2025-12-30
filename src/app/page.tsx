@@ -7,10 +7,21 @@ import HeroSection from '@/components/landing/HeroSection';
 import FeaturedExamples from '@/components/landing/FeaturedExamples';
 
 import { translations } from '@/lib/i18n';
+import { useFeedback } from '@/hooks/useFeedback';
+import FeedbackModal from '@/components/feedback/FeedbackModal';
 
 export default function LandingPage() {
   const [language, setLanguage] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const {
+    isOpen: isFeedbackOpen,
+    isSubmitting: isFeedbackSubmitting,
+    error: feedbackError,
+    success: feedbackSuccess,
+    openFeedback,
+    closeFeedback,
+    submitFeedback,
+  } = useFeedback();
   const t = translations[language];
 
   return (
@@ -19,13 +30,24 @@ export default function LandingPage() {
         language={language}
         onLanguageChange={setLanguage}
         onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
-        onFeedbackClick={() => {}}
+        onFeedbackClick={openFeedback}
         onHelpClick={() => {}}
       />
 
       <Menu
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
+        language={language}
+        onFeedbackClick={openFeedback}
+      />
+
+      <FeedbackModal
+        isOpen={isFeedbackOpen}
+        onClose={closeFeedback}
+        onSubmit={submitFeedback}
+        isSubmitting={isFeedbackSubmitting}
+        error={feedbackError}
+        success={feedbackSuccess}
         language={language}
       />
 

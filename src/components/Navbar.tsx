@@ -67,10 +67,10 @@ export default function Navbar({
               aria-label={t.navbar.appTitle}
             >
               <div className="flex flex-col">
-                <h1 className="text-xl font-bold text-gray-900 leading-tight">
+                <h1 className="text-lg sm:text-xl font-bold text-gray-900 leading-tight">
                   {t.navbar.appTitle}
                 </h1>
-                <p className="text-xs font-semibold text-gray-700 leading-tight mt-1">
+                <p className="hidden md:block text-xs font-semibold text-gray-700 leading-tight mt-0.5">
                   {t.navbar.travelCompanion}
                 </p>
               </div>
@@ -132,7 +132,7 @@ export default function Navbar({
               <select
                 value={language}
                 onChange={(e) => onLanguageChange(e.target.value as Language)}
-                className="appearance-none text-sm pl-10 pr-8 py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-transparent cursor-pointer"
+                className="appearance-none text-xs sm:text-sm pl-8 sm:pl-10 pr-6 sm:pr-8 py-1.5 sm:py-2 bg-gray-100 border border-gray-300 rounded-lg text-gray-900 focus:ring-2 focus:ring-red-500 focus:border-transparent cursor-pointer"
               >
                 {languages.map((lang) => (
                   <option key={lang.code} value={lang.code}>

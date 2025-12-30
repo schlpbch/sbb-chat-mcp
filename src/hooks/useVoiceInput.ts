@@ -3,19 +3,11 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Language } from '@/lib/i18n';
 
-// Extend Window interface for browser compatibility
-declare global {
-  interface Window {
-    SpeechRecognition: any;
-    webkitSpeechRecognition: any;
-  }
-}
-
 export function useVoiceInput(language: Language) {
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [isSupported, setIsSupported] = useState(false);
-  const recognitionRef = useRef<any>(null);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
 
   // Language code mapping
   const langMap: Record<Language, string> = {
@@ -34,18 +26,18 @@ export function useVoiceInput(language: Language) {
       return;
     }
 
-    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-    setIsSupported(!!SpeechRecognition);
+    const SpeechRecognitionAPI = window.SpeechRecognition || window.webkitSpeechRecognition;
+    setIsSupported(!!SpeechRecognitionAPI);
 
-    if (SpeechRecognition) {
-      recognitionRef.current = new SpeechRecognition();
+    if (SpeechRecognitionAPI) {
+      recognitionRef.current = new SpeechRecognitionAPI();
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = langMap[language];
 
-      recognitionRef.current.onresult = (event: any) => {
+      recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
         const transcript = Array.from(event.results)
-          .map((result: any) => result[0].transcript)
+          .map((result: SpeechRecognitionResult) => result[0].transcript)
           .join('');
         setTranscript(transcript);
       };
@@ -54,7 +46,7 @@ export function useVoiceInput(language: Language) {
         setIsListening(false);
       };
 
-      recognitionRef.current.onerror = (event: any) => {
+      recognitionRef.current.onerror = (event: SpeechRecognitionErrorEvent) => {
         console.error('Speech recognition error:', event.error);
         setIsListening(false);
       };

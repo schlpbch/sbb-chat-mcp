@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { translations, Language } from '@/lib/i18n';
 
 interface OnboardingModalProps {
   isOpen: boolean;
@@ -9,149 +10,8 @@ interface OnboardingModalProps {
   onPrev: () => void;
   onComplete: () => void;
   onSkip: () => void;
+  language: Language;
 }
-
-const steps = [
-  {
-    title: 'Welcome to SBB Chat Companion! 🚂',
-    description: 'Your intelligent companion for Swiss public transport journeys and station information.',
-    content: (
-      <div className="space-y-4">
-        <p className="text-gray-700">
-          I can help you with:
-        </p>
-        <ul className="space-y-2 text-gray-700">
-          <li className="flex items-start gap-2">
-            <span className="text-sbb-red">🚂</span>
-            <span>Finding train connections across Switzerland</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-sbb-red">🌤️</span>
-            <span>Checking weather forecasts for your destination</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-sbb-red">🏢</span>
-            <span>Getting station information and live departures</span>
-          </li>
-          <li className="flex items-start gap-2">
-            <span className="text-sbb-red">🎿</span>
-            <span>Discovering tourist attractions and ski resorts</span>
-          </li>
-        </ul>
-      </div>
-    ),
-  },
-  {
-    title: 'How to Ask Questions 💬',
-    description: 'Just type naturally - I understand plain language!',
-    content: (
-      <div className="space-y-4">
-        <div className="bg-gray-50 rounded-lg p-4">
-          <p className="font-semibold text-gray-900 mb-2">Simple Examples:</p>
-          <ul className="space-y-2 text-sm text-gray-700">
-            <li className="flex items-start gap-2">
-              <span className="text-green-600">✓</span>
-              <span>"Find trains from Zurich to Bern tomorrow at 9am"</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-green-600">✓</span>
-              <span>"What's the weather in St. Moritz?"</span>
-            </li>
-            <li className="flex items-start gap-2">
-              <span className="text-green-600">✓</span>
-              <span>"Show departures from Geneva"</span>
-            </li>
-          </ul>
-        </div>
-        <div className="bg-blue-50 rounded-lg p-4">
-          <p className="font-semibold text-blue-900 mb-2">Pro Tip:</p>
-          <p className="text-sm text-blue-800">
-            Use markdown formatting for complex queries with preferences and multiple questions!
-          </p>
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: 'Rich Responses 🎨',
-    description: 'Get beautiful, interactive cards with all the information you need.',
-    content: (
-      <div className="space-y-4">
-        <p className="text-gray-700">
-          I provide rich, visual responses including:
-        </p>
-        <div className="grid grid-cols-2 gap-3">
-          <div className="bg-linear-to-br from-red-50 to-red-100 rounded-lg p-4">
-            <div className="text-2xl mb-2">🚂</div>
-            <h4 className="font-semibold text-gray-900 text-sm">Trip Cards</h4>
-            <p className="text-xs text-gray-600 mt-1">Detailed journey information with times and platforms</p>
-          </div>
-          <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-lg p-4">
-            <div className="text-2xl mb-2">🌤️</div>
-            <h4 className="font-semibold text-gray-900 text-sm">Weather Cards</h4>
-            <p className="text-xs text-gray-600 mt-1">Current conditions and forecasts</p>
-          </div>
-          <div className="bg-linear-to-br from-green-50 to-green-100 rounded-lg p-4">
-            <div className="text-2xl mb-2">🏢</div>
-            <h4 className="font-semibold text-gray-900 text-sm">Station Info</h4>
-            <p className="text-xs text-gray-600 mt-1">Live departures and facilities</p>
-          </div>
-          <div className="bg-linear-to-br from-purple-50 to-purple-100 rounded-lg p-4">
-            <div className="text-2xl mb-2">🎿</div>
-            <h4 className="font-semibold text-gray-900 text-sm">Tourist Info</h4>
-            <p className="text-xs text-gray-600 mt-1">Attractions and activities</p>
-          </div>
-        </div>
-      </div>
-    ),
-  },
-  {
-    title: 'Quick Tips 💡',
-    description: 'Make the most of your SBB Chat Companion experience.',
-    content: (
-      <div className="space-y-4">
-        <div className="space-y-3">
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
-              1
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">Use Example Queries</h4>
-              <p className="text-sm text-gray-600">Click any example on the welcome screen to get started quickly</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
-              2
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">Try Markdown Formatting</h4>
-              <p className="text-sm text-gray-600">Use **bold** for stations, lists for preferences, and headings for multi-part queries</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
-              3
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">Switch Languages</h4>
-              <p className="text-sm text-gray-600">Use the language selector for EN, DE, FR, IT, ZH, or HI</p>
-            </div>
-          </div>
-          <div className="flex items-start gap-3">
-            <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
-              4
-            </div>
-            <div>
-              <h4 className="font-semibold text-gray-900">Need Help?</h4>
-              <p className="text-sm text-gray-600">Click the help button (?) anytime to see this tutorial again</p>
-            </div>
-          </div>
-        </div>
-      </div>
-    ),
-  },
-];
 
 export default function OnboardingModal({
   isOpen,
@@ -160,7 +20,174 @@ export default function OnboardingModal({
   onPrev,
   onComplete,
   onSkip,
+  language,
 }: OnboardingModalProps) {
+  const t = translations[language];
+
+  const steps = [
+    {
+      title: t.onboarding.welcome,
+      description: t.onboarding.welcomeDesc,
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-700">{t.onboarding.capabilities}</p>
+          <ul className="space-y-2 text-gray-700">
+            <li className="flex items-start gap-2">
+              <span className="text-sbb-red">🚂</span>
+              <span>{t.onboarding.findTrains}</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-sbb-red">🌤️</span>
+              <span>{t.onboarding.checkWeather}</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-sbb-red">🏢</span>
+              <span>{t.onboarding.stationInfo}</span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-sbb-red">🎿</span>
+              <span>{t.onboarding.discoverAttractions}</span>
+            </li>
+          </ul>
+        </div>
+      ),
+    },
+    {
+      title: t.onboarding.howToAsk,
+      description: t.onboarding.howToAskDesc,
+      content: (
+        <div className="space-y-4">
+          <div className="bg-gray-50 rounded-xl p-4">
+            <p className="font-semibold text-gray-900 mb-2">
+              {t.onboarding.simpleExamples}
+            </p>
+            <ul className="space-y-2 text-sm text-gray-700">
+              <li className="flex items-start gap-2">
+                <span className="text-green-600">✓</span>
+                <span>"{t.onboarding.example1}"</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600">✓</span>
+                <span>"{t.onboarding.example2}"</span>
+              </li>
+              <li className="flex items-start gap-2">
+                <span className="text-green-600">✓</span>
+                <span>"{t.onboarding.example3}"</span>
+              </li>
+            </ul>
+          </div>
+          <div className="bg-red-50 rounded-xl p-4 border border-red-100">
+            <p className="font-semibold text-sbb-red mb-2">
+              {t.onboarding.proTip}
+            </p>
+            <p className="text-sm text-red-900">{t.onboarding.proTipDesc}</p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: t.onboarding.richResponses,
+      description: t.onboarding.richResponsesDesc,
+      content: (
+        <div className="space-y-4">
+          <p className="text-gray-700">{t.onboarding.responses}</p>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="bg-linear-to-br from-red-50 to-red-100 rounded-xl p-4 border border-red-200">
+              <div className="text-2xl mb-2">🚂</div>
+              <h4 className="font-semibold text-gray-900 text-sm">
+                {t.onboarding.tripCards}
+              </h4>
+              <p className="text-xs text-gray-600 mt-1">
+                {t.onboarding.tripCardsDesc}
+              </p>
+            </div>
+            <div className="bg-linear-to-br from-blue-50 to-blue-100 rounded-xl p-4 border border-blue-200">
+              <div className="text-2xl mb-2">🌤️</div>
+              <h4 className="font-semibold text-gray-900 text-sm">
+                {t.onboarding.weatherCards}
+              </h4>
+              <p className="text-xs text-gray-600 mt-1">
+                {t.onboarding.weatherCardsDesc}
+              </p>
+            </div>
+            <div className="bg-linear-to-br from-green-50 to-green-100 rounded-xl p-4 border border-green-200">
+              <div className="text-2xl mb-2">🏢</div>
+              <h4 className="font-semibold text-gray-900 text-sm">
+                {t.onboarding.stationCards}
+              </h4>
+              <p className="text-xs text-gray-600 mt-1">
+                {t.onboarding.stationCardsDesc}
+              </p>
+            </div>
+            <div className="bg-linear-to-br from-purple-50 to-purple-100 rounded-xl p-4 border border-purple-200">
+              <div className="text-2xl mb-2">🎿</div>
+              <h4 className="font-semibold text-gray-900 text-sm">
+                {t.onboarding.touristCards}
+              </h4>
+              <p className="text-xs text-gray-600 mt-1">
+                {t.onboarding.touristCardsDesc}
+              </p>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: t.onboarding.quickTips,
+      description: t.onboarding.quickTipsDesc,
+      content: (
+        <div className="space-y-4">
+          <div className="space-y-3">
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
+                1
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">
+                  {t.onboarding.tip1Title}
+                </h4>
+                <p className="text-sm text-gray-600">{t.onboarding.tip1Desc}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
+                2
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">
+                  {t.onboarding.tip2Title}
+                </h4>
+                <p className="text-sm text-gray-600">{t.onboarding.tip2Desc}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
+                3
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">
+                  {t.onboarding.tip3Title}
+                </h4>
+                <p className="text-sm text-gray-600">{t.onboarding.tip3Desc}</p>
+              </div>
+            </div>
+            <div className="flex items-start gap-3">
+              <div className="w-8 h-8 rounded-full bg-sbb-red text-white flex items-center justify-center shrink-0 font-bold">
+                4
+              </div>
+              <div>
+                <h4 className="font-semibold text-gray-900">
+                  {t.onboarding.tip4Title}
+                </h4>
+                <p className="text-sm text-gray-600">{t.onboarding.tip4Desc}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ),
+    },
+  ];
+
   const step = steps[currentStep];
   const isLastStep = currentStep === steps.length - 1;
   const isFirstStep = currentStep === 0;
@@ -180,8 +207,8 @@ export default function OnboardingModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 animate-fade-in">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-slide-up">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm animate-fade-in">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-slide-up border border-gray-100">
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
@@ -189,10 +216,20 @@ export default function OnboardingModal({
             <button
               onClick={onSkip}
               className="text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Skip tutorial"
+              aria-label={t.onboarding.skip}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
@@ -200,9 +237,7 @@ export default function OnboardingModal({
         </div>
 
         {/* Content */}
-        <div className="p-6 overflow-y-auto max-h-[50vh]">
-          {step.content}
-        </div>
+        <div className="p-6 overflow-y-auto max-h-[50vh]">{step.content}</div>
 
         {/* Footer */}
         <div className="border-t border-gray-200 p-6 bg-gray-50">
@@ -227,35 +262,35 @@ export default function OnboardingModal({
             <button
               onClick={onPrev}
               disabled={isFirstStep}
-              className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              className={`px-4 py-2 rounded-xl font-medium transition-all ${
                 isFirstStep
                   ? 'text-gray-400 cursor-not-allowed'
-                  : 'text-gray-700 hover:bg-gray-200'
+                  : 'text-gray-700 hover:bg-gray-100 active:scale-95'
               }`}
             >
-              ← Previous
+              ← {t.onboarding.previous}
             </button>
 
             <button
               onClick={onSkip}
               className="px-4 py-2 text-gray-600 hover:text-gray-800 font-medium transition-colors"
             >
-              Skip
+              {t.onboarding.skip}
             </button>
 
             {isLastStep ? (
               <button
                 onClick={onComplete}
-                className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-sm"
+                className="px-6 py-2 bg-sbb-red text-white rounded-xl font-semibold hover:bg-red-700 transition-all shadow-md active:scale-95"
               >
-                Start Chatting →
+                {t.onboarding.startChatting} →
               </button>
             ) : (
               <button
                 onClick={onNext}
-                className="px-6 py-2 bg-red-600 text-white rounded-lg font-semibold hover:bg-red-700 transition-colors shadow-sm"
+                className="px-6 py-2 bg-sbb-red text-white rounded-xl font-semibold hover:bg-red-700 transition-all shadow-md active:scale-95"
               >
-                Next →
+                {t.onboarding.next} →
               </button>
             )}
           </div>

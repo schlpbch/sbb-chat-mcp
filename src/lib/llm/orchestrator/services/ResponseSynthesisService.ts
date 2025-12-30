@@ -9,6 +9,7 @@ import { createModel } from '../../chatModes/modelFactory';
 import { getLanguageName } from '../../types/language';
 import type { PlanSummary } from '../../types/common';
 import type { Language } from '@/lib/i18n';
+import { PromptLoader } from '../../prompts/PromptLoader';
 
 export class ResponseSynthesisService {
   /**
@@ -54,7 +55,6 @@ export class ResponseSynthesisService {
     planSummary: PlanSummary,
     language: Language | string
   ): string {
-    const { PromptLoader } = require('../../prompts/PromptLoader');
     const template = PromptLoader.getPrompt(
       'orchestration',
       'orchestration-response'

@@ -7,10 +7,10 @@ export function extractTripCoordinates(trip: TripData): [number, number][] {
   try {
     if (!trip.legs) return [];
 
-    trip.legs.forEach((leg: any) => {
+    trip.legs.forEach((leg: Leg) => {
       // 1. Try to get points from serviceJourney stops (most detailed)
       if (leg.serviceJourney?.stopPoints) {
-        leg.serviceJourney.stopPoints.forEach((stop: any) => {
+        leg.serviceJourney.stopPoints.forEach((stop: Record<string, unknown>) => {
           const coords = getCoordsFromObject(stop.place) || getCoordsFromObject(stop);
           if (coords) points.push(coords);
         });
@@ -38,27 +38,29 @@ export function extractTripCoordinates(trip: TripData): [number, number][] {
   }
 }
 
-function getCoordsFromObject(obj: any): [number, number] | null {
-  if (!obj) return null;
+function getCoordsFromObject(obj: unknown): [number, number] | null {
+  if (!obj || typeof obj !== 'object') return null;
+
+  const record = obj as Record<string, unknown>;
 
   // Pattern 1: { latitude: 1.2, longitude: 3.4 }
-  if (obj.latitude && obj.longitude) {
-    return [obj.latitude, obj.longitude];
+  if (typeof record.latitude === 'number' && typeof record.longitude === 'number') {
+    return [record.latitude, record.longitude];
   }
 
   // Pattern 2: { lat: 1.2, lon: 3.4 }
-  if (obj.lat && obj.lon) {
-    return [obj.lat, obj.lon];
+  if (typeof record.lat === 'number' && typeof record.lon === 'number') {
+    return [record.lat, record.lon];
   }
 
   // Pattern 3: { coordinates: { latitude: ... } }
-  if (obj.coordinates) {
-    return getCoordsFromObject(obj.coordinates);
+  if (record.coordinates) {
+    return getCoordsFromObject(record.coordinates);
   }
 
   // Pattern 4: { centroid: { coordinates: ... } }
-  if (obj.centroid) {
-    return getCoordsFromObject(obj.centroid);
+  if (record.centroid) {
+    return getCoordsFromObject(record.centroid);
   }
 
   return null;

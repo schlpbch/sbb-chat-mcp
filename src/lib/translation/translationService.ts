@@ -6,12 +6,14 @@
  * to leverage existing robust EN keyword dictionaries and entity patterns.
  */
 
-const { Translate } = require('@google-cloud/translate').v2;
+import { v2 } from '@google-cloud/translate';
+
+const { Translate } = v2;
 
 // Initialize Google Cloud Translate client
-let translateClient: typeof Translate | null = null;
+let translateClient: InstanceType<typeof Translate> | null = null;
 
-function getTranslateClient(): typeof Translate | null {
+function getTranslateClient(): InstanceType<typeof Translate> | null {
   if (!translateClient && process.env.GOOGLE_CLOUD_KEY) {
     translateClient = new Translate({
       key: process.env.GOOGLE_CLOUD_KEY,

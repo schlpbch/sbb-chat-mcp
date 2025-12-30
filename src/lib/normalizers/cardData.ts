@@ -54,7 +54,9 @@ export function normalizeBoardData(raw: unknown): NormalizedBoardData {
     // Continue with raw data instead of throwing
   }
 
-  const data = (parseResult.success ? parseResult.data : raw) as any;
+  const data: BoardData | Record<string, unknown> = parseResult.success
+    ? parseResult.data
+    : (raw as Record<string, unknown>);
 
   // Determine type
   const type: 'departures' | 'arrivals' =

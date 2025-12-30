@@ -113,9 +113,10 @@ export default function ChatPage() {
       />
 
       <Menu
+        language={language}
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
-        language={language}
+        onFeedbackClick={openFeedback}
       />
 
       <main
@@ -154,10 +155,10 @@ export default function ChatPage() {
             {/* Input Area */}
             <div className="px-3 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200">
               {/* Mode Toggle */}
-              <div className="flex items-center justify-between mb-2">
+              <div className="flex items-center gap-3 mb-2">
                 <button
                   onClick={() => setTextOnlyMode(!textOnlyMode)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors hover:bg-gray-200"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-white border border-gray-200 shadow-sm hover:bg-gray-100"
                   aria-label={
                     textOnlyMode ? t.chat.switchToRich : t.chat.switchToText
                   }
@@ -198,7 +199,7 @@ export default function ChatPage() {
                     </>
                   )}
                 </button>
-                <span className="hidden sm:block text-xs text-gray-500">
+                <span className="text-xs text-gray-500 font-medium italic">
                   {textOnlyMode ? t.chat.textOnlyDesc : t.chat.richModeDesc}
                 </span>
               </div>
@@ -224,7 +225,7 @@ export default function ChatPage() {
                     rows={1}
                     aria-label={t.accessibility.typeYourMessage}
                     aria-describedby="chat-hint"
-                    className="w-full px-3 sm:px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="block w-full px-3 sm:px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     style={{ minHeight: '52px', maxHeight: '120px' }}
                   />
                 </div>
@@ -286,6 +287,7 @@ export default function ChatPage() {
         onPrev={prevStep}
         onComplete={completeOnboarding}
         onSkip={skipOnboarding}
+        language={language}
       />
 
       {/* Feedback Modal */}
@@ -296,6 +298,7 @@ export default function ChatPage() {
         success={feedbackSuccess}
         onClose={closeFeedback}
         onSubmit={submitFeedback}
+        language={language}
       />
     </div>
   );

@@ -8,6 +8,38 @@ export interface ExportableMessage {
   timestamp: Date;
 }
 
+export interface ItineraryLeg {
+  type?: string;
+  duration?: string | number;
+  serviceJourney?: {
+    serviceProducts?: Array<{
+      name?: string;
+      number?: string;
+    }>;
+  };
+  departure?: {
+    time: string | Date;
+    place?: {
+      name?: string;
+    };
+  };
+  arrival?: {
+    time: string | Date;
+    place?: {
+      name?: string;
+    };
+  };
+}
+
+export interface Itinerary {
+  origin?: string;
+  destination?: string;
+  legs?: ItineraryLeg[];
+  price?: number;
+  co2Emissions?: number;
+  [key: string]: unknown; // Allow additional properties
+}
+
 /**
  * Export chat messages as a formatted text file
  */
@@ -36,7 +68,7 @@ export function exportChatAsJSON(messages: ExportableMessage[]): void {
 /**
  * Export itinerary as a formatted text file
  */
-export function exportItineraryAsText(itinerary: any): void {
+export function exportItineraryAsText(itinerary: Itinerary): void {
   let content = `SBB Travel Itinerary\n`;
   content += `Generated: ${new Date().toLocaleString()}\n`;
   content += `${'='.repeat(50)}\n\n`;
@@ -50,7 +82,7 @@ export function exportItineraryAsText(itinerary: any): void {
     content += `Journey Details:\n`;
     content += `${'-'.repeat(50)}\n`;
 
-    itinerary.legs.forEach((leg: any, index: number) => {
+    itinerary.legs.forEach((leg: ItineraryLeg, index: number) => {
       content += `\nLeg ${index + 1}:\n`;
 
       if (leg.type === 'WalkLeg') {
@@ -96,7 +128,7 @@ export function exportItineraryAsText(itinerary: any): void {
 /**
  * Export itinerary as PDF (using browser print)
  */
-export function exportItineraryAsPDF(itinerary: any): void {
+export function exportItineraryAsPDF(itinerary: Itinerary): void {
   // Create a new window with formatted content
   const printWindow = window.open('', '_blank');
   if (!printWindow) {
@@ -182,7 +214,7 @@ export function exportItineraryAsPDF(itinerary: any): void {
   if (itinerary.legs && Array.isArray(itinerary.legs)) {
     html += `<h2>Journey Details</h2>`;
 
-    itinerary.legs.forEach((leg: any, index: number) => {
+    itinerary.legs.forEach((leg: ItineraryLeg, index: number) => {
       html += `<div class="leg">`;
       html += `<div class="leg-title">Leg ${index + 1}</div>`;
 

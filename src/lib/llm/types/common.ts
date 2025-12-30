@@ -107,9 +107,15 @@ export interface StationResult {
   [key: string]: unknown;
 }
 
+export interface EventItem {
+  journeyId: string;
+  [key: string]: unknown;
+}
+
 export interface EventResult {
-  arrivals?: unknown[];
-  departures?: unknown[];
+  arrivals?: EventItem[];
+  departures?: EventItem[];
+  place?: string;
   [key: string]: unknown;
 }
 

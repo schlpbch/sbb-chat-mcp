@@ -4,6 +4,7 @@
 
 import type { ConversationContext, Intent } from '../contextManager';
 import type { ExecutionPlan } from './types';
+import type { EventResult, TripResult, StationResult } from '../types/common';
 
 /**
  * Create an execution plan based on user intent
@@ -88,26 +89,28 @@ function createFormationPlan(context: ConversationContext): ExecutionPlan | null
   let stopPlaceId = '';
 
   // 1. Try to find a journey from departures/arrivals board
-  if (eventsResult) {
-    const list = eventsResult.departures || eventsResult.arrivals || [];
+  if (eventsResult && typeof eventsResult === 'object' && !Array.isArray(eventsResult)) {
+    const typedEvents = eventsResult as EventResult;
+    const list = typedEvents.departures || typedEvents.arrivals || [];
     if (list.length > index) {
       journeyId = list[index].journeyId;
-      stopPlaceId = eventsResult.place; 
+      stopPlaceId = typedEvents.place || '';
     } else if (list.length > 0) {
       // Fallback to first if index out of range
       journeyId = list[0].journeyId;
-      stopPlaceId = eventsResult.place;
+      stopPlaceId = typedEvents.place || '';
     }
   }
   
   // 2. Try to find a journey from trip search if no board results
   if (!journeyId && tripsResult && Array.isArray(tripsResult)) {
-    if (tripsResult.length > index) {
-      journeyId = tripsResult[index].id;
-      stopPlaceId = tripsResult[index].legs?.[0]?.start?.place?.id;
-    } else if (tripsResult.length > 0) {
-      journeyId = tripsResult[0].id;
-      stopPlaceId = tripsResult[0].legs?.[0]?.start?.place?.id;
+    const typedTrips = tripsResult as TripResult[];
+    if (typedTrips.length > index) {
+      journeyId = (typedTrips[index] as TripResult).id || '';
+      stopPlaceId = ((typedTrips[index] as TripResult).legs?.[0] as any)?.start?.place?.id || '';
+    } else if (typedTrips.length > 0) {
+      journeyId = (typedTrips[0] as TripResult).id || '';
+      stopPlaceId = ((typedTrips[0] as TripResult).legs?.[0] as any)?.start?.place?.id || '';
     }
   }
 
@@ -189,13 +192,17 @@ function createTripPlan(context: ConversationContext): ExecutionPlan {
         id: 'eco-comparison',
         toolName: 'getEcoComparison',
         params: (results) => {
-          const firstTrip = results.get('find-trips')?.data?.[0];
+          const tripsData = results.get('find-trips')?.data;
+          const firstTrip = Array.isArray(tripsData) ? (tripsData[0] as TripResult) : undefined;
           return {
             tripId: firstTrip?.id || '',
           };
         },
         dependsOn: ['find-trips'],
-        condition: (results) => !!results.get('find-trips')?.data?.[0]?.id,
+        condition: (results) => {
+          const tripsData = results.get('find-trips')?.data;
+          return Array.isArray(tripsData) && tripsData.length > 0 && !!(tripsData[0] as TripResult)?.id;
+        },
       },
     ],
   };
@@ -258,7 +265,8 @@ function createStationEventsPlan(context: ConversationContext): ExecutionPlan {
         id: 'get-events',
         toolName: 'getPlaceEvents',
         params: (results) => {
-          const station = results.get('find-station')?.data?.[0];
+          const stationData = results.get('find-station')?.data;
+          const station = Array.isArray(stationData) ? (stationData[0] as StationResult) : undefined;
           return {
             placeId: station?.id || '',
             eventType: eventType,

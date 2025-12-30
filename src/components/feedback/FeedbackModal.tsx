@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import type { FeedbackType } from '@/hooks/useFeedback';
+import { translations, Language } from '@/lib/i18n';
 
 interface FeedbackModalProps {
   isOpen: boolean;
@@ -9,6 +10,7 @@ interface FeedbackModalProps {
   error: string | null;
   success: boolean;
   onClose: () => void;
+  language: Language;
   onSubmit: (data: {
     type: FeedbackType;
     rating?: number;
@@ -24,7 +26,9 @@ export default function FeedbackModal({
   success,
   onClose,
   onSubmit,
+  language,
 }: FeedbackModalProps) {
+  const t = translations[language];
   const [type, setType] = useState<FeedbackType>('general');
   const [rating, setRating] = useState<number | undefined>(undefined);
   const [message, setMessage] = useState('');
@@ -66,60 +70,87 @@ export default function FeedbackModal({
 
   if (success) {
     return (
-      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-8 text-center animate-slide-up">
-          <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <svg className="w-8 h-8 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+      <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
+        <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full p-8 text-center animate-slide-up border border-gray-100">
+          <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-4">
+            <svg
+              className="w-8 h-8 text-green-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M5 13l4 4L19 7"
+              />
             </svg>
           </div>
-          <h3 className="text-2xl font-bold text-gray-900 mb-2">Thank You!</h3>
-          <p className="text-gray-600">Your feedback has been submitted successfully.</p>
+          <h3 className="text-2xl font-bold text-gray-900 mb-2">
+            {t.feedback.thankYou}
+          </h3>
+          <p className="text-gray-600">{t.feedback.successMessage}</p>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-sm">
+      <div className="bg-white rounded-3xl shadow-2xl max-w-md w-full max-h-[90vh] overflow-hidden border border-gray-100">
         {/* Header */}
         <div className="bg-white border-b border-gray-200 p-6">
           <div className="flex items-center justify-between mb-2">
-            <h2 className="text-2xl font-bold text-gray-900">Send Feedback</h2>
+            <h2 className="text-2xl font-bold text-gray-900">
+              {t.feedback.sendFeedback}
+            </h2>
             <button
               onClick={handleClose}
               className="text-gray-400 hover:text-gray-600 transition-colors"
-              aria-label="Close"
+              aria-label={t.feedback.cancel}
             >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-6 h-6"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
           </div>
-          <p className="text-gray-600">We'd love to hear from you!</p>
+          <p className="text-gray-600">{t.feedback.feedbackDesc}</p>
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]">
+        <form
+          onSubmit={handleSubmit}
+          className="p-6 space-y-4 overflow-y-auto max-h-[calc(90vh-140px)]"
+        >
           {/* Type Selection */}
           <div>
             <label className="block text-sm font-semibold text-gray-900 mb-2">
-              What type of feedback?
+              {t.feedback.feedbackType}
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { value: 'general', label: 'General', icon: '💬' },
-                { value: 'bug', label: 'Bug', icon: '🐛' },
-                { value: 'feature', label: 'Feature', icon: '✨' },
+                { value: 'general', label: t.feedback.general, icon: '💬' },
+                { value: 'bug', label: t.feedback.bug, icon: '🐛' },
+                { value: 'feature', label: t.feedback.feature, icon: '✨' },
               ].map((option) => (
                 <button
                   key={option.value}
                   type="button"
                   onClick={() => setType(option.value as FeedbackType)}
-                  className={`px-4 py-3 rounded-lg border-2 transition-all ${
+                  className={`px-4 py-3 rounded-xl border-2 transition-all ${
                     type === option.value
-                      ? 'border-blue-600 bg-blue-50 text-blue-900'
+                      ? 'border-sbb-red bg-red-50 text-red-900'
                       : 'border-gray-200 hover:border-gray-300'
                   }`}
                 >
@@ -134,7 +165,7 @@ export default function FeedbackModal({
           {type === 'general' && (
             <div>
               <label className="block text-sm font-semibold text-gray-900 mb-2">
-                How's your experience? (optional)
+                {t.feedback.experience}
               </label>
               <div className="flex gap-2">
                 {[1, 2, 3, 4, 5].map((star) => (
@@ -153,8 +184,11 @@ export default function FeedbackModal({
 
           {/* Message */}
           <div>
-            <label htmlFor="feedback-message" className="block text-sm font-semibold text-gray-900 mb-2">
-              Tell us more *
+            <label
+              htmlFor="feedback-message"
+              className="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              {t.feedback.tellUsMore} *
             </label>
             <textarea
               id="feedback-message"
@@ -162,31 +196,36 @@ export default function FeedbackModal({
               onChange={(e) => setMessage(e.target.value)}
               placeholder={
                 type === 'bug'
-                  ? 'Describe the bug and steps to reproduce...'
+                  ? t.feedback.bugPlaceholder
                   : type === 'feature'
-                  ? "Describe the feature you'd like to see..."
-                  : 'Share your thoughts...'
+                  ? t.feedback.featurePlaceholder
+                  : t.feedback.generalPlaceholder
               }
               required
               maxLength={500}
               rows={4}
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 resize-none"
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-sbb-red focus:ring-1 focus:ring-red-100 resize-none transition-all placeholder:text-gray-400"
             />
-            <p className="text-xs text-gray-500 mt-1">{message.length}/500 characters</p>
+            <p className="text-xs text-gray-500 mt-1">
+              {message.length}/500 {t.feedback.characterCount}
+            </p>
           </div>
 
           {/* Email (optional) */}
           <div>
-            <label htmlFor="feedback-email" className="block text-sm font-semibold text-gray-900 mb-2">
-              Email (optional, for follow-up)
+            <label
+              htmlFor="feedback-email"
+              className="block text-sm font-semibold text-gray-900 mb-2"
+            >
+              {t.feedback.emailOptional}
             </label>
             <input
               id="feedback-email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="your@email.com"
-              className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
+              placeholder={t.feedback.emailPlaceholder}
+              className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:border-sbb-red focus:ring-1 focus:ring-red-100 transition-all placeholder:text-gray-400"
             />
           </div>
 
@@ -202,16 +241,16 @@ export default function FeedbackModal({
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 px-4 py-3 bg-gray-200 text-gray-700 rounded-lg font-semibold hover:bg-gray-300 transition-colors"
+              className="flex-1 px-4 py-3 bg-gray-100 text-gray-700 rounded-xl font-semibold hover:bg-gray-200 transition-colors shadow-sm"
             >
-              Cancel
+              {t.feedback.cancel}
             </button>
             <button
               type="submit"
               disabled={isSubmitting || !message.trim()}
-              className="flex-1 px-4 py-3 bg-blue-600 text-white rounded-lg font-semibold hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              className="flex-1 px-4 py-3 bg-sbb-red text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md active:scale-[0.98]"
             >
-              {isSubmitting ? 'Sending...' : 'Send Feedback'}
+              {isSubmitting ? t.feedback.sending : t.feedback.submit}
             </button>
           </div>
         </form>

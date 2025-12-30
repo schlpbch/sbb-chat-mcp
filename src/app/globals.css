@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @import "leaflet/dist/leaflet.css";
 
+@theme {
+  --color-sbb-red: #EB0000;
+  --color-sbb-red-125: #C60018;
+  --color-sbb-red-150: #A20013;
+  --color-sbb-red-50: #FFF1F1;
+  --color-sbb-red-100: #FFE1E1;
+  --radius-xl: 0.75rem;
+  --radius-3xl: 1.5rem;
+}
+
 /* Base styles */
 * {
   box-sizing: border-box;

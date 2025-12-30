@@ -4,37 +4,53 @@ import { useEffect, useRef } from 'react';
 import { Language, translations } from '@/lib/i18n';
 
 interface MenuProps {
- language: Language;
- isOpen: boolean;
- onClose: () => void;
+  language: Language;
+  isOpen: boolean;
+  onClose: () => void;
+  onFeedbackClick?: () => void;
 }
 
-export default function Menu({ language, isOpen, onClose }: MenuProps) {
- const t = translations[language];
- const menuRef = useRef<HTMLDivElement>(null);
+export default function Menu({
+  language,
+  isOpen,
+  onClose,
+  onFeedbackClick,
+}: MenuProps) {
+  const t = translations[language];
+  const menuRef = useRef<HTMLDivElement>(null);
 
- useEffect(() => {
- const handleEscape = (e: KeyboardEvent) => {
- if (e.key === 'Escape' && isOpen) {
- onClose();
- }
- };
+  useEffect(() => {
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && isOpen) {
+        onClose();
+      }
+    };
 
- if (isOpen) {
- document.addEventListener('keydown', handleEscape);
- menuRef.current?.focus();
- }
+    if (isOpen) {
+      document.addEventListener('keydown', handleEscape);
+      menuRef.current?.focus();
+    }
 
- return () => {
- document.removeEventListener('keydown', handleEscape);
- };
- }, [isOpen, onClose]);
+    return () => {
+      document.removeEventListener('keydown', handleEscape);
+    };
+  }, [isOpen, onClose]);
 
   const menuItems = [
     {
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
+          />
         </svg>
       ),
       label: t.menu.home,
@@ -43,8 +59,18 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
     },
     {
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+          />
         </svg>
       ),
       label: t.menu.map,
@@ -53,8 +79,18 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
     },
     {
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+          />
         </svg>
       ),
       label: t.menu.mcpTest,
@@ -63,8 +99,18 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
     },
     {
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+          />
         </svg>
       ),
       label: t.menu.health,
@@ -73,15 +119,57 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
     },
     {
       icon: (
-        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        <svg
+          className="w-5 h-5"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
+          />
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth={2}
+            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+          />
         </svg>
       ),
       label: 'Settings',
       href: '/settings',
       description: 'Manage preferences',
     },
+    ...(onFeedbackClick
+      ? [
+          {
+            icon: (
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z"
+                />
+              </svg>
+            ),
+            label: t.feedback.sendFeedback,
+            onClick: () => {
+              onClose();
+              onFeedbackClick();
+            },
+            description: t.feedback.feedbackDesc,
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -110,32 +198,55 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
           {/* Header */}
           <div className="px-6 py-5 border-b border-gray-200">
             <div className="flex items-center justify-between">
-                <div>
-                  <h2 id="menu-title" className="text-lg font-bold text-gray-900">
-                    {t.menu.menu}
-                  </h2>
-                  <p className="text-xs text-gray-500">{t.menu.navigation}</p>
-                </div>
+              <div>
+                <h2 id="menu-title" className="text-lg font-bold text-gray-900">
+                  {t.menu.menu}
+                </h2>
+                <p className="text-xs text-gray-500">{t.menu.navigation}</p>
+              </div>
               <button
                 onClick={onClose}
                 className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
                 aria-label={t.accessibility.closeMenu}
               >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                <svg
+                  className="w-5 h-5"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M6 18L18 6M6 6l12 12"
+                  />
                 </svg>
               </button>
             </div>
           </div>
 
           {/* Menu Items */}
-          <nav className="flex-1 overflow-y-auto p-4" aria-label={t.accessibility.mainNavigation}>
+          <nav
+            className="flex-1 overflow-y-auto p-4"
+            aria-label={t.accessibility.mainNavigation}
+          >
             <ul className="space-y-2">
               {menuItems.map((item, index) => (
                 <li key={index}>
                   <a
                     href={item.href}
-                    onClick={onClose}
+                    onClick={(e) => {
+                      if (
+                        'onClick' in item &&
+                        typeof item.onClick === 'function'
+                      ) {
+                        e.preventDefault();
+                        item.onClick();
+                      } else {
+                        onClose();
+                      }
+                    }}
                     aria-label={item.label}
                     className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-200 group"
                   >
@@ -144,10 +255,22 @@ export default function Menu({ language, isOpen, onClose }: MenuProps) {
                     </span>
                     <div className="flex-1">
                       <div className="font-semibold">{item.label}</div>
-                      <div className="text-xs text-gray-500">{item.description}</div>
+                      <div className="text-xs text-gray-500">
+                        {item.description}
+                      </div>
                     </div>
-                    <svg className="w-5 h-5 text-gray-400 group-hover:text-red-600 group-hover:translate-x-1 transition-all" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    <svg
+                      className="w-5 h-5 text-gray-400 group-hover:text-red-600 group-hover:translate-x-1 transition-all"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M9 5l7 7-7 7"
+                      />
                     </svg>
                   </a>
                 </li>

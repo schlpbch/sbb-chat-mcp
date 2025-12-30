@@ -14,15 +14,15 @@ export function formatPlanResults(
   const parts: string[] = [];
   const summary = result.summary;
 
-  if (summary.trips?.length > 0) {
+  if (summary.trips && summary.trips.length > 0) {
     parts.push(
-      `## Connections from ${summary.origin?.name || 'origin'} to ${summary.destination?.name || 'destination'}`
+      `## Connections from ${(summary as any).origin?.name || 'origin'} to ${(summary as any).destination?.name || 'destination'}`
     );
-    summary.trips.slice(0, 3).forEach((trip: any, i: number) => {
+    summary.trips.slice(0, 3).forEach((trip, i: number) => {
       parts.push(
-        `\n**Option ${i + 1}:** ${trip.departure} → ${trip.arrival} (${
-          trip.duration
-        }, ${trip.transfers ?? 0} transfers)`
+        `\n**Option ${i + 1}:** ${(trip as any).departure} → ${(trip as any).arrival} (${
+          (trip as any).duration
+        }, ${(trip as any).transfers ?? 0} transfers)`
       );
     });
   }
