@@ -1,6 +1,6 @@
 'use client';
 import { useRouter } from 'next/navigation';
-import { getFeaturedExamples } from '@/lib/exampleQueries';
+import { getRandomExamples } from '@/lib/exampleQueries';
 import ExampleQueryCard from '@/components/ExampleQueryCard';
 import type { Language } from '@/lib/i18n';
 
@@ -10,7 +10,7 @@ interface FeaturedExamplesProps {
 
 export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
   const router = useRouter();
-  const examples = getFeaturedExamples(language);
+  const examples = getRandomExamples(24, language); // Show all ~24 examples
 
   const handleExampleClick = (query: string) => {
     router.push(`/chat?q=${encodeURIComponent(query)}`);
