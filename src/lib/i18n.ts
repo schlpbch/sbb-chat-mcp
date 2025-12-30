@@ -1646,8 +1646,6 @@ export const translations = {
     welcome: {
       title: '您的瑞士',
       subtitle: '旅行伙伴',
-      description: '发现路线、查看天气、探索车站，并在瑞士规划环保旅程。',
-      exploreTitle: '探索25种智能出行方式',
       allQuestions: '全部',
     },
     chat: {
@@ -1934,9 +1932,7 @@ export const translations = {
     welcome: {
       title: 'आपका स्विस यात्रा',
       subtitle: 'साथी',
-      description:
         'कनेक्शन खोजें, मौसम जांचें, स्टेशन तलाशें, और स्विट्जरलैंड में पर्यावरण के अनुकूल यात्राओं की योजना बनाएं।',
-      exploreTitle: 'स्मार्ट यात्रा के 25 तरीके खोजें',
       allQuestions: 'सभी',
     },
     chat: {
