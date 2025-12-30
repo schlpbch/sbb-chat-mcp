@@ -15,7 +15,7 @@ export default function HeroSection() {
       </p>
       <button
         onClick={() => router.push('/chat')}
-        className="bg-sbb-red text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-red-700 transition-colors"
+        className="bg-[#EB0000] text-white px-8 py-4 rounded-xl text-lg font-semibold hover:bg-[#C60018] transition-colors shadow-lg"
       >
         Start Chatting →
       </button>
