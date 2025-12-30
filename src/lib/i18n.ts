@@ -29,19 +29,6 @@ export const translations = {
         terms: 'Terms',
       },
     },
-    welcome: {
-      title: 'Welcome to Swiss Travel Companion! 👋',
-      subtitle: "I'm here to help you plan your journey across Switzerland",
-      canHelpWith: 'I can help you with:',
-      capabilities: {
-        trains: 'Train connections',
-        weather: 'Weather forecasts',
-        stations: 'Station information',
-        planning: 'Journey planning',
-      },
-      tryExample: 'Try: "Find trains from Zurich to Bern tomorrow at 2pm"',
-      allQuestions: 'All',
-    },
     chat: {
       inputPlaceholder: 'Ask about trains, weather, or travel plans...',
       send: 'Send',
@@ -423,20 +410,6 @@ export const translations = {
         privacy: 'Datenschutz',
         terms: 'Nutzungsbedingungen',
       },
-    },
-    welcome: {
-      title: 'Willkommen beim Swiss Travel Companion! 👋',
-      subtitle: 'Ich helfe Ihnen bei der Planung Ihrer Reise durch die Schweiz',
-      canHelpWith: 'Ich kann Ihnen helfen mit:',
-      capabilities: {
-        trains: 'Zugverbindungen',
-        weather: 'Wettervorhersagen',
-        stations: 'Bahnhofsinformationen',
-        planning: 'Reiseplanung',
-      },
-      tryExample:
-        'Versuchen Sie: "Finde Züge von Zürich nach Bern morgen um 14 Uhr"',
-      allQuestions: 'Alle',
     },
     chat: {
       inputPlaceholder: 'Fragen Sie nach Zügen, Wetter oder Reiseplänen...',
@@ -833,20 +806,6 @@ export const translations = {
         terms: 'Conditions',
       },
     },
-    welcome: {
-      title: 'Bienvenue chez Swiss Travel Companion! 👋',
-      subtitle: 'Je suis là pour vous aider à planifier votre voyage en Suisse',
-      canHelpWith: 'Je peux vous aider avec:',
-      capabilities: {
-        trains: 'Connexions ferroviaires',
-        weather: 'Prévisions météo',
-        stations: 'Informations sur les gares',
-        planning: 'Planification de voyage',
-      },
-      tryExample:
-        'Essayez: "Trouver des trains de Zurich à Berne demain à 14h"',
-      allQuestions: 'Tout',
-    },
     chat: {
       inputPlaceholder:
         'Posez des questions sur les trains, la météo ou les plans de voyage...',
@@ -1241,20 +1200,6 @@ export const translations = {
         terms: 'Termini',
       },
     },
-    welcome: {
-      title: 'Benvenuto su Swiss Travel Companion! 👋',
-      subtitle:
-        'Sono qui per aiutarti a pianificare il tuo viaggio in Svizzera',
-      canHelpWith: 'Posso aiutarti con:',
-      capabilities: {
-        trains: 'Connessioni ferroviarie',
-        weather: 'Previsioni meteo',
-        stations: 'Informazioni sulle stazioni',
-        planning: 'Pianificazione del viaggio',
-      },
-      tryExample: 'Prova: "Trova treni da Zurigo a Berna domani alle 14"',
-      allQuestions: 'Tutti',
-    },
     chat: {
       inputPlaceholder:
         'Chiedi informazioni su treni, meteo o piani di viaggio...',
@@ -1643,19 +1588,6 @@ export const translations = {
         terms: '使用条款',
       },
     },
-    welcome: {
-      title: '欢迎使用瑞士旅行伙伴！👋',
-      subtitle: '我在这里帮助您规划瑞士的旅程',
-      canHelpWith: '我可以帮助您：',
-      capabilities: {
-        trains: '火车连接',
-        weather: '天气预报',
-        stations: '车站信息',
-        planning: '旅程规划',
-      },
-      tryExample: '尝试："查找明天下午2点从苏黎世到伯尔尼的火车"',
-      allQuestions: '全部',
-    },
     chat: {
       inputPlaceholder: '询问火车、天气或旅行计划...',
       send: '发送',
@@ -1936,21 +1868,6 @@ export const translations = {
         privacy: 'गोपनीयता',
         terms: 'शर्तें',
       },
-    },
-    welcome: {
-      title: 'आपका स्विस यात्रा साथी में आपका स्वागत है! 👋',
-      subtitle:
-        'मैं स्विट्जरलैंड में आपकी यात्रा की योजना बनाने में मदद करने के लिए यहां हूं',
-      canHelpWith: 'मैं आपकी मदद कर सकता हूं:',
-      capabilities: {
-        trains: 'ट्रेन कनेक्शन',
-        weather: 'मौसम पूर्वानुमान',
-        stations: 'स्टेशन जानकारी',
-        planning: 'यात्रा योजना',
-      },
-      tryExample:
-        'प्रयास करें: "ज्यूरिख से बर्न के लिए कल दोपहर 2 बजे ट्रेन खोजें"',
-      allQuestions: 'सभी',
     },
     chat: {
       inputPlaceholder: 'ट्रेनों, मौसम या यात्रा योजनाओं के बारे में पूछें...',
