@@ -101,6 +101,28 @@ body {
   animation: sbb-slide-up 0.4s ease-out;
 }
 
+/* ===== MODERN CARD STYLES ===== */
+
+/* Base card style - modern, clean design */
+.sbb-card {
+  @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200;
+  @apply border border-gray-100;
+  @apply p-6;
+}
+
+/* Card with subtle hover lift effect */
+.sbb-card-hover {
+  @apply sbb-card;
+  @apply hover:-translate-y-1;
+}
+
+/* Compact card variant */
+.sbb-card-compact {
+  @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200;
+  @apply border border-gray-100;
+  @apply p-4;
+}
+
 /* ===== ACCESSIBILITY UTILITIES ===== */
 
 /* Screen Reader Only - Visually hidden but accessible to screen readers */
