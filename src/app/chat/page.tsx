@@ -111,16 +111,27 @@ export default function ChatPage() {
   useEffect(() => {
     const query = searchParams.get('q');
     const autoSend = searchParams.get('autoSend');
-    if (query && !input) {
+
+    if (query) {
       setInput(query);
+
       // Auto-send if autoSend parameter is present
-      if (autoSend === 'true') {
-        setTimeout(() => {
-          handleSendMessage();
-        }, 100);
+      if (autoSend === 'true' && messages.length === 0) {
+        // Use a longer timeout to ensure input is set and component is ready
+        const timer = setTimeout(() => {
+          // Trigger send by simulating the form submission
+          const sendButton = document.querySelector(
+            'button[type="submit"]'
+          ) as HTMLButtonElement;
+          if (sendButton) {
+            sendButton.click();
+          }
+        }, 300);
+
+        return () => clearTimeout(timer);
       }
     }
-  }, [searchParams, input, setInput, handleSendMessage]);
+  }, [searchParams, setInput, messages.length]);
 
   return (
     <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100">
