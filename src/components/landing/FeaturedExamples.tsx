@@ -66,6 +66,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
             key={example.id}
             example={example}
             onClick={handleExampleClick}
+            grayscale={true}
           />
         ))}
       </div>
