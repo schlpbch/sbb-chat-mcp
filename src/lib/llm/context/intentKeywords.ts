@@ -212,12 +212,16 @@ export const INTENT_KEYWORDS: Record<string, MultilingualKeywords> = {
       primary: ['stazione', 'fermata', 'binario', 'partenza', 'arrivo'],
       variations: ['stazioni', 'fermate', 'binari', 'partenze', 'arrivi'],
       phrases: [
+        'dove si trova',
+        'dove si trova la stazione',
+        "dov'è",
+        "dov'è la stazione",
         'mostra le partenze',
         'mostra gli arrivi',
         'partenze da',
         'arrivi a',
       ],
-      contextual: ['a', 'da', 'in', 'alla'],
+      contextual: ['a', 'da', 'in', 'alla', 'di'],
     },
   },
 
@@ -364,10 +368,12 @@ export const INTENT_KEYWORDS: Record<string, MultilingualKeywords> = {
 
 /**
  * Get all keywords for a specific intent type and languages
+ * Excludes contextual keywords by default to prevent false positives
  */
 export function getAllKeywords(
   intentType: string,
-  languages: Language[]
+  languages: Language[],
+  includeContextual = false
 ): string[] {
   const keywords: string[] = [];
   const intentKeywords = INTENT_KEYWORDS[intentType];
@@ -382,9 +388,13 @@ export function getAllKeywords(
       keywords.push(
         ...keywordSet.primary,
         ...keywordSet.variations,
-        ...keywordSet.phrases,
-        ...keywordSet.contextual
+        ...keywordSet.phrases
       );
+
+      // Only include contextual keywords if explicitly requested
+      if (includeContextual) {
+        keywords.push(...keywordSet.contextual);
+      }
     }
   }
 
