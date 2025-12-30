@@ -40,12 +40,7 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const {
-      message,
-      history,
-      context,
-      sessionId,
-    } = body as {
+    const { message, history, context, sessionId } = body as {
       message: string;
       history?: ChatMessage[];
       context?: ChatContext;
@@ -54,16 +49,17 @@ export async function POST(request: NextRequest) {
 
     // Validate input
     if (!message || typeof message !== 'string') {
-      return new Response(
-        JSON.stringify({ error: 'Message is required' }),
-        { status: 400, headers: { 'Content-Type': 'application/json' } }
-      );
+      return new Response(JSON.stringify({ error: 'Message is required' }), {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      });
     }
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GOOGLE_CLOUD_KEY) {
       return new Response(
         JSON.stringify({
-          error: 'Gemini API key not configured. Please add GEMINI_API_KEY to .env.local',
+          error:
+            'Google Cloud API key not configured. Please add GOOGLE_CLOUD_KEY to .env.local',
         }),
         { status: 500, headers: { 'Content-Type': 'application/json' } }
       );
@@ -77,7 +73,10 @@ export async function POST(request: NextRequest) {
           // Send start event
           controller.enqueue(
             encoder.encode(
-              `data: ${JSON.stringify({ type: 'start', data: { sessionId } })}\n\n`
+              `data: ${JSON.stringify({
+                type: 'start',
+                data: { sessionId },
+              })}\n\n`
             )
           );
 
@@ -105,14 +104,15 @@ export async function POST(request: NextRequest) {
           controller.close();
         } catch (error) {
           console.error('Streaming error:', error);
-          
+
           // Send error event
           controller.enqueue(
             encoder.encode(
               `data: ${JSON.stringify({
                 type: 'error',
                 data: {
-                  error: error instanceof Error ? error.message : 'Streaming failed',
+                  error:
+                    error instanceof Error ? error.message : 'Streaming failed',
                 },
               })}\n\n`
             )
@@ -127,7 +127,7 @@ export async function POST(request: NextRequest) {
       headers: {
         'Content-Type': 'text/event-stream',
         'Cache-Control': 'no-cache',
-        'Connection': 'keep-alive',
+        Connection: 'keep-alive',
         'X-RateLimit-Limit': '10',
         'X-RateLimit-Remaining': rateLimit.remaining.toString(),
         'X-RateLimit-Reset': rateLimit.resetAt.toString(),

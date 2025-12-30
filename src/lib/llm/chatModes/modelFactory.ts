@@ -5,7 +5,7 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { MCP_FUNCTION_DEFINITIONS } from '../functionDefinitions';
 
-const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+const genAI = new GoogleGenerativeAI(process.env.GOOGLE_CLOUD_KEY!);
 
 /**
  * Create a Gemini model with optional function calling

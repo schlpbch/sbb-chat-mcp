@@ -3,6 +3,8 @@
  *
  * Refactored to use structured multilingual dictionaries and utilities
  * for robust intent classification across EN/DE/FR/IT.
+ *
+ * For ZH/HI queries, translates to EN first before intent extraction.
  */
 
 import type { Intent } from './types';
@@ -19,6 +21,10 @@ import {
   hasKeyword,
   countMatchedKeywords,
 } from './languageDetection';
+import {
+  translateToEnglish,
+  requiresTranslation,
+} from '@/lib/translation/translationService';
 
 /**
  * Extract intent from user message
@@ -27,11 +33,24 @@ import {
  * @param userLanguage - User's selected language preference (optional)
  * @returns Detected intent with confidence score and extracted entities
  */
-export function extractIntent(
+export async function extractIntent(
   message: string,
   userLanguage?: Language
-): Intent {
-  const lowerMessage = message.toLowerCase();
+): Promise<Intent> {
+  let processedMessage = message;
+  let translatedFrom: 'zh' | 'hi' | null = null;
+
+  // Translate ZH/HI to EN for intent extraction
+  if (requiresTranslation(userLanguage)) {
+    processedMessage = await translateToEnglish(message, userLanguage);
+    translatedFrom = userLanguage;
+    console.log(
+      `[intentExtractor] Translated ${userLanguage} → en:`,
+      processedMessage
+    );
+  }
+
+  const lowerMessage = processedMessage.toLowerCase();
   console.log('[intentExtractor] Extracting from:', message);
   console.log(
     '[intentExtractor] User language:',
@@ -128,6 +147,7 @@ export function extractIntent(
     timestamp: new Date(),
     detectedLanguages,
     matchedKeywords: matchedKeywords.slice(0, 5), // Limit to first 5 for debugging
+    translatedFrom, // Track if query was translated from ZH/HI
   };
 }
 

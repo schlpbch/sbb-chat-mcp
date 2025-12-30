@@ -25,7 +25,7 @@ export async function sendOrchestratedChatMessage(
   parsedIntent?: any // Add parsed markdown intent
 ): Promise<ChatResponse> {
   const sessionContext = getSessionContext(sessionId, context.language);
-  const extractedIntent = extractIntent(message, context.language as any);
+  const extractedIntent = await extractIntent(message, context.language as any);
 
   // Merge parsed markdown intent with extracted intent
   const intent = parsedIntent?.hasMarkdown

@@ -52,7 +52,7 @@ pnpm install
 
 # Set up environment (optional - for AI chat)
 cp .env.example .env.local
-# Edit .env.local and add your GEMINI_API_KEY
+# Edit .env.local and add your GOOGLE_CLOUD_KEY
 
 # Run development server
 pnpm dev
@@ -64,7 +64,7 @@ Open [http://localhost:3000](http://localhost:3000) to see the app.
 
 1. Get a Gemini API key from
    [Google AI Studio](https://makersuite.google.com/app/apikey)
-2. Add it to `.env.local`: `GEMINI_API_KEY=your_key_here`
+2. Add it to `.env.local`: `GOOGLE_CLOUD_KEY=your_key_here`
 3. Restart the dev server
 4. Click the chat icon in the navbar or navigate to `/chat`
 5. Start chatting!
@@ -169,7 +169,7 @@ NEXT_PUBLIC_MCP_ENV=staging
 ### Required for AI Chat
 
 ```bash
-GEMINI_API_KEY=your_gemini_api_key (Required)
+GOOGLE_CLOUD_KEY=your_google_cloud_api_key (Required - used for Gemini LLM and Translation API)
 GEMINI_MODEL=gemini-2.0-flash (Default)
 ```
 

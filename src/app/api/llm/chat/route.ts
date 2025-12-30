@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       headers.set('X-RateLimit-Remaining', '0');
       headers.set('X-RateLimit-Reset', rateLimit.resetAt.toString());
       headers.set('Retry-After', (rateLimit.retryAfter || 60).toString());
-      
+
       return NextResponse.json(
         {
           error: 'Too many requests',
@@ -64,16 +64,16 @@ export async function POST(request: NextRequest) {
 
     // Log environment check for debugging
     console.log('Environment check:', {
-      hasKey: !!process.env.GEMINI_API_KEY,
-      keyLength: process.env.GEMINI_API_KEY?.length,
+      hasKey: !!process.env.GOOGLE_CLOUD_KEY,
+      keyLength: process.env.GOOGLE_CLOUD_KEY?.length,
       allEnvKeys: Object.keys(process.env).filter((k) => k.includes('GEMINI')),
     });
 
-    if (!process.env.GEMINI_API_KEY) {
+    if (!process.env.GOOGLE_CLOUD_KEY) {
       return NextResponse.json(
         {
           error:
-            'Gemini API key not configured. Please add GEMINI_API_KEY to .env.local',
+            'Google Cloud API key not configured. Please add GOOGLE_CLOUD_KEY to .env.local',
         },
         { status: 500 }
       );
@@ -83,9 +83,17 @@ export async function POST(request: NextRequest) {
     // Use orchestrated chat for complex queries when sessionId is provided
     let result: ChatResponse;
 
-    console.log('[chat/route] useOrchestration:', useOrchestration, 'sessionId:', sessionId);
+    console.log(
+      '[chat/route] useOrchestration:',
+      useOrchestration,
+      'sessionId:',
+      sessionId
+    );
     if (useOrchestration && sessionId) {
-      console.log('[chat/route] Using orchestrated chat with session:', sessionId);
+      console.log(
+        '[chat/route] Using orchestrated chat with session:',
+        sessionId
+      );
       if (intent) {
         console.log('[chat/route] Parsed intent:', intent);
       }
@@ -113,7 +121,7 @@ export async function POST(request: NextRequest) {
       debug: {
         receivedIntent: result.debug?.intent || intent,
         finalContext: result.debug?.context || context,
-      }
+      },
     });
   } catch (error) {
     console.error('Chat API error:', error);
@@ -126,7 +134,7 @@ export async function POST(request: NextRequest) {
       {
         error: 'Internal server error',
         details: error instanceof Error ? error.message : String(error),
-        requestId: request.headers.get('x-request-id') || 'unknown'
+        requestId: request.headers.get('x-request-id') || 'unknown',
       },
       { status: 500 }
     );

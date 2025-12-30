@@ -80,6 +80,7 @@ export interface Intent {
   timestamp: Date;
   detectedLanguages?: string[]; // Languages detected in the message
   matchedKeywords?: string[]; // Keywords that matched (for debugging)
+  translatedFrom?: 'zh' | 'hi' | null; // Track if query was translated
 }
 
 export interface ToolResultCache {
