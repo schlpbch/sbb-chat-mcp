@@ -89,6 +89,17 @@ export function extractIntent(
     );
     confidence = calculateBaseConfidence(count);
     console.log('[intentExtractor] Matched weather keywords:', count);
+  } else {
+    // Check for implicit trip planning pattern (e.g., "Zurich to Bern")
+    // Look for "X to/nach/à/a Y" pattern without explicit trip keywords
+    const implicitTripPattern =
+      /\b\w+\s+(?:to|nach|bis|à|pour|vers|a|per)\s+\w+/i;
+    if (implicitTripPattern.test(lowerMessage)) {
+      type = 'trip_planning';
+      confidence = 0.6; // Lower confidence since no explicit keywords
+      matchedKeywords.push('implicit_trip_pattern');
+      console.log('[intentExtractor] Matched implicit trip pattern');
+    }
   }
 
   // Extract entities using dynamic regex builders
@@ -140,11 +151,18 @@ function extractEntities(
   const toMatch = message.match(destinationRegex);
   const inMatch = message.match(locationRegex);
 
-  if (fromMatch) {
-    entities.origin = fromMatch[1].replace(/\*\*|_|#/g, '').trim();
-  }
-  if (toMatch) {
-    entities.destination = toMatch[1].replace(/\*\*|_|#/g, '').trim();
+  // For weather queries, prioritize location match over destination
+  // (FR "à" and IT "a" appear in both destination and location prepositions)
+  if (intentType === 'weather_check' && inMatch && !fromMatch) {
+    entities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
+  } else {
+    // Standard extraction for other intent types
+    if (fromMatch) {
+      entities.origin = fromMatch[1].replace(/\*\*|_|#/g, '').trim();
+    }
+    if (toMatch) {
+      entities.destination = toMatch[1].replace(/\*\*|_|#/g, '').trim();
+    }
   }
 
   // Implicit "X to Y" pattern (e.g., "Zurich to Bern")
@@ -161,9 +179,12 @@ function extractEntities(
     }
   }
 
-  // For station queries like "arrivals in Zurich", treat "in" as the origin (station)
-  if (inMatch && !fromMatch && !toMatch && intentType === 'station_search') {
-    entities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
+  // For station/weather queries like "arrivals in Zurich" or "weather in Lucerne",
+  // treat "in" as the origin (station/location)
+  if (inMatch && !fromMatch && !toMatch) {
+    if (intentType === 'station_search' || intentType === 'weather_check') {
+      entities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
+    }
   }
 
   // Extract date and time using language-specific patterns
