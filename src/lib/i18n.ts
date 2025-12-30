@@ -54,6 +54,13 @@ export const translations = {
       textOnlyMode: 'Text-only mode',
       textOnlyModeDescription:
         'Disable rich cards and display responses as plain text',
+      switchToRich: 'Switch to rich mode',
+      switchToText: 'Switch to text-only mode',
+      textOnly: 'Text Only',
+      richMode: 'Rich Mode',
+      textOnlyDesc: 'Plain text responses',
+      richModeDesc: 'Rich cards and formatting',
+      pressEnter: 'Press Enter to send',
     },
     cards: {
       showDetails: 'Show Details',
@@ -443,6 +450,13 @@ export const translations = {
       textOnlyMode: 'Nur-Text-Modus',
       textOnlyModeDescription:
         'Deaktivieren Sie Rich Cards und zeigen Sie Antworten als reinen Text an',
+      switchToRich: 'Zum Rich-Modus wechseln',
+      switchToText: 'Zum Nur-Text-Modus wechseln',
+      textOnly: 'Nur Text',
+      richMode: 'Rich-Modus',
+      textOnlyDesc: 'Nur-Text-Antworten',
+      richModeDesc: 'Rich Cards und Formatierung',
+      pressEnter: 'Enter drücken zum Senden',
     },
     cards: {
       showDetails: 'Details anzeigen',
@@ -844,6 +858,13 @@ export const translations = {
       textOnlyMode: 'Mode texte uniquement',
       textOnlyModeDescription:
         'Désactiver les cartes enrichies et afficher les réponses en texte brut',
+      switchToRich: 'Passer en mode enrichi',
+      switchToText: 'Passer en mode texte uniquement',
+      textOnly: 'Texte uniquement',
+      richMode: 'Mode enrichi',
+      textOnlyDesc: 'Réponses en texte brut',
+      richModeDesc: 'Cartes enrichies et formatage',
+      pressEnter: 'Appuyez sur Entrée pour envoyer',
     },
     cards: {
       showDetails: 'Afficher les détails',
@@ -1244,6 +1265,13 @@ export const translations = {
       textOnlyMode: 'Modalità solo testo',
       textOnlyModeDescription:
         'Disabilita le schede ricche e visualizza le risposte come testo normale',
+      switchToRich: 'Passa alla modalità ricca',
+      switchToText: 'Passa alla modalità solo testo',
+      textOnly: 'Solo testo',
+      richMode: 'Modalità ricca',
+      textOnlyDesc: 'Risposte in testo semplice',
+      richModeDesc: 'Schede ricche e formattazione',
+      pressEnter: 'Premi Invio per inviare',
     },
     cards: {
       showDetails: 'Mostra dettagli',
@@ -1887,7 +1915,8 @@ export const translations = {
     landing: {
       hero: {
         title: 'SBB यात्रा सहायक',
-        subtitle: 'स्विस सार्वजनिक परिवहन के लिए आपका AI-संचालित यात्रा योजनाकार',
+        subtitle:
+          'स्विस सार्वजनिक परिवहन के लिए आपका AI-संचालित यात्रा योजनाकार',
         cta: 'चैट शुरू करें',
         recentSearches: 'हाल की खोजें:',
       },
