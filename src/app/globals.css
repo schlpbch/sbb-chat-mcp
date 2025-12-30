@@ -105,22 +105,45 @@ body {
 
 /* Base card style - modern, clean design */
 .sbb-card {
-  @apply bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-200;
-  @apply border border-gray-100;
-  @apply p-6;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid rgb(243 244 246);
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+
+.sbb-card:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
 }
 
 /* Card with subtle hover lift effect */
 .sbb-card-hover {
-  @apply sbb-card;
-  @apply hover:-translate-y-1;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  border: 1px solid rgb(243 244 246);
+  padding: 1.5rem;
+  transition: all 0.2s;
+}
+
+.sbb-card-hover:hover {
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  transform: translateY(-0.25rem);
 }
 
 /* Compact card variant */
 .sbb-card-compact {
-  @apply bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-200;
-  @apply border border-gray-100;
-  @apply p-4;
+  background-color: white;
+  border-radius: 0.75rem;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  border: 1px solid rgb(243 244 246);
+  padding: 1rem;
+  transition: all 0.2s;
+}
+
+.sbb-card-compact:hover {
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 /* ===== ACCESSIBILITY UTILITIES ===== */
