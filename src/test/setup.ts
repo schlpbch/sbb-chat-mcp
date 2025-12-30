@@ -1,4 +1,5 @@
 import '@testing-library/jest-dom';
+import { vi } from 'vitest';
 
 // Mock localStorage
 const localStorageMock = {
@@ -6,6 +7,8 @@ const localStorageMock = {
   setItem: vi.fn(),
   removeItem: vi.fn(),
   clear: vi.fn(),
+  length: 0,
+  key: vi.fn(),
 };
 
 global.localStorage = localStorageMock as Storage;
@@ -13,7 +16,7 @@ global.localStorage = localStorageMock as Storage;
 // Mock window.matchMedia for dark mode tests
 Object.defineProperty(window, 'matchMedia', {
   writable: true,
-  value: vi.fn().mockImplementation(query => ({
+  value: vi.fn().mockImplementation((query) => ({
     matches: false,
     media: query,
     onchange: null,

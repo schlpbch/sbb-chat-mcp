@@ -11,6 +11,7 @@ export interface Message {
   role: 'user' | 'Companion';
   content: string;
   timestamp: Date;
+  toolCalls?: ToolCall[];
 }
 
 export interface ExportableMessage {

@@ -25,16 +25,18 @@ export async function sendOrchestratedChatMessage(
   parsedIntent?: any // Add parsed markdown intent
 ): Promise<ChatResponse> {
   const sessionContext = getSessionContext(sessionId, context.language);
-  const extractedIntent = extractIntent(message);
-  
+  const extractedIntent = extractIntent(message, context.language as any);
+
   // Merge parsed markdown intent with extracted intent
-  const intent = parsedIntent?.hasMarkdown ? {
-    ...extractedIntent,
-    // Add markdown-parsed structured data (preferences, sub-queries)
-    preferences: parsedIntent.structuredData?.preferences || [],
-    subQueries: parsedIntent.subQueries || [],
-  } : extractedIntent;
-  
+  const intent = parsedIntent?.hasMarkdown
+    ? {
+        ...extractedIntent,
+        // Add markdown-parsed structured data (preferences, sub-queries)
+        preferences: parsedIntent.structuredData?.preferences || [],
+        subQueries: parsedIntent.subQueries || [],
+      }
+    : extractedIntent;
+
   console.log('[sendOrchestratedChatMessage] Merged intent:', intent);
 
   const updatedContext = updateContextFromMessage(sessionContext, message, {
@@ -120,9 +122,9 @@ IMPORTANT: The information will be displayed as visual cards to the user. Do NOT
         response,
         toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
         debug: {
-            intent: intent,
-            context: updatedContext
-        }
+          intent: intent,
+          context: updatedContext,
+        },
       };
     }
   }

@@ -1,154 +1,113 @@
 /**
  * Intent Extractor - Extracts user intent from messages
+ *
+ * Refactored to use structured multilingual dictionaries and utilities
+ * for robust intent classification across EN/DE/FR/IT.
  */
 
 import type { Intent } from './types';
+import type { Language } from './intentKeywords';
+import { INTENT_KEYWORDS, getAllKeywords } from './intentKeywords';
+import {
+  buildEntityRegex,
+  extractDate,
+  extractTime,
+  ENTITY_PREPOSITIONS,
+} from './entityPatterns';
+import {
+  detectMessageLanguage,
+  hasKeyword,
+  countMatchedKeywords,
+} from './languageDetection';
 
 /**
  * Extract intent from user message
+ *
+ * @param message - User message to analyze
+ * @param userLanguage - User's selected language preference (optional)
+ * @returns Detected intent with confidence score and extracted entities
  */
-export function extractIntent(message: string): Intent {
+export function extractIntent(
+  message: string,
+  userLanguage?: Language
+): Intent {
   const lowerMessage = message.toLowerCase();
   console.log('[intentExtractor] Extracting from:', message);
-  console.log('[intentExtractor] Lowercase:', lowerMessage);
+  console.log(
+    '[intentExtractor] User language:',
+    userLanguage || 'not specified'
+  );
 
-  const tripKeywords = [
-    'train',
-    'connection',
-    'trip',
-    'travel',
-    'get to',
-    'go to',
-    'from',
-    'to',
-    'journey',
-    'route',
-    'zug', 'bahn', 'verbindung', 'reise', // DE
-    'train', 'connexion', 'voyage', 'aller', // FR
-    'treno', 'viaggio', // IT
-  ];
-  const weatherKeywords = ['weather', 'forecast', 'temperature', 'rain', 'snow', 'wetter', 'météo', 'meteo'];
-  const stationKeywords = [
-    'station', 'stop', 'platform', 'departures', 'arrivals',
-    'bahnhof', 'haltestelle', 'abfahrt', 'ankunft', // DE
-    'gare', 'arrêt', 'départ', 'arrivée', // FR
-    'stazione', 'fermata', 'partenze', 'arrivi' // IT
-  ];
-  const formationKeywords = [
-    'formation',
-    'fromation',
-    'composition',
-    'wagon',
-    'sector',
-    'coach',
-    'where is',
-    'information',
-    'info',
-    'unit',
-    'wagen', 'sektor', 'traktion', // DE
-  ];
+  // Detect language(s) in the message
+  const detectedLanguages = detectMessageLanguage(message, userLanguage);
+  console.log('[intentExtractor] Detected languages:', detectedLanguages);
+
+  // Get keywords for detected languages
+  const tripKeywords = getAllKeywords('trip_planning', detectedLanguages);
+  const weatherKeywords = getAllKeywords('weather_check', detectedLanguages);
+  const stationKeywords = getAllKeywords('station_search', detectedLanguages);
+  const formationKeywords = getAllKeywords(
+    'train_formation',
+    detectedLanguages
+  );
 
   let type: Intent['type'] = 'general_info';
   let confidence = 0.5;
+  const matchedKeywords: string[] = [];
 
-  // Helper function to check for keyword with word boundaries
-  const hasKeyword = (keywords: string[], message: string) => {
-    return keywords.some((k) => {
-      // For multi-word keywords like "get to", use simple includes
-      if (k.includes(' ')) {
-        return message.includes(k);
-      }
-      // For single words, use word boundary at start only to match plurals
-      // (e.g., "station" matches "stations", but "rain" doesn't match "trains")
-      const regex = new RegExp(`\\b${k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`, 'i');
-      return regex.test(message);
-    });
-  };
-
-  // Check station keywords first (most specific - "train station" should be station search, not trip)
+  // Check keywords in priority order (most specific first)
+  // Station keywords first - "train station" should be station search, not trip
   if (hasKeyword(stationKeywords, lowerMessage)) {
     type = 'station_search';
-    confidence = 0.9;
+    const count = countMatchedKeywords(stationKeywords, lowerMessage);
+    matchedKeywords.push(
+      ...stationKeywords.filter((k) => hasKeyword([k], lowerMessage))
+    );
+    confidence = calculateBaseConfidence(count);
+    console.log('[intentExtractor] Matched station keywords:', count);
   } else if (hasKeyword(formationKeywords, lowerMessage)) {
     type = 'train_formation';
-    confidence = 0.9;
+    const count = countMatchedKeywords(formationKeywords, lowerMessage);
+    matchedKeywords.push(
+      ...formationKeywords.filter((k) => hasKeyword([k], lowerMessage))
+    );
+    confidence = calculateBaseConfidence(count);
+    console.log('[intentExtractor] Matched formation keywords:', count);
   } else if (hasKeyword(tripKeywords, lowerMessage)) {
     type = 'trip_planning';
-    confidence = 0.8;
+    const count = countMatchedKeywords(tripKeywords, lowerMessage);
+    matchedKeywords.push(
+      ...tripKeywords.filter((k) => hasKeyword([k], lowerMessage))
+    );
+    confidence = calculateBaseConfidence(count);
+    console.log('[intentExtractor] Matched trip keywords:', count);
   } else if (hasKeyword(weatherKeywords, lowerMessage)) {
     type = 'weather_check';
-    confidence = 0.9;
+    const count = countMatchedKeywords(weatherKeywords, lowerMessage);
+    matchedKeywords.push(
+      ...weatherKeywords.filter((k) => hasKeyword([k], lowerMessage))
+    );
+    confidence = calculateBaseConfidence(count);
+    console.log('[intentExtractor] Matched weather keywords:', count);
   }
 
-  // Enhanced entity extraction with Unicode support (for Zürich, Genève, etc.)
-  // Enhanced entity extraction with Unicode support
-  // Matches from "from/von/de" until a keyword
-  // Enhanced entity extraction with Unicode support
-  // Matches from "from/von/de" until a keyword
-  // Updated to allow dots in abbreviations (e.g. St. Gallen) by ensuring dot is followed by space or EOS
-  // Note: Removed \.\s from lookahead to allow St. to be captured
-  const fromMatch = lowerMessage.match(/(?:from|von|ab|de|depuis|da)\s+(.+?)(?=\s+(?:at|um|à|to|nach|bis|pour|via|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with)\b|$|[?!]|$)/i);
-  const toMatch = lowerMessage.match(/(?:to|nach|bis|à|pour|vers|a)\s+(.+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|da|via|in|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with)\b|$|[?!]|$)/i);
-  const inMatch = lowerMessage.match(/(?:in|bei|dans|à)\s+([^,]+?)(?=\s+(?:at|um|à|from|von|ab|de|depuis|da|to|nach|bis|pour|a|via|on|tomorrow|morgen|demain|today|heute|aujourd'hui|yesterday|gestern|hier|with)\b|$|[?!]|$)/i);
-  
-  // Implicit "X to Y" pattern (e.g. "Zurich to Bern")
-  // Only use if explicit 'from' is missing but 'to' is present, and message is short-ish
-  const simpleToMatch = !fromMatch && !inMatch ? lowerMessage.match(/^(.+?)\s+(?:to|nach|bis|à|pour|vers|a)\s+(.+?)(?=\s+(?:at|um|via)|$)/i) : null;
+  // Extract entities using dynamic regex builders
+  const extractedEntities = extractEntities(
+    lowerMessage,
+    detectedLanguages,
+    type
+  );
 
-  const extractedEntities: any = {};
-  if (fromMatch) extractedEntities.origin = fromMatch[1].replace(/\*\*|_|#/g, '').trim();
-  if (toMatch) extractedEntities.destination = toMatch[1].replace(/\*\*|_|#/g, '').trim();
-  
-  // Apply implicit match if standard match failed
-  if (simpleToMatch && !extractedEntities.origin) {
-      // Check if group 1 looks like a keyword or valid place
-      // Avoid matching "I want to go to Bern" -> Origin "I want to go"
-      // Basic heuristic: length < 30 chars
-      if (simpleToMatch[1].length < 30) {
-        extractedEntities.origin = simpleToMatch[1].replace(/\*\*|_|#/g, '').trim();
-        if (!extractedEntities.destination) {
-            extractedEntities.destination = simpleToMatch[2].replace(/\*\*|_|#/g, '').trim();
-        }
-      }
-  }
+  // Refine confidence based on extracted entities
+  confidence = refineConfidence(
+    type,
+    confidence,
+    extractedEntities,
+    matchedKeywords
+  );
 
-  // For station queries like "arrivals in Zurich", treat "in" as the origin (station)
-  if (inMatch && !fromMatch && !toMatch && !simpleToMatch) {
-    extractedEntities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
-  }
-
-  // Extract date and time (using patterns from intentParser)
-  const datePatterns = [
-    /\b(today|tomorrow|yesterday|heute|morgen|gestern)\b/i,
-    /\b(\d{1,2}[\/\-\.]\d{1,2}(?:[\/\-\.]\d{2,4})?)\b/,
-  ];
-  
-  const timePatterns = [
-    /\b(\d{1,2}:\d{2})\b/i,
-    /\b(?:at|um)\s+(\d{1,2}(?::\d{2})?)\b/i,
-  ];
-
-  for (const pattern of datePatterns) {
-    const match = lowerMessage.match(pattern);
-    if (match) extractedEntities.date = match[1];
-  }
-  
-  for (const pattern of timePatterns) {
-    const match = lowerMessage.match(pattern);
-    if (match) extractedEntities.time = match[1];
-  }
-
-  // Extract event type for station queries
-  if (type === 'station_search') {
-    if (lowerMessage.includes('arrival')) {
-      extractedEntities.eventType = 'arrivals';
-    } else if (lowerMessage.includes('departure')) {
-      extractedEntities.eventType = 'departures';
-    } else {
-      // Default to departures if not specified
-      extractedEntities.eventType = 'departures';
-    }
-  }
+  console.log('[intentExtractor] Final intent:', type);
+  console.log('[intentExtractor] Confidence:', confidence);
   console.log('[intentExtractor] Extracted entities:', extractedEntities);
 
   return {
@@ -156,5 +115,162 @@ export function extractIntent(message: string): Intent {
     confidence,
     extractedEntities,
     timestamp: new Date(),
+    detectedLanguages,
+    matchedKeywords: matchedKeywords.slice(0, 5), // Limit to first 5 for debugging
   };
+}
+
+/**
+ * Extract entities from message using multilingual patterns
+ */
+function extractEntities(
+  message: string,
+  languages: Language[],
+  intentType: Intent['type']
+): Record<string, any> {
+  const entities: Record<string, any> = {};
+
+  // Build dynamic regex patterns for detected languages
+  const originRegex = buildEntityRegex('origin', languages);
+  const destinationRegex = buildEntityRegex('destination', languages);
+  const locationRegex = buildEntityRegex('location', languages);
+
+  // Extract origin and destination
+  const fromMatch = message.match(originRegex);
+  const toMatch = message.match(destinationRegex);
+  const inMatch = message.match(locationRegex);
+
+  if (fromMatch) {
+    entities.origin = fromMatch[1].replace(/\*\*|_|#/g, '').trim();
+  }
+  if (toMatch) {
+    entities.destination = toMatch[1].replace(/\*\*|_|#/g, '').trim();
+  }
+
+  // Implicit "X to Y" pattern (e.g., "Zurich to Bern")
+  // Only use if explicit 'from' is missing but 'to' is present
+  if (!fromMatch && !inMatch && toMatch) {
+    const simplePattern = buildSimpleToPattern(languages);
+    const simpleMatch = message.match(simplePattern);
+
+    if (simpleMatch && simpleMatch[1].length < 30) {
+      entities.origin = simpleMatch[1].replace(/\*\*|_|#/g, '').trim();
+      if (!entities.destination) {
+        entities.destination = simpleMatch[2].replace(/\*\*|_|#/g, '').trim();
+      }
+    }
+  }
+
+  // For station queries like "arrivals in Zurich", treat "in" as the origin (station)
+  if (inMatch && !fromMatch && !toMatch && intentType === 'station_search') {
+    entities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
+  }
+
+  // Extract date and time using language-specific patterns
+  const date = extractDate(message, languages);
+  const time = extractTime(message, languages);
+
+  if (date) entities.date = date;
+  if (time) entities.time = time;
+
+  // Extract event type for station queries
+  if (intentType === 'station_search') {
+    if (
+      message.includes('arrival') ||
+      message.includes('ankunft') ||
+      message.includes('arrivée') ||
+      message.includes('arrivo')
+    ) {
+      entities.eventType = 'arrivals';
+    } else if (
+      message.includes('departure') ||
+      message.includes('abfahrt') ||
+      message.includes('départ') ||
+      message.includes('partenza')
+    ) {
+      entities.eventType = 'departures';
+    } else {
+      // Default to departures if not specified
+      entities.eventType = 'departures';
+    }
+  }
+
+  return entities;
+}
+
+/**
+ * Build regex for simple "X to Y" pattern
+ */
+function buildSimpleToPattern(languages: Language[]): RegExp {
+  const toPrepositions = languages.flatMap(
+    (lang) => ENTITY_PREPOSITIONS.destination[lang]
+  );
+
+  // Sort by length (longest first)
+  toPrepositions.sort((a, b) => b.length - a.length);
+
+  const escapedPreps = toPrepositions.map((p) =>
+    p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  );
+
+  const pattern = `^(.+?)\\s+(?:${escapedPreps.join(
+    '|'
+  )})\\s+(.+?)(?=\\s+(?:at|um|à|alle|via)|$)`;
+  return new RegExp(pattern, 'i');
+}
+
+/**
+ * Calculate base confidence from keyword match count
+ */
+function calculateBaseConfidence(matchCount: number): number {
+  if (matchCount >= 3) return 0.9;
+  if (matchCount === 2) return 0.8;
+  if (matchCount === 1) return 0.7;
+  return 0.5;
+}
+
+/**
+ * Refine confidence based on extracted entities and context
+ */
+function refineConfidence(
+  intentType: Intent['type'],
+  baseConfidence: number,
+  entities: Record<string, any>,
+  matchedKeywords: string[]
+): number {
+  let confidence = baseConfidence;
+
+  // Boost confidence if relevant entities are present
+  if (intentType === 'trip_planning') {
+    if (entities.origin && entities.destination) {
+      confidence += 0.1; // Both origin and destination
+    } else if (entities.origin || entities.destination) {
+      confidence += 0.05; // At least one location
+    }
+  }
+
+  if (intentType === 'weather_check') {
+    if (entities.origin) {
+      confidence += 0.1; // Location specified
+    }
+  }
+
+  if (intentType === 'station_search') {
+    if (entities.origin) {
+      confidence += 0.1; // Station specified
+    }
+  }
+
+  // Boost confidence if date/time is specified
+  if (entities.date || entities.time) {
+    confidence += 0.05;
+  }
+
+  // Boost confidence for multiple keyword matches
+  if (matchedKeywords.length >= 3) {
+    confidence += 0.05;
+  }
+
+  // Cap confidence at 0.95
+  return Math.min(0.95, Math.max(0.3, confidence));
 }

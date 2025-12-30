@@ -78,6 +78,8 @@ export interface Intent {
   confidence: number;
   extractedEntities: Record<string, any>;
   timestamp: Date;
+  detectedLanguages?: string[]; // Languages detected in the message
+  matchedKeywords?: string[]; // Keywords that matched (for debugging)
 }
 
 export interface ToolResultCache {
