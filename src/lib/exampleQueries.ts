@@ -94,6 +94,27 @@ export const exampleQueries: ExampleQuery[] = [
       hi: 'सप्ताहांत यात्रा योजना',
     },
   },
+  {
+    id: 'trip-5',
+    text: {
+      en: 'Trains from Zurich to Milan',
+      de: 'Züge von Zürich nach Mailand',
+      fr: 'Trains de Zurich à Milan',
+      it: 'Treni da Zurigo a Milano',
+      zh: '从苏黎世到米兰的火车',
+      hi: 'ज्यूरिख से मिलान तक ट्रेनें',
+    },
+    category: 'trips',
+    icon: '🌍',
+    description: {
+      en: 'International journey',
+      de: 'Internationale Reise',
+      fr: 'Voyage international',
+      it: 'Viaggio internazionale',
+      zh: '国际旅程',
+      hi: 'अंतर्राष्ट्रीय यात्रा',
+    },
+  },
 
   // Weather queries
   {
@@ -402,4 +423,40 @@ export function getExampleById(
     icon: query.icon,
     description: query.description?.[language],
   };
+}
+
+/**
+ * Get featured examples for landing page
+ * Returns a curated set of 6 examples showcasing different capabilities
+ */
+export function getFeaturedExamples(language: Language = 'en'): Array<{
+  id: string;
+  text: string;
+  category: string;
+  icon: string;
+  description?: string;
+}> {
+  // Curated list of example IDs for landing page
+  const featuredIds = [
+    'trip-1', // Domestic trip: Zurich to Bern
+    'trip-4', // Weekend trip: Lausanne to St. Moritz
+    'trip-5', // International: Zurich to Milan
+    'weather-1', // Weather: St. Moritz
+    'weather-3', // Snow: Zermatt
+    'station-1', // Departures: Zurich HB
+  ];
+
+  return featuredIds
+    .map((id) => {
+      const query = exampleQueries.find((q) => q.id === id);
+      if (!query) return null;
+      return {
+        id: query.id,
+        text: query.text[language],
+        category: query.category,
+        icon: query.icon,
+        description: query.description?.[language],
+      };
+    })
+    .filter((q): q is NonNullable<typeof q> => q !== null);
 }
