@@ -24,13 +24,18 @@ test.describe('Chat Page', () => {
       ).toBeVisible();
     });
 
-    test('displays welcome message when chat is empty', async ({ page }) => {
+    test('should display empty state when no messages', async ({ page }) => {
+      await page.goto('/chat');
+
+      // Should show placeholder text
       await expect(
-        page.getByRole('heading', { name: 'Hello!', level: 2 })
+        page.getByText(/Ask about trains, weather, or travel plans/i)
       ).toBeVisible();
+
+      // Should NOT show welcome card elements
       await expect(
-        page.getByText('Ask me anything about Swiss travel', { exact: true })
-      ).toBeVisible();
+        page.getByText(/Welcome to Swiss Travel Companion/i)
+      ).not.toBeVisible();
     });
 
     test('has accessible input form', async ({ page }) => {

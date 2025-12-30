@@ -139,27 +139,6 @@ export const exampleQueries: ExampleQuery[] = [
     },
   },
   {
-    id: 'weather-2',
-    text: {
-      en: 'Will it rain in Lucerne tomorrow?',
-      de: 'Wird es morgen in Luzern regnen?',
-      fr: 'Va-t-il pleuvoir à Lucerne demain?',
-      it: 'Pioverà a Lucerna domani?',
-      zh: '明天卢塞恩会下雨吗？',
-      hi: 'क्या कल लुसर्न में बारिश होगी?',
-    },
-    category: 'weather',
-    icon: '🌧️',
-    description: {
-      en: 'Weather forecast',
-      de: 'Wettervorhersage',
-      fr: 'Prévisions météo',
-      it: 'Previsioni meteo',
-      zh: '天气预报',
-      hi: 'मौसम पूर्वानुमान',
-    },
-  },
-  {
     id: 'weather-3',
     text: {
       en: 'Snow conditions in Zermatt',
@@ -201,27 +180,6 @@ export const exampleQueries: ExampleQuery[] = [
       it: 'Partenze in tempo reale',
       zh: '实时出发',
       hi: 'लाइव प्रस्थान',
-    },
-  },
-  {
-    id: 'station-2',
-    text: {
-      en: 'What facilities are at Bern station?',
-      de: 'Welche Einrichtungen gibt es am Bahnhof Bern?',
-      fr: 'Quelles sont les installations à la gare de Berne?',
-      it: 'Quali servizi ci sono alla stazione di Berna?',
-      zh: '伯尔尼车站有哪些设施？',
-      hi: 'बर्न स्टेशन पर कौन सी सुविधाएं हैं?',
-    },
-    category: 'stations',
-    icon: '🏪',
-    description: {
-      en: 'Station information',
-      de: 'Bahnhofsinformationen',
-      fr: 'Informations sur la gare',
-      it: 'Informazioni sulla stazione',
-      zh: '车站信息',
-      hi: 'स्टेशन जानकारी',
     },
   },
   {

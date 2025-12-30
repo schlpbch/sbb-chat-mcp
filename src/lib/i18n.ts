@@ -9,32 +9,51 @@ export const translations = {
       map: 'Map',
       about: 'About',
     },
+    landing: {
+      hero: {
+        title: 'Swiss Travel Companion',
+        subtitle: 'Your AI-powered journey planner for Swiss public transport',
+        cta: 'Start Chatting',
+        recentSearches: 'Recent searches:',
+      },
+      categories: {
+        allExamples: 'All Examples',
+        trips: 'Trips',
+        weather: 'Weather',
+        stations: 'Stations',
+        advanced: 'Advanced',
+      },
+      footer: {
+        copyright: '© 2024 Swiss Travel Companion',
+        privacy: 'Privacy',
+        terms: 'Terms',
+      },
+    },
     welcome: {
-      title: 'Swiss Travel Companion',
-      subtitle: 'Your intelligent companion for Swiss public transport',
-      description:
-        'Discover connections, check weather, explore stations, and plan eco-friendly journeys across Switzerland.',
-      exploreTitle: 'Explore 25 Ways to Travel Smarter',
-      allQuestions: 'All',
-      categoryJourneyPlanning: 'Journey Planning',
-      categoryRealTime: 'Real-Time',
-      categoryStations: 'Stations',
-      categoryEco: 'Eco & Sustainability',
-      categoryWeather: 'Weather',
-      categoryAccessibility: 'Accessibility',
+      title: 'Welcome to Swiss Travel Companion! 👋',
+      subtitle: "I'm here to help you plan your journey across Switzerland",
+      canHelpWith: 'I can help you with:',
+      capabilities: {
+        trains: 'Train connections',
+        weather: 'Weather forecasts',
+        stations: 'Station information',
+        planning: 'Journey planning',
+      },
+      tryExample: 'Try: "Find trains from Zurich to Bern tomorrow at 2pm"',
     },
     chat: {
-      inputPlaceholder:
-        'Ask about trains, stations, or travel plans...',
+      inputPlaceholder: 'Ask about trains, weather, or travel plans...',
       send: 'Send',
+      sending: 'Sending...',
       thinking: 'Thinking...',
-      pressEnter: 'Press Enter to send, Shift+Enter for new line',
-      richMode: 'Rich Mode',
-      textOnly: 'Text Only',
-      richModeDesc: 'Interactive cards & tools',
-      textOnlyDesc: 'Streaming text responses',
-      switchToRich: 'Switch to rich mode',
-      switchToText: 'Switch to text-only mode',
+      executingTools: 'Executing tools...',
+      newChat: 'New Chat',
+      exportChat: 'Export Chat',
+      clearChat: 'Clear Chat',
+      confirmClear: 'Are you sure you want to clear the chat history?',
+      textOnlyMode: 'Text-only mode',
+      textOnlyModeDescription:
+        'Disable rich cards and display responses as plain text',
     },
     cards: {
       showDetails: 'Show Details',
@@ -365,7 +384,9 @@ export const translations = {
     },
   },
   de: {
-    appName: 'SBB Reiseassistent',
+    appName: 'Swiss Travel Companion',
+    appDescription:
+      'Ihr KI-gestützter Reiseplaner für den öffentlichen Verkehr der Schweiz',
     loading: 'Wird geladen...',
     version: 'v2.1.0',
     nav: {
@@ -374,32 +395,54 @@ export const translations = {
       map: 'Karte',
       about: 'Über',
     },
+    landing: {
+      hero: {
+        title: 'Swiss Travel Companion',
+        subtitle:
+          'Ihr KI-gestützter Reiseplaner für den öffentlichen Verkehr der Schweiz',
+        cta: 'Chat starten',
+        recentSearches: 'Letzte Suchen:',
+      },
+      categories: {
+        allExamples: 'Alle Beispiele',
+        trips: 'Reisen',
+        weather: 'Wetter',
+        stations: 'Bahnhöfe',
+        advanced: 'Erweitert',
+      },
+      footer: {
+        copyright: '© 2024 Swiss Travel Companion',
+        privacy: 'Datenschutz',
+        terms: 'Nutzungsbedingungen',
+      },
+    },
     welcome: {
-      title: 'Ihr Schweizer Reise',
-      subtitle: 'Begleiter',
-      description:
-        'Verbindungen finden, Wetter prüfen, Bahnhöfe erkunden und umweltfreundliche Reisen in der Schweiz planen.',
-      exploreTitle: '25 Wege zu intelligentem Reisen',
-      allQuestions: 'Alle',
-      categoryJourneyPlanning: 'Reiseplanung',
-      categoryRealTime: 'Echtzeit',
-      categoryStations: 'Bahnhöfe',
-      categoryEco: 'Umwelt & Nachhaltigkeit',
-      categoryWeather: 'Wetter',
-      categoryAccessibility: 'Barrierefreiheit',
+      title: 'Willkommen beim Swiss Travel Companion! 👋',
+      subtitle: 'Ich helfe Ihnen bei der Planung Ihrer Reise durch die Schweiz',
+      canHelpWith: 'Ich kann Ihnen helfen mit:',
+      capabilities: {
+        trains: 'Zugverbindungen',
+        weather: 'Wettervorhersagen',
+        stations: 'Bahnhofsinformationen',
+        planning: 'Reiseplanung',
+      },
+      tryExample:
+        'Versuchen Sie: "Finde Züge von Zürich nach Bern morgen um 14 Uhr"',
     },
     chat: {
-      inputPlaceholder:
-        'Fragen Sie nach Zügen, Bahnhöfen oder Reiseplänen... (Markdown unterstützt)',
+      inputPlaceholder: 'Fragen Sie nach Zügen, Wetter oder Reiseplänen...',
       send: 'Senden',
-      thinking: 'Denke nach...',
-      pressEnter: 'Enter zum Senden, Shift+Enter für neue Zeile',
-      richMode: 'Rich-Modus',
-      textOnly: 'Nur Text',
-      richModeDesc: 'Interaktive Karten & Tools',
-      textOnlyDesc: 'Streaming-Textantworten',
-      switchToRich: 'Zum Rich-Modus wechseln',
-      switchToText: 'Zum Nur-Text-Modus wechseln',
+      sending: 'Wird gesendet...',
+      thinking: 'Denkt nach...',
+      executingTools: 'Tools werden ausgeführt...',
+      newChat: 'Neuer Chat',
+      exportChat: 'Chat exportieren',
+      clearChat: 'Chat löschen',
+      confirmClear:
+        'Sind Sie sicher, dass Sie den Chat-Verlauf löschen möchten?',
+      textOnlyMode: 'Nur-Text-Modus',
+      textOnlyModeDescription:
+        'Deaktivieren Sie Rich Cards und zeigen Sie Antworten als reinen Text an',
     },
     cards: {
       showDetails: 'Details anzeigen',
@@ -742,7 +785,9 @@ export const translations = {
     },
   },
   fr: {
-    appName: 'Companion Voyage SBB',
+    appName: 'Swiss Travel Companion',
+    appDescription:
+      'Votre planificateur de voyage alimenté par IA pour les transports publics suisses',
     loading: 'Chargement...',
     version: 'v2.1.0',
     nav: {
@@ -751,32 +796,54 @@ export const translations = {
       map: 'Carte',
       about: 'À propos',
     },
+    landing: {
+      hero: {
+        title: 'Swiss Travel Companion',
+        subtitle:
+          'Votre planificateur de voyage alimenté par IA pour les transports publics suisses',
+        cta: 'Commencer à discuter',
+        recentSearches: 'Recherches récentes:',
+      },
+      categories: {
+        allExamples: 'Tous les exemples',
+        trips: 'Voyages',
+        weather: 'Météo',
+        stations: 'Gares',
+        advanced: 'Avancé',
+      },
+      footer: {
+        copyright: '© 2024 Swiss Travel Companion',
+        privacy: 'Confidentialité',
+        terms: 'Conditions',
+      },
+    },
     welcome: {
-      title: 'Votre Compagnon',
-      subtitle: 'de Voyage Suisse',
-      description:
-        'Découvrez les connexions, consultez la météo, explorez les gares et planifiez des voyages écologiques en Suisse.',
-      exploreTitle: 'Découvrez 25 Façons de Voyager Intelligemment',
-      allQuestions: 'Tout',
-      categoryJourneyPlanning: 'Planification',
-      categoryRealTime: 'Temps Réel',
-      categoryStations: 'Gares',
-      categoryEco: 'Éco & Durabilité',
-      categoryWeather: 'Météo',
-      categoryAccessibility: 'Accessibilité',
+      title: 'Bienvenue chez Swiss Travel Companion! 👋',
+      subtitle: 'Je suis là pour vous aider à planifier votre voyage en Suisse',
+      canHelpWith: 'Je peux vous aider avec:',
+      capabilities: {
+        trains: 'Connexions ferroviaires',
+        weather: 'Prévisions météo',
+        stations: 'Informations sur les gares',
+        planning: 'Planification de voyage',
+      },
+      tryExample:
+        'Essayez: "Trouver des trains de Zurich à Berne demain à 14h"',
     },
     chat: {
       inputPlaceholder:
-        'Posez des questions sur les trains, les gares ou les plans de voyage... (Markdown pris en charge)',
+        'Posez des questions sur les trains, la météo ou les plans de voyage...',
       send: 'Envoyer',
+      sending: 'Envoi en cours...',
       thinking: 'Réflexion...',
-      pressEnter: 'Entrée pour envoyer, Shift+Entrée pour nouvelle ligne',
-      richMode: 'Mode Riche',
-      textOnly: 'Texte Seul',
-      richModeDesc: 'Cartes interactives & outils',
-      textOnlyDesc: 'Réponses texte en streaming',
-      switchToRich: 'Passer en mode riche',
-      switchToText: 'Passer en mode texte seul',
+      executingTools: 'Exécution des outils...',
+      newChat: 'Nouveau chat',
+      exportChat: 'Exporter le chat',
+      clearChat: 'Effacer le chat',
+      confirmClear: "Êtes-vous sûr de vouloir effacer l'historique du chat?",
+      textOnlyMode: 'Mode texte uniquement',
+      textOnlyModeDescription:
+        'Désactiver les cartes enrichies et afficher les réponses en texte brut',
     },
     cards: {
       showDetails: 'Afficher les détails',
@@ -1118,7 +1185,9 @@ export const translations = {
     },
   },
   it: {
-    appName: 'Assistente Viaggio SBB',
+    appName: 'Swiss Travel Companion',
+    appDescription:
+      'Il tuo pianificatore di viaggio basato su IA per i trasporti pubblici svizzeri',
     loading: 'Caricamento...',
     version: 'v2.1.0',
     nav: {
@@ -1127,32 +1196,54 @@ export const translations = {
       map: 'Mappa',
       about: 'Informazioni',
     },
+    landing: {
+      hero: {
+        title: 'Swiss Travel Companion',
+        subtitle:
+          'Il tuo pianificatore di viaggio basato su IA per i trasporti pubblici svizzeri',
+        cta: 'Inizia a chattare',
+        recentSearches: 'Ricerche recenti:',
+      },
+      categories: {
+        allExamples: 'Tutti gli esempi',
+        trips: 'Viaggi',
+        weather: 'Meteo',
+        stations: 'Stazioni',
+        advanced: 'Avanzato',
+      },
+      footer: {
+        copyright: '© 2024 Swiss Travel Companion',
+        privacy: 'Privacy',
+        terms: 'Termini',
+      },
+    },
     welcome: {
-      title: 'Il Tuo Compagno',
-      subtitle: 'di Viaggio Svizzero',
-      description:
-        'Scopri connessioni, controlla il meteo, esplora stazioni e pianifica viaggi ecologici in Svizzera.',
-      exploreTitle: 'Esplora 25 Modi per Viaggiare in Modo Intelligente',
-      allQuestions: 'Tutto',
-      categoryJourneyPlanning: 'Pianificazione',
-      categoryRealTime: 'Tempo Reale',
-      categoryStations: 'Stazioni',
-      categoryEco: 'Eco & Sostenibilità',
-      categoryWeather: 'Meteo',
-      categoryAccessibility: 'Accessibilità',
+      title: 'Benvenuto su Swiss Travel Companion! 👋',
+      subtitle:
+        'Sono qui per aiutarti a pianificare il tuo viaggio in Svizzera',
+      canHelpWith: 'Posso aiutarti con:',
+      capabilities: {
+        trains: 'Connessioni ferroviarie',
+        weather: 'Previsioni meteo',
+        stations: 'Informazioni sulle stazioni',
+        planning: 'Pianificazione del viaggio',
+      },
+      tryExample: 'Prova: "Trova treni da Zurigo a Berna domani alle 14"',
     },
     chat: {
       inputPlaceholder:
-        'Chiedi informazioni su treni, stazioni o piani di viaggio... (Markdown supportato)',
+        'Chiedi informazioni su treni, meteo o piani di viaggio...',
       send: 'Invia',
+      sending: 'Invio in corso...',
       thinking: 'Pensando...',
-      pressEnter: 'Invio per inviare, Shift+Invio per nuova riga',
-      richMode: 'Modalità Ricca',
-      textOnly: 'Solo Testo',
-      richModeDesc: 'Schede interattive & strumenti',
-      textOnlyDesc: 'Risposte di testo in streaming',
-      switchToRich: 'Passa alla modalità ricca',
-      switchToText: 'Passa alla modalità solo testo',
+      executingTools: 'Esecuzione strumenti...',
+      newChat: 'Nuova chat',
+      exportChat: 'Esporta chat',
+      clearChat: 'Cancella chat',
+      confirmClear: 'Sei sicuro di voler cancellare la cronologia della chat?',
+      textOnlyMode: 'Modalità solo testo',
+      textOnlyModeDescription:
+        'Disabilita le schede ricche e visualizza le risposte come testo normale',
     },
     cards: {
       showDetails: 'Mostra dettagli',
@@ -1500,6 +1591,26 @@ export const translations = {
       map: '地图',
       about: '关于',
     },
+    landing: {
+      hero: {
+        title: 'SBB 出行助手',
+        subtitle: '您的AI智能瑞士公共交通行程规划助手',
+        cta: '开始聊天',
+        recentSearches: '最近搜索:',
+      },
+      categories: {
+        allExamples: '所有示例',
+        trips: '行程',
+        weather: '天气',
+        stations: '车站',
+        advanced: '高级',
+      },
+      footer: {
+        copyright: '© 2024 SBB 出行助手',
+        privacy: '隐私政策',
+        terms: '使用条款',
+      },
+    },
     welcome: {
       title: '您的瑞士',
       subtitle: '旅行伙伴',
@@ -1772,6 +1883,26 @@ export const translations = {
       chat: 'चैट',
       map: 'नक्शा',
       about: 'के बारे में',
+    },
+    landing: {
+      hero: {
+        title: 'SBB यात्रा सहायक',
+        subtitle: 'स्विस सार्वजनिक परिवहन के लिए आपका AI-संचालित यात्रा योजनाकार',
+        cta: 'चैट शुरू करें',
+        recentSearches: 'हाल की खोजें:',
+      },
+      categories: {
+        allExamples: 'सभी उदाहरण',
+        trips: 'यात्राएं',
+        weather: 'मौसम',
+        stations: 'स्टेशन',
+        advanced: 'उन्नत',
+      },
+      footer: {
+        copyright: '© 2024 SBB यात्रा सहायक',
+        privacy: 'गोपनीयता',
+        terms: 'शर्तें',
+      },
     },
     welcome: {
       title: 'आपका स्विस यात्रा',

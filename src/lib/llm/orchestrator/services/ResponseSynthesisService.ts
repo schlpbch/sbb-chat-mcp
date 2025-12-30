@@ -126,6 +126,10 @@ IMPORTANT: The information will be displayed as visual cards to the user. Do NOT
         return 'French';
       case 'it':
         return 'Italian';
+      case 'zh':
+        return 'Simplified Chinese';
+      case 'hi':
+        return 'Hindi';
       default:
         return 'English';
     }

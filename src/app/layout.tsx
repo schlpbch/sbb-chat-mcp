@@ -48,7 +48,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#EB0000',
+  themeColor: '#EC0000',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -61,7 +61,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={outfit.variable}>
+    <html lang="en" className={outfit.variable} suppressHydrationWarning>
       <head>
         <link rel="apple-touch-icon" href="/SBB-chat-MCP.png" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -69,7 +69,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="SBB Chat" />
       </head>
-      <body className="antialiased font-sans">
+      <body className="antialiased font-sans" suppressHydrationWarning>
         <SettingsProvider>
           <MapProvider>
             <ToastProvider>{children}</ToastProvider>
