@@ -13,7 +13,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
   const examples = getRandomExamples(24, language); // Show all ~24 examples
 
   const handleExampleClick = (query: string) => {
-    router.push(`/chat?q=${encodeURIComponent(query)}`);
+    router.push(`/chat?q=${encodeURIComponent(query)}&autoSend=true`);
   };
 
   return (

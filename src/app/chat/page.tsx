@@ -110,12 +110,17 @@ export default function ChatPage() {
   // Handle query parameter for pre-filled queries
   useEffect(() => {
     const query = searchParams.get('q');
+    const autoSend = searchParams.get('autoSend');
     if (query && !input) {
       setInput(query);
-      // Optional: auto-send the query
-      // setTimeout(() => handleSendMessage(), 100);
+      // Auto-send if autoSend parameter is present
+      if (autoSend === 'true') {
+        setTimeout(() => {
+          handleSendMessage();
+        }, 100);
+      }
     }
-  }, [searchParams, input, setInput]);
+  }, [searchParams, input, setInput, handleSendMessage]);
 
   return (
     <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100">
@@ -174,7 +179,10 @@ export default function ChatPage() {
                           {recentSearches.map((search, index) => (
                             <button
                               key={index}
-                              onClick={() => setInput(search)}
+                              onClick={() => {
+                                setInput(search);
+                                setTimeout(() => handleSendMessage(), 50);
+                              }}
                               className="w-full text-left px-4 py-3 bg-white rounded-lg border border-gray-200 hover:border-[#EB0000] hover:shadow-md transition-all duration-200"
                             >
                               <div className="flex items-center gap-3">
