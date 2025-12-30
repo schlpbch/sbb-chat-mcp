@@ -59,27 +59,31 @@ const testCases = [
 
 console.log('\n🔍 Detailed Test Output\n');
 
-for (const test of testCases) {
-  console.log(`\n${'='.repeat(80)}`);
-  console.log(`Test: ${test.desc}`);
-  console.log(`Message: "${test.msg}"`);
-  console.log(`User Language: ${test.lang}`);
-  console.log(`Expected Intent: ${test.expected}`);
+(async () => {
+  for (const test of testCases) {
+    console.log(`\n${'='.repeat(80)}`);
+    console.log(`Test: ${test.desc}`);
+    console.log(`Message: "${test.msg}"`);
+    console.log(`User Language: ${test.lang}`);
+    console.log(`Expected Intent: ${test.expected}`);
 
-  const result = extractIntent(test.msg, test.lang);
+    const result = await extractIntent(test.msg, test.lang);
 
-  console.log(`\nResult:`);
-  console.log(
-    `  Intent: ${result.type} ${result.type === test.expected ? '✅' : '❌'}`
-  );
-  console.log(`  Confidence: ${result.confidence.toFixed(2)}`);
-  console.log(`  Detected Languages: ${result.detectedLanguages?.join(', ')}`);
-  console.log(
-    `  Matched Keywords: ${result.matchedKeywords?.slice(0, 3).join(', ')}`
-  );
-  console.log(
-    `  Entities: ${JSON.stringify(result.extractedEntities, null, 2)}`
-  );
-}
+    console.log(`\nResult:`);
+    console.log(
+      `  Intent: ${result.type} ${result.type === test.expected ? '✅' : '❌'}`
+    );
+    console.log(`  Confidence: ${result.confidence.toFixed(2)}`);
+    console.log(
+      `  Detected Languages: ${result.detectedLanguages?.join(', ')}`
+    );
+    console.log(
+      `  Matched Keywords: ${result.matchedKeywords?.slice(0, 3).join(', ')}`
+    );
+    console.log(
+      `  Entities: ${JSON.stringify(result.extractedEntities, null, 2)}`
+    );
+  }
 
-console.log(`\n${'='.repeat(80)}\n`);
+  console.log(`\n${'='.repeat(80)}\n`);
+})();

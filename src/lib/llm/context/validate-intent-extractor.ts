@@ -162,7 +162,7 @@ const testCases: TestCase[] = [
   },
 ];
 
-function runValidation() {
+async function runValidation() {
   console.log('\n🧪 Intent Extractor Validation\n');
   console.log('='.repeat(80));
 
@@ -171,7 +171,7 @@ function runValidation() {
   const failures: string[] = [];
 
   for (const testCase of testCases) {
-    const result = extractIntent(testCase.message, testCase.language);
+    const result = await extractIntent(testCase.message, testCase.language);
 
     const intentMatch = result.type === testCase.expectedIntent;
     const confidenceOk = result.confidence >= 0.3;
@@ -242,5 +242,7 @@ function runValidation() {
 }
 
 // Run validation
-const results = runValidation();
-process.exit(results.failed > 0 ? 1 : 0);
+(async () => {
+  const results = await runValidation();
+  process.exit(results.failed > 0 ? 1 : 0);
+})();

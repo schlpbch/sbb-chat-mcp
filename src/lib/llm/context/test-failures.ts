@@ -27,14 +27,18 @@ const tests = [
   { msg: 'Zürich to Genève', lang: 'en' as const, expect: 'trip_planning' },
 ];
 
-for (const t of tests) {
-  const r = extractIntent(t.msg, t.lang);
-  const pass = r.type === t.expect;
-  console.log(`${pass ? '✅' : '❌'} "${t.msg}"`);
-  console.log(
-    `   Expected: ${t.expect}, Got: ${r.type}, Conf: ${r.confidence.toFixed(2)}`
-  );
-  console.log(`   Languages: ${r.detectedLanguages?.join(', ')}`);
-  console.log(`   Keywords: ${r.matchedKeywords?.slice(0, 5).join(', ')}`);
-  console.log('');
-}
+(async () => {
+  for (const t of tests) {
+    const r = await extractIntent(t.msg, t.lang);
+    const pass = r.type === t.expect;
+    console.log(`${pass ? '✅' : '❌'} "${t.msg}"`);
+    console.log(
+      `   Expected: ${t.expect}, Got: ${r.type}, Conf: ${r.confidence.toFixed(
+        2
+      )}`
+    );
+    console.log(`   Languages: ${r.detectedLanguages?.join(', ')}`);
+    console.log(`   Keywords: ${r.matchedKeywords?.slice(0, 5).join(', ')}`);
+    console.log('');
+  }
+})();

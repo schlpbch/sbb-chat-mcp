@@ -1,6 +1,6 @@
 'use client';
 
-interface LocalizedExampleQuery {
+export interface LocalizedExampleQuery {
   id: string;
   text: string;
   category: string;

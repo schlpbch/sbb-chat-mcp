@@ -21,16 +21,20 @@ const tests = [
   },
 ];
 
-for (const t of tests) {
-  const r = extractIntent(t.msg, t.lang);
-  const pass = r.type === t.expect;
-  console.log(`${pass ? '✅' : '❌'} "${t.msg.substring(0, 40)}..."`);
-  console.log(
-    `   Expected: ${t.expect}, Got: ${r.type}, Conf: ${r.confidence.toFixed(2)}`
-  );
-  if (!pass) {
-    console.log(`   Keywords: ${r.matchedKeywords?.join(', ')}`);
-    console.log(`   Entities: ${JSON.stringify(r.extractedEntities)}`);
+(async () => {
+  for (const t of tests) {
+    const r = await extractIntent(t.msg, t.lang);
+    const pass = r.type === t.expect;
+    console.log(`${pass ? '✅' : '❌'} "${t.msg.substring(0, 40)}..."`);
+    console.log(
+      `   Expected: ${t.expect}, Got: ${r.type}, Conf: ${r.confidence.toFixed(
+        2
+      )}`
+    );
+    if (!pass) {
+      console.log(`   Keywords: ${r.matchedKeywords?.join(', ')}`);
+      console.log(`   Entities: ${JSON.stringify(r.extractedEntities)}`);
+    }
+    console.log('');
   }
-  console.log('');
-}
+})();

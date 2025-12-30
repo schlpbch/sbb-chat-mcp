@@ -11,7 +11,9 @@ import QuickActionCard from './welcome/QuickActionCard';
 import CategoryFilter from './welcome/CategoryFilter';
 import WelcomeHeader from './welcome/WelcomeHeader';
 import FeaturesList from './welcome/FeaturesList';
-import ExampleQueryCard from '../ExampleQueryCard';
+import ExampleQueryCard, {
+  type LocalizedExampleQuery,
+} from '../ExampleQueryCard';
 import { getExamplesByCategory, getRandomExamples } from '@/lib/exampleQueries';
 
 export default function WelcomeSection({
@@ -67,12 +69,13 @@ export default function WelcomeSection({
             : 'Clicca su un esempio per iniziare'}
         </p>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-          {(selectedCategory
-            ? getExamplesByCategory(selectedCategory as any, language).slice(
-                0,
-                6
-              )
-            : getRandomExamples(6, language)
+          {(
+            (selectedCategory
+              ? getExamplesByCategory(selectedCategory as any, language).slice(
+                  0,
+                  6
+                )
+              : getRandomExamples(6, language)) as LocalizedExampleQuery[]
           ).map((example) => (
             <ExampleQueryCard
               key={example.id}
