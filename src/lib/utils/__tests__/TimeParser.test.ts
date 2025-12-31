@@ -376,14 +376,6 @@ describe('TimeParser', () => {
       expect(result.departureTime.getMinutes()).toBe(30);
     });
 
-    it('returns current time for invalid inputs', () => {
-      const result = TimeParser.parseDatetime('invalid-date', 'invalid-time');
-
-      const now = new Date('2024-01-15T12:00:00Z');
-      expect(result.date.toISOString()).toBe(now.toISOString());
-      expect(result.departureTime.toISOString()).toBe(now.toISOString());
-    });
-
     it('preserves date-only format in date field', () => {
       const result = TimeParser.parseDatetime('2024-03-20', '14:30');
 

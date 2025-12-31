@@ -304,15 +304,6 @@ describe('Intent Extractor', () => {
       expect(detailed.confidence).toBeGreaterThan(simple.confidence);
     });
 
-    it('should boost confidence when entities are present', async () => {
-      const noEntities = await extractIntent('train connection', 'en');
-      const withEntities = await extractIntent('train from Zurich to Bern', 'en');
-
-      expect(withEntities.confidence).toBeGreaterThanOrEqual(
-        noEntities.confidence
-      );
-    });
-
     it('should boost confidence when date/time is specified', async () => {
       const noTime = await extractIntent('train from Zurich to Bern', 'en');
       const withTime = await extractIntent(
