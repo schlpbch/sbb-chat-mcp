@@ -1,6 +1,6 @@
 steps:
   # Install dependencies and Run Tests
-  - name: 'node:25'
+  - name: 'node:24'
     entrypoint: 'bash'
     args:
       - '-c'
