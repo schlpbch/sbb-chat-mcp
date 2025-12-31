@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import dynamic from 'next/dynamic';
 import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
@@ -9,6 +10,12 @@ import FeaturedExamples from '@/components/landing/FeaturedExamples';
 import { translations } from '@/lib/i18n';
 import { useFeedback } from '@/hooks/useFeedback';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
+import { useOnboarding } from '@/hooks/useOnboarding';
+
+const OnboardingModal = dynamic(
+  () => import('@/components/onboarding/OnboardingModal'),
+  { ssr: false }
+);
 
 export default function LandingPage() {
   const [language, setLanguage] = useState<Language>('en');
@@ -22,6 +29,17 @@ export default function LandingPage() {
     closeFeedback,
     submitFeedback,
   } = useFeedback();
+
+  const {
+    isOpen: isOnboardingOpen,
+    currentStep,
+    nextStep,
+    prevStep,
+    completeOnboarding,
+    skipOnboarding,
+    openOnboarding,
+  } = useOnboarding();
+
   const t = translations[language];
 
   return (
@@ -31,7 +49,7 @@ export default function LandingPage() {
         onLanguageChange={setLanguage}
         onMenuToggle={() => setIsMenuOpen(!isMenuOpen)}
         onFeedbackClick={openFeedback}
-        onHelpClick={() => {}}
+        onHelpClick={openOnboarding}
       />
 
       <Menu
@@ -51,8 +69,18 @@ export default function LandingPage() {
         language={language}
       />
 
+      <OnboardingModal
+        isOpen={isOnboardingOpen}
+        currentStep={currentStep}
+        onNext={nextStep}
+        onPrev={prevStep}
+        onComplete={completeOnboarding}
+        onSkip={skipOnboarding}
+        language={language}
+      />
+
       <main className="pt-16" role="main" aria-label="Main content">
-        <HeroSection language={language} />
+        <HeroSection language={language} onHelpClick={openOnboarding} />
         <FeaturedExamples language={language} />
 
         {/* Footer */}

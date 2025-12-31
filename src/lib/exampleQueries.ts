@@ -9,6 +9,28 @@ export interface ExampleQuery {
 }
 
 export const exampleQueries: ExampleQuery[] = [
+  // General help query
+  {
+    id: 'help-1',
+    text: {
+      en: 'What can you do for me today?',
+      de: 'Was kannst du heute für mich tun?',
+      fr: "Que peux-tu faire pour moi aujourd'hui?",
+      it: 'Cosa puoi fare per me oggi?',
+      zh: '你今天能为我做什么？',
+      hi: 'आज आप मेरे लिए क्या कर सकते हैं?',
+    },
+    category: 'trips',
+    icon: '💬',
+    description: {
+      en: 'Get started with the assistant',
+      de: 'Erste Schritte mit dem Assistenten',
+      fr: "Commencer avec l'assistant",
+      it: "Inizia con l'assistente",
+      zh: '开始使用助手',
+      hi: 'सहायक के साथ शुरू करें',
+    },
+  },
   // Trip queries
   {
     id: 'trip-1',
@@ -185,7 +207,7 @@ export const exampleQueries: ExampleQuery[] = [
   {
     id: 'station-3',
     text: {
-      en: 'Next trains arriving at Geneva Airport',
+      en: 'Next trains arriving at Genève-Aéroport',
       de: 'Nächste Züge am Flughafen Genf',
       fr: "Prochains trains arrivant à l'aéroport de Genève",
       it: "Prossimi treni in arrivo all'aeroporto di Ginevra",
@@ -284,28 +306,16 @@ export const exampleQueries: ExampleQuery[] = [
     },
   },
   {
-    id: 'markdown-3',
+    id: 'compare-1',
     text: {
-      en: `Compare routes from **Geneva** to **Milan**:
-- Via Lausanne
-- Via Brig`,
-      de: `Vergleiche Routen von **Genf** nach **Mailand**:
-- Über Lausanne
-- Über Brig`,
-      fr: `Compare les itinéraires de **Genève** à **Milan**:
-- Via Lausanne
-- Via Brigue`,
-      it: `Confronta i percorsi da **Ginevra** a **Milano**:
-- Via Losanna
-- Via Briga`,
-      zh: `比较从**日内瓦**到**米兰**的路线：
-- 经洛桑
-- 经布里格`,
-      hi: `**जिनेवा** से **मिलान** तक के मार्गों की तुलना करें:
-- लॉज़ेन के माध्यम से
-- ब्रिग के माध्यम से`,
+      en: 'Compare fastest vs fewest transfers from Geneva to Basel',
+      de: 'Vergleiche schnellste vs wenigste Umstiege von Genf nach Basel',
+      fr: 'Compare le plus rapide vs le moins de changements de Genève à Bâle',
+      it: 'Confronta più veloce vs meno cambi da Ginevra a Basilea',
+      zh: '比较从日内瓦到巴塞尔的最快路线与最少换乘',
+      hi: 'जिनेवा से बेसल तक सबसे तेज़ बनाम सबसे कम स्थानांतरण की तुलना करें',
     },
-    category: 'markdown',
+    category: 'trips',
     icon: '🔀',
     description: {
       en: 'Route comparison',

@@ -6,9 +6,10 @@ import { Language, translations } from '@/lib/i18n';
 
 interface HeroSectionProps {
   language?: Language;
+  onHelpClick?: () => void;
 }
 
-export default function HeroSection({ language = 'en' }: HeroSectionProps) {
+export default function HeroSection({ language = 'en', onHelpClick }: HeroSectionProps) {
   const router = useRouter();
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -65,12 +66,36 @@ export default function HeroSection({ language = 'en' }: HeroSectionProps) {
         </h1>
         <p className="text-xl text-gray-600 mb-8">{t.landing.hero.subtitle}</p>
 
-        <Link
-          href="/chat"
-          className="inline-block bg-[#EC0000] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#D60000] transition-colors shadow-lg"
-        >
-          {t.landing.hero.cta}
-        </Link>
+        <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+          <Link
+            href="/chat?q=What+can+you+do+for+me+today%3F&autoSend=true"
+            className="inline-block bg-[#EC0000] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#D60000] transition-colors shadow-lg"
+          >
+            {t.landing.hero.cta}
+          </Link>
+
+          {onHelpClick && (
+            <button
+              onClick={onHelpClick}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-lg bg-white border-2 border-gray-300 text-gray-700 hover:border-[#EC0000] hover:text-[#EC0000] transition-all shadow-md"
+            >
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
+              </svg>
+              How it Works
+            </button>
+          )}
+        </div>
 
         {/* Recent Searches */}
         {mounted && recentSearches.length > 0 && (

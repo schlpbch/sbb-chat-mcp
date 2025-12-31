@@ -1,23 +1,35 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import dynamic from 'next/dynamic';
 import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 
-import MessageList from '@/components/chat/MessageList';
 import VoiceButton from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';
 import { translations } from '@/lib/i18n';
 import { useOnboarding } from '@/hooks/useOnboarding';
-import OnboardingModal from '@/components/onboarding/OnboardingModal';
-import HelpButton from '@/components/HelpButton';
 import { useFeedback } from '@/hooks/useFeedback';
-import FeedbackButton from '@/components/feedback/FeedbackButton';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 
-export default function ChatPage() {
+// Lazy load heavy components
+const MessageList = dynamic(() => import('@/components/chat/MessageList'), {
+  ssr: false,
+  loading: () => (
+    <div className="flex items-center justify-center py-8">
+      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-sbb-red"></div>
+    </div>
+  ),
+});
+
+const OnboardingModal = dynamic(
+  () => import('@/components/onboarding/OnboardingModal'),
+  { ssr: false }
+);
+
+function ChatContent() {
   const searchParams = useSearchParams();
   const [language, setLanguage] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -204,7 +216,7 @@ export default function ChatPage() {
                 </span>
               </div>
 
-              <div className="flex items-end gap-2 sm:gap-3">
+              <div className="flex items-start gap-2 sm:gap-3">
                 <VoiceButton
                   language={language}
                   onTranscript={setInput}
@@ -219,7 +231,7 @@ export default function ChatPage() {
                     ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyPress={handleKeyPress}
+                    onKeyDown={handleKeyPress}
                     placeholder={t.chat.inputPlaceholder}
                     disabled={isLoading}
                     rows={1}
@@ -228,6 +240,20 @@ export default function ChatPage() {
                     className="block w-full px-3 sm:px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     style={{ minHeight: '52px', maxHeight: '120px' }}
                   />
+                  <p
+                    id="chat-hint"
+                    className="text-xs text-gray-400 mt-1.5 transition-opacity duration-200 hidden sm:block"
+                  >
+                    Press{' '}
+                    <kbd className="px-1.5 py-0.5 bg-gray-100 border border-gray-300 rounded text-xs font-mono">
+                      ↑
+                    </kbd>
+                    /
+                    <kbd className="px-1.5 py-0.5 bg-gray-100 border border-gray-300 rounded text-xs font-mono">
+                      ↓
+                    </kbd>{' '}
+                    to browse history
+                  </p>
                 </div>
                 <button
                   type="submit"
@@ -271,9 +297,6 @@ export default function ChatPage() {
                   )}
                 </button>
               </div>
-              <p className="text-xs text-gray-500 mt-2 hidden sm:block">
-                {t.chat.pressEnter}
-              </p>
             </div>
           </div>
         </div>
@@ -301,5 +324,22 @@ export default function ChatPage() {
         language={language}
       />
     </div>
+  );
+}
+
+export default function ChatPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="flex items-center justify-center h-screen bg-gray-50">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sbb-red mx-auto mb-4"></div>
+            <p className="text-gray-600">Loading...</p>
+          </div>
+        </div>
+      }
+    >
+      <ChatContent />
+    </Suspense>
   );
 }
