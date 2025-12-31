@@ -38,7 +38,8 @@
       "Bash(terraform apply:*)",
       "Bash(npx tsc:*)",
       "Bash(npx:*)",
-      "Bash(pnpm remove:*)"
+      "Bash(pnpm remove:*)",
+      "Bash(git rm:*)"
     ]
   }
 }
