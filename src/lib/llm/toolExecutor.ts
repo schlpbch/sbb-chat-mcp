@@ -45,7 +45,7 @@ export async function executeTool(
       // Use 'standard' mode for comparison queries (faster, smaller response)
       // Use 'detailed' mode for regular queries (includes accessibility and stop data)
       const isComparisonContext =
-        resolvedParams.limit && resolvedParams.limit > 3;
+        typeof resolvedParams.limit === 'number' && resolvedParams.limit > 3;
       resolvedParams.responseMode = isComparisonContext
         ? 'standard'
         : 'detailed';
@@ -111,7 +111,7 @@ export async function executeTool(
       success: true,
       data: parsedData,
       toolName,
-      params: resolvedParams as FunctionCallParams,
+      params: resolvedParams,
     };
   } catch (error) {
     console.error(`Tool execution error for ${toolName}:`, error);
