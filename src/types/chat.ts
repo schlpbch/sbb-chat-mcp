@@ -6,12 +6,33 @@
 // Message Types
 // ========================================
 
+export interface StreamingToolCall {
+  toolName: string;
+  params: any;
+  status: 'pending' | 'executing' | 'complete' | 'error';
+  result?: any;
+  error?: string;
+}
+
 export interface Message {
   id: string;
   role: 'user' | 'Companion';
   content: string;
   timestamp: Date;
-  toolCalls?: ToolCall[];
+  toolCalls?: Array<{
+    toolName: string;
+    params: any;
+    result: any;
+  }>;
+  // Streaming support
+  isStreaming?: boolean;
+  streamingToolCalls?: StreamingToolCall[];
+  error?: {
+    type: 'network' | 'api' | 'timeout' | 'validation' | 'server' | 'general';
+    message: string;
+    details?: string;
+    retryable: boolean;
+  };
 }
 
 export interface ExportableMessage {

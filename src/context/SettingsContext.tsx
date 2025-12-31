@@ -48,16 +48,31 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
   // Apply theme effect
   useEffect(() => {
     if (!isLoaded) return;
-    
-    const root = document.documentElement;
-    const isDark = 
-      settings.theme === 'dark' || 
-      (settings.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
 
-    if (isDark) {
-      root.classList.add('dark');
-    } else {
-      root.classList.remove('dark');
+    const root = document.documentElement;
+
+    const applyTheme = () => {
+      const isDark =
+        settings.theme === 'dark' ||
+        (settings.theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+
+      console.log('[SettingsContext] Applying theme:', { theme: settings.theme, isDark });
+
+      if (isDark) {
+        root.classList.add('dark');
+      } else {
+        root.classList.remove('dark');
+      }
+    };
+
+    applyTheme();
+
+    // Listen for system theme changes when in 'system' mode
+    if (settings.theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      const handler = () => applyTheme();
+      mediaQuery.addEventListener('change', handler);
+      return () => mediaQuery.removeEventListener('change', handler);
     }
   }, [settings.theme, isLoaded]);
 
