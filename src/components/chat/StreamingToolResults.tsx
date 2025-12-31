@@ -161,7 +161,7 @@ export default function StreamingToolResults({
             if (!result) return null;
             const stations = Array.isArray(result)
               ? result
-              : result.stations || [result];
+              : (result as Record<string, unknown>).stations || [result];
             return (
               Array.isArray(stations) &&
               stations
@@ -181,13 +181,16 @@ export default function StreamingToolResults({
             if (!result) return null;
 
             // Check if the result contains an error
+            const resultObj = result as Record<string, unknown>;
             if (
-              result.error ||
-              result.details?.includes('DataBufferLimitException')
-            ) {
-              const isBufferError = result.details?.includes(
+              resultObj.error ||
+              (resultObj.details as string | undefined)?.includes(
                 'DataBufferLimitException'
-              );
+              )
+            ) {
+              const isBufferError = (
+                resultObj.details as string | undefined
+              )?.includes('DataBufferLimitException');
               return (
                 <div
                   key={idx}
@@ -209,7 +212,8 @@ export default function StreamingToolResults({
                     </svg>
                     <div>
                       <p className="text-sm font-semibold text-red-800">
-                        {result.error || 'Failed to load trip results'}
+                        {(resultObj.error as string) ||
+                          'Failed to load trip results'}
                       </p>
                       {isBufferError && (
                         <p className="text-xs text-red-700 mt-1">
@@ -225,7 +229,7 @@ export default function StreamingToolResults({
 
             const trips = Array.isArray(result)
               ? result
-              : result.trips || [result];
+              : (result as Record<string, unknown>).trips || [result];
             return (
               Array.isArray(trips) &&
               trips
@@ -244,7 +248,7 @@ export default function StreamingToolResults({
           if (toolName === 'getWeather') {
             logger.debug('StreamingToolResults', 'getWeather result', result);
             return result ? (
-              <WeatherCard key={idx} data={result} language={language} />
+              <WeatherCard key={idx} data={result as any} language={language} />
             ) : null;
           }
 
@@ -256,20 +260,20 @@ export default function StreamingToolResults({
               result
             );
             return result ? (
-              <SnowCard key={idx} data={result} language={language} />
+              <SnowCard key={idx} data={result as any} language={language} />
             ) : null;
           }
 
           // Departures/Arrivals
           if (toolName === 'getPlaceEvents')
             return result ? (
-              <BoardCard key={idx} data={result} language={language} />
+              <BoardCard key={idx} data={result as any} language={language} />
             ) : null;
 
           // Eco comparison
           if (toolName === 'getEcoComparison')
             return result ? (
-              <EcoCard key={idx} data={result} language={language} />
+              <EcoCard key={idx} data={result as any} language={language} />
             ) : null;
 
           // Route comparison
@@ -277,10 +281,11 @@ export default function StreamingToolResults({
             if (!result) return null;
 
             // Check if the result contains an error
-            if (result.error) {
-              const isBufferError = result.details?.includes(
-                'DataBufferLimitException'
-              );
+            const compareResultObj = result as Record<string, unknown>;
+            if (compareResultObj.error) {
+              const isBufferError = (
+                compareResultObj.details as string | undefined
+              )?.includes('DataBufferLimitException');
               return (
                 <div
                   key={idx}
@@ -302,7 +307,7 @@ export default function StreamingToolResults({
                     </svg>
                     <div>
                       <p className="text-sm font-semibold text-red-800">
-                        {result.error}
+                        {compareResultObj.error as string}
                       </p>
                       {isBufferError && (
                         <p className="text-xs text-red-700 mt-1">
@@ -329,9 +334,10 @@ export default function StreamingToolResults({
                 );
                 // Return fallback structure
                 return {
-                  origin: toolCall.params?.origin || 'Unknown',
-                  destination: toolCall.params?.destination || 'Unknown',
-                  criteria: toolCall.params?.criteria || 'balanced',
+                  origin: (toolCall.params?.origin as string) || 'Unknown',
+                  destination:
+                    (toolCall.params?.destination as string) || 'Unknown',
+                  criteria: (toolCall.params?.criteria as string) || 'balanced',
                   routes: [],
                 };
               }
@@ -347,15 +353,24 @@ export default function StreamingToolResults({
           }
 
           // Itinerary
-          if (result?.destination && result?.activities)
+          const itineraryResult = result as Record<string, unknown> | undefined;
+          if (itineraryResult?.destination && itineraryResult?.activities)
             return (
-              <ItineraryCard key={idx} data={result} language={language} />
+              <ItineraryCard
+                key={idx}
+                data={result as any}
+                language={language}
+              />
             );
 
           // Train Formation
           if (toolName === 'getTrainFormation')
             return result ? (
-              <FormationCard key={idx} data={result} language={language} />
+              <FormationCard
+                key={idx}
+                data={result as any}
+                language={language}
+              />
             ) : null;
         }
 
