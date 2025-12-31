@@ -61,7 +61,7 @@ function WeatherCard({ data, language }: WeatherCardProps) {
 
  return (
  <article
- className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-yellow-500"
+ className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-yellow-500 dark:hover:border-yellow-400"
  data-testid="weather-card"
   aria-label={`${t.weather.weather} ${location}`}
  >
@@ -82,33 +82,33 @@ function WeatherCard({ data, language }: WeatherCardProps) {
  <div className="p-3">
  <div className="flex items-center justify-between mb-3">
  <div>
- <p className="text-5xl font-bold text-gray-900">
+ <p className="text-5xl font-bold text-gray-900 dark:text-gray-100">
  {temperature !== undefined ? `${Math.round(temperature)}°` : '--°'}
  </p>
- <p className="text-sm text-gray-600 mt-1">
+ <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
  {condition}
  </p>
  </div>
  <div className="space-y-2">
  {humidity !== undefined && (
  <div className="flex items-center space-x-1.5">
- <svg className="w-4 h-4 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-4 h-4 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />
  </svg>
  <div>
- <p className="text-xs text-gray-500">{t.weather.humidity}</p>
- <p className="text-sm font-semibold text-gray-900">{humidity}%</p>
+ <p className="text-xs text-gray-500 dark:text-gray-400">{t.weather.humidity}</p>
+ <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{humidity}%</p>
  </div>
  </div>
  )}
  {windSpeed !== undefined && (
  <div className="flex items-center space-x-1.5">
- <svg className="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+ <svg className="w-4 h-4 text-gray-600 dark:text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
  </svg>
  <div>
- <p className="text-xs text-gray-500">{t.weather.wind}</p>
- <p className="text-sm font-semibold text-gray-900">{Math.round(windSpeed)} km/h</p>
+ <p className="text-xs text-gray-500 dark:text-gray-400">{t.weather.wind}</p>
+ <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{Math.round(windSpeed)} km/h</p>
  </div>
  </div>
  )}
@@ -116,40 +116,40 @@ function WeatherCard({ data, language }: WeatherCardProps) {
  </div>
 
  {/* Additional Weather Info */}
- <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-200">
+ <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
  {feelsLike !== undefined && (
- <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
+ <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-700 rounded">
  <span className="text-lg">🌡️</span>
  <div>
- <p className="text-xs text-gray-500">{t.weather.feelsLike}</p>
- <p className="text-sm font-semibold text-gray-900">{Math.round(feelsLike)}°</p>
+ <p className="text-xs text-gray-500 dark:text-gray-400">{t.weather.feelsLike}</p>
+ <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{Math.round(feelsLike)}°</p>
  </div>
  </div>
  )}
  {precipitation !== undefined && precipitation > 0 && (
- <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
+ <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-700 rounded">
  <span className="text-lg">💧</span>
  <div>
- <p className="text-xs text-gray-500">{t.weather.precipitation}</p>
- <p className="text-sm font-semibold text-gray-900">{precipitation} mm</p>
+ <p className="text-xs text-gray-500 dark:text-gray-400">{t.weather.precipitation}</p>
+ <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{precipitation} mm</p>
  </div>
  </div>
  )}
  {uvIndex !== undefined && (
- <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
+ <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-700 rounded">
  <span className="text-lg">☀️</span>
  <div>
- <p className="text-xs text-gray-500">{t.weather.uvIndex}</p>
- <p className="text-sm font-semibold text-gray-900">{Math.round(uvIndex)}</p>
+ <p className="text-xs text-gray-500 dark:text-gray-400">{t.weather.uvIndex}</p>
+ <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{Math.round(uvIndex)}</p>
  </div>
  </div>
  )}
  {pressure !== undefined && (
- <div className="flex items-center space-x-2 p-2 bg-gray-50 rounded">
+ <div className="flex items-center space-x-2 p-2 bg-gray-50 dark:bg-gray-700 rounded">
  <span className="text-lg">🔽</span>
  <div>
- <p className="text-xs text-gray-500">{t.weather.pressure}</p>
- <p className="text-sm font-semibold text-gray-900">{Math.round(pressure)} hPa</p>
+ <p className="text-xs text-gray-500 dark:text-gray-400">{t.weather.pressure}</p>
+ <p className="text-sm font-semibold text-gray-900 dark:text-gray-100">{Math.round(pressure)} hPa</p>
  </div>
  </div>
  )}
@@ -157,26 +157,26 @@ function WeatherCard({ data, language }: WeatherCardProps) {
 
  {/* Compact Forecast */}
  {forecast && forecast.length > 0 && (
- <div className="pt-3 border-t border-gray-200">
- <p className="text-xs font-semibold text-gray-700 mb-2">
+ <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+ <p className="text-xs font-semibold text-gray-700 dark:text-gray-300 mb-2">
  {t.weather.forecast}
  </p>
  <div className="grid grid-cols-3 gap-2">
  {forecast.map((day: any, idx: number) => (
  <div
  key={idx}
- className="text-center p-2 bg-gray-50 rounded-lg"
+ className="text-center p-2 bg-gray-50 dark:bg-gray-700 rounded-lg"
  >
- <p className="text-xs font-semibold text-gray-600 mb-1">
+ <p className="text-xs font-semibold text-gray-600 dark:text-gray-400 mb-1">
  {day.day}
  </p>
  <div className="text-xl mb-1">{getWeatherIcon(day.condition)}</div>
  <div className="flex items-center justify-center space-x-1 text-xs">
- <span className="font-bold text-gray-900">
+ <span className="font-bold text-gray-900 dark:text-gray-100">
  {day.high !== undefined ? `${Math.round(day.high)}°` : '--'}
  </span>
- <span className="text-gray-500">/</span>
- <span className="text-gray-600">
+ <span className="text-gray-500 dark:text-gray-400">/</span>
+ <span className="text-gray-600 dark:text-gray-300">
  {day.low !== undefined ? `${Math.round(day.low)}°` : '--'}
  </span>
  </div>

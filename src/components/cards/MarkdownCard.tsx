@@ -22,10 +22,10 @@ export default function MarkdownCard({
 
   return (
     <article
-      className={`rounded-lg overflow-hidden transition-all duration-200 ${
+      className={`rounded-lg overflow-hidden transition-all duration-200 select-text ${
         isUser
           ? 'bg-[#EC0000] text-white rounded-2xl shadow-md'
-          : 'bg-white border border-gray-200 shadow-md hover:shadow-lg'
+          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg'
       }`}
       data-testid="markdown-card"
     >
@@ -64,7 +64,7 @@ export default function MarkdownCard({
             h1: ({ node, ...props }) => (
               <h1
                 className={`text-3xl font-bold mb-4 mt-6 ${
-                  isUser ? 'text-white' : 'text-gray-900'
+                  isUser ? 'text-white' : 'text-gray-900 dark:text-white'
                 }`}
                 {...props}
               />
@@ -72,7 +72,7 @@ export default function MarkdownCard({
             h2: ({ node, ...props }) => (
               <h2
                 className={`text-2xl font-bold mb-3 mt-5 ${
-                  isUser ? 'text-white' : 'text-gray-900'
+                  isUser ? 'text-white' : 'text-gray-900 dark:text-white'
                 }`}
                 {...props}
               />
@@ -80,7 +80,7 @@ export default function MarkdownCard({
             h3: ({ node, ...props }) => (
               <h3
                 className={`text-xl font-bold mb-2 mt-4 ${
-                  isUser ? 'text-white' : 'text-gray-900'
+                  isUser ? 'text-white' : 'text-gray-900 dark:text-white'
                 }`}
                 {...props}
               />
@@ -88,7 +88,7 @@ export default function MarkdownCard({
             h4: ({ node, ...props }) => (
               <h4
                 className={`text-lg font-semibold mb-2 mt-3 ${
-                  isUser ? 'text-white' : 'text-gray-900'
+                  isUser ? 'text-white' : 'text-gray-900 dark:text-white'
                 }`}
                 {...props}
               />
@@ -98,7 +98,7 @@ export default function MarkdownCard({
             p: ({ node, ...props }) => (
               <p
                 className={`mb-4 leading-relaxed ${
-                  isUser ? 'text-white' : 'text-gray-700'
+                  isUser ? 'text-white' : 'text-gray-700 dark:text-gray-300'
                 }`}
                 {...props}
               />
@@ -108,7 +108,7 @@ export default function MarkdownCard({
             ul: ({ node, ...props }) => (
               <ul
                 className={`list-disc list-inside mb-4 space-y-2 ${
-                  isUser ? 'text-white' : 'text-gray-700'
+                  isUser ? 'text-white' : 'text-gray-700 dark:text-gray-300'
                 }`}
                 {...props}
               />
@@ -116,7 +116,7 @@ export default function MarkdownCard({
             ol: ({ node, ...props }) => (
               <ol
                 className={`list-decimal list-inside mb-4 space-y-2 ${
-                  isUser ? 'text-white' : 'text-gray-700'
+                  isUser ? 'text-white' : 'text-gray-700 dark:text-gray-300'
                 }`}
                 {...props}
               />
@@ -127,7 +127,9 @@ export default function MarkdownCard({
             a: ({ node, ...props }) => (
               <a
                 className={`hover:underline font-medium ${
-                  isUser ? 'text-white underline' : 'text-blue-600'
+                  isUser
+                    ? 'text-white underline'
+                    : 'text-blue-600 dark:text-blue-400'
                 }`}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -142,7 +144,7 @@ export default function MarkdownCard({
                   className={`px-2 py-1 rounded text-sm font-mono ${
                     isUser
                       ? 'bg-red-800 text-white'
-                      : 'bg-gray-100 text-red-600'
+                      : 'bg-gray-100 dark:bg-gray-700 text-red-600 dark:text-red-400'
                   }`}
                   {...props}
                 />
@@ -151,7 +153,7 @@ export default function MarkdownCard({
                   className={`block p-4 rounded-lg overflow-x-auto text-sm font-mono mb-4 ${
                     isUser
                       ? 'bg-red-800 text-white'
-                      : 'bg-gray-100 text-gray-800'
+                      : 'bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-200'
                   }`}
                   {...props}
                 />
@@ -161,7 +163,7 @@ export default function MarkdownCard({
             pre: ({ node, ...props }) => (
               <pre
                 className={`rounded-lg p-4 overflow-x-auto mb-4 ${
-                  isUser ? 'bg-red-800' : 'bg-gray-100'
+                  isUser ? 'bg-red-800' : 'bg-gray-100 dark:bg-gray-700'
                 }`}
                 {...props}
               />
@@ -173,7 +175,7 @@ export default function MarkdownCard({
                 className={`border-l-4 pl-4 py-2 my-4 italic ${
                   isUser
                     ? 'border-white bg-red-800 text-white'
-                    : 'border-blue-600 bg-blue-50 text-gray-700'
+                    : 'border-blue-600 dark:border-blue-400 bg-blue-50 dark:bg-blue-900/30 text-gray-700 dark:text-gray-300'
                 }`}
                 {...props}
               />
@@ -183,21 +185,23 @@ export default function MarkdownCard({
             table: ({ node, ...props }) => (
               <div className="overflow-x-auto mb-4">
                 <table
-                  className="min-w-full divide-y divide-gray-200"
+                  className="min-w-full divide-y divide-gray-200 dark:divide-gray-700"
                   {...props}
                 />
               </div>
             ),
             thead: ({ node, ...props }) => (
               <thead
-                className={isUser ? 'bg-red-800' : 'bg-gray-50'}
+                className={
+                  isUser ? 'bg-red-800' : 'bg-gray-50 dark:bg-gray-700'
+                }
                 {...props}
               />
             ),
             tbody: ({ node, ...props }) => (
               <tbody
-                className={`divide-y divide-gray-200 ${
-                  isUser ? 'bg-red-700' : 'bg-white'
+                className={`divide-y divide-gray-200 dark:divide-gray-700 ${
+                  isUser ? 'bg-red-700' : 'bg-white dark:bg-gray-800'
                 }`}
                 {...props}
               />
@@ -206,7 +210,7 @@ export default function MarkdownCard({
             th: ({ node, ...props }) => (
               <th
                 className={`px-4 py-3 text-left text-xs font-semibold uppercase tracking-wider ${
-                  isUser ? 'text-white' : 'text-gray-700'
+                  isUser ? 'text-white' : 'text-gray-700 dark:text-gray-300'
                 }`}
                 {...props}
               />
@@ -214,7 +218,7 @@ export default function MarkdownCard({
             td: ({ node, ...props }) => (
               <td
                 className={`px-4 py-3 text-sm ${
-                  isUser ? 'text-white' : 'text-gray-700'
+                  isUser ? 'text-white' : 'text-gray-700 dark:text-gray-300'
                 }`}
                 {...props}
               />
@@ -224,7 +228,9 @@ export default function MarkdownCard({
             hr: ({ node, ...props }) => (
               <hr
                 className={`my-6 ${
-                  isUser ? 'border-white' : 'border-gray-200'
+                  isUser
+                    ? 'border-white'
+                    : 'border-gray-200 dark:border-gray-700'
                 }`}
                 {...props}
               />
@@ -234,7 +240,7 @@ export default function MarkdownCard({
             strong: ({ node, ...props }) => (
               <strong
                 className={`font-bold ${
-                  isUser ? 'text-white' : 'text-gray-900'
+                  isUser ? 'text-white' : 'text-gray-900 dark:text-white'
                 }`}
                 {...props}
               />
@@ -243,7 +249,9 @@ export default function MarkdownCard({
             // Emphasis/Italic
             em: ({ node, ...props }) => (
               <em
-                className={`italic ${isUser ? 'text-white' : 'text-gray-700'}`}
+                className={`italic ${
+                  isUser ? 'text-white' : 'text-gray-700 dark:text-gray-300'
+                }`}
                 {...props}
               />
             ),

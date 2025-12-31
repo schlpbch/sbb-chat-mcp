@@ -58,8 +58,8 @@ export default function BoardCard({ data, language }: BoardCardProps) {
 
   return (
     <article
-      className={`bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 ${
-        isDeparture ? 'hover:border-purple-500' : 'hover:border-blue-500'
+      className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 ${
+        isDeparture ? 'hover:border-purple-500 dark:hover:border-purple-400' : 'hover:border-blue-500 dark:hover:border-blue-400'
       }`}
       data-testid="board-card"
       aria-label={`${isDeparture ? t.board.departures : t.board.arrivals} board for ${finalStation || t.board.station}`}
@@ -80,22 +80,22 @@ export default function BoardCard({ data, language }: BoardCardProps) {
       />
 
       {/* Compact Connections List */}
-      <div className="divide-y divide-gray-200">
+      <div className="divide-y divide-gray-200 dark:divide-gray-700">
         {finalConnections.length > 0 ? (
           displayedConnections.map((conn, idx) => (
             <div
               key={idx}
-              className="p-2 hover:bg-gray-50 transition-colors"
+              className="p-2 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-2 flex-1 min-w-0">
                   {/* Time */}
                   <div className="w-12 shrink-0">
-                    <p className="text-lg font-bold text-gray-900">
+                    <p className="text-lg font-bold text-gray-900 dark:text-white">
                       {formatTime(conn.time, language)}
                     </p>
                     {conn.delay && (
-                      <span className="text-xs px-1 py-0.5 bg-red-100 text-red-800 rounded">
+                      <span className="text-xs px-1 py-0.5 bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-200 rounded">
                         {conn.delay}
                       </span>
                     )}
@@ -106,11 +106,11 @@ export default function BoardCard({ data, language }: BoardCardProps) {
 
                   {/* Destination/Origin */}
                   <div className="flex-1 min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 truncate">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-gray-100 truncate">
                       {isDeparture ? (conn.destination || t.common.unknown) : (conn.origin || t.common.unknown)}
                     </p>
                     {conn.line && (
-                      <span className="inline-block mt-0.5 px-2 py-0.5 bg-gray-700 text-white text-xs font-bold rounded">
+                      <span className="inline-block mt-0.5 px-2 py-0.5 bg-gray-700 dark:bg-gray-600 text-white text-xs font-bold rounded">
                         {conn.line}
                       </span>
                     )}
@@ -119,8 +119,8 @@ export default function BoardCard({ data, language }: BoardCardProps) {
                   {/* Platform */}
                   {conn.platform && (
                     <div className="text-right shrink-0">
-                      <p className="text-xs text-gray-500">{t.cards.platform}</p>
-                      <p className="text-lg font-bold text-purple-600">
+                      <p className="text-xs text-gray-500 dark:text-gray-400">{t.cards.platform}</p>
+                      <p className="text-lg font-bold text-purple-600 dark:text-purple-400">
                         {conn.platform}
                       </p>
                     </div>
@@ -131,21 +131,21 @@ export default function BoardCard({ data, language }: BoardCardProps) {
           ))
         ) : (
           <div className="p-6 text-center">
-            <svg className="w-12 h-12 text-gray-400 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <svg className="w-12 h-12 text-gray-400 dark:text-gray-500 mx-auto mb-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.172 16.172a4 4 0 015.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
             </svg>
-            <p className="text-sm text-gray-500">{isDeparture ? t.board.noDepartures : t.board.noArrivals}</p>
+            <p className="text-sm text-gray-500 dark:text-gray-400">{isDeparture ? t.board.noDepartures : t.board.noArrivals}</p>
           </div>
         )}
       </div>
 
       {/* Expandable Footer */}
       {hasMore && (
-        <div className="px-4 py-2 bg-gray-50 border-t border-gray-200">
+        <div className="px-4 py-2 bg-gray-50 dark:bg-gray-700 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={() => setIsExpanded(!isExpanded)}
             className={`w-full text-xs font-medium transition-colors ${
-              isDeparture ? 'text-purple-600 hover:text-purple-800' : 'text-blue-600 hover:text-blue-800'
+              isDeparture ? 'text-purple-600 dark:text-purple-400 hover:text-purple-800 dark:hover:text-purple-300' : 'text-blue-600 dark:text-blue-400 hover:text-blue-800 dark:hover:text-blue-300'
             }`}
           >
             {isExpanded ? (

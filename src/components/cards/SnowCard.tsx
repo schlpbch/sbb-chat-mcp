@@ -58,7 +58,7 @@ function SnowCard({ data, language }: SnowCardProps) {
 
   return (
     <article
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-blue-400"
+      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-400"
       data-testid="snow-card"
       aria-label={`${t.snow.snowConditions} ${location}`}
     >
@@ -80,49 +80,49 @@ function SnowCard({ data, language }: SnowCardProps) {
         {/* Main Snow Depth */}
         <div className="flex items-center justify-between mb-3">
           <div>
-            <p className="text-5xl font-bold text-blue-600">
+            <p className="text-5xl font-bold text-blue-600 dark:text-blue-400">
               {snowDepth !== undefined ? `${snowDepth} cm` : '--'}
             </p>
-            <p className="text-sm text-gray-600 mt-1">
+            <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
               {t.snow.snowDepth}
             </p>
           </div>
           {temperature !== undefined && (
             <div className="text-right">
-              <p className="text-2xl font-bold text-gray-900">
+              <p className="text-2xl font-bold text-gray-900 dark:text-white">
                 {Math.round(temperature)}°
               </p>
-              <p className="text-xs text-gray-500">{t.snow.temperature}</p>
+              <p className="text-xs text-gray-500 dark:text-gray-400">{t.snow.temperature}</p>
             </div>
           )}
         </div>
 
         {/* Snowfall Info */}
-        <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-200">
+        <div className="grid grid-cols-2 gap-2 mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
           {snowfall24h !== undefined && (
-            <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded">
+            <div className="flex items-center space-x-2 p-2 bg-blue-50 dark:bg-blue-900/30 rounded">
               <span className="text-lg">🌨️</span>
               <div>
-                <p className="text-xs text-gray-500">{t.snow.last24h}</p>
-                <p className="text-sm font-semibold text-gray-900">{Math.round(snowfall24h)} cm</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{t.snow.last24h}</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{Math.round(snowfall24h)} cm</p>
               </div>
             </div>
           )}
           {snowfallWeek !== undefined && snowfallWeek > 0 && (
-            <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded">
+            <div className="flex items-center space-x-2 p-2 bg-blue-50 dark:bg-blue-900/30 rounded">
               <span className="text-lg">📅</span>
               <div>
-                <p className="text-xs text-gray-500">{t.snow.last7Days}</p>
-                <p className="text-sm font-semibold text-gray-900">{Math.round(snowfallWeek)} cm</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{t.snow.last7Days}</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{Math.round(snowfallWeek)} cm</p>
               </div>
             </div>
           )}
           {snowfall !== undefined && snowfall > 0 && (
-            <div className="flex items-center space-x-2 p-2 bg-blue-50 rounded">
+            <div className="flex items-center space-x-2 p-2 bg-blue-50 dark:bg-blue-900/30 rounded">
               <span className="text-lg">❄️</span>
               <div>
-                <p className="text-xs text-gray-500">{t.snow.currentHour}</p>
-                <p className="text-sm font-semibold text-gray-900">{Math.round(snowfall)} cm</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{t.snow.currentHour}</p>
+                <p className="text-sm font-semibold text-gray-900 dark:text-white">{Math.round(snowfall)} cm</p>
               </div>
             </div>
           )}
@@ -130,12 +130,12 @@ function SnowCard({ data, language }: SnowCardProps) {
 
         {/* Weather Conditions */}
         {conditions && (
-          <div className="mt-3 pt-3 border-t border-gray-200">
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
             <div className="flex items-start space-x-2">
               <span className="text-sm">⛷️</span>
               <div>
-                <p className="text-xs text-gray-500">{t.snow.conditions}</p>
-                <p className="text-sm text-gray-900">{conditions}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-400">{t.snow.conditions}</p>
+                <p className="text-sm text-gray-900 dark:text-white">{conditions}</p>
               </div>
             </div>
           </div>
