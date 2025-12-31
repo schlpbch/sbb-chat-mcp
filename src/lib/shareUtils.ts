@@ -43,7 +43,7 @@ ${trip.arrival ? `🕑 Arrival: ${trip.arrival}` : ''}
 ${trip.duration ? `⏱️ Duration: ${trip.duration}` : ''}
 ${trip.transfers !== undefined ? `🔄 Transfers: ${trip.transfers}` : ''}
 
-Powered by SBB Travel Companion`;
+Powered by Swiss Travel Companion`;
 }
 
 export async function shareNative(trip: ShareableTrip): Promise<boolean> {

@@ -30,15 +30,30 @@ export async function executeTool(
       toolName,
       params,
       // Pass executeTool as a callback for recursive resolution
-      async (name: string, p: Partial<FunctionCallParams> | Record<string, unknown>) => {
+      async (
+        name: string,
+        p: Partial<FunctionCallParams> | Record<string, unknown>
+      ) => {
         const result = await executeTool(name, p);
         return result;
       }
     );
 
-    // Enforce detailed mode for findTrips to ensure accessibility and stop data
+    // Enforce appropriate response mode for findTrips
+    // Set conservative limit to prevent buffer overflow on complex routes
     if (toolName === 'findTrips' && resolvedParams) {
-      resolvedParams.responseMode = 'detailed';
+      // Use 'standard' mode for comparison queries (faster, smaller response)
+      // Use 'detailed' mode for regular queries (includes accessibility and stop data)
+      const isComparisonContext =
+        resolvedParams.limit && resolvedParams.limit > 3;
+      resolvedParams.responseMode = isComparisonContext
+        ? 'standard'
+        : 'detailed';
+
+      // Set conservative limit if not already specified
+      if (!resolvedParams.limit) {
+        resolvedParams.limit = 3;
+      }
     }
 
     // Construct absolute URL for server-side fetch
@@ -157,7 +172,11 @@ export function formatToolResult(result: ToolExecutionResult): string {
       break;
 
     case 'getWeather':
-      if (result.data && typeof result.data === 'object' && !Array.isArray(result.data)) {
+      if (
+        result.data &&
+        typeof result.data === 'object' &&
+        !Array.isArray(result.data)
+      ) {
         const weatherData = result.data as WeatherResult;
         return `🌡️ ${(weatherData as any).temperature || 'N/A'}°C | ${
           (weatherData as any).condition || 'N/A'

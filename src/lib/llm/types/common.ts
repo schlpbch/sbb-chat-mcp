@@ -48,6 +48,11 @@ export interface PlanSummary {
     arrivals?: unknown[];
     departures?: unknown[];
   };
+  station?: {
+    id?: string;
+    name?: string;
+    [key: string]: unknown;
+  };
   stations?: Array<{
     id: string;
     name: string;

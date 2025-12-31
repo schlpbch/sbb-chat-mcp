@@ -26,7 +26,7 @@ export const analyticsFunctions = [
   {
     name: 'compareRoutes',
     description:
-      'Compare multiple route options between two locations using custom criteria (fastest, fewest_changes, etc.).',
+      'Compare and rank multiple route options between two locations. USE THIS TOOL when user asks: "compare routes", "fastest vs fewest transfers", "which route is better", "rank options by X", "compare fastest and most comfortable". Analyzes routes by criteria: fastest (speed), fewest_changes (transfers), earliest_arrival (time), balanced (mix). DO NOT use for simple "find trains" queries - use findTrips instead.',
     parameters: {
       type: 'object',
       properties: {

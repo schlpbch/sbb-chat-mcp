@@ -170,13 +170,22 @@ export const INTENT_KEYWORDS: Record<string, MultilingualKeywords> = {
 
   station_search: {
     en: {
-      primary: ['station', 'stop', 'platform', 'departures', 'arrivals'],
+      primary: [
+        'station',
+        'stop',
+        'platform',
+        'departures',
+        'arrivals',
+        'arriving',
+        'departing',
+      ],
       variations: ['stations', 'stops', 'platforms', 'departure', 'arrival'],
       phrases: [
         'train station',
         'railway station',
         'show departures',
         'show arrivals',
+        'next trains',
       ],
       contextual: ['at', 'from', 'in'],
     },

@@ -104,6 +104,9 @@ GUIDELINES:
     const toolCalls: Array<{ toolName: string; params: any; result: any }> = [];
 
     if (functionCalls && functionCalls.length > 0) {
+      // Execute all function calls
+      const functionResponses = [];
+
       for (const call of functionCalls) {
         const toolResult = await executeTool(
           call.name,
@@ -116,26 +119,27 @@ GUIDELINES:
           result: toolResult.data,
         });
 
-        const functionResponse = {
+        // Build function response part
+        functionResponses.push({
           functionResponse: {
             name: call.name,
-            response: {
-              content: toolResult.success
-                ? toolResult.data
-                : { error: toolResult.error },
-            },
+            response: toolResult.success
+              ? (toolResult.data as object)
+              : ({
+                  error: toolResult.error || 'Tool execution failed',
+                  success: false,
+                } as object),
           },
-        };
-
-        const followUpResult = await chat.sendMessage([
-          functionResponse as any,
-        ]);
-
-        return {
-          response: followUpResult.response.text(),
-          toolCalls,
-        };
+        });
       }
+
+      // Send ALL function responses back to Gemini at once
+      const followUpResult = await chat.sendMessage(functionResponses);
+
+      return {
+        response: followUpResult.response.text(),
+        toolCalls,
+      };
     }
 
     return {

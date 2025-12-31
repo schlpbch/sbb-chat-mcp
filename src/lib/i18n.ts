@@ -1,6 +1,6 @@
 export const translations = {
   en: {
-    appName: 'SBB Travel Companion',
+    appName: 'Swiss Travel Companion',
     loading: 'Loading...',
     version: 'v2.1.0',
     nav: {
@@ -56,6 +56,7 @@ export const translations = {
       accessible: 'Accessible',
       changes: 'changes',
       change: 'change',
+      direct: 'Direct',
       leg: 'leg',
       legs: 'legs',
       duration: 'Duration',
@@ -212,6 +213,10 @@ export const translations = {
       somethingWentWrong: 'Something went wrong',
       refreshPage: 'Refresh Page',
       tryAgain: 'Try Again',
+      bufferOverflowTrips:
+        'The journey service returned too much data. Try a more specific query or reduce the number of results.',
+      bufferOverflowCompare:
+        'The route comparison returned too much data. This is a known issue with complex routes. Try using direct trip search instead.',
     },
     onboarding: {
       welcome: 'Welcome to SBB Chat Companion!',
@@ -439,6 +444,7 @@ export const translations = {
       accessible: 'Barrierefrei',
       changes: 'Umstiege',
       change: 'Umstieg',
+      direct: 'Direkt',
       leg: 'Abschnitt',
       legs: 'Abschnitte',
       duration: 'Dauer',
@@ -597,6 +603,10 @@ export const translations = {
       somethingWentWrong: 'Etwas ist schiefgelaufen',
       refreshPage: 'Seite aktualisieren',
       tryAgain: 'Erneut versuchen',
+      bufferOverflowTrips:
+        'Der Reisedienst hat zu viele Daten zurückgegeben. Versuchen Sie eine spezifischere Abfrage oder reduzieren Sie die Anzahl der Ergebnisse.',
+      bufferOverflowCompare:
+        'Der Routenvergleich hat zu viele Daten zurückgegeben. Dies ist ein bekanntes Problem bei komplexen Routen. Versuchen Sie stattdessen eine direkte Reisesuche.',
     },
     onboarding: {
       welcome: 'Willkommen beim SBB Chat-Assistenten!',
@@ -834,6 +844,7 @@ export const translations = {
       accessible: 'Accessible',
       changes: 'changements',
       change: 'changement',
+      direct: 'Direct',
       leg: 'segment',
       legs: 'segments',
       duration: 'Durée',
@@ -991,6 +1002,10 @@ export const translations = {
       somethingWentWrong: "Quelque chose s'est mal passé",
       refreshPage: 'Actualiser la page',
       tryAgain: 'Réessayer',
+      bufferOverflowTrips:
+        'Le service de voyage a renvoyé trop de données. Essayez une requête plus spécifique ou réduisez le nombre de résultats.',
+      bufferOverflowCompare:
+        "La comparaison d'itinéraires a renvoyé trop de données. Il s'agit d'un problème connu avec les itinéraires complexes. Essayez plutôt une recherche directe de voyage.",
     },
     onboarding: {
       welcome: "Bienvenue sur l'Companion Chat CFF!",
@@ -1228,6 +1243,7 @@ export const translations = {
       accessible: 'Accessibile',
       changes: 'cambi',
       change: 'cambio',
+      direct: 'Diretto',
       leg: 'tratta',
       legs: 'tratte',
       duration: 'Durata',
@@ -1385,6 +1401,10 @@ export const translations = {
       somethingWentWrong: 'Qualcosa è andato storto',
       refreshPage: 'Ricarica Pagina',
       tryAgain: 'Riprova',
+      bufferOverflowTrips:
+        'Il servizio di viaggio ha restituito troppi dati. Prova una query più specifica o riduci il numero di risultati.',
+      bufferOverflowCompare:
+        'Il confronto degli itinerari ha restituito troppi dati. Questo è un problema noto con percorsi complessi. Prova invece una ricerca diretta del viaggio.',
     },
     onboarding: {
       welcome: 'Benvenuti in SBB Chat Companion!',
@@ -1606,6 +1626,7 @@ export const translations = {
       accessible: '无障碍',
       changes: '换乘',
       change: '换乘',
+      direct: '直达',
       leg: '段',
       legs: '段',
       duration: '时长',
@@ -1936,6 +1957,7 @@ export const translations = {
       accessible: 'सुलभ',
       changes: 'बदलाव',
       change: 'बदलाव',
+      direct: 'सीधा',
       leg: 'खंड',
       legs: 'खंड',
       duration: 'अवधि',

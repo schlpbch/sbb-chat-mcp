@@ -50,7 +50,11 @@ export function normalizeBoardData(raw: unknown): NormalizedBoardData {
   const parseResult = boardDataSchema.safeParse(raw);
 
   if (!parseResult.success) {
-    logger.warn('normalizeBoardData', 'Zod validation failed, proceeding with raw data', parseResult.error);
+    logger.warn(
+      'normalizeBoardData',
+      'Zod validation failed, proceeding with raw data',
+      parseResult.error
+    );
     // Continue with raw data instead of throwing
   }
 
@@ -63,24 +67,30 @@ export function normalizeBoardData(raw: unknown): NormalizedBoardData {
     data.type === 'arrivals' ? 'arrivals' : 'departures';
 
   // Log available fields for debugging
+  const dataRecord = data as Record<string, unknown>;
+  const place = dataRecord.place as Record<string, unknown> | undefined;
+  const stopPlace = dataRecord.stopPlace as Record<string, unknown> | undefined;
+
   console.log('=== BOARD DATA FIELDS ===', {
-    hasStation: !!data.station,
-    hasStationName: !!data.stationName,
-    hasPlace: !!data.place,
-    hasStopPlace: !!data.stopPlace,
-    placeName: data.place?.name,
-    stopPlaceName: data.stopPlace?.name,
+    hasStation: !!dataRecord.station,
+    hasStationName: !!dataRecord.stationName,
+    hasPlace: !!place,
+    hasStopPlace: !!stopPlace,
+    placeName: place?.name,
+    stopPlaceName: stopPlace?.name,
     allKeys: Object.keys(data),
   });
 
   // Extract station name from multiple possible fields
-  const station = data.station || 
-                 data.stationName || 
-                 data.place?.name ||
-                 data.stopPlace?.name ||
-                 data.location?.name ||
-                 data.name ||
-                 'Unknown Station';
+  const location = dataRecord.location as Record<string, unknown> | undefined;
+  const station =
+    (dataRecord.station as string) ||
+    (dataRecord.stationName as string) ||
+    (place?.name as string) ||
+    (stopPlace?.name as string) ||
+    (location?.name as string) ||
+    (dataRecord.name as string) ||
+    'Unknown Station';
 
   // Extract connections from various possible locations
   let connections: Connection[] = [];
@@ -156,22 +166,12 @@ export function normalizeCompareData(
   const data = raw as Record<string, any>;
 
   // Extract origin and destination
-  const origin =
-    data.origin ||
-    data.from ||
-    params?.origin ||
-    'Unknown';
+  const origin = data.origin || data.from || params?.origin || 'Unknown';
 
   const destination =
-    data.destination ||
-    data.to ||
-    params?.destination ||
-    'Unknown';
+    data.destination || data.to || params?.destination || 'Unknown';
 
-  const criteria =
-    data.criteria ||
-    params?.criteria ||
-    'balanced';
+  const criteria = data.criteria || params?.criteria || 'balanced';
 
   // Extract routes from various possible locations
   let rawRoutes = data.routes || data.trips || data.options || data.data || [];
@@ -182,7 +182,9 @@ export function normalizeCompareData(
   }
 
   if (!Array.isArray(rawRoutes)) {
-    logger.warn('normalizeCompareData', 'Routes is not an array', { rawRoutes });
+    logger.warn('normalizeCompareData', 'Routes is not an array', {
+      rawRoutes,
+    });
     rawRoutes = [];
   }
 
@@ -191,7 +193,7 @@ export function normalizeCompareData(
     // Helper function to extract time from leg
     const extractTimeFromLeg = (leg: any, isStart: boolean): string | null => {
       if (!leg) return null;
-      
+
       // For serviceJourney legs (train/bus)
       if (leg.serviceJourney?.stopPoints) {
         const points = leg.serviceJourney.stopPoints;
@@ -199,32 +201,30 @@ export function normalizeCompareData(
         const timeData = isStart ? point?.departure : point?.arrival;
         return timeData?.timeAimed || timeData?.timeRt || null;
       }
-      
+
       // For walking legs or simple legs
       if (isStart) {
-        return leg.start?.departure?.timeAimed || 
-               leg.departure || 
-               null;
+        return leg.start?.departure?.timeAimed || leg.departure || null;
       } else {
-        return leg.end?.arrival?.timeAimed || 
-               leg.arrival || 
-               null;
+        return leg.end?.arrival?.timeAimed || leg.arrival || null;
       }
     };
 
     // Extract times from legs
     const firstLeg = trip.legs?.[0];
     const lastLeg = trip.legs?.[trip.legs?.length - 1];
-    
-    const departureTime = extractTimeFromLeg(firstLeg, true) ||
-                         trip.departure ||
-                         trip.departureTime ||
-                         null;
-    
-    const arrivalTime = extractTimeFromLeg(lastLeg, false) ||
-                       trip.arrival ||
-                       trip.arrivalTime ||
-                       null;
+
+    const departureTime =
+      extractTimeFromLeg(firstLeg, true) ||
+      trip.departure ||
+      trip.departureTime ||
+      null;
+
+    const arrivalTime =
+      extractTimeFromLeg(lastLeg, false) ||
+      trip.arrival ||
+      trip.arrivalTime ||
+      null;
 
     // DEBUG: Log extracted times for first route
     if (idx === 0) {
@@ -242,17 +242,26 @@ export function normalizeCompareData(
     return {
       id: trip.id || `route-${idx}`,
       name: trip.name || `Option ${idx + 1}`,
-      duration: trip.duration || trip.summary?.duration || 'PT0M',
-      transfers: trip.transfers !== undefined
-        ? trip.transfers
-        : (trip.legs?.length 
-            ? (() => {
-                const serviceLegs = trip.legs.filter((l: any) => l.serviceJourney).length;
-                // If we have service journey legs, count those minus 1
-                // Otherwise, use total legs minus 1
-                return serviceLegs > 0 ? Math.max(0, serviceLegs - 1) : Math.max(0, trip.legs.length - 1);
-              })()
-            : 0),
+      duration:
+        trip.durationFormatted ||
+        trip.duration ||
+        trip.summary?.duration ||
+        'PT0M',
+      transfers:
+        trip.transfers !== undefined
+          ? trip.transfers
+          : trip.legs?.length
+          ? (() => {
+              const serviceLegs = trip.legs.filter(
+                (l: any) => l.serviceJourney
+              ).length;
+              // If we have service journey legs, count those minus 1
+              // Otherwise, use total legs minus 1
+              return serviceLegs > 0
+                ? Math.max(0, serviceLegs - 1)
+                : Math.max(0, trip.legs.length - 1);
+            })()
+          : 0,
       departure: departureTime || new Date().toISOString(),
       arrival: arrivalTime || new Date().toISOString(),
       price: trip.price,
@@ -296,7 +305,11 @@ export function normalizeWeatherData(raw: unknown): WeatherData {
   const parseResult = weatherDataSchema.safeParse(raw);
 
   if (!parseResult.success) {
-    logger.error('normalizeWeatherData', 'Validation failed', parseResult.error);
+    logger.error(
+      'normalizeWeatherData',
+      'Validation failed',
+      parseResult.error
+    );
     throw new Error('Invalid weather data: validation failed');
   }
 
@@ -338,7 +351,11 @@ export function normalizeStationData(raw: unknown): StationData {
   const parseResult = stationDataSchema.safeParse(raw);
 
   if (!parseResult.success) {
-    logger.error('normalizeStationData', 'Validation failed', parseResult.error);
+    logger.error(
+      'normalizeStationData',
+      'Validation failed',
+      parseResult.error
+    );
     throw new Error('Invalid station data: validation failed');
   }
 

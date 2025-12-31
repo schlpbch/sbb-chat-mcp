@@ -1,10 +1,11 @@
 // Sensible default values for MCP tools
 export const toolDefaults: Record<string, Record<string, any>> = {
   findTrips: {
-    from: 'Zürich HB',
-    to: 'Bern',
-    date: new Date().toISOString().split('T')[0],
-    time: '09:00',
+    origin: 'Zürich HB',
+    destination: 'Bern',
+    dateTime: new Date().toISOString().split('T')[0] + 'T09:00:00',
+    limit: 3,
+    responseMode: 'detailed',
   },
   getWeather: {
     latitude: 47.3769, // Zürich
@@ -51,8 +52,8 @@ export const toolDefaults: Record<string, Record<string, any>> = {
     serviceType: 'general',
   },
   compareRoutes: {
-    from: 'Zürich HB',
-    to: 'Geneva',
+    from: 'Geneva',
+    to: 'Bern',
     date: new Date().toISOString().split('T')[0],
     criteria: 'fastest',
   },
@@ -60,6 +61,29 @@ export const toolDefaults: Record<string, Record<string, any>> = {
     destinations: JSON.stringify(['Zürich', 'Lucerne', 'Interlaken']),
     startDate: new Date().toISOString().split('T')[0],
     days: 3,
+  },
+};
+
+// Sensible default values for MCP prompts
+export const promptDefaults: Record<string, Record<string, any>> = {
+  'journey-planning': {
+    origin: 'Zürich HB',
+    destination: 'Bern',
+    preferences: 'fastest route',
+  },
+  'weather-forecast': {
+    location: 'Zürich',
+    days: '3',
+  },
+  'station-info': {
+    stationName: 'Zürich HB',
+  },
+  'tourist-attractions': {
+    city: 'Lucerne',
+    category: 'sightseeing',
+  },
+  'ski-resort-info': {
+    resortName: 'Zermatt',
   },
 };
 
@@ -75,4 +99,11 @@ export function getToolDefault(toolName: string, paramName: string): any {
  */
 export function getToolDefaults(toolName: string): Record<string, any> {
   return toolDefaults[toolName] ?? {};
+}
+
+/**
+ * Get all defaults for a prompt
+ */
+export function getPromptDefaults(promptName: string): Record<string, any> {
+  return promptDefaults[promptName] ?? {};
 }

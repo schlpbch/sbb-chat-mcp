@@ -48,7 +48,7 @@ export const transportFunctions = [
   {
     name: 'findTrips',
     description:
-      'Find journey connections between two locations. USE THIS TOOL for: "How do I get from X to Y", "Find connections to X", "Train from X to Y", "Fastest route", "Trip planning". Works for domestic AND international destinations (e.g., Zurich to Milan, Geneva to Paris).',
+      'Find journey connections between TWO locations (origin AND destination required). USE THIS TOOL for: "How do I get from X to Y", "Train from X to Y", "Fastest route from X to Y", "Trip planning". DO NOT use for single-station queries like "arrivals at X" or "departures from X" - use getPlaceEvents instead. Works for domestic AND international destinations (e.g., Zurich to Milan, Geneva to Paris).',
     parameters: {
       type: 'object',
       properties: {

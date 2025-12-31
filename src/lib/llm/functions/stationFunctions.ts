@@ -6,7 +6,7 @@ export const stationFunctions = [
   {
     name: 'getPlaceEvents',
     description:
-      'Get real-time departure and arrival boards for a station. USE THIS TOOL when users ask: "Show departures from X", "What trains arrive at X", "Next trains from X", "Platform info at X". WORKFLOW: (1) Call findStopPlacesByName to get station ID, (2) Use that ID here to get live board.',
+      'Get real-time departure and arrival boards for a SINGLE station. USE THIS TOOL when users ask about trains AT or FROM a single location: "Show departures from X", "What trains arrive at X", "Next trains from X", "Arrivals at X", "Platform info at X". WORKFLOW: (1) Call findStopPlacesByName to get station ID, (2) Use that ID here to get live board. DO NOT use for journey planning between two locations - use findTrips instead.',
     parameters: {
       type: 'object',
       properties: {
