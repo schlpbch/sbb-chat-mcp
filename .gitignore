@@ -62,3 +62,6 @@ override.tf.json
 *_override.tf.json
 .terraformrc
 terraform.rc
+
+# Prevent duplicate project directory
+/sbb-chat-mcp

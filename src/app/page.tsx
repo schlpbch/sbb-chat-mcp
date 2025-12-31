@@ -65,11 +65,17 @@ export default function LandingPage() {
             <p className="text-sm text-gray-600">
               {t.landing.footer.copyright}
               <span className="mx-2">•</span>
-              <a href="#" className="hover:text-[#EC0000] transition-colors">
+              <a
+                href="/privacy"
+                className="hover:text-[#EC0000] transition-colors"
+              >
                 {t.landing.footer.privacy}
               </a>
               <span className="mx-2">•</span>
-              <a href="#" className="hover:text-[#EC0000] transition-colors">
+              <a
+                href="/terms"
+                className="hover:text-[#EC0000] transition-colors"
+              >
                 {t.landing.footer.terms}
               </a>
             </p>

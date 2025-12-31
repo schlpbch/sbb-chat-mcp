@@ -280,6 +280,23 @@ export default function Menu({
 
           {/* Footer */}
           <div className="px-6 py-4 border-t border-gray-200">
+            <div className="flex justify-center gap-4 mb-3">
+              <a
+                href="/privacy"
+                className="text-xs text-gray-600 hover:text-sbb-red transition-colors"
+                onClick={onClose}
+              >
+                Privacy Policy
+              </a>
+              <span className="text-xs text-gray-300">•</span>
+              <a
+                href="/terms"
+                className="text-xs text-gray-600 hover:text-sbb-red transition-colors"
+                onClick={onClose}
+              >
+                Terms of Service
+              </a>
+            </div>
             <p className="text-xs text-gray-500 text-center">
               {t.version || 'v2.1.0'}
             </p>
