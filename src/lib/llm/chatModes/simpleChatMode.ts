@@ -101,7 +101,11 @@ GUIDELINES:
     const response = result.response;
 
     const functionCalls = response.functionCalls();
-    const toolCalls: Array<{ toolName: string; params: any; result: any }> = [];
+    const toolCalls: Array<{
+      toolName: string;
+      params: Record<string, unknown>;
+      result: unknown;
+    }> = [];
 
     if (functionCalls && functionCalls.length > 0) {
       // Execute all function calls
@@ -115,7 +119,7 @@ GUIDELINES:
 
         toolCalls.push({
           toolName: call.name,
-          params: call.args,
+          params: call.args as Record<string, unknown>,
           result: toolResult.data,
         });
 
@@ -138,13 +142,24 @@ GUIDELINES:
 
       return {
         response: followUpResult.response.text(),
-        toolCalls,
+        toolCalls: toolCalls as Array<{
+          toolName: string;
+          params: Partial<FunctionCallParams>;
+          result: ToolResultData;
+        }>,
       };
     }
 
     return {
       response: response.text(),
-      toolCalls: toolCalls.length > 0 ? toolCalls : undefined,
+      toolCalls:
+        toolCalls.length > 0
+          ? (toolCalls as Array<{
+              toolName: string;
+              params: Partial<FunctionCallParams>;
+              result: ToolResultData;
+            }>)
+          : undefined,
     };
   } catch (error) {
     console.error('Gemini API error:', error);

@@ -1,5 +1,5 @@
 // Sensible default values for MCP tools
-export const toolDefaults: Record<string, Record<string, any>> = {
+export const toolDefaults: Record<string, Record<string, unknown>> = {
   findTrips: {
     origin: 'Zürich HB',
     destination: 'Bern',
@@ -65,7 +65,7 @@ export const toolDefaults: Record<string, Record<string, any>> = {
 };
 
 // Sensible default values for MCP prompts
-export const promptDefaults: Record<string, Record<string, any>> = {
+export const promptDefaults: Record<string, Record<string, unknown>> = {
   'journey-planning': {
     origin: 'Zürich HB',
     destination: 'Bern',
@@ -90,20 +90,20 @@ export const promptDefaults: Record<string, Record<string, any>> = {
 /**
  * Get default value for a specific tool parameter
  */
-export function getToolDefault(toolName: string, paramName: string): any {
+export function getToolDefault(toolName: string, paramName: string): unknown {
   return toolDefaults[toolName]?.[paramName] ?? '';
 }
 
 /**
  * Get all defaults for a tool
  */
-export function getToolDefaults(toolName: string): Record<string, any> {
+export function getToolDefaults(toolName: string): Record<string, unknown> {
   return toolDefaults[toolName] ?? {};
 }
 
 /**
  * Get all defaults for a prompt
  */
-export function getPromptDefaults(promptName: string): Record<string, any> {
+export function getPromptDefaults(promptName: string): Record<string, unknown> {
   return promptDefaults[promptName] ?? {};
 }

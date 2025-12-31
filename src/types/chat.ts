@@ -8,9 +8,9 @@
 
 export interface StreamingToolCall {
   toolName: string;
-  params: any;
+  params: Record<string, unknown>;
   status: 'pending' | 'executing' | 'complete' | 'error';
-  result?: any;
+  result?: unknown;
   error?: string;
 }
 
@@ -21,8 +21,8 @@ export interface Message {
   timestamp: Date;
   toolCalls?: Array<{
     toolName: string;
-    params: any;
-    result: any;
+    params: Record<string, unknown>;
+    result: unknown;
   }>;
   // Streaming support
   isStreaming?: boolean;

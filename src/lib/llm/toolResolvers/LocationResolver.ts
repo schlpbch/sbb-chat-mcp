@@ -24,7 +24,10 @@ export class LocationResolver extends BaseToolResolver {
 
   async resolve(
     params: ToolResolverParams,
-    executeTool: (name: string, params: any) => Promise<any>
+    executeTool: (
+      name: string,
+      params: Record<string, unknown>
+    ) => Promise<unknown>
   ): Promise<ToolResolverParams> {
     // Support both 'locationName' and 'location' parameter names
     const locationName = params.locationName || params.location;
@@ -35,10 +38,17 @@ export class LocationResolver extends BaseToolResolver {
 
     try {
       // Use findPlaces for general locations (cities, ski resorts, etc.)
-      const resolveResult = await executeTool('findPlaces', {
+      const resolveResult = (await executeTool('findPlaces', {
         nameMatch: locationName,
         limit: 1,
-      });
+      })) as {
+        success?: boolean;
+        data?: Array<{
+          centroid?: { coordinates?: number[] };
+          location?: { latitude?: number; longitude?: number };
+        }>;
+        error?: string;
+      };
 
       console.log(`[LocationResolver] findPlaces result:`, {
         success: resolveResult.success,

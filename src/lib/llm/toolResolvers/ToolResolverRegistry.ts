@@ -31,7 +31,10 @@ export class ToolResolverRegistry {
   async resolve(
     toolName: string,
     params: ToolResolverParams,
-    executeTool: (name: string, params: any) => Promise<any>
+    executeTool: (
+      name: string,
+      params: Record<string, unknown>
+    ) => Promise<unknown>
   ): Promise<ToolResolverParams> {
     let resolvedParams = params;
 

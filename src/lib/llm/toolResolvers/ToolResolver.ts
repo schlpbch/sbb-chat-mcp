@@ -6,7 +6,7 @@
  */
 
 export interface ToolResolverParams {
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 export interface ToolResolver {
@@ -21,7 +21,10 @@ export interface ToolResolver {
    */
   resolve(
     params: ToolResolverParams,
-    executeTool: (name: string, params: any) => Promise<any>
+    executeTool: (
+      name: string,
+      params: Record<string, unknown>
+    ) => Promise<unknown>
   ): Promise<ToolResolverParams>;
 }
 
@@ -32,7 +35,10 @@ export abstract class BaseToolResolver implements ToolResolver {
   abstract canResolve(toolName: string, params: ToolResolverParams): boolean;
   abstract resolve(
     params: ToolResolverParams,
-    executeTool: (name: string, params: any) => Promise<any>
+    executeTool: (
+      name: string,
+      params: Record<string, unknown>
+    ) => Promise<unknown>
   ): Promise<ToolResolverParams>;
 
   /**

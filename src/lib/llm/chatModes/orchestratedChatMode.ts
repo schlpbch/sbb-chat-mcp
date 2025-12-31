@@ -25,7 +25,7 @@ export async function sendOrchestratedChatMessage(
   sessionId: string,
   history: ChatMessage[] = [],
   context: ChatContext = { language: 'en' },
-  parsedIntent?: any // Add parsed markdown intent
+  parsedIntent?: unknown // Add parsed markdown intent
 ): Promise<ChatResponse> {
   // 1. Prepare context and extract intent
   const contextPrep = new ContextPreparationService();

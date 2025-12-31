@@ -20,7 +20,10 @@ export class StationResolver extends BaseToolResolver {
 
   async resolve(
     params: ToolResolverParams,
-    executeTool: (name: string, params: any) => Promise<any>
+    executeTool: (
+      name: string,
+      params: Record<string, unknown>
+    ) => Promise<unknown>
   ): Promise<ToolResolverParams> {
     const placeId = params.placeId as string;
 
@@ -30,10 +33,14 @@ export class StationResolver extends BaseToolResolver {
 
     try {
       // Call findStopPlacesByName to get the UIC code
-      const resolveResult = await executeTool('findStopPlacesByName', {
+      const resolveResult = (await executeTool('findStopPlacesByName', {
         query: placeId,
         limit: 1,
-      });
+      })) as {
+        success?: boolean;
+        data?: Array<{ id?: string; uicCode?: string }>;
+        error?: string;
+      };
 
       if (
         resolveResult.success &&

@@ -52,7 +52,11 @@ GUIDELINES:
     const result = await chat.sendMessageStream(message);
 
     let fullText = '';
-    const toolCalls: Array<{ toolName: string; params: any; result: any }> = [];
+    const toolCalls: Array<{
+      toolName: string;
+      params: Record<string, unknown>;
+      result: unknown;
+    }> = [];
 
     for await (const chunk of result.stream) {
       const chunkText = chunk.text();
@@ -80,7 +84,7 @@ GUIDELINES:
 
           toolCalls.push({
             toolName: call.name,
-            params: call.args,
+            params: call.args as Record<string, unknown>,
             result: toolResult.data,
           });
 
