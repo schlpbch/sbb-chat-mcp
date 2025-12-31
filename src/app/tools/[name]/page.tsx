@@ -199,7 +199,12 @@ export default function ToolTestPage() {
  id={`input-${key}`}
  type={schema.type === 'number' ? 'number' : 'text'}
  value={inputs[key] || ''}
- onChange={(e) => handleInputChange(key, e.target.value)}
+ onChange={(e) => {
+                    const value = schema.type === 'number' 
+                      ? (e.target.value === '' ? '' : Number(e.target.value))
+                      : e.target.value;
+                    handleInputChange(key, value);
+                  }}
  placeholder={schema.description || key}
  required={tool.inputSchema.required?.includes(key)}
  aria-describedby={
