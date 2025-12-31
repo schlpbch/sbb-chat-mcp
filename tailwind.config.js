@@ -11,7 +11,7 @@ export default {
       colors: {
         // SBB Primary Brand Colors
         sbb: {
-          red: '#EB0000',
+          red: '#A5061C',
           'red-125': '#C60018',
           'red-150': '#A20013',
         },
@@ -95,15 +95,21 @@ export default {
         },
       },
       fontFamily: {
-        sans: ['var(--font-outfit)', 'SBB', 'Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
-        mono: ['Courier', 'Consolas', 'Roboto Mono', 'DejaVu Sans Mono', 'monospace'],
+        sans: ['Helvetica Neue', 'Helvetica', 'Arial', 'sans-serif'],
+        mono: [
+          'Courier',
+          'Consolas',
+          'Roboto Mono',
+          'DejaVu Sans Mono',
+          'monospace',
+        ],
       },
       fontSize: {
-        'xs': ['0.75rem', { lineHeight: '1rem' }],
-        'sm': ['0.875rem', { lineHeight: '1.25rem' }],
-        'base': ['1rem', { lineHeight: '1.5rem' }],
-        'lg': ['1.125rem', { lineHeight: '1.75rem' }],
-        'xl': ['1.25rem', { lineHeight: '1.75rem' }],
+        xs: ['0.75rem', { lineHeight: '1rem' }],
+        sm: ['0.875rem', { lineHeight: '1.25rem' }],
+        base: ['1rem', { lineHeight: '1.5rem' }],
+        lg: ['1.125rem', { lineHeight: '1.75rem' }],
+        xl: ['1.25rem', { lineHeight: '1.75rem' }],
         '2xl': ['1.5rem', { lineHeight: '2rem' }],
         '3xl': ['1.875rem', { lineHeight: '2.25rem' }],
         '4xl': ['2.25rem', { lineHeight: '2.5rem' }],
@@ -111,21 +117,24 @@ export default {
         '6xl': ['3.75rem', { lineHeight: '1' }],
       },
       spacing: {
-        '18': '4.5rem',
-        '88': '22rem',
-        '128': '32rem',
+        18: '4.5rem',
+        88: '22rem',
+        128: '32rem',
       },
       borderRadius: {
-        'sbb': '2px',
+        sbb: '2px',
         'sbb-lg': '4px',
         'sbb-xl': '6px',
       },
       boxShadow: {
         'sbb-sm': '0 2px 4px 0 rgba(0, 0, 0, 0.03)',
-        'sbb': '0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 4px 8px -2px rgba(0, 0, 0, 0.04)',
-        'sbb-md': '0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.04)',
-        'sbb-lg': '0 20px 40px -8px rgba(0, 0, 0, 0.1), 0 12px 20px -8px rgba(0, 0, 0, 0.04)',
-        'sbb-xl': '0 32px 64px -12px rgba(0, 0, 0, 0.12), 0 16px 32px -12px rgba(0, 0, 0, 0.06)',
+        sbb: '0 4px 12px -2px rgba(0, 0, 0, 0.08), 0 4px 8px -2px rgba(0, 0, 0, 0.04)',
+        'sbb-md':
+          '0 12px 24px -4px rgba(0, 0, 0, 0.08), 0 8px 16px -4px rgba(0, 0, 0, 0.04)',
+        'sbb-lg':
+          '0 20px 40px -8px rgba(0, 0, 0, 0.1), 0 12px 20px -8px rgba(0, 0, 0, 0.04)',
+        'sbb-xl':
+          '0 32px 64px -12px rgba(0, 0, 0, 0.12), 0 16px 32px -12px rgba(0, 0, 0, 0.06)',
         'sbb-red': '0 8px 24px -4px rgba(235, 0, 0, 0.2)',
       },
       animation: {

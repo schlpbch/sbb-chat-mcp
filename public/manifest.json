@@ -5,15 +5,15 @@
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",
-  "theme_color": "#EB0000",
+  "theme_color": "#A5061C",
   "orientation": "portrait-primary",
   "scope": "/",
   "lang": "en",
   "dir": "ltr",
-  "categories": ["travel", "transportation", "productivity"],
+  "categories": ["travel", "transportation", "ai chat"],
   "icons": [
     {
-      "src": "/SBB-chat-MCP.png",
+      "src": "/swiss-travel-companion.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
