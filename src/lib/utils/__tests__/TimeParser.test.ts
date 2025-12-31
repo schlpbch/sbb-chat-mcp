@@ -389,5 +389,18 @@ describe('TimeParser', () => {
       expect(result.departureTime.getHours()).toBe(14);
       expect(result.departureTime.getMinutes()).toBe(30);
     });
+
+    it('handles completely invalid date/time combination', () => {
+      // Create a scenario where the combined datetime is invalid
+      const result = TimeParser.parseDatetime('not-a-date', 'not-a-time');
+
+      // Should return valid Date objects (fallback to current time)
+      expect(result.date).toBeInstanceOf(Date);
+      expect(result.departureTime).toBeInstanceOf(Date);
+
+      // Verify they are valid dates (not NaN)
+      expect(isNaN(result.date.getTime())).toBe(false);
+      expect(isNaN(result.departureTime.getTime())).toBe(false);
+    });
   });
 });

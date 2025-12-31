@@ -39,7 +39,12 @@
       "Bash(npx tsc:*)",
       "Bash(npx:*)",
       "Bash(pnpm remove:*)",
-      "Bash(git rm:*)"
+      "Bash(git rm:*)",
+      "Bash(pnpm run test:unit:*)",
+      "Bash(node:*)",
+      "Bash(pnpm test:*)",
+      "Bash(pnpm vitest:*)",
+      "Bash(git reset:*)"
     ]
   }
 }

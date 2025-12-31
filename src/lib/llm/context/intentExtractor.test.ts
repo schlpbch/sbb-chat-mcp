@@ -386,4 +386,5 @@ describe('Intent Extractor', () => {
       expect(deResult.type).toBe('general_info');
     });
   });
+
 });
