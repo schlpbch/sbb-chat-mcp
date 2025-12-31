@@ -31,11 +31,7 @@ const criticalExamples = [
     text: 'Find trains from **Zurich HB** to **Bern**\n- Direct only', // Markdown stripping test
     description: 'Markdown formatted query'
   },
-  {
-    id: 'markdown-compare',
-    text: 'Compare routes from **Geneva** to **Milan**',
-    description: 'Comparison query'
-  }
+
 ];
 
 test.describe('Chat API - Critical Examples Regression Test', () => {

@@ -1,7 +1,6 @@
 import { test, expect } from '@playwright/test';
 
 test.describe('Quick Wins Features', () => {
-
   test.describe('Favorite Stations', () => {
     test.beforeEach(async ({ page }) => {
       // Clear localStorage before each test
@@ -14,18 +13,27 @@ test.describe('Quick Wins Features', () => {
       await page.goto('/');
 
       // Send a message to get station cards
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find stations near Zurich');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find stations near Zurich'
+      );
       await page.click('button:has-text("Send")');
 
       // Wait for station cards to appear
-      await page.waitForSelector('[data-testid="station-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="station-card"]', {
+        timeout: 15000,
+      });
 
       // Click the favorite toggle on first station
-      const favoriteButton = page.locator('[data-testid="favorite-toggle"]').first();
+      const favoriteButton = page
+        .locator('[data-testid="favorite-toggle"]')
+        .first();
       await favoriteButton.click();
 
       // Wait for toast notification
-      await expect(page.locator('text=/Added.*to favorites/i')).toBeVisible({ timeout: 5000 });
+      await expect(page.locator('text=/Added.*to favorites/i')).toBeVisible({
+        timeout: 5000,
+      });
 
       // Verify localStorage
       const favorites = await page.evaluate(() => {
@@ -40,23 +48,34 @@ test.describe('Quick Wins Features', () => {
 
       // Pre-populate a favorite
       await page.evaluate(() => {
-        localStorage.setItem('favoriteStations', JSON.stringify([
-          { id: 'test-station', name: 'Test Station', savedAt: Date.now() }
-        ]));
+        localStorage.setItem(
+          'favoriteStations',
+          JSON.stringify([
+            { id: 'test-station', name: 'Test Station', savedAt: Date.now() },
+          ])
+        );
       });
       await page.reload();
 
       // Search for the station to get a card
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find stations near Zurich');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find stations near Zurich'
+      );
       await page.click('button:has-text("Send")');
 
-      await page.waitForSelector('[data-testid="station-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="station-card"]', {
+        timeout: 15000,
+      });
 
       // Find a favorited station and unfavorite it
-      const favoriteButton = page.locator('[data-testid="favorite-toggle"]').first();
+      const favoriteButton = page
+        .locator('[data-testid="favorite-toggle"]')
+        .first();
 
       // Check if already favorited (yellow star), if not, favorite first
-      const isFavorited = await favoriteButton.locator('svg.fill-current').count() > 0;
+      const isFavorited =
+        (await favoriteButton.locator('svg.fill-current').count()) > 0;
       if (!isFavorited) {
         await favoriteButton.click();
         await page.waitForTimeout(500);
@@ -66,33 +85,47 @@ test.describe('Quick Wins Features', () => {
       await favoriteButton.click();
 
       // Wait for removal toast
-      await expect(page.locator('text=/Removed.*from favorites/i')).toBeVisible({ timeout: 5000 });
+      await expect(page.locator('text=/Removed.*from favorites/i')).toBeVisible(
+        { timeout: 5000 }
+      );
     });
 
-    test('should show favorites section on welcome screen', async ({ page }) => {
+    test('should show favorites section on welcome screen', async ({
+      page,
+    }) => {
       // Pre-populate favorites
       await page.goto('/');
       await page.evaluate(() => {
-        localStorage.setItem('favoriteStations', JSON.stringify([
-          { id: 'station1', name: 'Zurich HB', savedAt: Date.now() },
-          { id: 'station2', name: 'Bern', savedAt: Date.now() - 1000 }
-        ]));
+        localStorage.setItem(
+          'favoriteStations',
+          JSON.stringify([
+            { id: 'station1', name: 'Zurich HB', savedAt: Date.now() },
+            { id: 'station2', name: 'Bern', savedAt: Date.now() - 1000 },
+          ])
+        );
       });
       await page.reload();
 
       // Verify favorites section is visible
-      await expect(page.locator('text=/Your Favorite Stations/i')).toBeVisible();
+      await expect(
+        page.locator('text=/Your Favorite Stations/i')
+      ).toBeVisible();
       await expect(page.locator('text=Zurich HB')).toBeVisible();
       await expect(page.locator('text=Bern')).toBeVisible();
     });
 
-    test('should auto-send query when clicking favorite station', async ({ page }) => {
+    test('should auto-send query when clicking favorite station', async ({
+      page,
+    }) => {
       // Pre-populate a favorite
       await page.goto('/');
       await page.evaluate(() => {
-        localStorage.setItem('favoriteStations', JSON.stringify([
-          { id: 'station1', name: 'Zurich HB', savedAt: Date.now() }
-        ]));
+        localStorage.setItem(
+          'favoriteStations',
+          JSON.stringify([
+            { id: 'station1', name: 'Zurich HB', savedAt: Date.now() },
+          ])
+        );
       });
       await page.reload();
 
@@ -108,9 +141,11 @@ test.describe('Quick Wins Features', () => {
 
       // Verify we have a user message OR loading indicator
       // The message might be sent immediately depending on the implementation
-      const hasUserMessage = await page.locator('[data-testid="message-user"]').count() > 0;
-      const hasLoading = await page.locator('[data-testid="loading-indicator"]').count() > 0;
-      const hasMessages = await page.locator('.space-y-6 > div').count() > 1; // Any message in chat area
+      const hasUserMessage =
+        (await page.locator('[data-testid="message-user"]').count()) > 0;
+      const hasLoading =
+        (await page.locator('[data-testid="loading-indicator"]').count()) > 0;
+      const hasMessages = (await page.locator('.space-y-6 > div').count()) > 1; // Any message in chat area
 
       // At least one of these should be true
       expect(hasUserMessage || hasLoading || hasMessages).toBeTruthy();
@@ -124,24 +159,33 @@ test.describe('Quick Wins Features', () => {
         const favorites = Array.from({ length: 10 }, (_, i) => ({
           id: `station${i}`,
           name: `Station ${i}`,
-          savedAt: Date.now() - i * 1000
+          savedAt: Date.now() - i * 1000,
         }));
         localStorage.setItem('favoriteStations', JSON.stringify(favorites));
       });
       await page.reload();
 
       // Try to add an 11th favorite
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find stations near Zurich');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find stations near Zurich'
+      );
       await page.click('button:has-text("Send")');
 
-      await page.waitForSelector('[data-testid="station-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="station-card"]', {
+        timeout: 15000,
+      });
 
       // Click favorite on a new station
-      const favoriteButton = page.locator('[data-testid="favorite-toggle"]').first();
+      const favoriteButton = page
+        .locator('[data-testid="favorite-toggle"]')
+        .first();
       await favoriteButton.click();
 
       // Should show error toast
-      await expect(page.locator('text=/Maximum 10 favorites/i')).toBeVisible({ timeout: 5000 });
+      await expect(page.locator('text=/Maximum 10 favorites/i')).toBeVisible({
+        timeout: 5000,
+      });
     });
   });
 
@@ -196,10 +240,13 @@ test.describe('Quick Wins Features', () => {
       // Pre-populate recent searches
       await page.goto('/');
       await page.evaluate(() => {
-        localStorage.setItem('recentSearches', JSON.stringify([
-          { id: '1', query: 'Search 1', timestamp: Date.now() },
-          { id: '2', query: 'Search 2', timestamp: Date.now() - 1000 }
-        ]));
+        localStorage.setItem(
+          'recentSearches',
+          JSON.stringify([
+            { id: '1', query: 'Search 1', timestamp: Date.now() },
+            { id: '2', query: 'Search 2', timestamp: Date.now() - 1000 },
+          ])
+        );
       });
       await page.reload();
 
@@ -215,10 +262,13 @@ test.describe('Quick Wins Features', () => {
       // Pre-populate recent searches
       await page.goto('/');
       await page.evaluate(() => {
-        localStorage.setItem('recentSearches', JSON.stringify([
-          { id: '1', query: 'Search 1', timestamp: Date.now() },
-          { id: '2', query: 'Search 2', timestamp: Date.now() - 1000 }
-        ]));
+        localStorage.setItem(
+          'recentSearches',
+          JSON.stringify([
+            { id: '1', query: 'Search 1', timestamp: Date.now() },
+            { id: '2', query: 'Search 2', timestamp: Date.now() - 1000 },
+          ])
+        );
       });
       await page.reload();
 
@@ -234,9 +284,10 @@ test.describe('Quick Wins Features', () => {
       await page.goto('/');
       const query = 'Test query for auto-send';
       await page.evaluate((q) => {
-        localStorage.setItem('recentSearches', JSON.stringify([
-          { id: '1', query: q, timestamp: Date.now() }
-        ]));
+        localStorage.setItem(
+          'recentSearches',
+          JSON.stringify([{ id: '1', query: q, timestamp: Date.now() }])
+        );
       }, query);
       await page.reload();
 
@@ -251,9 +302,11 @@ test.describe('Quick Wins Features', () => {
       await page.waitForTimeout(1000);
 
       // Verify we have a user message OR loading indicator OR any chat activity
-      const hasUserMessage = await page.locator('[data-testid="message-user"]').count() > 0;
-      const hasLoading = await page.locator('[data-testid="loading-indicator"]').count() > 0;
-      const hasMessages = await page.locator('.space-y-6 > div').count() > 1;
+      const hasUserMessage =
+        (await page.locator('[data-testid="message-user"]').count()) > 0;
+      const hasLoading =
+        (await page.locator('[data-testid="loading-indicator"]').count()) > 0;
+      const hasMessages = (await page.locator('.space-y-6 > div').count()) > 1;
 
       // At least one of these should be true
       expect(hasUserMessage || hasLoading || hasMessages).toBeTruthy();
@@ -291,40 +344,66 @@ test.describe('Quick Wins Features', () => {
     test.skip('should show share button on trip cards', async ({ page }) => {
       // NOTE: This test requires a live API backend to return trip cards
       // Skip this test in CI/local testing without backend
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find connections from Zurich to Bern');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find connections from Zurich to Bern'
+      );
       await page.click('button:has-text("Send")');
 
       // Wait for trip cards
-      await page.waitForSelector('[data-testid="trip-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="trip-card"]', {
+        timeout: 15000,
+      });
 
       // Verify share button exists
-      await expect(page.locator('[data-testid="share-button"]').first()).toBeVisible();
+      await expect(
+        page.locator('[data-testid="share-button"]').first()
+      ).toBeVisible();
     });
 
-    test.skip('should open share menu when clicking share button', async ({ page }) => {
+    test.skip('should open share menu when clicking share button', async ({
+      page,
+    }) => {
       // NOTE: This test requires a live API backend to return trip cards
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find connections from Zurich to Bern');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find connections from Zurich to Bern'
+      );
       await page.click('button:has-text("Send")');
 
-      await page.waitForSelector('[data-testid="trip-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="trip-card"]', {
+        timeout: 15000,
+      });
 
       // Click share button
       await page.click('[data-testid="share-button"]');
 
       // Verify menu options are visible
-      await expect(page.locator('[data-testid="copy-link-option"]')).toBeVisible();
-      await expect(page.locator('[data-testid="copy-text-option"]')).toBeVisible();
+      await expect(
+        page.locator('[data-testid="copy-link-option"]')
+      ).toBeVisible();
+      await expect(
+        page.locator('[data-testid="copy-text-option"]')
+      ).toBeVisible();
     });
 
-    test.skip('should copy shareable link to clipboard', async ({ page, context }) => {
+    test.skip('should copy shareable link to clipboard', async ({
+      page,
+      context,
+    }) => {
       // NOTE: This test requires a live API backend to return trip cards
       // Grant clipboard permissions
       await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find connections from Zurich to Bern');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find connections from Zurich to Bern'
+      );
       await page.click('button:has-text("Send")');
 
-      await page.waitForSelector('[data-testid="trip-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="trip-card"]', {
+        timeout: 15000,
+      });
 
       // Open share menu
       await page.click('[data-testid="share-button"]');
@@ -333,22 +412,34 @@ test.describe('Quick Wins Features', () => {
       await page.click('[data-testid="copy-link-option"]');
 
       // Verify toast shows success
-      await expect(page.locator('text=/Link copied/i')).toBeVisible({ timeout: 5000 });
+      await expect(page.locator('text=/Link copied/i')).toBeVisible({
+        timeout: 5000,
+      });
 
       // Verify clipboard contains a share URL
-      const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+      const clipboardText = await page.evaluate(() =>
+        navigator.clipboard.readText()
+      );
       expect(clipboardText).toContain('/share?');
     });
 
-    test.skip('should copy formatted text to clipboard', async ({ page, context }) => {
+    test.skip('should copy formatted text to clipboard', async ({
+      page,
+      context,
+    }) => {
       // NOTE: This test requires a live API backend to return trip cards
       // Grant clipboard permissions
       await context.grantPermissions(['clipboard-read', 'clipboard-write']);
 
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find connections from Zurich to Bern');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find connections from Zurich to Bern'
+      );
       await page.click('button:has-text("Send")');
 
-      await page.waitForSelector('[data-testid="trip-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="trip-card"]', {
+        timeout: 15000,
+      });
 
       // Open share menu
       await page.click('[data-testid="share-button"]');
@@ -357,12 +448,16 @@ test.describe('Quick Wins Features', () => {
       await page.click('[data-testid="copy-text-option"]');
 
       // Verify toast shows success
-      await expect(page.locator('text=/Trip details copied/i')).toBeVisible({ timeout: 5000 });
+      await expect(page.locator('text=/Trip details copied/i')).toBeVisible({
+        timeout: 5000,
+      });
 
       // Verify clipboard contains formatted text with emojis
-      const clipboardText = await page.evaluate(() => navigator.clipboard.readText());
+      const clipboardText = await page.evaluate(() =>
+        navigator.clipboard.readText()
+      );
       expect(clipboardText).toContain('🚂');
-      expect(clipboardText).toContain('Powered by SBB Travel Companion');
+      expect(clipboardText).toContain('Powered by Swiss Travel Companion');
     });
 
     test('should display shared trip from URL', async ({ page }) => {
@@ -376,7 +471,9 @@ test.describe('Quick Wins Features', () => {
       await expect(page.locator('text="Arrival: 11:00"')).toBeVisible();
 
       // Verify "Open in App" button exists
-      await expect(page.locator('button:has-text("Open in SBB Travel Companion")')).toBeVisible();
+      await expect(
+        page.locator('button:has-text("Open in Swiss Travel Companion")')
+      ).toBeVisible();
     });
 
     test('should handle invalid share link gracefully', async ({ page }) => {
@@ -385,7 +482,9 @@ test.describe('Quick Wins Features', () => {
 
       // Should show error message
       await expect(page.locator('text=/Invalid Share Link/i')).toBeVisible();
-      await expect(page.locator('text=/missing required information/i')).toBeVisible();
+      await expect(
+        page.locator('text=/missing required information/i')
+      ).toBeVisible();
 
       // Should have link to home
       await expect(page.locator('a:has-text("Go to Home")')).toBeVisible();
@@ -432,17 +531,25 @@ test.describe('Quick Wins Features', () => {
 
       // Pre-populate data
       await page.evaluate(() => {
-        localStorage.setItem('favoriteStations', JSON.stringify([
-          { id: 'zurich', name: 'Zurich HB', savedAt: Date.now() }
-        ]));
-        localStorage.setItem('recentSearches', JSON.stringify([
-          { id: '1', query: 'Weather in Geneva', timestamp: Date.now() }
-        ]));
+        localStorage.setItem(
+          'favoriteStations',
+          JSON.stringify([
+            { id: 'zurich', name: 'Zurich HB', savedAt: Date.now() },
+          ])
+        );
+        localStorage.setItem(
+          'recentSearches',
+          JSON.stringify([
+            { id: '1', query: 'Weather in Geneva', timestamp: Date.now() },
+          ])
+        );
       });
       await page.reload();
 
       // Verify both favorites and recent searches are visible
-      await expect(page.locator('text=/Your Favorite Stations/i')).toBeVisible();
+      await expect(
+        page.locator('text=/Your Favorite Stations/i')
+      ).toBeVisible();
       await expect(page.locator('text=/Recent Searches/i')).toBeVisible();
       await expect(page.locator('text="Zurich HB"')).toBeVisible();
       await expect(page.locator('text="Weather in Geneva"')).toBeVisible();
@@ -452,10 +559,15 @@ test.describe('Quick Wins Features', () => {
       await page.goto('/');
 
       // Add a favorite
-      await page.fill('textarea[placeholder*="Ask about"]', 'Find stations near Zurich');
+      await page.fill(
+        'textarea[placeholder*="Ask about"]',
+        'Find stations near Zurich'
+      );
       await page.click('button:has-text("Send")');
 
-      await page.waitForSelector('[data-testid="station-card"]', { timeout: 15000 });
+      await page.waitForSelector('[data-testid="station-card"]', {
+        timeout: 15000,
+      });
       await page.click('[data-testid="favorite-toggle"]');
 
       await page.waitForTimeout(1000);
@@ -464,7 +576,9 @@ test.describe('Quick Wins Features', () => {
       await page.reload();
 
       // Verify favorite persists
-      await expect(page.locator('text=/Your Favorite Stations/i')).toBeVisible();
+      await expect(
+        page.locator('text=/Your Favorite Stations/i')
+      ).toBeVisible();
 
       // Verify recent search persists
       await expect(page.locator('text=/Recent Searches/i')).toBeVisible();
