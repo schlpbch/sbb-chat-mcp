@@ -23,6 +23,14 @@ function getTranslateClient(): InstanceType<typeof Translate> | null {
 }
 
 /**
+ * Reset the translate client (for testing only)
+ * @internal
+ */
+export function resetTranslateClient(): void {
+  translateClient = null;
+}
+
+/**
  * Translate text from Chinese or Hindi to English
  *
  * @param text - The text to translate

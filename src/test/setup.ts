@@ -1,6 +1,31 @@
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 
+// Load environment variables from .env.local for tests
+// This allows translation tests to use the GOOGLE_CLOUD_KEY
+if (process.env.GOOGLE_CLOUD_KEY === undefined) {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const envPath = path.resolve(process.cwd(), '.env.local');
+    if (fs.existsSync(envPath)) {
+      const envContent = fs.readFileSync(envPath, 'utf-8');
+      envContent.split('\n').forEach((line: string) => {
+        const match = line.match(/^([^#=]+)=(.+)$/);
+        if (match) {
+          const key = match[1].trim();
+          const value = match[2].trim();
+          if (key && !process.env[key]) {
+            process.env[key] = value;
+          }
+        }
+      });
+    }
+  } catch (error) {
+    console.warn('Could not load .env.local:', error);
+  }
+}
+
 // Mock localStorage
 const localStorageMock = {
   getItem: vi.fn(),

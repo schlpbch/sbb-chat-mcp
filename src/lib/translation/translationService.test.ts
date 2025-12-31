@@ -1,19 +1,29 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { translateToEnglish, requiresTranslation } from './translationService';
+import {
+  translateToEnglish,
+  requiresTranslation,
+  resetTranslateClient,
+} from './translationService';
 
 // Mock the Google Cloud Translate client
-vi.mock('@google-cloud/translate', () => ({
-  v2: {
-    Translate: vi.fn().mockImplementation(() => ({
-      translate: vi.fn().mockResolvedValue(['Trains from Zurich to Bern']),
-    })),
-  },
-}));
+vi.mock('@google-cloud/translate', () => {
+  const mockTranslate = vi.fn().mockResolvedValue(['Trains from Zurich to Bern']);
+  return {
+    v2: {
+      Translate: class MockTranslate {
+        translate = mockTranslate;
+        constructor() {
+          // Mock constructor
+        }
+      },
+    },
+  };
+});
 
 describe('Translation Service', () => {
   beforeEach(() => {
-    // Set mock API key
-    process.env.GOOGLE_TRANSLATE_API_KEY = 'test-api-key';
+    // Set mock API key (using GOOGLE_CLOUD_KEY as per translationService.ts)
+    process.env.GOOGLE_CLOUD_KEY = 'test-api-key';
   });
 
   describe('requiresTranslation', () => {
@@ -53,9 +63,14 @@ describe('Translation Service', () => {
     });
 
     it('should return original text if no API key configured', async () => {
-      delete process.env.GOOGLE_TRANSLATE_API_KEY;
+      const originalKey = process.env.GOOGLE_CLOUD_KEY;
+      delete process.env.GOOGLE_CLOUD_KEY;
+      resetTranslateClient(); // Reset singleton to pick up env var change
       const result = await translateToEnglish('test query', 'zh');
       expect(result).toBe('test query');
+      // Restore the key
+      if (originalKey) process.env.GOOGLE_CLOUD_KEY = originalKey;
+      resetTranslateClient(); // Reset again to pick up restored env var
     });
   });
 });
