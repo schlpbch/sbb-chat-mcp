@@ -203,10 +203,12 @@ export function buildEntityRegex(
     p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   );
 
-  // Build pattern: preposition + captured content + stop at keywords or end
-  const pattern = `(?:${escapedPrepositions.join(
+  // Build pattern supporting accented characters
+  // JavaScript's \b doesn't work with accented characters (à, è, ü, etc.)
+  // Use (?:^|\s) for word boundary with accented chars, \b for ASCII-only
+  const pattern = `(?:^|\\s)(${escapedPrepositions.join(
     '|'
-  )})\\s+(.+?)(?=\\s+(?:${STOP_WORDS.join('|')})\\b|$|[?!])`;
+  )})\\s+(.+?)(?=(?:^|\\s)(?:${STOP_WORDS.join('|')})(?:\\s|$)|$|[?!])`;
 
   return new RegExp(pattern, 'i');
 }

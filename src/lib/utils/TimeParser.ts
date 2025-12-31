@@ -87,21 +87,9 @@ export class TimeParser {
   static normalizeTime(timeStr: string): string {
     const trimmed = timeStr.trim();
 
-    // Handle AM/PM format: "9am", "2pm"
-    if (/(\\d{1,2})([ap]m)/i.test(trimmed)) {
-      const match = trimmed.match(/(\\d{1,2})([ap]m)/i);
-      if (match) {
-        let hour = parseInt(match[1]);
-        const ampm = match[2].toLowerCase();
-        if (ampm === 'pm' && hour < 12) hour += 12;
-        if (ampm === 'am' && hour === 12) hour = 0;
-        return (hour < 10 ? '0' : '') + hour + ':00';
-      }
-    }
-
-    // Handle AM/PM with minutes: "9:30am", "2:45pm"
-    if (/(\\d{1,2}):(\\d{2})\\s*([ap]m)/i.test(trimmed)) {
-      const match = trimmed.match(/(\\d{1,2}):(\\d{2})\\s*([ap]m)/i);
+    // Handle AM/PM with minutes FIRST: "9:30am", "2:45pm"
+    if (/(\d{1,2}):(\d{2})\s*([ap]m)/i.test(trimmed)) {
+      const match = trimmed.match(/(\d{1,2}):(\d{2})\s*([ap]m)/i);
       if (match) {
         let hour = parseInt(match[1]);
         const min = match[2];
@@ -112,19 +100,31 @@ export class TimeParser {
       }
     }
 
+    // Handle AM/PM format without minutes: "9am", "2pm"
+    if (/(\d{1,2})([ap]m)/i.test(trimmed)) {
+      const match = trimmed.match(/(\d{1,2})([ap]m)/i);
+      if (match) {
+        let hour = parseInt(match[1]);
+        const ampm = match[2].toLowerCase();
+        if (ampm === 'pm' && hour < 12) hour += 12;
+        if (ampm === 'am' && hour === 12) hour = 0;
+        return (hour < 10 ? '0' : '') + hour + ':00';
+      }
+    }
+
     // Handle single digit hour: "7" -> "07:00"
-    if (/^\\d$/.test(trimmed) || /^\\d{2}$/.test(trimmed)) {
+    if (/^\d$/.test(trimmed) || /^\d{2}$/.test(trimmed)) {
       const hour = parseInt(trimmed);
       return (hour < 10 ? '0' : '') + hour + ':00';
     }
 
     // Handle time without leading zero: "7:30" -> "07:30"
-    if (/^\\d:\\d{2}/.test(trimmed)) {
+    if (/^\d:\d{2}/.test(trimmed)) {
       return '0' + trimmed;
     }
 
     // Already in HH:MM or HH:MM:SS format
-    if (/^\\d{2}:\\d{2}/.test(trimmed)) {
+    if (/^\d{2}:\d{2}/.test(trimmed)) {
       return trimmed.substring(0, 5); // Return just HH:MM
     }
 

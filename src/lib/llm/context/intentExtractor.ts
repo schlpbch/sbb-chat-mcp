@@ -173,15 +173,16 @@ function extractEntities(
 
   // For weather queries, prioritize location match over destination
   // (FR "à" and IT "a" appear in both destination and location prepositions)
+  // Note: Using [2] because buildEntityRegex now captures preposition in [1] and entity in [2]
   if (intentType === 'weather_check' && inMatch && !fromMatch) {
-    entities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
+    entities.origin = inMatch[2].replace(/\*\*|_|#/g, '').trim();
   } else {
     // Standard extraction for other intent types
     if (fromMatch) {
-      entities.origin = fromMatch[1].replace(/\*\*|_|#/g, '').trim();
+      entities.origin = fromMatch[2].replace(/\*\*|_|#/g, '').trim();
     }
     if (toMatch) {
-      entities.destination = toMatch[1].replace(/\*\*|_|#/g, '').trim();
+      entities.destination = toMatch[2].replace(/\*\*|_|#/g, '').trim();
     }
   }
 
@@ -203,7 +204,7 @@ function extractEntities(
   // treat "in" as the origin (station/location)
   if (inMatch && !fromMatch && !toMatch) {
     if (intentType === 'station_search' || intentType === 'weather_check') {
-      entities.origin = inMatch[1].replace(/\*\*|_|#/g, '').trim();
+      entities.origin = inMatch[2].replace(/\*\*|_|#/g, '').trim();
     }
   }
 
