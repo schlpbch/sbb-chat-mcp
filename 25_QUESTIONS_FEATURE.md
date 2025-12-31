@@ -2,7 +2,7 @@
 
 ## Overview
 
-Enhanced the SBB Travel Companion landing page with 25 carefully curated questions organized into 6 intelligent categories with an interactive filter system. This feature also serves as a comprehensive testing framework for LLM quality assurance, with automated Playwright tests validating tool execution and response quality.
+Enhanced the Swiss Travel Companion landing page with 25 carefully curated questions organized into 6 intelligent categories with an interactive filter system. This feature also serves as a comprehensive testing framework for LLM quality assurance, with automated Playwright tests validating tool execution and response quality.
 
 ## Features Implemented
 

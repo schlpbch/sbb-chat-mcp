@@ -38,7 +38,7 @@ Move the chat dialogue from `/` to `/chat` and create a new landing page at `/`
 
 **Landing Page Structure:**
 
-```
+```text
 ┌─────────────────────────────────────┐
 │ Hero Section                        │
 │ - Title: "Swiss Travel Companion"  │
@@ -199,19 +199,19 @@ git checkout -b feature/move-chat-to-chat-path
 
 ### Step 2: Move Chat to /chat Route (15 min)
 
-**2.1. Create chat directory**
+### 2.1. Create chat directory
 
 ```bash
 mkdir src/app/chat
 ```
 
-**2.2. Copy current page to chat**
+### 2.2. Copy current page to chat
 
 ```bash
 cp src/app/page.tsx src/app/chat/page.tsx
 ```
 
-**2.3. Update chat/page.tsx**
+### 2.3. Update chat/page.tsx
 
 - Rename component from `Home` to `ChatPage`
 - Add query parameter handling for pre-filled queries:
@@ -237,7 +237,7 @@ export default function ChatPage() {
 }
 ```
 
-**2.4. Test /chat route**
+### 2.4. Test /chat route
 
 - Navigate to <http://localhost:3000/chat>
 - Verify chat works correctly
@@ -245,13 +245,13 @@ export default function ChatPage() {
 
 ### Step 3: Create Landing Page Components (60-90 min)
 
-**3.1. Create landing components directory**
+### 3.1. Create landing components directory
 
 ```bash
 mkdir -p src/components/landing
 ```
 
-**3.2. Create HeroSection.tsx**
+### 3.2. Create HeroSection.tsx
 
 ```typescript
 // src/components/landing/HeroSection.tsx
@@ -281,7 +281,7 @@ export default function HeroSection() {
 }
 ```
 
-**3.3. Create FeaturedExamples.tsx**
+### 3.3. Create FeaturedExamples.tsx
 
 ```typescript
 // src/components/landing/FeaturedExamples.tsx
@@ -325,7 +325,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
 }
 ```
 
-**3.4. Create FeaturesSection.tsx**
+### 3.4. Create FeaturesSection.tsx
 
 ```typescript
 // src/components/landing/FeaturesSection.tsx
@@ -374,7 +374,7 @@ export default function FeaturesSection() {
 }
 ```
 
-**3.5. Create CTASection.tsx**
+### 3.5. Create CTASection.tsx
 
 ```typescript
 // src/components/landing/CTASection.tsx
@@ -407,7 +407,7 @@ export default function CTASection() {
 
 ### Step 4: Create New Landing Page (30 min)
 
-**4.1. Create new src/app/page.tsx**
+### 4.1. Create new src/app/page.tsx
 
 ```typescript
 // src/app/page.tsx
@@ -454,32 +454,32 @@ export default function LandingPage() {
 
 ### Step 5: Update Navigation (15 min)
 
-**5.1. Update Navbar (if needed)**
+### 5.1. Update Navbar (if needed)
 
 - Add "Chat" link to navigate to /chat
 - Or keep current navigation
 
-**5.2. Update Menu component**
+### 5.2. Update Menu component
 
 - Add /chat link if needed
 - Update any hardcoded / links
 
 ### Step 6: Update Tests (30-45 min)
 
-**6.1. Update E2E tests**
+### 6.1. Update E2E tests
 
 ```bash
 # Find all test files
 grep -r "goto('/')" tests/
 ```
 
-**6.2. Update paths**
+### 6.2. Update paths
 
 - Change `page.goto('/')` to `page.goto('/chat')` for chat tests
 - Add new tests for landing page
 - Test navigation flow: landing → chat
 
-**6.3. Example test update**
+### 6.3. Example test update
 
 ```typescript
 // tests/chat.spec.ts
@@ -500,17 +500,17 @@ test('landing page shows featured examples', async ({ page }) => {
 
 ### Step 7: Update Documentation (15 min)
 
-**7.1. Update README.md**
+### 7.1. Update README.md
 
 - Update screenshots if needed
 - Document new route structure
 - Update "Getting Started" section
 
-**7.2. Update any route documentation**
+### 7.2. Update any route documentation
 
 ### Step 8: Testing & Verification (30-45 min)
 
-**8.1. Manual testing checklist**
+### 8.1. Manual testing checklist
 
 - [ ] Landing page loads at /
 - [ ] Featured examples show correctly (6 examples)
@@ -523,7 +523,7 @@ test('landing page shows featured examples', async ({ page }) => {
 - [ ] Mobile responsive on both pages
 - [ ] Back button works correctly
 
-**8.2. Build test**
+### 8.2. Build test
 
 ```bash
 npm run build
@@ -531,7 +531,7 @@ npm run start
 # Test production build
 ```
 
-**8.3. Run test suites**
+### 8.3. Run test suites
 
 ```bash
 npm run test:unit
@@ -540,7 +540,7 @@ npm run test:e2e
 
 ### Step 9: Deploy (Variable)
 
-**9.1. Commit changes**
+### 9.1. Commit changes
 
 ```bash
 git add .
@@ -557,7 +557,7 @@ git commit -m "feat: move chat to /chat and create landing page
 - Maintained full chat functionality"
 ```
 
-**9.2. Push and deploy**
+### 9.2. Push and deploy
 
 ```bash
 git push origin feature/move-chat-to-chat-path

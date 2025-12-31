@@ -1,18 +1,20 @@
 # Multilingual Intent Extraction - Comprehensive Plan
 
-**Goal:** Make content extraction robust and multilingual across **German (DE)**, **French (FR)**, **Italian (IT)**, and **English (EN)** for the SBB Travel Companion.
+**Goal:** Make content extraction robust and multilingual across **German (DE)**, **French (FR)**, **Italian (IT)**, and **English (EN)** for the Swiss Travel Companion.
 
 ---
 
 ## 📊 Current State Analysis
 
 ### Strengths
+
 ✅ Word boundary regex prevents false positives (e.g., "rain" doesn't match "trains")
 ✅ Prioritized keyword checking (station > formation > trip > weather)
 ✅ Basic multilingual keywords for trip/weather/station queries
 ✅ Unicode support in entity extraction (Zürich, Genève)
 
 ### Weaknesses
+
 ❌ **Inconsistent multilingual coverage** - Some intents missing FR/IT keywords
 ❌ **English-centric entity extraction** - Regex only matches EN prepositions
 ❌ **No date/time localization** - Only EN/DE date words supported
@@ -266,22 +268,26 @@ const TIME_PATTERNS: Record<Language, RegExp[]> = {
 ## 🔧 Implementation Strategy
 
 ### Phase 1: Refactor Keyword Structure ✅
+
 1. Create `intentKeywords.ts` with structured multilingual dictionaries
 2. Create `entityPatterns.ts` with multilingual entity extraction patterns
 3. Update `intentExtractor.ts` to use new dictionaries
 
 ### Phase 2: Enhance Entity Extraction 🔄
+
 1. Implement language detection utility
 2. Create multilingual regex builder for origin/destination/location
 3. Add diacritic normalization
 4. Enhance date/time parsing with localized patterns
 
 ### Phase 3: Improve Confidence Scoring 🔄
+
 1. Implement multi-signal confidence calculation
 2. Add conflict detection between intents
 3. Add entity validation (e.g., check if extracted place is valid)
 
 ### Phase 4: Testing & Validation ⏳
+
 1. Create test suite with 100+ multilingual examples:
    - 25 EN examples (trip, weather, station, formation, general)
    - 25 DE examples
@@ -293,6 +299,7 @@ const TIME_PATTERNS: Record<Language, RegExp[]> = {
 3. Real-world validation with user feedback
 
 ### Phase 5: Documentation & Monitoring 📝
+
 1. Document supported patterns and examples per language
 2. Add telemetry for intent classification accuracy
 3. Create debugging tools for misclassified queries
@@ -302,24 +309,28 @@ const TIME_PATTERNS: Record<Language, RegExp[]> = {
 ## 📝 Example Test Cases
 
 ### Trip Planning
+
 - **EN:** "Find trains from Zurich to Bern tomorrow at 10 AM"
 - **DE:** "Züge von Zürich nach Bern morgen um 10 Uhr"
 - **FR:** "Trains de Zurich à Berne demain à 10h"
 - **IT:** "Treni da Zurigo a Berna domani alle 10"
 
 ### Weather Check
+
 - **EN:** "What's the weather in Lucerne?"
 - **DE:** "Wie ist das Wetter in Luzern?"
 - **FR:** "Quel temps fait-il à Lucerne?"
 - **IT:** "Che tempo fa a Lucerna?"
 
 ### Station Search
+
 - **EN:** "Show me departures from Geneva station"
 - **DE:** "Zeig mir Abfahrten vom Bahnhof Genf"
 - **FR:** "Affiche les départs de la gare de Genève"
 - **IT:** "Mostra le partenze dalla stazione di Ginevra"
 
 ### Edge Cases
+
 - **Mixed:** "Ich möchte to Geneva fahren" (DE + EN mix)
 - **Diacritics:** "Zürich → Genève" (Unicode arrows)
 - **Abbreviations:** "ZH to BE at 10am" (city codes)
@@ -363,14 +374,15 @@ These can be implemented immediately for high impact:
 
 ## 📚 References
 
-- Unicode normalization: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
-- SBB official terminology: https://www.sbb.ch/de/hilfe-und-kontakt/begriffe.html
-- French railway terms: https://www.sncf.com/
-- Italian railway terms: https://www.trenitalia.com/
+- Unicode normalization: <https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize>
+- SBB official terminology: <https://www.sbb.ch/de/hilfe-und-kontakt/begriffe.html>
+- French railway terms: <https://www.sncf.com/>
+- Italian railway terms: <https://www.trenitalia.com/>
 
 ---
 
 **Next Steps:**
+
 1. Review and approve this plan
 2. Prioritize implementation phases
 3. Create implementation tasks
