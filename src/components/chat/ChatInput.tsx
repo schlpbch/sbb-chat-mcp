@@ -19,8 +19,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const SpeechRecognitionAPI =
-        window.SpeechRecognition ||
-        window.webkitSpeechRecognition;
+        window.SpeechRecognition || window.webkitSpeechRecognition;
       if (SpeechRecognitionAPI) {
         setSpeechSupported(true);
         const recognition = new SpeechRecognitionAPI();
@@ -115,8 +114,8 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
   };
 
   return (
-    <div className="p-6 bg-white border-t border-cloud shadow-lg">
-      <div className="flex items-center gap-3">
+    <div className="p-4 bg-white/50 dark:bg-gray-800/50 backdrop-blur-md border-t border-gray-100 dark:border-gray-700 shadow-[0_-4px_20px_-5px_rgba(0,0,0,0.05)] rounded-b-3xl">
+      <div className="flex items-center gap-2">
         <div className="relative flex-1 group">
           <input
             type="text"
@@ -124,26 +123,24 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
             onChange={(e) => setInput(e.target.value)}
             onKeyPress={handleKeyPress}
             placeholder={
-              isRecording
-                ? 'Listening...'
-                : 'Ask about trains, stations, or travel plans... (Markdown supported)'
+              isRecording ? 'Listening...' : 'Message Swiss Companion...'
             }
             disabled={disabled}
-            className="w-full pl-5 pr-20 py-3.5 bg-milk border-2 border-cloud rounded-sbb
- focus:outline-none focus:border-sbb-red
- text-midnight text-sm font-bold placeholder:text-graphite
+            className="w-full pl-5 pr-14 py-3 bg-gray-50/50 dark:bg-gray-700/50 border border-gray-100 dark:border-gray-600 rounded-2xl
+ focus:outline-none focus:border-sbb-red/30 focus:bg-white dark:focus:bg-gray-700
+ text-midnight dark:text-gray-100 text-sm font-semibold placeholder:text-smoke/60 dark:placeholder:text-gray-400
  disabled:opacity-50 disabled:cursor-not-allowed
- transition-all duration-200 shadow-sbb-sm focus:shadow-sbb-red/20"
+ transition-all duration-300 shadow-inner"
           />
-          <div className="absolute right-3 top-1/2 -translate-y-1/2 flex items-center gap-2.5">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 flex items-center gap-1">
             {speechSupported && (
               <button
                 onClick={toggleVoiceRecording}
                 disabled={disabled}
-                className={`p-1.5 rounded-sbb transition-all duration-200 ${
+                className={`p-2 rounded-xl transition-all duration-200 ${
                   isRecording
-                    ? 'bg-sbb-red text-white animate-pulse'
-                    : 'text-graphite hover:text-sbb-red hover:bg-milk'
+                    ? 'bg-sbb-red text-white animate-pulse shadow-lg'
+                    : 'text-smoke dark:text-gray-400 hover:text-sbb-red dark:hover:text-sbb-red hover:bg-white dark:hover:bg-gray-600 active:scale-90'
                 }`}
                 aria-label={
                   isRecording ? 'Stop recording' : 'Start voice input'
@@ -163,25 +160,34 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
                 </svg>
               </button>
             )}
-            <span className="text-xs font-black text-cloud select-none group-focus-within:text-sbb-red/40 transition-colors">
-              ↵
-            </span>
           </div>
         </div>
         <button
           onClick={handleSend}
           disabled={disabled || !input.trim()}
-          className="px-6 py-3.5 bg-sbb-red text-white text-sm font-black uppercase tracking-widest rounded-sbb
- hover:bg-sbb-red-125 active:scale-95
- disabled:opacity-30 disabled:cursor-not-allowed disabled:scale-100
- transition-all duration-200 shadow-sbb hover:shadow-sbb-red/40 flex items-center gap-2 shrink-0"
+          className="w-11 h-11 bg-sbb-red text-white rounded-2xl
+ hover:bg-sbb-red-dark active:scale-90
+ disabled:opacity-20 disabled:cursor-not-allowed disabled:scale-100
+ transition-all duration-300 shadow-lg shadow-sbb-red/20 flex items-center justify-center shrink-0"
+          aria-label="Send message"
         >
-          Send
-          <span className="text-lg">➔</span>
+          <svg
+            className="w-5 h-5 translate-x-0.5"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth={2.5}
+              d="M12 19l7-7-7-7M5 12h14"
+            />
+          </svg>
         </button>
       </div>
-      <p className="mt-3 text-[10px] text-center text-smoke font-black uppercase tracking-[0.2em]">
-        Experience Swiss Mobility with AI
+      <p className="mt-2.5 text-[9px] text-center text-smoke/40 dark:text-gray-500 font-bold uppercase tracking-[0.2em] select-none">
+        Powered by Swiss Engineering
       </p>
     </div>
   );

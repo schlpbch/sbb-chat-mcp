@@ -57,8 +57,8 @@ export default function VoiceButton({
       onClick={handleClick}
       className={`shrink-0 h-[52px] w-[52px] flex items-center justify-center rounded-xl transition-all duration-200 ${
         isListening
-          ? 'bg-red-100 text-red-600 animate-pulse'
-          : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+          ? 'bg-red-100 dark:bg-red-900/30 text-red-600 dark:text-red-400 animate-pulse'
+          : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'
       }`}
       aria-label={isListening ? 'Stop listening' : 'Start voice input'}
       data-testid="voice-button"
