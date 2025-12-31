@@ -36,7 +36,9 @@
       "Bash(gcloud alpha builds repositories list:*)",
       "Bash(gcloud beta builds triggers describe:*)",
       "Bash(terraform apply:*)",
-      "Bash(npx tsc:*)"
+      "Bash(npx tsc:*)",
+      "Bash(npx:*)",
+      "Bash(pnpm remove:*)"
     ]
   }
 }
