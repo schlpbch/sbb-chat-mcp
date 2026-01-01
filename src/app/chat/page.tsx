@@ -50,6 +50,41 @@ function ChatContent() {
   // Voice output state for TTS
   const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(true);
 
+  // Detect language from localStorage or browser on mount
+  useEffect(() => {
+    const detectLanguage = (): Language => {
+      // Try localStorage first
+      const savedSettings = localStorage.getItem('sbb-settings');
+      if (savedSettings) {
+        try {
+          const settings = JSON.parse(savedSettings);
+          if (settings.language) {
+            return settings.language as Language;
+          }
+        } catch (e) {
+          console.error('Failed to parse saved settings:', e);
+        }
+      }
+
+      // Fall back to browser language
+      const browserLang = navigator.language.split('-')[0];
+      const supportedLanguages: Language[] = ['en', 'de', 'fr', 'it', 'zh', 'hi'];
+      return supportedLanguages.includes(browserLang as Language)
+        ? (browserLang as Language)
+        : 'en';
+    };
+
+    setLanguage(detectLanguage());
+  }, []);
+
+  // Save language to localStorage when it changes
+  useEffect(() => {
+    const savedSettings = localStorage.getItem('sbb-settings');
+    const settings = savedSettings ? JSON.parse(savedSettings) : {};
+    settings.language = language;
+    localStorage.setItem('sbb-settings', JSON.stringify(settings));
+  }, [language]);
+
   const {
     isOpen: isOnboardingOpen,
     currentStep,
