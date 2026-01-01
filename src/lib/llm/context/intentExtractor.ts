@@ -233,6 +233,7 @@ function extractEntities(
   if (intentType === 'station_search') {
     if (
       message.includes('arrival') ||
+      message.includes('arriving') ||
       message.includes('ankunft') ||
       message.includes('arrivée') ||
       message.includes('arrivo')
@@ -240,6 +241,7 @@ function extractEntities(
       entities.eventType = 'arrivals';
     } else if (
       message.includes('departure') ||
+      message.includes('departing') ||
       message.includes('abfahrt') ||
       message.includes('départ') ||
       message.includes('partenza')
