@@ -9,12 +9,14 @@ interface MessageProps {
   message: MessageType;
   textOnlyMode?: boolean;
   language: Language;
+  voiceOutputEnabled?: boolean;
 }
 
 export default function Message({
   message,
   textOnlyMode = false,
   language,
+  voiceOutputEnabled = true,
 }: MessageProps) {
   const timestamp = message.timestamp.toLocaleTimeString([], {
     hour: '2-digit',
@@ -52,6 +54,8 @@ export default function Message({
                 content={message.content}
                 variant="Companion"
                 timestamp={timestamp}
+                language={language}
+                voiceOutputEnabled={voiceOutputEnabled}
               />
             )}
           </div>

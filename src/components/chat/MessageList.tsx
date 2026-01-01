@@ -9,9 +9,10 @@ interface MessageListProps {
   messagesEndRef: React.RefObject<HTMLDivElement | null>;
   textOnlyMode?: boolean;
   language: Language;
+  voiceOutputEnabled?: boolean;
 }
 
-export default function MessageList({ messages, messagesEndRef, textOnlyMode = false, language }: MessageListProps) {
+export default function MessageList({ messages, messagesEndRef, textOnlyMode = false, language, voiceOutputEnabled = true }: MessageListProps) {
   return (
     <>
       {messages.map((message) => (
@@ -19,7 +20,8 @@ export default function MessageList({ messages, messagesEndRef, textOnlyMode = f
           key={message.id} 
           message={message} 
           textOnlyMode={textOnlyMode} 
-          language={language} 
+          language={language}
+          voiceOutputEnabled={voiceOutputEnabled}
         />
       ))}
       <div ref={messagesEndRef} />
