@@ -2,12 +2,18 @@
 
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
+import { useTextToSpeech } from '@/hooks/useTextToSpeech';
+import TTSControls from '@/components/chat/TTSControls';
+import type { Language } from '@/lib/i18n';
 
 interface MarkdownCardProps {
   content: string;
   title?: string;
   variant?: 'user' | 'Companion';
   timestamp?: string;
+  language?: Language;
+  voiceOutputEnabled?: boolean;
+  messageId?: string;
 }
 
 export default function MarkdownCard({
@@ -15,10 +21,23 @@ export default function MarkdownCard({
   title,
   variant = 'Companion',
   timestamp,
+  language = 'en',
+  voiceOutputEnabled = true,
+  messageId,
 }: MarkdownCardProps) {
-  if (!content || !content.trim()) return null;
-
   const isUser = variant === 'user';
+  
+  // Initialize TTS for assistant messages only if voice output is enabled
+  // Must be called before any early returns to comply with React Hook rules
+  const tts = useTextToSpeech({
+    language,
+    onError: (error) => console.error('TTS error:', error),
+  });
+  
+  // Generate a message ID if not provided
+  const effectiveMessageId = messageId || `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
+  if (!content || !content.trim()) return null;
 
   return (
     <article
@@ -260,16 +279,33 @@ export default function MarkdownCard({
           {content}
         </ReactMarkdown>
 
-        {/* Timestamp */}
-        {timestamp && (
-          <span
-            className={`text-xs mt-1.5 sm:mt-2 block ${
-              isUser ? 'opacity-70' : 'text-gray-500'
-            }`}
-          >
-            {timestamp}
-          </span>
-        )}
+        {/* Footer with Timestamp and TTS Controls */}
+        <div className={`flex items-center ${
+          isUser ? 'justify-end' : 'justify-between'
+        } mt-2`}>
+          {timestamp && (
+            <span
+              className={`text-xs ${
+                isUser ? 'opacity-70' : 'text-gray-500'
+              }`}
+            >
+              {timestamp}
+            </span>
+          )}
+          {!isUser && voiceOutputEnabled && (
+            <TTSControls
+              messageId={effectiveMessageId}
+              state={tts.state}
+              isCurrentMessage={tts.currentMessageId === effectiveMessageId}
+              onPlay={() => tts.play(effectiveMessageId, content)}
+              onPause={tts.pause}
+              onResume={tts.resume}
+              onStop={tts.stop}
+              language={language}
+              error={tts.error}
+            />
+          )}
+        </div>
       </div>
     </article>
   );
