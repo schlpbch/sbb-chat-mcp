@@ -6,7 +6,7 @@ export const weatherFunctions = [
   {
     name: 'getWeather',
     description:
-      'Get current weather conditions and forecast for any location in Europe. You can provide either coordinates OR a location name (city, station) which will be automatically resolved.',
+      'Get GENERAL weather conditions and forecast (temperature, precipitation, wind, humidity). For SKI/SNOW-SPECIFIC conditions (snow depth, slopes, ski resorts), use getSnowConditions instead. You can provide either coordinates OR a location name which will be automatically resolved.',
     parameters: {
       type: 'object',
       properties: {
@@ -23,7 +23,7 @@ export const weatherFunctions = [
         locationName: {
           type: 'string',
           description:
-            'Name of the location (e.g., "Zurich", "Bern"). Will be automatically resolved to coordinates if lat/lon not provided.',
+            'Name of the location (e.g., "Zurich", "Bern", "Geneva"). Will be automatically resolved to coordinates if lat/lon not provided.',
         },
       },
       required: [],
@@ -32,21 +32,24 @@ export const weatherFunctions = [
   {
     name: 'getSnowConditions',
     description:
-      'Get current snow conditions and ski resort information for a location',
+      'Get SNOW-SPECIFIC conditions for ski resorts and mountain locations. Use this for queries about: snow depth, ski conditions, slope status, avalanche risk, powder conditions, ski resort information, winter sports conditions. DO NOT use for general weather - use getWeather instead.',
     parameters: {
       type: 'object',
       properties: {
         latitude: {
           type: 'number',
-          description: 'Latitude of the ski resort or mountain location (optional if locationName is provided)',
+          description:
+            'Latitude of the ski resort or mountain location (optional if locationName is provided)',
         },
         longitude: {
           type: 'number',
-          description: 'Longitude of the ski resort or mountain location (optional if locationName is provided)',
+          description:
+            'Longitude of the ski resort or mountain location (optional if locationName is provided)',
         },
         locationName: {
           type: 'string',
-          description: 'Name of the ski resort or location (will be automatically resolved to coordinates)',
+          description:
+            'Name of the ski resort or mountain location (e.g., "Zermatt", "St. Moritz", "Verbier"). Will be automatically resolved to coordinates.',
         },
       },
       required: [],

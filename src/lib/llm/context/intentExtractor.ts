@@ -63,6 +63,7 @@ export async function extractIntent(
 
   // Get keywords for detected languages
   const tripKeywords = getAllKeywords('trip_planning', detectedLanguages);
+  const snowKeywords = getAllKeywords('snow_conditions', detectedLanguages);
   const weatherKeywords = getAllKeywords('weather_check', detectedLanguages);
   const stationKeywords = getAllKeywords('station_search', detectedLanguages);
   const formationKeywords = getAllKeywords(
@@ -92,6 +93,15 @@ export async function extractIntent(
     );
     confidence = calculateBaseConfidence(count);
     console.log('[intentExtractor] Matched formation keywords:', count);
+  } else if (hasKeyword(snowKeywords, lowerMessage)) {
+    // Check snow BEFORE weather to prevent misclassification
+    type = 'snow_conditions';
+    const count = countMatchedKeywords(snowKeywords, lowerMessage);
+    matchedKeywords.push(
+      ...snowKeywords.filter((k) => hasKeyword([k], lowerMessage))
+    );
+    confidence = calculateBaseConfidence(count);
+    console.log('[intentExtractor] Matched snow keywords:', count);
   } else if (hasKeyword(tripKeywords, lowerMessage)) {
     type = 'trip_planning';
     const count = countMatchedKeywords(tripKeywords, lowerMessage);
@@ -200,10 +210,14 @@ function extractEntities(
     }
   }
 
-  // For station/weather queries like "arrivals in Zurich" or "weather in Lucerne",
+  // For station/weather/snow queries like "arrivals in Zurich", "weather in Lucerne", or "snow in Zermatt",
   // treat "in" as the origin (station/location)
   if (inMatch && !fromMatch && !toMatch) {
-    if (intentType === 'station_search' || intentType === 'weather_check') {
+    if (
+      intentType === 'station_search' ||
+      intentType === 'weather_check' ||
+      intentType === 'snow_conditions'
+    ) {
       entities.origin = inMatch[2].replace(/\*\*|_|#/g, '').trim();
     }
   }

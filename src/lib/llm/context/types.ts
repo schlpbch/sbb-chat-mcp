@@ -76,6 +76,7 @@ export interface Intent {
   type:
     | 'trip_planning'
     | 'weather_check'
+    | 'snow_conditions'
     | 'station_search'
     | 'train_formation'
     | 'general_info';

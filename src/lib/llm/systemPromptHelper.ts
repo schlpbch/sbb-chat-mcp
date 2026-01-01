@@ -5,7 +5,10 @@ import type { Language } from '@/lib/i18n';
  * Generate improved system prompt with explicit tool usage guidance
  */
 export function generateSystemPrompt(
-  context: { language: Language | string; currentLocation?: { lat: number; lon: number } },
+  context: {
+    language: Language | string;
+    currentLocation?: { lat: number; lon: number };
+  },
   enableFunctionCalling: boolean
 ): string {
   const responseLanguage = getLanguageName(context.language);
@@ -64,21 +67,26 @@ export function generateSystemPrompt(
    - "What stations are in Zurich?" → findStopPlacesByName({query: "Zurich"})
    - "Find stations near Matterhorn" → findStopPlacesByName({query: "Matterhorn"})
 
-4. WEATHER → Use getWeather
-   Triggers: "weather", "forecast", "temperature", "rain", "wind", "next days"
+4. GENERAL WEATHER → Use getWeather
+   Triggers: "weather", "forecast", "temperature", "rain", "wind", "humidity", "next days"
    **Returns current weather AND 7-day forecast automatically.**
+   **DO NOT use for ski/snow-specific queries - use getSnowConditions instead!**
    Examples:
    - "Weather in Lugano" → getWeather({locationName: "Lugano"})
    - "Forecast for Zurich next 3 days" → getWeather({locationName: "Zurich"})
    - "Temperature in Zurich" → getWeather({locationName: "Zurich"})
+   - "Will it rain in Bern?" → getWeather({locationName: "Bern"})
 
-5. SNOW CONDITIONS → Use getSnowConditions
-   Triggers: "snow", "snow conditions", "ski", "skiing", "snowfall", "snow depth"
-   **Use this for ski resorts and mountain locations!**
+5. SKI/SNOW CONDITIONS → Use getSnowConditions
+   Triggers: "snow", "snow conditions", "ski", "skiing", "snowfall", "snow depth", "slopes", "powder", "ski resort"
+   **CRITICAL: Use this for ANY query about skiing, snow conditions, or ski resorts!**
+   **DO NOT use getWeather for snow queries - it won't have ski-specific data!**
    Examples:
+   - "Snow conditions in Zermatt" → getSnowConditions({locationName: "Zermatt"})
    - "Snow conditions in St. Moritz" → getSnowConditions({locationName: "St. Moritz"})
-   - "How much snow in Zermatt" → getSnowConditions({locationName: "Zermatt"})
-   - "Ski conditions in Verbier" → getSnowConditions({locationName: "Verbier"})
+   - "How much snow in Verbier" → getSnowConditions({locationName: "Verbier"})
+   - "Ski conditions in Davos" → getSnowConditions({locationName: "Davos"})
+   - "Is there powder in Zermatt?" → getSnowConditions({locationName: "Zermatt"})
 
 6. ECO-FRIENDLY COMPARISON → Use getEcoComparison
    Triggers: "eco friendly", "lowest emissions", "carbon footprint", "sustainability", "compare co2"
