@@ -44,6 +44,9 @@ export async function extractIntents(
 
 /**
  * Extract intent from user message (single intent - backward compatible)
+ * 
+ * This is the CORE implementation used by multiIntentExtractor.
+ * DO NOT delegate to extractIntents to avoid circular dependency!
  *
  * @param message - User message to analyze
  * @param userLanguage - User's selected language preference (optional)
@@ -53,9 +56,121 @@ export async function extractIntent(
   message: string,
   userLanguage?: Language
 ): Promise<Intent> {
-  // Use multi-intent extraction and return the highest-confidence intent
-  const intents = await extractIntents(message, userLanguage);
-  return intents[0]; // Return highest confidence intent
+  let processedMessage = message;
+  let translatedFrom: 'zh' | 'hi' | null = null;
+
+  // Translate ZH/HI to EN for intent extraction
+  if (requiresTranslation(userLanguage)) {
+    processedMessage = await translateToEnglish(message, userLanguage);
+    translatedFrom = userLanguage;
+  }
+
+  const lowerMessage = processedMessage.toLowerCase();
+
+  // Detect language(s) in the message
+  const detectedLanguages = detectMessageLanguage(message, userLanguage);
+
+  // Get keywords for detected languages
+  const tripKeywords = getAllKeywords('trip_planning', detectedLanguages);
+  const snowKeywords = getAllKeywords('snow_conditions', detectedLanguages);
+  const weatherKeywords = getAllKeywords('weather_check', detectedLanguages);
+  const stationKeywords = getAllKeywords('station_search', detectedLanguages);
+  const formationKeywords = getAllKeywords('train_formation', detectedLanguages);
+
+  // Calculate scores for ALL intent types
+  const intentScores: Array<{
+    type: Intent['type'];
+    confidence: number;
+    matchedKeywords: string[];
+  }> = [];
+
+  // Station search
+  if (hasKeyword(stationKeywords, lowerMessage)) {
+    const count = countMatchedKeywords(stationKeywords, lowerMessage);
+    const matched = stationKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    intentScores.push({
+      type: 'station_search',
+      confidence: calculateBaseConfidence(count),
+      matchedKeywords: matched,
+    });
+  }
+
+  // Train formation
+  if (hasKeyword(formationKeywords, lowerMessage)) {
+    const count = countMatchedKeywords(formationKeywords, lowerMessage);
+    const matched = formationKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    intentScores.push({
+      type: 'train_formation',
+      confidence: calculateBaseConfidence(count),
+      matchedKeywords: matched,
+    });
+  }
+
+  // Snow conditions
+  if (hasKeyword(snowKeywords, lowerMessage)) {
+    const count = countMatchedKeywords(snowKeywords, lowerMessage);
+    const matched = snowKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    intentScores.push({
+      type: 'snow_conditions',
+      confidence: calculateBaseConfidence(count),
+      matchedKeywords: matched,
+    });
+  }
+
+  // Weather check
+  if (hasKeyword(weatherKeywords, lowerMessage)) {
+    const count = countMatchedKeywords(weatherKeywords, lowerMessage);
+    const matched = weatherKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    intentScores.push({
+      type: 'weather_check',
+      confidence: calculateBaseConfidence(count),
+      matchedKeywords: matched,
+    });
+  }
+
+  // Trip planning (default if no other match)
+  if (hasKeyword(tripKeywords, lowerMessage)) {
+    const count = countMatchedKeywords(tripKeywords, lowerMessage);
+    const matched = tripKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    intentScores.push({
+      type: 'trip_planning',
+      confidence: calculateBaseConfidence(count),
+      matchedKeywords: matched,
+    });
+  }
+
+  // If no keywords matched, default to trip_planning with low confidence
+  if (intentScores.length === 0) {
+    intentScores.push({
+      type: 'trip_planning',
+      confidence: 0.3,
+      matchedKeywords: [],
+    });
+  }
+
+  // Sort by confidence (highest first) and take the best match
+  intentScores.sort((a, b) => b.confidence - a.confidence);
+  const bestMatch = intentScores[0];
+
+  // Extract entities based on detected intent
+  const entities = extractEntities(processedMessage, detectedLanguages, bestMatch.type);
+
+  // Refine confidence based on entities
+  const finalConfidence = refineConfidence(
+    bestMatch.type,
+    bestMatch.confidence,
+    entities,
+    bestMatch.matchedKeywords
+  );
+
+  return {
+    type: bestMatch.type,
+    confidence: finalConfidence,
+    extractedEntities: entities,
+    timestamp: new Date(),
+    detectedLanguages: detectedLanguages,
+    matchedKeywords: bestMatch.matchedKeywords,
+  };
 }
 
 /**
