@@ -3,10 +3,11 @@
  */
 
 import { renderHook, act, waitFor } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
 import { useTextToSpeech } from '../useTextToSpeech';
 
 // Mock fetch globally
-global.fetch = jest.fn();
+global.fetch = vi.fn();
 
 // Mock Audio API
 class MockAudio {
@@ -51,27 +52,27 @@ class MockAudio {
 global.Audio = MockAudio;
 
 // Mock audioCache
-jest.mock('@/lib/tts/audioCache', () => ({
+vi.mock('@/lib/tts/audioCache', () => ({
   audioCache: {
-    get: jest.fn(),
-    set: jest.fn((messageId: string) => `blob:mock-${messageId}`),
-    clear: jest.fn(),
+    get: vi.fn(),
+    set: vi.fn((messageId: string) => `blob:mock-${messageId}`),
+    clear: vi.fn(),
   },
 }));
 
 // Mock contentProcessor
-jest.mock('@/lib/tts/contentProcessor', () => ({
-  extractSpeakableText: jest.fn((text: string) => text.replace(/[*_#]/g, '')),
+vi.mock('@/lib/tts/contentProcessor', () => ({
+  extractSpeakableText: vi.fn((text: string) => text.replace(/[*_#]/g, '')),
 }));
 
 describe('useTextToSpeech', () => {
   beforeEach(() => {
-    jest.clearAllMocks();
-    (global.fetch as jest.Mock).mockClear();
+    vi.clearAllMocks();
+    vi.mocked(global.fetch).mockClear();
   });
 
   afterEach(() => {
-    jest.clearAllTimers();
+    vi.clearAllTimers();
   });
 
   it('should initialize with idle state', () => {
@@ -88,7 +89,7 @@ describe('useTextToSpeech', () => {
 
   it('should play audio successfully', async () => {
     // Mock successful API response
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         audioContent: btoa('mock-audio-data'),
@@ -125,7 +126,7 @@ describe('useTextToSpeech', () => {
 
     // First play - no cache
     audioCache.get.mockReturnValueOnce(null);
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         audioContent: btoa('mock-audio-data'),
@@ -158,7 +159,7 @@ describe('useTextToSpeech', () => {
   });
 
   it('should handle pause and resume', async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         audioContent: btoa('mock-audio-data'),
@@ -193,7 +194,7 @@ describe('useTextToSpeech', () => {
   });
 
   it('should handle stop', async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({
         audioContent: btoa('mock-audio-data'),
@@ -223,9 +224,9 @@ describe('useTextToSpeech', () => {
   });
 
   it('should handle API errors', async () => {
-    const onError = jest.fn();
+    const onError = vi.fn();
 
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: false,
       json: async () => ({
         error: 'API error',
@@ -273,7 +274,7 @@ describe('useTextToSpeech', () => {
   });
 
   it('should switch between messages correctly', async () => {
-    (global.fetch as jest.Mock)
+    vi.mocked(global.fetch)
       .mockResolvedValueOnce({
         ok: true,
         json: async () => ({ audioContent: btoa('audio-1') }),
@@ -309,7 +310,7 @@ describe('useTextToSpeech', () => {
   });
 
   it('should respect language parameter', async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ audioContent: btoa('audio') }),
     });
@@ -333,7 +334,7 @@ describe('useTextToSpeech', () => {
   });
 
   it('should respect speechRate parameter', async () => {
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ audioContent: btoa('audio') }),
     });
@@ -358,9 +359,9 @@ describe('useTextToSpeech', () => {
   });
 
   it('should call onPlaybackEnd when audio finishes', async () => {
-    const onPlaybackEnd = jest.fn();
+    const onPlaybackEnd = vi.fn();
 
-    (global.fetch as jest.Mock).mockResolvedValueOnce({
+    vi.mocked(global.fetch).mockResolvedValueOnce({
       ok: true,
       json: async () => ({ audioContent: btoa('audio') }),
     });
