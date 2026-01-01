@@ -121,36 +121,44 @@ export const STOP_WORDS = [
  */
 export const DATE_PATTERNS: Record<Language, RegExp[]> = {
   en: [
-    /\b(today|tomorrow|yesterday)\b/i,
-    /\b(this\s+weekend|weekend)\b/i,
-    /\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i,
-    /\b(\d{1,2}[\/\-\.]\d{1,2}(?:[\/\-\.]\d{2,4})?)\b/,
+    // Match most specific patterns first
     /\b(next|this)\s+(week|month|monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i,
     /\b(january|february|march|april|may|june|july|august|september|october|november|december)\s+\d{1,2}\b/i,
+    /\b(this\s+weekend|weekend)\b/i,
+    /\b(today|tomorrow|yesterday)\b/i,
+    /\b(\d{1,2}[\/\-\.]\d{1,2}(?:[\/\-\.]\d{2,4})?)\b/,
+    // Match single day names last (least specific)
+    /\b(monday|tuesday|wednesday|thursday|friday|saturday|sunday)\b/i,
   ],
   de: [
-    /\b(heute|morgen|gestern|übermorgen)\b/i,
-    /\b(dieses\s+wochenende|wochenende)\b/i,
-    /\b(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)\b/i,
-    /\b(\d{1,2}\.\d{1,2}(?:\.\d{2,4})?)\b/,
+    // Match most specific patterns first
     /\b(nächste|nächster|diese|dieser)\s+(woche|monat|montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)\b/i,
     /\b(januar|februar|märz|april|mai|juni|juli|august|september|oktober|november|dezember)\s+\d{1,2}\b/i,
+    /\b(dieses\s+wochenende|wochenende)\b/i,
+    /\b(heute|morgen|gestern|übermorgen)\b/i,
+    /\b(\d{1,2}\.\d{1,2}(?:\.\d{2,4})?)\b/,
+    // Match single day names last (least specific)
+    /\b(montag|dienstag|mittwoch|donnerstag|freitag|samstag|sonntag)\b/i,
   ],
   fr: [
-    /\b(aujourd'hui|demain|hier|après-demain)\b/i,
-    /\b(ce\s+week-end|week-end)\b/i,
-    /\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b/i,
-    /\b(\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)\b/,
+    // Match most specific patterns first
     /\b(prochain|prochaine|ce|cette)\s+(semaine|mois|lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b/i,
     /\b(janvier|février|mars|avril|mai|juin|juillet|août|septembre|octobre|novembre|décembre)\s+\d{1,2}\b/i,
+    /\b(ce\s+week-end|week-end)\b/i,
+    /\b(aujourd'hui|demain|hier|après-demain)\b/i,
+    /\b(\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)\b/,
+    // Match single day names last (least specific)
+    /\b(lundi|mardi|mercredi|jeudi|vendredi|samedi|dimanche)\b/i,
   ],
   it: [
-    /\b(oggi|domani|ieri|dopodomani)\b/i,
-    /\b(questo\s+fine\s+settimana|fine\s+settimana)\b/i,
-    /\b(lunedì|martedì|mercoledì|giovedì|venerdì|sabato|domenica)\b/i,
-    /\b(\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)\b/,
+    // Match most specific patterns first
     /\b(prossimo|prossima|questo|questa)\s+(settimana|mese|lunedì|martedì|mercoledì|giovedì|venerdì|sabato|domenica)\b/i,
     /\b(gennaio|febbraio|marzo|aprile|maggio|giugno|luglio|agosto|settembre|ottobre|novembre|dicembre)\s+\d{1,2}\b/i,
+    /\b(questo\s+fine\s+settimana|fine\s+settimana)\b/i,
+    /\b(oggi|domani|ieri|dopodomani)\b/i,
+    /\b(\d{1,2}[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?)\b/,
+    // Match single day names last (least specific)
+    /\b(lunedì|martedì|mercoledì|giovedì|venerdì|sabato|domenica)\b/i,
   ],
 };
 
