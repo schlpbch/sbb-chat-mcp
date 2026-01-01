@@ -1,15 +1,5 @@
-@import "tailwindcss";
-@import "leaflet/dist/leaflet.css";
-
-@theme {
-  --color-sbb-red: #EB0000;
-  --color-sbb-red-125: #C60018;
-  --color-sbb-red-150: #A20013;
-  --color-sbb-red-50: #FFF1F1;
-  --color-sbb-red-100: #FFE1E1;
-  --radius-xl: 0.75rem;
-  --radius-3xl: 1.5rem;
-}
+@import 'tailwindcss';
+@import 'leaflet/dist/leaflet.css';
 
 /* Base styles */
 * {
@@ -49,23 +39,23 @@ body {
 /* Firefox Scrollbar */
 * {
   scrollbar-width: thin;
-  scrollbar-color: #EC0000 #F6F6F6;
+  scrollbar-color: #a5061c #f6f6f6;
 }
 
 /* Focus Styles - SBB Accessibility */
 :focus-visible {
-  outline: 2px solid #EC0000;
+  outline: 2px solid #a5061c;
   outline-offset: 2px;
 }
 
 /* Selection Colors */
 ::selection {
-  background-color: #EC0000;
+  background-color: #a5061c;
   color: white;
 }
 
 ::-moz-selection {
-  background-color: #EC0000;
+  background-color: #a5061c;
   color: white;
 }
 
@@ -111,51 +101,6 @@ body {
   animation: sbb-slide-up 0.4s ease-out;
 }
 
-/* ===== MODERN CARD STYLES ===== */
-
-/* Base card style - modern, clean design */
-.sbb-card {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  border: 1px solid rgb(243 244 246);
-  padding: 1.5rem;
-  transition: all 0.2s;
-}
-
-.sbb-card:hover {
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-}
-
-/* Card with subtle hover lift effect */
-.sbb-card-hover {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-  border: 1px solid rgb(243 244 246);
-  padding: 1.5rem;
-  transition: all 0.2s;
-}
-
-.sbb-card-hover:hover {
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  transform: translateY(-0.25rem);
-}
-
-/* Compact card variant */
-.sbb-card-compact {
-  background-color: white;
-  border-radius: 0.75rem;
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  border: 1px solid rgb(243 244 246);
-  padding: 1rem;
-  transition: all 0.2s;
-}
-
-.sbb-card-compact:hover {
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-}
-
 /* ===== ACCESSIBILITY UTILITIES ===== */
 
 /* Screen Reader Only - Visually hidden but accessible to screen readers */
@@ -191,7 +136,7 @@ body {
   left: 0;
   z-index: 9999;
   padding: 1rem 1.5rem;
-  background-color: #EC0000;
+  background-color: #a5061c;
   color: white;
   font-weight: 700;
   text-decoration: none;
@@ -211,7 +156,7 @@ a:focus-visible,
 input:focus-visible,
 textarea:focus-visible,
 select:focus-visible {
-  outline: 3px solid #EC0000;
+  outline: 3px solid #a5061c;
   outline-offset: 2px;
   box-shadow: 0 0 0 4px rgba(235, 0, 0, 0.1);
 }
@@ -234,7 +179,7 @@ select:focus-visible {
     outline-width: 3px;
     outline-offset: 3px;
   }
-  
+
   button,
   a {
     border: 2px solid currentColor;
@@ -242,21 +187,21 @@ select:focus-visible {
 }
 
 /* Error state styling */
-[aria-invalid="true"] {
-  border-color: #EC0000 !important;
+[aria-invalid='true'] {
+  border-color: #a5061c !important;
   background-color: rgba(235, 0, 0, 0.05);
 }
 
 /* Disabled state - ensure sufficient contrast */
 [disabled],
-[aria-disabled="true"] {
+[aria-disabled='true'] {
   opacity: 0.6;
   cursor: not-allowed;
   filter: grayscale(50%);
 }
 
 /* Loading/Busy state */
-[aria-busy="true"] {
+[aria-busy='true'] {
   cursor: wait;
   opacity: 0.7;
 }

@@ -12,8 +12,6 @@ export default {
         // SBB Primary Brand Colors
         sbb: {
           red: '#A5061C',
-          'red-125': '#C60018',
-          'red-150': '#A20013',
         },
         // SBB Grayscale Palette
         milk: '#F6F6F6',
@@ -39,7 +37,7 @@ export default {
           300: '#FFA0A0',
           400: '#FF6B6B',
           500: '#EB0000',
-          600: '#C60018',
+          600: '#A20013',
           700: '#A20013',
           800: '#7A0010',
           900: '#5C000C',
@@ -88,7 +86,7 @@ export default {
           300: '#FFA0A0',
           400: '#FF6B6B',
           500: '#EB0000',
-          600: '#C60018',
+          600: '#A20013',
           700: '#A20013',
           800: '#7A0010',
           900: '#5C000C',

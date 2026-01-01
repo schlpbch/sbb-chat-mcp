@@ -42,8 +42,8 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
             onClick={() => setSelectedCategory(null)}
             className={`px-4 py-2 rounded-lg font-medium transition-all ${
               selectedCategory === null
-                ? 'bg-[#EC0000] text-white shadow-md'
-                : 'bg-white text-gray-700 border border-gray-200 hover:border-[#EC0000]'
+                ? 'bg-[#A20013] text-white shadow-md'
+                : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
             }`}
             type="button"
             aria-pressed={selectedCategory === null}
@@ -57,8 +57,8 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
               onClick={() => setSelectedCategory(category.id)}
               className={`px-4 py-2 rounded-lg font-medium transition-all ${
                 selectedCategory === category.id
-                  ? 'bg-[#EC0000] text-white shadow-md'
-                  : 'bg-white text-gray-700 border border-gray-200 hover:border-[#EC0000]'
+                  ? 'bg-[#A20013] text-white shadow-md'
+                  : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
               }`}
               type="button"
               aria-pressed={selectedCategory === category.id}

@@ -95,16 +95,29 @@ export default function LandingPage() {
               <span className="mx-2">•</span>
               <a
                 href="/privacy"
-                className="hover:text-[#EC0000] transition-colors"
+                className="hover:text-[#A20013] transition-colors"
               >
                 {t.landing.footer.privacy}
               </a>
               <span className="mx-2">•</span>
               <a
                 href="/terms"
-                className="hover:text-[#EC0000] transition-colors"
+                className="hover:text-[#A20013] transition-colors"
               >
                 {t.landing.footer.terms}
+              </a>
+            </p>
+          </div>
+          <div className="text-center">
+            <p className="text-sm text-gray-600">
+              built in Switzerland by{' '}
+              <a
+                href="https://linkedin.com/in/andreas-schlapbach/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-[#A20013] transition-colors"
+              >
+                Andreas Schlapbach
               </a>
             </p>
           </div>

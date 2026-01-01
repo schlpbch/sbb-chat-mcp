@@ -1,6 +1,6 @@
 {
-  "name": "Swiss Travel Companion - Swiss Travel Companion",
-  "short_name": "SBB Chat",
+  "name": "Swiss Travel Companion",
+  "short_name": "Swiss Travel Companion",
   "description": "Your intelligent Swiss travel companion for trains, weather, and journey planning",
   "start_url": "/",
   "display": "standalone",

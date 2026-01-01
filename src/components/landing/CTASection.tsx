@@ -15,7 +15,7 @@ export default function CTASection() {
         </p>
         <button
           onClick={() => router.push('/chat')}
-          className="bg-white text-[#EC0000] px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg"
+          className="bg-white text-[#A20013] px-8 py-4 rounded-xl text-lg font-semibold hover:bg-gray-100 transition-colors shadow-lg"
         >
           Start Your Journey
         </button>

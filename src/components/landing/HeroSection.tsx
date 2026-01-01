@@ -9,7 +9,10 @@ interface HeroSectionProps {
   onHelpClick?: () => void;
 }
 
-export default function HeroSection({ language = 'en', onHelpClick }: HeroSectionProps) {
+export default function HeroSection({
+  language = 'en',
+  onHelpClick,
+}: HeroSectionProps) {
   const router = useRouter();
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
@@ -69,7 +72,7 @@ export default function HeroSection({ language = 'en', onHelpClick }: HeroSectio
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
           <Link
             href="/chat?q=What+can+you+do+for+me+today%3F&autoSend=true"
-            className="inline-block bg-[#EC0000] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#D60000] transition-colors shadow-lg"
+            className="inline-block bg-[#A20013] text-white px-8 py-4 rounded-lg font-semibold text-lg hover:bg-[#D60000] transition-colors shadow-lg"
           >
             {t.landing.hero.cta}
           </Link>
@@ -77,7 +80,7 @@ export default function HeroSection({ language = 'en', onHelpClick }: HeroSectio
           {onHelpClick && (
             <button
               onClick={onHelpClick}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-lg bg-white border-2 border-gray-300 text-gray-700 hover:border-[#EC0000] hover:text-[#EC0000] transition-all shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold text-lg bg-white border-2 border-gray-300 text-gray-700 hover:border-[#A20013] hover:text-[#A20013] transition-all shadow-md"
             >
               <svg
                 className="w-5 h-5"
@@ -107,7 +110,7 @@ export default function HeroSection({ language = 'en', onHelpClick }: HeroSectio
               {recentSearches.slice(0, 3).map((search, index) => (
                 <div
                   key={index}
-                  className="group text-sm px-4 py-2 bg-white border border-gray-200 hover:border-[#EC0000] hover:shadow-md rounded-full transition-all duration-200 flex items-center gap-2 cursor-pointer"
+                  className="group text-sm px-4 py-2 bg-white border border-gray-200 hover:border-[#A20013] hover:shadow-md rounded-full transition-all duration-200 flex items-center gap-2 cursor-pointer"
                   onClick={() => handleRecentSearchClick(search)}
                 >
                   <span className="text-gray-400" aria-hidden="true">
@@ -118,7 +121,7 @@ export default function HeroSection({ language = 'en', onHelpClick }: HeroSectio
                   </span>
                   <button
                     onClick={(e) => handleRemoveSearch(index, e)}
-                    className="ml-1 text-gray-400 hover:text-[#EC0000] opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="ml-1 text-gray-400 hover:text-[#A20013] opacity-0 group-hover:opacity-100 transition-opacity"
                     aria-label={`Remove search: ${search}`}
                     type="button"
                   >

@@ -12,13 +12,10 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_BASE_URL || 'https://sbb-chat-mcp.web.app'
-  ),
-  title: 'Swiss Travel Companion',
+  title: 'SBB Chat MCP - Swiss Travel Companion',
   description:
     'Your intelligent companion for Swiss public transport journeys, weather, and station information',
-  applicationName: 'Swiss Travel Companion',
+  applicationName: 'SBB Chat MCP',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
@@ -34,21 +31,21 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    siteName: 'Swiss Travel Companion',
-    title: 'Swiss Travel Companion',
+    siteName: 'SBB Chat MCP',
+    title: 'SBB Chat MCP - Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
     images: ['/SBB-chat-MCP.png'],
   },
   twitter: {
     card: 'summary',
-    title: 'Swiss Travel Companion',
+    title: 'SBB Chat MCP',
     description: 'Your intelligent companion for Swiss public transport',
     images: ['/SBB-chat-MCP.png'],
   },
 };
 
 export const viewport: Viewport = {
-  themeColor: '#EC0000',
+  themeColor: '#A5061C',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -61,7 +58,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={outfit.variable} suppressHydrationWarning>
+    <html lang="en" className={outfit.variable}>
       <head>
         <link rel="apple-touch-icon" href="/SBB-chat-MCP.png" />
         <meta name="mobile-web-app-capable" content="yes" />
@@ -69,7 +66,7 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="SBB Chat" />
       </head>
-      <body className="antialiased font-sans" suppressHydrationWarning>
+      <body className="antialiased font-sans">
         <SettingsProvider>
           <MapProvider>
             <ToastProvider>{children}</ToastProvider>
