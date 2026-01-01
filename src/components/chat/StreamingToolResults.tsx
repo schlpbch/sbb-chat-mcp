@@ -264,11 +264,24 @@ export default function StreamingToolResults({
             ) : null;
           }
 
-          // Departures/Arrivals
-          if (toolName === 'getPlaceEvents')
-            return result ? (
-              <BoardCard key={idx} data={result as any} language={language} />
-            ) : null;
+          // Real-time board (departures/arrivals)
+          if (toolName === 'getPlaceEvents') {
+            if (!result) return null;
+
+            // Extract eventType from parameters to pass to the card
+            const eventType =
+              (toolCall.params as any)?.eventType || 'departures';
+
+            // Enhance result with eventType from parameters
+            const enhancedResult = {
+              ...result,
+              type: eventType, // Add type field from parameters
+            };
+
+            return (
+              <BoardCard key={idx} data={enhancedResult} language={language} />
+            );
+          }
 
           // Eco comparison
           if (toolName === 'getEcoComparison')
