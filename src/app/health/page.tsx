@@ -131,7 +131,7 @@ export default function HealthPage() {
       case 'unhealthy':
         return 'text-red-600';
       default:
-        return 'text-gray-600';
+        return 'text-gray-600 dark:text-gray-400';
     }
   };
 
@@ -144,7 +144,7 @@ export default function HealthPage() {
       case 'unhealthy':
         return 'bg-red-100';
       default:
-        return 'bg-gray-100';
+        return 'bg-gray-100 dark:bg-gray-800';
     }
   };
 
@@ -218,7 +218,7 @@ export default function HealthPage() {
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
+    <div className="flex flex-col min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <Navbar
         language={language}
         onLanguageChange={setLanguage}
@@ -235,10 +235,10 @@ export default function HealthPage() {
         <div className="max-w-5xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">
               System Health
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 dark:text-gray-300 transition-colors">
               Real-time monitoring of Swiss Travel Companion services
             </p>
           </div>
@@ -246,17 +246,17 @@ export default function HealthPage() {
           {/* Overall Status Card */}
           {loading ? (
             <div className="bg-white rounded-2xl shadow-lg p-8 mb-6 animate-pulse">
-              <div className="h-24 bg-gray-200 rounded"></div>
+              <div className="h-24 bg-gray-200 dark:bg-gray-700 rounded transition-colors"></div>
             </div>
           ) : healthData ? (
             <div
               className={`rounded-2xl shadow-lg p-8 mb-6 border-2 ${
                 healthData.status === 'healthy'
-                  ? 'border-green-500 bg-green-50'
+                  ? 'border-sbb-red bg-red-50 dark:bg-red-900/10'
                   : healthData.status === 'degraded'
                   ? 'border-yellow-500 bg-yellow-50'
-                  : 'border-red-500 bg-red-50'
-              }`}
+                  : 'border-red-900 bg-red-100 dark:bg-red-900/30'
+              } transition-colors duration-300`}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center space-x-4">
@@ -264,21 +264,21 @@ export default function HealthPage() {
                     {getStatusIcon(healthData.status)}
                   </div>
                   <div>
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <h2 className="text-2xl font-bold text-gray-900 dark:text-white transition-colors">
                       System Status:{' '}
                       <span className={getStatusColor(healthData.status)}>
                         {healthData.status.toUpperCase()}
                       </span>
                     </h2>
-                    <p className="text-sm text-gray-600 mt-1">
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mt-1 transition-colors">
                       Last checked:{' '}
                       {new Date(healthData.timestamp).toLocaleString()}
                     </p>
                   </div>
                 </div>
                 <div className="flex items-center space-x-2">
-                  <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
-                  <span className="text-sm font-medium text-gray-700">
+                  <div className="w-3 h-3 bg-sbb-red rounded-full animate-pulse"></div>
+                  <span className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors">
                     Live
                   </span>
                 </div>
@@ -288,8 +288,8 @@ export default function HealthPage() {
 
           {/* MCP Server Details */}
           {healthData && (
-            <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-              <div className="bg-linear-to-r from-blue-600 to-blue-700 px-6 py-4">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg overflow-hidden transition-colors duration-300">
+              <div className="bg-linear-to-r from-sbb-red to-sbb-red-dark px-6 py-4 transition-colors">
                 <h3 className="text-xl font-bold text-white flex items-center space-x-2">
                   <svg
                     className="w-6 h-6"
@@ -310,8 +310,8 @@ export default function HealthPage() {
 
               <div className="p-6 space-y-6">
                 {/* Status Row */}
-                <div className="flex items-center justify-between pb-4 border-b border-gray-200">
-                  <span className="text-sm font-medium text-gray-600">
+                <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700 transition-colors">
+                  <span className="text-sm font-medium text-gray-600 dark:text-gray-400 transition-colors">
                     Connection Status
                   </span>
                   <div className="flex items-center space-x-2">
@@ -338,7 +338,7 @@ export default function HealthPage() {
                         Tools
                       </span>
                       <svg
-                        className="w-5 h-5 text-blue-500"
+                        className="w-5 h-5 text-sbb-red"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -351,7 +351,7 @@ export default function HealthPage() {
                         />
                       </svg>
                     </div>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2 transition-colors">
                       {healthData.checks.mcp.tools ?? '—'}
                     </p>
                   </div>
@@ -362,7 +362,7 @@ export default function HealthPage() {
                         Prompts
                       </span>
                       <svg
-                        className="w-5 h-5 text-purple-500"
+                        className="w-5 h-5 text-sbb-red"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -375,7 +375,7 @@ export default function HealthPage() {
                         />
                       </svg>
                     </div>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2 transition-colors">
                       {healthData.checks.mcp.prompts ?? '—'}
                     </p>
                   </div>
@@ -399,7 +399,7 @@ export default function HealthPage() {
                         />
                       </svg>
                     </div>
-                    <p className="text-3xl font-bold text-gray-900 mt-2">
+                    <p className="text-3xl font-bold text-gray-900 dark:text-white mt-2 transition-colors">
                       {healthData.checks.mcp.resources ?? '—'}
                     </p>
                   </div>
@@ -407,11 +407,11 @@ export default function HealthPage() {
 
                 {/* Response Time */}
                 {healthData.checks.mcp.responseTime && (
-                  <div className="flex items-center justify-between pb-4 border-b border-gray-200">
-                    <span className="text-sm font-medium text-gray-600">
+                  <div className="flex items-center justify-between pb-4 border-b border-gray-200 dark:border-gray-700 transition-colors">
+                    <span className="text-sm font-medium text-gray-600 dark:text-gray-400 transition-colors">
                       Response Time
                     </span>
-                    <span className="text-lg font-bold text-gray-900">
+                    <span className="text-lg font-bold text-gray-900 dark:text-white transition-colors">
                       {healthData.checks.mcp.responseTime}ms
                     </span>
                   </div>
@@ -419,11 +419,11 @@ export default function HealthPage() {
 
                 {/* Server URL */}
                 {healthData.checks.mcp.serverUrl && (
-                  <div className="bg-gray-50 rounded-xl p-4">
-                    <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                  <div className="bg-gray-50 dark:bg-gray-700/50 rounded-xl p-4 transition-colors">
+                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wide transition-colors">
                       Server URL
                     </span>
-                    <code className="block mt-2 text-sm text-gray-900 font-mono break-all">
+                    <code className="block mt-2 text-sm text-gray-900 dark:text-gray-200 font-mono break-all transition-colors">
                       {healthData.checks.mcp.serverUrl}
                     </code>
                   </div>
@@ -431,7 +431,7 @@ export default function HealthPage() {
 
                 {/* Error Message */}
                 {healthData.checks.mcp.error && (
-                  <div className="bg-red-50 border border-red-200 rounded-xl p-4">
+                  <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl p-4 transition-colors">
                     <div className="flex items-start space-x-3">
                       <svg
                         className="w-5 h-5 text-red-600 mt-0.5"
@@ -447,10 +447,10 @@ export default function HealthPage() {
                         />
                       </svg>
                       <div>
-                        <h4 className="text-sm font-semibold text-red-800">
+                        <h4 className="text-sm font-semibold text-red-800 dark:text-red-300 transition-colors">
                           Error
                         </h4>
-                        <p className="text-sm text-red-700 mt-1">
+                        <p className="text-sm text-red-700 dark:text-red-200 mt-1 transition-colors">
                           {healthData.checks.mcp.error}
                         </p>
                       </div>
@@ -462,10 +462,10 @@ export default function HealthPage() {
                 {healthData.checks.mcp.toolsList &&
                   healthData.checks.mcp.toolsList.length > 0 && (
                     <details className="group">
-                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-blue-600 flex items-center justify-between p-3 bg-blue-50 rounded-lg border border-blue-200">
+                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-sbb-red dark:hover:text-red-400 flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-900/50 transition-colors">
                         <div className="flex items-center space-x-2">
                           <svg
-                            className="w-5 h-5 text-blue-600"
+                            className="w-5 h-5 text-sbb-red"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -517,10 +517,10 @@ export default function HealthPage() {
                               </div>
                               {tool.inputSchema && (
                                 <details className="mt-2">
-                                  <summary className="text-xs text-blue-600 cursor-pointer hover:underline">
+                                  <summary className="text-xs text-sbb-red dark:text-red-400 cursor-pointer hover:underline transition-colors">
                                     View Schema
                                   </summary>
-                                  <pre className="mt-2 text-xs bg-gray-100 p-2 rounded overflow-x-auto">
+                                  <pre className="mt-2 text-xs bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 p-2 rounded overflow-x-auto border border-gray-200 dark:border-gray-700 transition-colors">
                                     {JSON.stringify(tool.inputSchema, null, 2)}
                                   </pre>
                                 </details>
@@ -536,10 +536,10 @@ export default function HealthPage() {
                 {healthData.checks.mcp.promptsList &&
                   healthData.checks.mcp.promptsList.length > 0 && (
                     <details className="group">
-                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-purple-600 flex items-center justify-between p-3 bg-purple-50 rounded-lg border border-purple-200">
+                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-sbb-red dark:hover:text-red-400 flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-900/50 transition-colors">
                         <div className="flex items-center space-x-2">
                           <svg
-                            className="w-5 h-5 text-purple-600"
+                            className="w-5 h-5 text-sbb-red"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -575,9 +575,9 @@ export default function HealthPage() {
                           (prompt: any, idx: number) => (
                             <div
                               key={idx}
-                              className="p-4 bg-gray-50 rounded-lg border border-gray-200"
+                              className="p-4 bg-gray-50 dark:bg-gray-700/50 rounded-lg border border-gray-200 dark:border-gray-700 transition-colors"
                             >
-                              <h5 className="font-semibold text-gray-900">
+                              <h5 className="font-semibold text-gray-900 dark:text-gray-200 transition-colors">
                                 {prompt.name}
                               </h5>
                               {prompt.description && (
@@ -588,7 +588,7 @@ export default function HealthPage() {
                               {prompt.arguments &&
                                 prompt.arguments.length > 0 && (
                                   <div className="mt-2">
-                                    <span className="text-xs font-medium text-gray-500">
+                                    <span className="text-xs font-medium text-gray-500 dark:text-gray-400 transition-colors">
                                       Arguments:
                                     </span>
                                     <div className="mt-1 flex flex-wrap gap-2">
@@ -596,7 +596,7 @@ export default function HealthPage() {
                                         (arg: any, argIdx: number) => (
                                           <span
                                             key={argIdx}
-                                            className="inline-flex items-center px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded"
+                                            className="inline-flex items-center px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 text-xs rounded transition-colors"
                                           >
                                             {arg.name}
                                             {arg.required && '*'}
@@ -617,10 +617,10 @@ export default function HealthPage() {
                 {healthData.checks.mcp.resourcesList &&
                   healthData.checks.mcp.resourcesList.length > 0 && (
                     <details className="group">
-                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-green-600 flex items-center justify-between p-3 bg-green-50 rounded-lg border border-green-200">
+                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-sbb-red dark:hover:text-red-400 flex items-center justify-between p-3 bg-red-50 dark:bg-red-900/20 rounded-lg border border-red-200 dark:border-red-900/50 transition-colors">
                         <div className="flex items-center space-x-2">
                           <svg
-                            className="w-5 h-5 text-green-600"
+                            className="w-5 h-5 text-sbb-red"
                             fill="none"
                             stroke="currentColor"
                             viewBox="0 0 24 24"
@@ -669,14 +669,14 @@ export default function HealthPage() {
                                     </p>
                                   )}
                                   {resource.uri && (
-                                    <code className="block mt-2 text-xs text-gray-600 font-mono">
+                                    <code className="block mt-2 text-xs text-gray-600 dark:text-gray-400 font-mono transition-colors">
                                       {resource.uri}
                                     </code>
                                   )}
                                 </div>
                               </div>
                               {resource.mimeType && (
-                                <span className="inline-block mt-2 px-2 py-1 bg-green-100 text-green-800 text-xs rounded">
+                                <span className="inline-block mt-2 px-2 py-1 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 text-xs rounded transition-colors">
                                   {resource.mimeType}
                                 </span>
                               )}
@@ -691,7 +691,7 @@ export default function HealthPage() {
                 {healthData.checks.mcp.components &&
                   Object.keys(healthData.checks.mcp.components).length > 0 && (
                     <details className="group">
-                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 hover:text-blue-600 flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                      <summary className="cursor-pointer text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors">
                         <span>
                           Backend Components (
                           {Object.keys(healthData.checks.mcp.components).length}
@@ -716,9 +716,9 @@ export default function HealthPage() {
                           ([key, value]: [string, any]) => (
                             <div
                               key={key}
-                              className="flex items-center justify-between p-3 bg-gray-50 rounded-lg"
+                              className="flex items-center justify-between p-3 bg-gray-50 dark:bg-gray-700/50 rounded-lg transition-colors"
                             >
-                              <span className="text-sm font-medium text-gray-700">
+                              <span className="text-sm font-medium text-gray-700 dark:text-gray-300 transition-colors">
                                 {key}
                               </span>
                               <span
@@ -742,7 +742,7 @@ export default function HealthPage() {
           <div className="mt-8 flex justify-center">
             <button
               onClick={() => window.location.reload()}
-              className="px-6 py-3 bg-linear-to-r from-blue-600 to-blue-700 text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-blue-700 hover:to-blue-800 transition-all duration-200 flex items-center space-x-2"
+              className="px-6 py-3 bg-linear-to-r from-sbb-red to-sbb-red-dark text-white rounded-xl font-semibold shadow-lg hover:shadow-xl hover:from-sbb-red-dark hover:to-red-900 transition-all duration-200 flex items-center space-x-2"
             >
               <svg
                 className="w-5 h-5"

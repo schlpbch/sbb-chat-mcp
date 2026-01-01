@@ -91,7 +91,7 @@ export default function TTSControls({
       onClick={handleClick}
       className={`inline-flex items-center gap-1.5 px-2 py-1 rounded-lg text-xs font-medium transition-all ${
         isCurrentMessage && state === 'playing'
-          ? 'bg-sbb-red/10 text-sbb-red dark:bg-sbb-red/20 dark:text-sbb-red'
+          ? 'bg-sbb-red/10 text-sbb-red dark:bg-sbb-red/20 dark:text-red-400'
           : isCurrentMessage && state === 'error'
             ? 'bg-red-50 text-red-600 dark:bg-red-900/20 dark:text-red-400'
             : 'bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-600'

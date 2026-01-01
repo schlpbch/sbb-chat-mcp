@@ -8,7 +8,7 @@ export default function FeedbackButton({ onClick }: FeedbackButtonProps) {
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-6 left-6 z-40 w-14 h-14 bg-blue-600 text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 flex items-center justify-center group"
+      className="fixed bottom-6 left-6 z-40 w-14 h-14 bg-sbb-red text-white rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all duration-200 flex items-center justify-center group"
       aria-label="Send Feedback"
       title="Send us your feedback"
     >

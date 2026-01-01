@@ -116,7 +116,7 @@ export default function ToolTestPage() {
  if (loading) {
  return (
  <div className="flex items-center justify-center h-screen bg-gray-50">
- <div className="text-sm text-gray-600">
+ <div className="text-sm text-gray-600 dark:text-gray-400">
  Loading...
  </div>
  </div>
@@ -127,7 +127,7 @@ export default function ToolTestPage() {
  return (
  <div className="flex items-center justify-center h-screen bg-gray-50">
  <div className="text-center">
- <p className="text-red-600 mb-4">Tool not found</p>
+ <p className="text-red-600 dark:text-red-400 mb-4">Tool not found</p>
  <button
  onClick={() => router.push('/mcp-test')}
  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -140,7 +140,7 @@ export default function ToolTestPage() {
  }
 
  return (
-  <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100">
+  <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
  <Navbar
  language={language}
  onLanguageChange={setLanguage}
@@ -157,23 +157,23 @@ export default function ToolTestPage() {
  {/* Header */}
  <div className="mb-4">
  <button
- onClick={() => router.push('/mcp-test')}
- className="text-sm text-blue-600 hover:underline mb-2"
+  onClick={() => router.push('/mcp-test')}
+  className="text-sm text-blue-600 hover:underline mb-2 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
  >
  ← Back to MCP Inspector
  </button>
- <h1 className="text-2xl font-bold text-gray-900 mb-1">
+  <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1 transition-colors">
  {tool.name}
  </h1>
- <p className="text-sm text-gray-600">
+  <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">
  {tool.description}
  </p>
  </div>
 
  <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
- {/* Input Form */}
- <div className="bg-white rounded border border-gray-200 p-4">
- <h2 className="text-lg font-semibold text-gray-900 mb-3">
+  {/* Input Form */}
+  <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 transition-colors">
+  <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors">
  Input Parameters
  </h2>
 
@@ -182,13 +182,13 @@ export default function ToolTestPage() {
  ([key, schema]: [string, any]) => (
  <div key={key}>
  <label
- htmlFor={`input-${key}`}
- className="block text-sm font-medium text-gray-700 mb-1"
+  htmlFor={`input-${key}`}
+  className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors"
  >
  {key}
  {tool.inputSchema.required?.includes(key) && (
  <span
- className="text-red-600 ml-1"
+  className="text-red-600 dark:text-red-400 ml-1 transition-colors"
  aria-label="required"
  >
  *
@@ -210,12 +210,12 @@ export default function ToolTestPage() {
  aria-describedby={
  schema.description ? `desc-${key}` : undefined
  }
- className="w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+  className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
  />
  {schema.description && (
  <p
  id={`desc-${key}`}
- className="text-xs text-gray-500 mt-1"
+  className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors"
  >
  {schema.description}
  </p>
@@ -230,16 +230,16 @@ export default function ToolTestPage() {
  disabled={executing}
  aria-busy={executing}
  aria-label="Execute tool with provided parameters"
- className="w-full mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+  className="w-full mt-4 px-4 py-2 bg-sbb-red hover:bg-sbb-red-dark text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed transition-all focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 shadow-md hover:shadow-lg"
  >
  {executing ? 'Executing...' : 'Execute Tool'}
  </button>
  </div>
 
- {/* Results */}
- <div className="bg-white rounded border border-gray-200 p-4">
+  {/* Results */}
+  <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 transition-colors">
  <div className="flex items-center justify-between mb-3">
- <h2 className="text-lg font-semibold text-gray-900">
+  <h2 className="text-lg font-semibold text-gray-900 dark:text-white transition-colors">
  Results
  </h2>
  {result && (
@@ -256,7 +256,7 @@ export default function ToolTestPage() {
  btn.textContent = originalText || 'Copy JSON';
  }, 2000);
  }}
- className="px-3 py-1 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors"
+  className="px-3 py-1 text-xs bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors"
  aria-label="Copy JSON result to clipboard"
  >
  Copy JSON
@@ -265,32 +265,32 @@ export default function ToolTestPage() {
  </div>
 
  {error && (
- <div className="bg-red-50 border-l-4 border-red-500 text-red-700 px-3 py-2 text-sm rounded mb-3">
+  <div className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-200 px-3 py-2 text-sm rounded mb-3 transition-colors">
  {error}
  </div>
  )}
 
  {result ? (
- <div className="bg-gray-50 p-3 rounded border border-gray-200 overflow-auto max-h-96">
- <pre className="text-xs text-gray-800">
+  <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-auto max-h-96 transition-colors">
+  <pre className="text-xs text-gray-800 dark:text-gray-200 font-mono">
  {JSON.stringify(result, null, 2)}
  </pre>
  </div>
  ) : (
- <div className="text-center py-8 text-sm text-gray-500">
+  <div className="text-center py-8 text-sm text-gray-500 dark:text-gray-400 transition-colors">
  Execute the tool to see results
  </div>
  )}
  </div>
  </div>
 
- {/* Schema Info */}
- <details className="mt-4 bg-white rounded border border-gray-200 p-4">
- <summary className="text-sm font-semibold text-gray-700 cursor-pointer hover:text-blue-600">
+  {/* Schema Info */}
+  <details className="mt-4 bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 transition-colors">
+  <summary className="text-sm font-semibold text-gray-700 dark:text-gray-300 cursor-pointer hover:text-blue-600 dark:hover:text-blue-400 transition-colors">
  View Full Schema
  </summary>
- <div className="mt-3 bg-gray-50 p-3 rounded border border-gray-200">
- <pre className="text-xs text-gray-800 overflow-x-auto">
+  <div className="mt-3 bg-gray-50 dark:bg-gray-900 p-3 rounded border border-gray-200 dark:border-gray-700 transition-colors">
+  <pre className="text-xs text-gray-800 dark:text-gray-200 overflow-x-auto font-mono">
  {JSON.stringify(tool.inputSchema, null, 2)}
  </pre>
  </div>

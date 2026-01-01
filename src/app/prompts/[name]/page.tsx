@@ -117,17 +117,17 @@ export default function PromptTestPage() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
-        <div className="text-sm text-gray-600">Loading...</div>
+      <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
+        <div className="text-sm text-gray-600 dark:text-gray-400 transition-colors">Loading...</div>
       </div>
     );
   }
 
   if (!prompt) {
     return (
-      <div className="flex items-center justify-center h-screen bg-gray-50">
+      <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
         <div className="text-center">
-          <p className="text-red-600 mb-4">Prompt not found</p>
+          <p className="text-red-600 dark:text-red-400 mb-4 transition-colors">Prompt not found</p>
           <button
             onClick={() => router.push('/mcp-test')}
             className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -140,7 +140,7 @@ export default function PromptTestPage() {
   }
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <Navbar
         language={language}
         onLanguageChange={setLanguage}
@@ -158,31 +158,31 @@ export default function PromptTestPage() {
           <div className="mb-4">
             <button
               onClick={() => router.push('/mcp-test')}
-              className="text-sm text-blue-600 hover:underline mb-2"
+              className="text-sm text-blue-600 hover:underline mb-2 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
               aria-label="Back to MCP Inspector"
             >
               ← Back to MCP Inspector
             </button>
             <h1
-              className="text-2xl font-bold text-gray-900 mb-1"
+              className="text-2xl font-bold text-gray-900 dark:text-white mb-1 transition-colors"
               id="prompt-title"
             >
               {promptName}
             </h1>
             {prompt.description && (
-              <p className="text-sm text-gray-600">{prompt.description}</p>
+              <p className="text-sm text-gray-600 dark:text-gray-300 transition-colors">{prompt.description}</p>
             )}
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
             {/* Input Form */}
             <section
-              className="bg-white rounded border border-gray-200 p-4"
+              className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 transition-colors"
               aria-labelledby="arguments-heading"
             >
               <h2
                 id="arguments-heading"
-                className="text-lg font-semibold text-gray-900 mb-3"
+                className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors"
               >
                 Arguments
               </h2>
@@ -199,11 +199,11 @@ export default function PromptTestPage() {
                     <div key={arg.name}>
                       <label
                         htmlFor={`arg-${arg.name}`}
-                        className="block text-sm font-medium text-gray-700 mb-1"
+                        className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors"
                       >
                         {arg.name}
                         {arg.required && (
-                          <span className="text-red-600 ml-1">*</span>
+                          <span className="text-red-600 dark:text-red-400 ml-1 transition-colors">*</span>
                         )}
                       </label>
                       <input
@@ -220,12 +220,12 @@ export default function PromptTestPage() {
                           handleInputChange(arg.name, e.target.value)
                         }
                         placeholder={arg.description || arg.name}
-                        className="w-full px-3 py-2 text-sm border border-gray-300 rounded bg-white text-gray-900 focus:ring-2 focus:ring-blue-500 outline-none"
+                        className="w-full px-3 py-2 text-sm border border-gray-300 dark:border-gray-600 rounded bg-white dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 outline-none transition-colors"
                       />
                       {arg.description && (
                         <p
                           id={`arg-${arg.name}-desc`}
-                          className="text-xs text-gray-500 mt-1"
+                          className="text-xs text-gray-500 dark:text-gray-400 mt-1 transition-colors"
                         >
                           {arg.description}
                         </p>
@@ -235,7 +235,7 @@ export default function PromptTestPage() {
                   <button
                     type="submit"
                     disabled={executing}
-                    className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                    className="w-full mt-4 px-4 py-2 bg-sbb-red hover:bg-sbb-red-dark text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed transition-all focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 shadow-md hover:shadow-lg"
                     aria-busy={executing}
                   >
                     {executing ? 'Executing...' : 'Execute Prompt'}
@@ -243,11 +243,11 @@ export default function PromptTestPage() {
                 </form>
               ) : (
                 <div>
-                  <p className="text-sm text-gray-500">No arguments required</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 transition-colors">No arguments required</p>
                   <button
                     onClick={executePrompt}
                     disabled={executing}
-                    className="w-full mt-4 px-4 py-2 bg-purple-600 text-white rounded hover:bg-purple-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+                    className="w-full mt-4 px-4 py-2 bg-sbb-red hover:bg-sbb-red-dark text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed transition-all focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:focus:ring-offset-gray-900 shadow-md hover:shadow-lg"
                     aria-busy={executing}
                   >
                     {executing ? 'Executing...' : 'Execute Prompt'}
@@ -258,14 +258,14 @@ export default function PromptTestPage() {
 
             {/* Results */}
             <section
-              className="bg-white rounded border border-gray-200 p-4"
+              className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 transition-colors"
               aria-labelledby="results-heading"
               aria-live="polite"
               aria-atomic="true"
             >
               <h2
                 id="results-heading"
-                className="text-lg font-semibold text-gray-900 mb-3"
+                className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors"
               >
                 Results
               </h2>
@@ -274,20 +274,20 @@ export default function PromptTestPage() {
                 <div
                   role="alert"
                   aria-live="assertive"
-                  className="bg-red-50 border-l-4 border-red-500 text-red-700 px-3 py-2 text-sm rounded mb-3"
+                  className="bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-200 px-3 py-2 text-sm rounded mb-3 transition-colors"
                 >
                   {error}
                 </div>
               )}
 
               {result ? (
-                <div className="bg-gray-50 p-3 rounded border border-gray-200 overflow-auto max-h-96">
-                  <pre className="text-xs text-gray-800">
+                <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-auto max-h-96 transition-colors">
+                  <pre className="text-xs text-gray-800 dark:text-gray-200 font-mono">
                     {JSON.stringify(result, null, 2)}
                   </pre>
                 </div>
               ) : (
-                <div className="text-center py-8 text-sm text-gray-500">
+                <div className="text-center py-8 text-sm text-gray-500 dark:text-gray-400 transition-colors">
                   Execute the prompt to see results
                 </div>
               )}

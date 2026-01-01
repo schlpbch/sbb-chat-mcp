@@ -140,7 +140,7 @@ export default function ChatInput({ onSend, disabled }: ChatInputProps) {
                 className={`p-2 rounded-xl transition-all duration-200 ${
                   isRecording
                     ? 'bg-sbb-red text-white animate-pulse shadow-lg'
-                    : 'text-smoke dark:text-gray-400 hover:text-sbb-red dark:hover:text-sbb-red hover:bg-white dark:hover:bg-gray-600 active:scale-90'
+                    : 'text-smoke dark:text-red-400 hover:text-sbb-red dark:hover:text-sbb-red hover:bg-white dark:hover:bg-gray-600 active:scale-90'
                 }`}
                 aria-label={
                   isRecording ? 'Stop recording' : 'Start voice input'

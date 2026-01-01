@@ -127,7 +127,7 @@ export default function ResourceTestPage() {
  if (loading) {
  return (
  <div className="flex items-center justify-center h-screen bg-gray-50">
- <div className="text-sm text-gray-600">
+ <div className="text-sm text-gray-600 dark:text-gray-400 transition-colors">
  Loading...
  </div>
  </div>
@@ -138,7 +138,7 @@ export default function ResourceTestPage() {
  return (
  <div className="flex items-center justify-center h-screen bg-gray-50">
  <div className="text-center">
- <p className="text-red-600 mb-4">Resource not found</p>
+ <p className="text-red-600 dark:text-red-400 mb-4 transition-colors">Resource not found</p>
  <button
  onClick={() => router.push('/mcp-test')}
  className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -151,7 +151,7 @@ export default function ResourceTestPage() {
  }
 
  return (
-  <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100">
+  <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
  <Navbar
  language={language}
  onLanguageChange={setLanguage}
@@ -169,18 +169,18 @@ export default function ResourceTestPage() {
  <div className="mb-4">
  <button
  onClick={() => router.push('/mcp-test')}
- className="text-sm text-blue-600 hover:underline mb-2"
+ className="text-sm text-blue-600 hover:underline mb-2 dark:text-blue-400 dark:hover:text-blue-300 transition-colors"
  >
  ← Back to MCP Inspector
  </button>
- <h1 className="text-2xl font-bold text-gray-900 mb-1">
+ <h1 className="text-2xl font-bold text-gray-900 dark:text-white mb-1 transition-colors">
  {resource.name}
  </h1>
- <code className="text-xs font-mono text-blue-600 bg-blue-50 px-2 py-1 rounded">
+ <code className="text-xs font-mono text-sbb-red bg-red-50 dark:text-red-300 dark:bg-red-900/30 px-2 py-1 rounded transition-colors">
  {resource.uri}
  </code>
  {resource.description && (
- <p className="text-sm text-gray-600 mt-2">
+ <p className="text-sm text-gray-600 dark:text-gray-300 mt-2 transition-colors">
  {resource.description}
  </p>
  )}
@@ -191,7 +191,7 @@ export default function ResourceTestPage() {
  <button
  onClick={fetchResource}
  disabled={fetching}
- className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors"
+ className="px-4 py-2 bg-sbb-red hover:bg-sbb-red-dark text-white rounded disabled:bg-gray-400 disabled:cursor-not-allowed transition-all shadow-md hover:shadow-lg"
  >
  {fetching ? 'Fetching...' : 'Fetch Resource'}
  </button>
@@ -199,7 +199,7 @@ export default function ResourceTestPage() {
 
  {/* Error */}
  {error && (
- <div className="mb-4 bg-red-50 border-l-4 border-red-500 text-red-700 px-4 py-3 rounded">
+ <div className="mb-4 bg-red-50 dark:bg-red-900/20 border-l-4 border-red-500 text-red-700 dark:text-red-200 px-4 py-3 rounded transition-colors">
  <h3 className="font-semibold mb-2">Error Details:</h3>
  <pre className="text-xs whitespace-pre-wrap font-mono overflow-x-auto">
  {error}
@@ -209,21 +209,21 @@ export default function ResourceTestPage() {
 
  {/* Content */}
  {content ? (
- <div className="bg-white rounded border border-gray-200 p-4">
- <h2 className="text-lg font-semibold text-gray-900 mb-3">
+ <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-4 transition-colors">
+ <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 transition-colors">
  Resource Content
  </h2>
- <div className="bg-gray-50 p-3 rounded border border-gray-200 overflow-auto max-h-96">
- <pre className="text-xs text-gray-800">
+ <div className="bg-gray-50 dark:bg-gray-900 p-3 rounded border border-gray-200 dark:border-gray-700 overflow-auto max-h-96 transition-colors">
+ <pre className="text-xs text-gray-800 dark:text-gray-200 font-mono">
  {JSON.stringify(content, null, 2)}
  </pre>
  </div>
  </div>
  ) : (
- <div className="bg-white rounded border border-gray-200 p-8 text-center">
- <p className="text-sm text-gray-500">
- Click "Fetch Resource" to load the content
- </p>
+ <div className="bg-white dark:bg-gray-800 rounded border border-gray-200 dark:border-gray-700 p-8 text-center transition-colors">
+          <p className="text-sm text-gray-500 dark:text-gray-400">
+            Preview of &quot;{content.length > 20 ? content.substring(0, 20) + '...' : content}&quot;
+          </p>
  </div>
  )}
  </div>

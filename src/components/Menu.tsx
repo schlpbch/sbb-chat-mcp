@@ -190,23 +190,23 @@ export default function Menu({
         aria-modal="true"
         aria-labelledby="menu-title"
         tabIndex={-1}
-        className={`fixed left-0 top-0 h-full w-80 bg-white border-r border-gray-200 shadow-2xl z-50 transform transition-transform duration-300 ${
+        className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-2xl z-50 transform transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="px-6 py-5 border-b border-gray-200">
+          <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center justify-between">
               <div>
-                <h2 id="menu-title" className="text-lg font-bold text-gray-900">
+                <h2 id="menu-title" className="text-lg font-bold text-gray-900 dark:text-white">
                   {t.menu.menu}
                 </h2>
-                <p className="text-xs text-gray-500">{t.menu.navigation}</p>
+                <p className="text-xs text-gray-500 dark:text-gray-300">{t.menu.navigation}</p>
               </div>
               <button
                 onClick={onClose}
-                className="p-2 rounded-lg text-gray-500 hover:bg-gray-100 transition-colors"
+                className="p-2 rounded-lg text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label={t.accessibility.closeMenu}
               >
                 <svg
@@ -248,19 +248,19 @@ export default function Menu({
                       }
                     }}
                     aria-label={item.label}
-                    className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-gray-100 transition-all duration-200 group"
+                    className="flex items-center space-x-3 px-4 py-3 rounded-lg text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-all duration-200 group"
                   >
-                    <span className="text-gray-500 group-hover:text-red-600 transition-colors">
+                    <span className="text-gray-500 dark:text-gray-300 group-hover:text-red-600 dark:group-hover:text-red-400 transition-colors">
                       {item.icon}
                     </span>
                     <div className="flex-1">
                       <div className="font-semibold">{item.label}</div>
-                      <div className="text-xs text-gray-500">
+                      <div className="text-xs text-gray-500 dark:text-gray-400">
                         {item.description}
                       </div>
                     </div>
                     <svg
-                      className="w-5 h-5 text-gray-400 group-hover:text-red-600 group-hover:translate-x-1 transition-all"
+                      className="w-5 h-5 text-gray-400 dark:text-gray-400 group-hover:text-red-600 dark:group-hover:text-red-400 group-hover:translate-x-1 transition-all"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -279,28 +279,28 @@ export default function Menu({
           </nav>
 
           {/* Footer */}
-          <div className="px-6 py-4 border-t border-gray-200">
+          <div className="px-6 py-4 border-t border-gray-200 dark:border-gray-800">
             <div className="flex justify-center gap-4 mb-3">
               <a
                 href="/privacy"
-                className="text-xs text-gray-600 hover:text-sbb-red transition-colors"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-sbb-red dark:hover:text-red-400 transition-colors"
                 onClick={onClose}
               >
                 Privacy Policy
               </a>
-              <span className="text-xs text-gray-300">•</span>
+              <span className="text-xs text-gray-300 dark:text-gray-400">•</span>
               <a
                 href="/terms"
-                className="text-xs text-gray-600 hover:text-sbb-red transition-colors"
+                className="text-xs text-gray-600 dark:text-gray-300 hover:text-sbb-red dark:hover:text-red-400 transition-colors"
                 onClick={onClose}
               >
                 Terms of Service
               </a>
             </div>
-            <p className="text-xs text-gray-500 text-center">
+            <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
               {t.version || 'v2.1.0'}
             </p>
-            <p className="text-xs text-gray-400 text-center mt-1">
+            <p className="text-xs text-gray-400 dark:text-gray-400 text-center mt-1">
               © 2024 {t.navbar.appTitle}
             </p>
           </div>
