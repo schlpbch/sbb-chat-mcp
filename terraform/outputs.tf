@@ -23,7 +23,7 @@ output "service_name" {
 
 output "service_url" {
   description = "URL of the deployed Cloud Run service"
-  value       = google_cloud_run_service.app.status[0].url
+  value       = try(google_cloud_run_service.app.status[0].url, null)
 }
 
 output "service_location" {
@@ -101,14 +101,14 @@ output "cloud_build_trigger_id" {
 # Health Check Output
 output "health_check_url" {
   description = "Health check endpoint URL"
-  value       = "${google_cloud_run_service.app.status[0].url}/api/health"
+  value       = try("${google_cloud_run_service.app.status[0].url}/api/health", null)
 }
 
 # Summary Output
 output "deployment_summary" {
   description = "Summary of the deployed infrastructure"
   value = {
-    service_url             = google_cloud_run_service.app.status[0].url
+    service_url             = try(google_cloud_run_service.app.status[0].url, null)
     environment             = var.environment
     region                  = var.region
     container_image         = "${var.region}-docker.pkg.dev/${var.project_id}/${google_artifact_registry_repository.repo.repository_id}/${var.app_name}:latest"

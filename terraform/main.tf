@@ -162,6 +162,23 @@ resource "google_project_iam_member" "cloudbuild_secret_accessor" {
   depends_on = [google_project_service.required_apis]
 }
 
+# IAM - Default Compute Service Account Permissions (Needed if Cloud Build uses it)
+resource "google_project_iam_member" "compute_run_admin" {
+  project = var.project_id
+  role    = "roles/run.admin"
+  member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+
+  depends_on = [google_project_service.required_apis]
+}
+
+resource "google_project_iam_member" "compute_sa_user" {
+  project = var.project_id
+  role    = "roles/iam.serviceAccountUser"
+  member  = "serviceAccount:${data.google_project.project.number}-compute@developer.gserviceaccount.com"
+
+  depends_on = [google_project_service.required_apis]
+}
+
 # Cloud Run Service
 resource "google_cloud_run_service" "app" {
   name     = "${var.app_name}-${var.environment}"
