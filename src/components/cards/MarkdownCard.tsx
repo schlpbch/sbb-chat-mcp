@@ -36,6 +36,22 @@ export default function MarkdownCard({
   
   // Generate a message ID if not provided
   const effectiveMessageId = messageId || `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+  
+  // Track if this message has been auto-played
+  const hasAutoPlayed = useRef(false);
+  
+  // Auto-play TTS for assistant messages when voice is enabled
+  useEffect(() => {
+    if (!isUser && voiceOutputEnabled && content && !hasAutoPlayed.current) {
+      // Small delay to ensure the message is fully rendered
+      const timer = setTimeout(() => {
+        tts.play(effectiveMessageId, content);
+        hasAutoPlayed.current = true;
+      }, 300);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [isUser, voiceOutputEnabled, content, effectiveMessageId, tts]);
 
   if (!content || !content.trim()) return null;
 
