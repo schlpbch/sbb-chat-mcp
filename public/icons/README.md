@@ -17,7 +17,7 @@ The following icons are needed for full PWA support:
 
 ## Icon Design Guidelines
 
-- **Background**: SBB Red (#EB0000)
+- **Background**: SBB Red (#A5061C)
 - **Foreground**: White
 - **Symbol**: Train icon or "SBB" text
 - **Padding**: 10% safe area around the icon
@@ -28,10 +28,12 @@ The following icons are needed for full PWA support:
 You can generate all required sizes from a single 512x512 source image using:
 
 ### Online Tools:
+
 - https://realfavicongenerator.net/
 - https://www.pwabuilder.com/imageGenerator
 
 ### Command Line (ImageMagick):
+
 ```bash
 # From a 512x512 source image
 convert icon-512x512.png -resize 72x72 icon-72x72.png
@@ -45,5 +47,6 @@ convert icon-512x512.png -resize 384x384 icon-384x384.png
 
 ## Temporary Placeholder
 
-Until proper icons are created, the app will use default browser icons.
-To add proper icons, place the PNG files in this directory following the naming convention above.
+Until proper icons are created, the app will use default browser icons. To add
+proper icons, place the PNG files in this directory following the naming
+convention above.

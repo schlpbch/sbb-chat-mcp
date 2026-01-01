@@ -1,10 +1,10 @@
 <svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="512" height="512" rx="100" fill="#EB0000"/>
+  <rect width="512" height="512" rx="100" fill="#A5061C"/>
   <!-- Outer Ring (Connectedness) -->
   <circle cx="256" cy="256" r="160" stroke="white" stroke-width="20" stroke-dasharray="40 20" opacity="0.3"/>
   <!-- Chat Bubble + Mountain -->
   <path d="M140 180C140 157.909 157.909 140 180 140H332C354.091 140 372 157.909 372 180V300C372 322.091 354.091 340 332 340H220L170 380V340C153.431 340 140 326.569 140 310V180Z" fill="white"/>
-  <path d="M200 310L256 190L312 310H200Z" fill="#EB0000"/>
+  <path d="M200 310L256 190L312 310H200Z" fill="#A5061C"/>
   <path d="M256 190L275 230H237L256 190Z" fill="white" opacity="0.4"/>
   <path d="M210 310C210 270 302 270 302 230" stroke="white" stroke-width="12" stroke-linecap="round" stroke-dasharray="1 25"/>
 </svg>
