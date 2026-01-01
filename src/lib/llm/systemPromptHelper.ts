@@ -62,12 +62,14 @@ export function generateSystemPrompt(
    Works for: Domestic AND International (Milan, Paris, etc.)
 
 2. REAL-TIME BOARDS → Use findStopPlacesByName THEN getPlaceEvents
-   Triggers: "show departures", "next trains", "arrivals at", "what trains arrive", "platform info"
+   Triggers: "show departures", "next trains", "arrivals at", "arriving at", "what trains arrive", "platform info"
+   **CRITICAL: This requires a 2-step workflow - ALWAYS call both functions!**
    WORKFLOW (2 steps required):
    Step 1: findStopPlacesByName({query: "station name"}) → get station ID
-   Step 2: getPlaceEvents({placeId: <ID from step 1>, eventType: "departures"})
+   Step 2: getPlaceEvents({placeId: <ID from step 1>, eventType: "departures" OR "arrivals"})
    Examples:
    - "Show departures from Bern" → findStopPlacesByName("Bern") → getPlaceEvents(ID, "departures")
+   - "Next trains arriving at Genève-Aéroport" → findStopPlacesByName("Genève-Aéroport") → getPlaceEvents(ID, "arrivals")
    - "Arrivals at Basel" → findStopPlacesByName("Basel") → getPlaceEvents(ID, "arrivals")
 
 3. STATION SEARCH → Use findStopPlacesByName
