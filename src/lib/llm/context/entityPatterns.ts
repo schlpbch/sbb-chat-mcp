@@ -29,6 +29,8 @@ export const ENTITY_PREPOSITIONS: EntityPrepositions = {
     de: ['von', 'ab', 'ausgehend von', 'abfahrt von', 'abfahrt ab'],
     fr: ['de', 'depuis', 'en partant de', 'départ de', 'au départ de'],
     it: ['da', 'partendo da', 'in partenza da', 'partenza da'],
+    zh: ['从', '由', '自'],
+    hi: ['से', 'से शुरू'],
   },
   destination: {
     en: [
@@ -42,18 +44,24 @@ export const ENTITY_PREPOSITIONS: EntityPrepositions = {
     de: ['nach', 'bis', 'richtung', 'ankunft in', 'ankunft', 'bis nach'],
     fr: ['à', 'pour', 'vers', 'direction', 'arrivée à', 'arrivée'],
     it: ['a', 'per', 'verso', 'direzione', 'arrivo a', 'arrivo'],
+    zh: ['到', '去', '往'],
+    hi: ['को', 'तक', 'की ओर'],
   },
   location: {
     en: ['in', 'at', 'near'],
     de: ['in', 'bei', 'nahe'],
     fr: ['à', 'dans', 'près de'],
     it: ['a', 'in', 'vicino a', 'presso'],
+    zh: ['在', '于'],
+    hi: ['में', 'पर', 'के पास'],
   },
   time: {
     en: ['at', 'around'],
     de: ['um', 'gegen'],
     fr: ['à', 'vers'],
     it: ['alle', 'verso', 'circa'],
+    zh: ['在', '于'],
+    hi: ['पर', 'को', 'के समय'],
   },
 };
 
@@ -160,6 +168,17 @@ export const DATE_PATTERNS: Record<Language, RegExp[]> = {
     // Match single day names last (least specific)
     /\b(lunedì|martedì|mercoledì|giovedì|venerdì|sabato|domenica)\b/i,
   ],
+  zh: [
+    // Chinese date patterns
+    /(今天|明天|后天|昨天)/,
+    /(这个|下个)(周末|星期|礼拜)/,
+    /\b(\d{1,2})月(\d{1,2})日?\b/,
+  ],
+  hi: [
+    // Hindi date patterns
+    /(आज|कल|परसों)/,
+    /\b(\d{1,2})[\/\-]\d{1,2}(?:[\/\-]\d{2,4})?\b/,
+  ],
 };
 
 /**
@@ -192,6 +211,17 @@ export const TIME_PATTERNS: Record<Language, RegExp[]> = {
     /\b(\d{1,2}:\d{2})\b/,
     /\b(mattina|pomeriggio|sera|notte)\b/i,
   ],
+  zh: [
+    // Chinese time patterns
+    /(早上|上午|中午|下午|晚上|夜里)/,
+    /\b(\d{1,2})点(\d{1,2})?分?\b/,
+    /\b(\d{1,2}:\d{2})\b/,
+  ],
+  hi: [
+    // Hindi time patterns
+    /(सुबह|दोपहर|शाम|रात)/,
+    /\b(\d{1,2}):(\d{2})\b/,
+  ],
 };
 
 /**
@@ -205,9 +235,9 @@ export function buildEntityRegex(
   entityType: keyof EntityPrepositions,
   languages: Language[]
 ): RegExp {
-  const prepositions = languages.flatMap(
-    (lang) => ENTITY_PREPOSITIONS[entityType][lang]
-  );
+  const prepositions = languages
+    .flatMap((lang) => ENTITY_PREPOSITIONS[entityType][lang] || [])
+    .filter((p) => p != null && p !== ''); // Filter out undefined, null, and empty strings
 
   // Sort by length (longest first) to match longer phrases first
   prepositions.sort((a, b) => b.length - a.length);

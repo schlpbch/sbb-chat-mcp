@@ -5,7 +5,7 @@
  * English (EN), German (DE), French (FR), and Italian (IT).
  */
 
-export type Language = 'en' | 'de' | 'fr' | 'it';
+export type Language = 'en' | 'de' | 'fr' | 'it' | 'zh' | 'hi';
 
 export interface KeywordSet {
   primary: string[]; // Main keywords (strict match)
