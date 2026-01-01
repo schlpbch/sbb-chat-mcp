@@ -10,6 +10,12 @@ import {
   Wind,
   Gauge,
   Train,
+  Bus,
+  TrainTrack,
+  PersonStanding,
+  Bike,
+  Ship,
+  CableCar,
   Plane,
   Accessibility,
   UtensilsCrossed,
@@ -55,9 +61,23 @@ export const utilityIcons: Record<string, LucideIcon> = {
 // Transport icons
 export const transportIcons: Record<string, LucideIcon> = {
   train: Train,
+  rail: Train,
+  bus: Bus,
+  tram: TrainTrack,
+  walk: PersonStanding,
+  bike: Bike,
+  cycle: Bike,
+  ferry: Ship,
+  boat: Ship,
+  ship: Ship,
+  cable: CableCar,
+  gondola: CableCar,
+  funicular: CableCar,
   plane: Plane,
+  flight: Plane,
   accessibility: Accessibility,
   wheelchair: Accessibility,
+  default: Train, // Default transport icon
 };
 
 // Activity icons
@@ -93,4 +113,44 @@ export function getWeatherIcon(condition?: string): LucideIcon {
   if (c.includes('cloud') || c.includes('partly')) return Cloud;
 
   return Cloud;
+}
+
+// Helper function to get transport icon by mode string
+export function getTransportIconComponent(mode?: string): LucideIcon {
+  if (!mode || typeof mode !== 'string') return Train;
+
+  const lowerMode = mode.toLowerCase();
+
+  // Specific train types
+  if (
+    lowerMode.includes('ir') ||
+    lowerMode.includes('ic') ||
+    lowerMode.includes('re') ||
+    lowerMode.includes('s-bahn') ||
+    lowerMode.includes('s1') ||
+    lowerMode.includes('s2') ||
+    lowerMode.includes('train') ||
+    lowerMode.includes('rail')
+  )
+    return Train;
+
+  if (lowerMode.includes('bus')) return Bus;
+  if (lowerMode.includes('tram')) return TrainTrack;
+  if (lowerMode.includes('walk')) return PersonStanding;
+  if (lowerMode.includes('bike') || lowerMode.includes('cycle')) return Bike;
+  if (
+    lowerMode.includes('ferry') ||
+    lowerMode.includes('boat') ||
+    lowerMode.includes('ship')
+  )
+    return Ship;
+  if (
+    lowerMode.includes('cable') ||
+    lowerMode.includes('gondola') ||
+    lowerMode.includes('funicular')
+  )
+    return CableCar;
+  if (lowerMode.includes('plane') || lowerMode.includes('flight')) return Plane;
+
+  return Train; // Default
 }

@@ -7,7 +7,9 @@ import type { ShareableTrip } from '@/lib/shareUtils';
 import { useSavedTrips } from '@/hooks/useSavedTrips';
 import { useMapContext } from '@/context/MapContext';
 import { extractTripCoordinates } from '@/lib/mapUtils';
-import { formatTime, formatDuration, getTransportIcon } from '@/lib/formatters';
+import { formatTime, formatDuration } from '@/lib/formatters';
+import { getTransportIconComponent } from '@/lib/iconMap';
+import { PersonStanding } from 'lucide-react';
 import { useToast } from '@/components/ui/Toast';
 import CardHeader from './CardHeader';
 
@@ -103,10 +105,10 @@ export default function TripCard({ data, language }: TripCardProps) {
   const transfers = serviceLegs.length - 1;
 
   const getTripTransportIcon = (leg: any) => {
-    if (leg.type === 'WalkLeg') return '🚶';
+    if (leg.type === 'WalkLeg') return PersonStanding;
     const mode =
       leg.serviceJourney?.serviceProducts?.[0]?.vehicleMode?.name || '';
-    return getTransportIcon(mode);
+    return getTransportIconComponent(mode);
   };
 
   // Prepare shareable trip data
@@ -503,7 +505,12 @@ export default function TripCard({ data, language }: TripCardProps) {
                     key={idx}
                     className="flex items-center space-x-1 shrink-0"
                   >
-                    <span className="text-lg">{getTripTransportIcon(leg)}</span>
+                    <div className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                      {(() => {
+                        const IconComponent = getTripTransportIcon(leg);
+                        return <IconComponent className="w-4 h-4 text-gray-700 dark:text-gray-300" strokeWidth={2} />;
+                      })()}
+                    </div>
                     {lineName && (
                       <div className="flex flex-col items-start">
                         <span className="px-2 py-0.5 bg-gray-700 dark:bg-gray-600 text-white text-xs font-bold rounded">
@@ -581,7 +588,17 @@ export default function TripCard({ data, language }: TripCardProps) {
                   key={idx}
                   className="flex items-start space-x-2 p-2 bg-gray-50 dark:bg-gray-700 rounded-lg text-sm"
                 >
-                  <div className="text-xl mt-0.5">{getTransportIcon(leg)}</div>
+                  <div className="w-8 h-8 rounded-lg bg-gray-200 dark:bg-gray-600 flex items-center justify-center">
+                    {(() => {
+                      const IconComponent = getTripTransportIcon(leg);
+                      return (
+                        <IconComponent
+                          className="w-5 h-5 text-gray-700 dark:text-gray-300"
+                          strokeWidth={2}
+                        />
+                      );
+                    })()}
+                  </div>
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-2 mb-1">
                       {lineName && (
