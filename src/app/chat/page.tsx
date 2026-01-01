@@ -48,7 +48,7 @@ function ChatContent() {
   } = useChat(language);
 
   // Voice output state for TTS
-  const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(true);
+  const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
 
   // Detect language from localStorage or browser on mount
   useEffect(() => {
