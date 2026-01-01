@@ -9,6 +9,16 @@ import {
   parseDurationToMinutes,
 } from '@/lib/formatters';
 import CardHeader from './CardHeader';
+import {
+  Zap,
+  Target,
+  Clock,
+  Scale,
+  BarChart3,
+  Leaf,
+  Ticket,
+  Info,
+} from 'lucide-react';
 
 function CompareCard({ data, language }: CompareCardProps) {
   const t = translations[language];
@@ -28,15 +38,15 @@ function CompareCard({ data, language }: CompareCardProps) {
   const getCriteriaIcon = (c: string) => {
     switch (c) {
       case 'fastest':
-        return '⚡';
+        return Zap;
       case 'fewest_changes':
-        return '🎯';
+        return Target;
       case 'earliest_arrival':
-        return '🕐';
+        return Clock;
       case 'balanced':
-        return '⚖️';
+        return Scale;
       default:
-        return '📊';
+        return BarChart3;
     }
   };
 
@@ -76,7 +86,10 @@ function CompareCard({ data, language }: CompareCardProps) {
     >
       {/* Header */}
       <CardHeader
-        icon={<span className="text-2xl">{getCriteriaIcon(criteria)}</span>}
+        icon={(() => {
+          const IconComponent = getCriteriaIcon(criteria);
+          return <IconComponent className="w-5 h-5" strokeWidth={2} />;
+        })()}
         title={getCriteriaLabel(criteria)}
         subtitle={`${origin} → ${destination}`}
         color="purple"
