@@ -32,9 +32,22 @@ export function generateSystemPrompt(
     toolGuidance = `
 **ALWAYS use tools for real-time data - NEVER guess or make assumptions!**
 
-1. JOURNEY PLANNING → Use findTrips
-   Triggers: "how do I get", "find connections", "train from X to Y", "fastest route", "fewest transfers", "earliest arrival", "wheelchair", "accessible"
+1. JOURNEY PLANNING → Use findTrips OR compareRoutes
+   
+   **Use findTrips for SIMPLE queries:**
+   Triggers: "how do I get", "find connections", "train from X to Y", "show me trains"
    **ALWAYS use responseMode: "detailed" to ensure accessibility attributes and full stop lists are returned.**
+   Examples: 
+   - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern", responseMode: "detailed"})
+   - "Trains from Lausanne to St. Moritz this weekend" → findTrips({origin: "Lausanne", destination: "St. Moritz", dateTime: "${weekendDate}", responseMode: "detailed"})
+   
+   **Use compareRoutes for COMPARISON queries:**
+   Triggers: "compare", "fastest vs", "which is better", "rank options", "compare fastest and fewest transfers"
+   **CRITICAL: Use this when user explicitly asks to COMPARE multiple route criteria!**
+   Examples:
+   - "Compare fastest vs fewest transfers from Geneva to Basel" → compareRoutes({origin: "Geneva", destination: "Basel", criteria: "fastest"}) + compareRoutes({origin: "Geneva", destination: "Basel", criteria: "fewest_changes"})
+   - "Which route is better from Zurich to Bern" → compareRoutes({origin: "Zurich", destination: "Bern", criteria: "balanced"})
+   - "Rank options by speed from Lausanne to Geneva" → compareRoutes({origin: "Lausanne", destination: "Geneva", criteria: "fastest"})
    
    **TIME EXPRESSION PARSING - CRITICAL:**
    When the user mentions time expressions, you MUST extract them from the destination and convert to ISO dateTime:
@@ -43,12 +56,8 @@ export function generateSystemPrompt(
    - "today" → Use current date
    - DO NOT include time expressions in origin or destination parameters!
    
-   Examples: 
-   - "Find connections from Zurich to Bern" → findTrips({origin: "Zurich", destination: "Bern", responseMode: "detailed"})
-   - "Trains from Lausanne to St. Moritz this weekend" → findTrips({origin: "Lausanne", destination: "St. Moritz", dateTime: "${weekendDate}", responseMode: "detailed"})
-     ❌ WRONG: {destination: "St. Moritz this weekend"}
-     ✅ CORRECT: {destination: "St. Moritz", dateTime: "${weekendDate}"}
-   - "Zurich to Milan tomorrow" → findTrips({origin: "Zurich", destination: "Milan", dateTime: "2025-12-31T08:00:00"})
+   ❌ WRONG: {destination: "St. Moritz this weekend"}
+   ✅ CORRECT: {destination: "St. Moritz", dateTime: "${weekendDate}"}
    
    Works for: Domestic AND International (Milan, Paris, etc.)
 
