@@ -12,6 +12,9 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'
+  ),
   title: 'Swiss Travel Companion',
   description:
     'Your intelligent companion for Swiss public transport journeys, weather, and station information',
@@ -24,7 +27,6 @@ export const metadata: Metadata = {
   formatDetection: {
     telephone: false,
   },
-  themeColor: '#A5061C',
   manifest: '/manifest.json',
   icons: {
     icon: [{ url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' }],

@@ -122,7 +122,7 @@ export default function McpTestPage() {
   );
 
   return (
-    <div className="flex flex-col min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
+    <div className="flex flex-col min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       <Navbar
         language={language}
         onLanguageChange={setLanguage}
@@ -139,13 +139,13 @@ export default function McpTestPage() {
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">
+            <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-2 transition-colors">
               MCP Inspector
             </h1>
-            <p className="text-lg text-gray-600">
+            <p className="text-lg text-gray-600 dark:text-gray-300 transition-colors">
               Explore available tools, resources, and prompts
             </p>
-            <code className="mt-2 inline-block text-sm bg-gray-200 px-3 py-1 rounded-lg text-gray-700">
+            <code className="mt-2 inline-block text-sm bg-gray-200 dark:bg-gray-700 px-3 py-1 rounded-lg text-gray-700 dark:text-gray-200 font-mono transition-colors">
               {mcpServerUrl}
             </code>
           </div>
@@ -214,7 +214,7 @@ export default function McpTestPage() {
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     placeholder="Search tools, resources, or prompts..."
-                    className="w-full px-4 py-3 pl-12 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    className="w-full px-4 py-3 pl-12 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-xl text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-colors"
                   />
                   <svg
                     className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400"
@@ -233,13 +233,13 @@ export default function McpTestPage() {
               </div>
 
               {/* Tabs */}
-              <div className="flex space-x-1 mb-6 bg-white p-1 rounded-xl border border-gray-200">
+              <div className="flex space-x-1 mb-6 bg-white dark:bg-gray-800 p-1 rounded-xl border border-gray-200 dark:border-gray-700 transition-colors">
                 <button
                   onClick={() => setActiveTab('tools')}
                   className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-all ${
                     activeTab === 'tools'
                       ? 'bg-blue-600 text-white shadow-lg'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="flex items-center justify-center space-x-2">
@@ -264,7 +264,7 @@ export default function McpTestPage() {
                   className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-all ${
                     activeTab === 'resources'
                       ? 'bg-green-600 text-white shadow-lg'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="flex items-center justify-center space-x-2">
@@ -289,7 +289,7 @@ export default function McpTestPage() {
                   className={`flex-1 px-4 py-3 rounded-lg font-semibold transition-all ${
                     activeTab === 'prompts'
                       ? 'bg-purple-600 text-white shadow-lg'
-                      : 'text-gray-600 hover:bg-gray-100'
+                      : 'text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
                 >
                   <div className="flex items-center justify-center space-x-2">
@@ -326,19 +326,19 @@ export default function McpTestPage() {
                         <Link
                           key={index}
                           href={`/tools/${encodeURIComponent(tool.name)}`}
-                          className="block bg-white rounded-xl border border-gray-200 p-6 hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer"
+                          className="block bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-blue-500 dark:hover:border-blue-500 hover:shadow-xl transition-all cursor-pointer"
                         >
                           <div className="flex items-start justify-between mb-3">
                             <div className="flex-1">
                               <div className="flex items-center space-x-2 mb-2">
-                                <h3 className="text-lg font-bold text-gray-900">
+                                <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                                   {tool.name}
                                 </h3>
-                                <span className="px-2 py-1 bg-blue-100 text-blue-800 text-xs font-semibold rounded">
+                                <span className="px-2 py-1 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 text-xs font-semibold rounded">
                                   TOOL
                                 </span>
                               </div>
-                              <p className="text-sm text-gray-600">
+                              <p className="text-sm text-gray-600 dark:text-gray-300">
                                 {tool.description}
                               </p>
                             </div>
@@ -420,21 +420,21 @@ export default function McpTestPage() {
                     <Link
                       key={index}
                       href={`/resources/${encodeURIComponent(resource.uri)}`}
-                      className="block bg-white rounded-xl border border-gray-200 p-6 hover:border-green-500 hover:shadow-xl transition-all cursor-pointer"
+                      className="block bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-green-500 dark:hover:border-green-500 hover:shadow-xl transition-all cursor-pointer"
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <h3 className="text-lg font-bold text-gray-900">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                           {resource.name}
                         </h3>
-                        <span className="px-2 py-1 bg-green-100 text-green-800 text-xs font-semibold rounded">
+                        <span className="px-2 py-1 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 text-xs font-semibold rounded">
                           RESOURCE
                         </span>
                       </div>
-                      <code className="block text-sm font-mono text-blue-600 bg-blue-50 px-3 py-2 rounded-lg mb-3">
+                      <code className="block text-sm font-mono text-blue-600 dark:text-blue-400 bg-blue-50 dark:bg-blue-900/20 px-3 py-2 rounded-lg mb-3">
                         {resource.uri}
                       </code>
                       {resource.description && (
-                        <p className="text-sm text-gray-600">
+                        <p className="text-sm text-gray-600 dark:text-gray-300">
                           {resource.description}
                         </p>
                       )}
@@ -473,18 +473,18 @@ export default function McpTestPage() {
                     <Link
                       key={index}
                       href={`/prompts/${encodeURIComponent(prompt.name)}`}
-                      className="block bg-white rounded-xl border border-gray-200 p-6 hover:border-purple-500 hover:shadow-xl transition-all cursor-pointer"
+                      className="block bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 p-6 hover:border-purple-500 dark:hover:border-purple-500 hover:shadow-xl transition-all cursor-pointer"
                     >
                       <div className="flex items-start justify-between mb-3">
-                        <h3 className="text-lg font-bold text-gray-900">
+                        <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                           {prompt.name}
                         </h3>
-                        <span className="px-2 py-1 bg-purple-100 text-purple-800 text-xs font-semibold rounded">
+                        <span className="px-2 py-1 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 text-xs font-semibold rounded">
                           PROMPT
                         </span>
                       </div>
                       {prompt.description && (
-                        <p className="text-sm text-gray-600 mb-3">
+                        <p className="text-sm text-gray-600 dark:text-gray-300 mb-3">
                           {prompt.description}
                         </p>
                       )}

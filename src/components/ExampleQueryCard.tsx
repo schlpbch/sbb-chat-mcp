@@ -62,22 +62,22 @@ export default function ExampleQueryCard({
   return (
     <button
       onClick={handleClick}
-      className="group w-full text-left bg-white hover:bg-gray-50 border border-gray-200 hover:border-sbb-red rounded-xl p-4 transition-all duration-200 hover:shadow-md"
+      className="group w-full text-left bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 hover:border-sbb-red dark:hover:border-sbb-red rounded-xl p-4 transition-all duration-200 hover:shadow-md"
     >
       <div className="flex items-start gap-3">
-        <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-800 flex items-center justify-center shrink-0 group-hover:bg-red-50 dark:group-hover:bg-red-950 transition-colors">
-          <IconComponent className="w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-sbb-red transition-colors" />
+        <div className="w-10 h-10 rounded-xl bg-gray-100 dark:bg-gray-700 flex items-center justify-center shrink-0 group-hover:bg-red-50 dark:group-hover:bg-red-900/30 transition-colors">
+          <IconComponent className="w-5 h-5 text-gray-600 dark:text-gray-300 group-hover:text-sbb-red dark:group-hover:text-red-400 transition-colors" />
         </div>
         <div className="flex-1 min-w-0">
-          <p className="text-sm font-medium text-gray-900 line-clamp-2 mb-1">
+          <p className="text-sm font-medium text-gray-900 dark:text-gray-100 line-clamp-2 mb-1">
             {example.text.split('\n')[0]}
           </p>
           {example.description && (
-            <p className="text-xs text-gray-500">{example.description}</p>
+            <p className="text-xs text-gray-500 dark:text-gray-400">{example.description}</p>
           )}
         </div>
         <svg
-          className="w-5 h-5 text-gray-400 group-hover:text-sbb-red group-hover:translate-x-1 transition-all shrink-0"
+          className="w-5 h-5 text-gray-400 dark:text-gray-500 group-hover:text-sbb-red dark:group-hover:text-red-400 group-hover:translate-x-1 transition-all shrink-0"
           fill="none"
           stroke="currentColor"
           viewBox="0 0 24 24"

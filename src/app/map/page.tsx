@@ -27,7 +27,7 @@ export default function MapPage() {
   } = useFeedback();
 
   return (
-    <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100">
+    <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
       {/* Skip Navigation Links */}
       <a
         href="#main-content"
@@ -61,7 +61,7 @@ export default function MapPage() {
       />
 
       <div className="flex flex-1 overflow-hidden pt-16 relative z-0">
-        <div className="flex flex-1 overflow-hidden bg-white shadow-2xl relative">
+        <div className="flex flex-1 overflow-hidden bg-white dark:bg-gray-800 shadow-2xl relative transition-colors duration-300">
           {/* Main Map Area */}
           <main id="main-content" className="flex-1 relative">
             <Map />

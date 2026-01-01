@@ -16,6 +16,7 @@ export const translations = {
         title: 'Swiss Travel Companion',
         subtitle: 'Your AI-powered journey planner for Swiss public transport',
         cta: 'Start Chatting',
+        howItWorks: 'How it Works',
         recentSearches: 'Recent searches:',
       },
       categories: {
@@ -393,9 +394,11 @@ export const translations = {
       error: 'Error',
       settings: 'Voice Settings',
       autoPlay: 'Auto-play responses',
+      autoPlayDesc: 'Automatically play new AI responses',
       speechRate: 'Speech rate',
       pitch: 'Pitch',
       voice: 'Voice',
+      settingsInfo: 'Voice settings apply to all messages. Audio is generated on-demand and cached for the session.',
     },
   },
   de: {
@@ -416,6 +419,7 @@ export const translations = {
         subtitle:
           'Ihr KI-gestützter Reiseplaner für den öffentlichen Verkehr der Schweiz',
         cta: 'Chat starten',
+        howItWorks: 'So funktioniert es',
         recentSearches: 'Letzte Suchen:',
       },
       categories: {
@@ -806,9 +810,11 @@ export const translations = {
       error: 'Fehler',
       settings: 'Spracheinstellungen',
       autoPlay: 'Antworten automatisch abspielen',
+      autoPlayDesc: 'Neue KI-Antworten automatisch abspielen',
       speechRate: 'Sprechgeschwindigkeit',
       pitch: 'Tonhöhe',
       voice: 'Stimme',
+      settingsInfo: 'Spracheinstellungen gelten für alle Nachrichten. Audio wird bei Bedarf generiert und für die Sitzung zwischengespeichert.',
     },
   },
   fr: {
@@ -829,6 +835,7 @@ export const translations = {
         subtitle:
           'Votre planificateur de voyage alimenté par IA pour les transports publics suisses',
         cta: 'Commencer à discuter',
+        howItWorks: 'Comment ça marche',
         recentSearches: 'Recherches récentes:',
       },
       categories: {
@@ -1218,9 +1225,11 @@ export const translations = {
       error: 'Erreur',
       settings: 'Paramètres vocaux',
       autoPlay: 'Lecture automatique',
+      autoPlayDesc: 'Lire automatiquement les nouvelles réponses de l\'IA',
       speechRate: 'Vitesse de parole',
       pitch: 'Hauteur',
       voice: 'Voix',
+      settingsInfo: 'Les paramètres vocaux s\'appliquent à tous les messages. L\'audio est généré à la demande et mis en cache pour la session.',
     },
   },
   it: {
@@ -1241,6 +1250,7 @@ export const translations = {
         subtitle:
           'Il tuo pianificatore di viaggio basato su IA per i trasporti pubblici svizzeri',
         cta: 'Inizia a chattare',
+        howItWorks: 'Come funziona',
         recentSearches: 'Ricerche recenti:',
       },
       categories: {
@@ -1627,9 +1637,11 @@ export const translations = {
       error: 'Errore',
       settings: 'Impostazioni voce',
       autoPlay: 'Riproduzione automatica',
+      autoPlayDesc: 'Riproduci automaticamente le nuove risposte AI',
       speechRate: 'Velocità di parola',
       pitch: 'Tono',
       voice: 'Voce',
+      settingsInfo: 'Le impostazioni vocali si applicano a tutti i messaggi. L\'audio viene generato su richiesta e memorizzato nella cache per la sessione.',
     },
   },
   zh: {
@@ -1648,6 +1660,7 @@ export const translations = {
         title: 'SBB 出行助手',
         subtitle: '您的AI智能瑞士公共交通行程规划助手',
         cta: '开始聊天',
+        howItWorks: '如何使用',
         recentSearches: '最近搜索:',
       },
       categories: {
@@ -2019,9 +2032,11 @@ export const translations = {
       error: '错误',
       settings: '语音设置',
       autoPlay: '自动播放',
+      autoPlayDesc: '自动播放新的 AI 回复',
       speechRate: '语速',
       pitch: '音调',
       voice: '声音',
+      settingsInfo: '语音设置适用于所有消息。音频按需生成并为会话缓存。',
     },
   },
   hi: {
@@ -2042,6 +2057,7 @@ export const translations = {
         subtitle:
           'स्विस सार्वजनिक परिवहन के लिए आपका AI-संचालित यात्रा योजनाकार',
         cta: 'चैट शुरू करें',
+        howItWorks: 'यह कैसे काम करता है',
         recentSearches: 'हाल की खोजें:',
       },
       categories: {
@@ -2425,9 +2441,11 @@ export const translations = {
       error: 'त्रुटि',
       settings: 'आवाज़ सेटिंग्स',
       autoPlay: 'स्वचालित प्लेबैक',
+      autoPlayDesc: 'नई एआई प्रतिक्रियाओं को स्वचालित रूप से चलाएं',
       speechRate: 'बोलने की गति',
       pitch: 'स्वर',
       voice: 'आवाज़',
+      settingsInfo: 'आवाज़ सेटिंग्स सभी संदेशों पर लागू होती हैं। ऑडियो मांग पर उत्पन्न होता है और सत्र के लिए कैश किया जाता है।',
     },
   },
 };

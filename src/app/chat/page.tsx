@@ -33,14 +33,12 @@ function ChatContent() {
   const searchParams = useSearchParams();
   const [language, setLanguage] = useState<Language>('en');
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [mounted, setMounted] = useState(false);
 
   const {
     messages,
     input,
     setInput,
     isLoading,
-    toolsExecuting,
     textOnlyMode,
     setTextOnlyMode,
     messagesEndRef,
@@ -71,11 +69,6 @@ function ChatContent() {
 
   const t = translations[language];
 
-  // Set mounted state to prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   // Handle query parameter for pre-filled queries
   useEffect(() => {
     const query = searchParams.get('q');
@@ -103,7 +96,7 @@ function ChatContent() {
   }, [searchParams, setInput, messages.length]);
 
   return (
-    <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100">
+    <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 duration-300">
       {/* Skip Links for Accessibility */}
       <a href="#main-content" className="skip-link sr-only-focusable">
         {t.accessibility.skipToMain}
@@ -139,7 +132,7 @@ function ChatContent() {
       >
         <div className="h-full flex flex-col">
           {/* Chat Container */}
-          <div className="flex-1 flex flex-col bg-white shadow-2xl overflow-hidden">
+          <div className="flex-1 flex flex-col bg-white dark:bg-gray-800 shadow-2xl overflow-hidden transition-colors duration-300">
             {/* Messages Area */}
             <div
               className="flex-1 overflow-y-auto overflow-x-hidden px-3 sm:px-6 py-4 sm:py-6 space-y-4 sm:space-y-6 scroll-smooth"
@@ -165,12 +158,12 @@ function ChatContent() {
             </div>
 
             {/* Input Area */}
-            <div className="px-3 sm:px-6 py-3 sm:py-4 bg-gray-50 border-t border-gray-200">
+            <div className="px-3 sm:px-6 py-3 sm:py-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
               {/* Mode Toggle */}
               <div className="flex items-center gap-3 mb-2">
                 <button
                   onClick={() => setTextOnlyMode(!textOnlyMode)}
-                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-white border border-gray-200 shadow-sm hover:bg-gray-100"
+                  className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
                   aria-label={
                     textOnlyMode ? t.chat.switchToRich : t.chat.switchToText
                   }
@@ -190,7 +183,7 @@ function ChatContent() {
                           d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
                         />
                       </svg>
-                      <span className="text-gray-700">{t.chat.textOnly}</span>
+                      <span className="text-gray-700 dark:text-gray-300">{t.chat.textOnly}</span>
                     </>
                   ) : (
                     <>
@@ -207,7 +200,7 @@ function ChatContent() {
                           d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
                         />
                       </svg>
-                      <span className="text-purple-700">{t.chat.richMode}</span>
+                      <span className="text-purple-700 dark:text-purple-400">{t.chat.richMode}</span>
                     </>
                   )}
                 </button>
@@ -237,7 +230,7 @@ function ChatContent() {
                     rows={1}
                     aria-label={t.accessibility.typeYourMessage}
                     aria-describedby="chat-hint"
-                    className="block w-full px-3 sm:px-4 py-3 bg-white border border-gray-300 rounded-xl text-sm sm:text-base text-gray-900 placeholder-gray-500 focus:outline-none focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
+                    className="block w-full px-3 sm:px-4 py-3 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-xl text-sm sm:text-base text-gray-900 dark:text-gray-100 placeholder-gray-500 dark:placeholder-gray-400 focus:outline-none focus:border-sbb-red dark:focus:border-sbb-red resize-none disabled:opacity-50 disabled:cursor-not-allowed transition-all"
                     style={{ minHeight: '52px', maxHeight: '120px' }}
                   />
                   <p
@@ -245,11 +238,11 @@ function ChatContent() {
                     className="text-xs text-gray-400 mt-1.5 transition-opacity duration-200 hidden sm:block"
                   >
                     Press{' '}
-                    <kbd className="px-1.5 py-0.5 bg-gray-100 border border-gray-300 rounded text-xs font-mono">
+                    <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono text-gray-800 dark:text-gray-200">
                       ↑
                     </kbd>
                     /
-                    <kbd className="px-1.5 py-0.5 bg-gray-100 border border-gray-300 rounded text-xs font-mono">
+                    <kbd className="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded text-xs font-mono text-gray-800 dark:text-gray-200">
                       ↓
                     </kbd>{' '}
                     to browse history
@@ -331,10 +324,10 @@ export default function ChatPage() {
   return (
     <Suspense
       fallback={
-        <div className="flex items-center justify-center h-screen bg-gray-50">
+        <div className="flex items-center justify-center h-screen bg-gray-50 dark:bg-gray-900">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-sbb-red mx-auto mb-4"></div>
-            <p className="text-gray-600">Loading...</p>
+            <p className="text-gray-600 dark:text-gray-400">Loading...</p>
           </div>
         </div>
       }

@@ -60,14 +60,14 @@ export default function HeroSection({
 
   return (
     <section
-      className="bg-gradient-to-b from-gray-50 to-white py-12 sm:py-16 lg:py-20 px-4"
+      className="relative bg-linear-to-b from-transparent to-white dark:to-gray-900 z-10 py-12 sm:py-16 lg:py-20 px-4 transition-colors duration-300"
       aria-label="Hero section"
     >
       <div className="max-w-4xl mx-auto text-center">
-        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+        <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 dark:text-white mb-4 sm:mb-6 transition-colors">
           {t.landing.hero.title}
         </h1>
-        <p className="text-lg sm:text-xl text-gray-600 mb-6 sm:mb-8">
+        <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-300 mb-6 sm:mb-8 transition-colors">
           {t.landing.hero.subtitle}
         </p>
 
@@ -82,7 +82,7 @@ export default function HeroSection({
           {onHelpClick && (
             <button
               onClick={onHelpClick}
-              className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-lg bg-white border-2 border-gray-300 text-gray-700 hover:border-[#A20013] hover:text-[#A20013] transition-all shadow-md"
+              className="inline-flex items-center justify-center gap-1.5 sm:gap-2 px-3 sm:px-6 py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-lg bg-white dark:bg-gray-800 border-2 border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-200 hover:border-[#A20013] dark:hover:border-[#A20013] hover:text-[#A20013] dark:hover:text-[#A20013] transition-all shadow-md"
             >
               <svg
                 className="w-4 h-4 sm:w-5 sm:h-5"
@@ -97,7 +97,7 @@ export default function HeroSection({
                   d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              How it Works
+              {t.landing.hero.howItWorks}
             </button>
           )}
         </div>
@@ -105,25 +105,25 @@ export default function HeroSection({
         {/* Recent Searches */}
         {mounted && recentSearches.length > 0 && (
           <div className="mt-6 sm:mt-8">
-            <p className="text-xs sm:text-sm text-gray-600 mb-2 sm:mb-3">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 mb-2 sm:mb-3">
               {t.landing.hero.recentSearches}
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
               {recentSearches.slice(0, 3).map((search, index) => (
                 <div
                   key={index}
-                  className="group text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 bg-white border border-gray-200 hover:border-[#A20013] hover:shadow-md rounded-full transition-all duration-200 flex items-center gap-1.5 sm:gap-2 cursor-pointer"
+                  className="group text-xs sm:text-sm px-3 sm:px-4 py-1.5 sm:py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-[#A20013] dark:hover:border-[#A20013] hover:shadow-md rounded-full transition-all duration-200 flex items-center gap-1.5 sm:gap-2 cursor-pointer"
                   onClick={() => handleRecentSearchClick(search)}
                 >
-                  <span className="text-gray-400" aria-hidden="true">
+                  <span className="text-gray-400 dark:text-gray-500" aria-hidden="true">
                     🕐
                   </span>
-                  <span className="text-gray-700 max-w-[200px] sm:max-w-xs truncate">
+                  <span className="text-gray-700 dark:text-gray-200 max-w-[200px] sm:max-w-xs truncate">
                     {search}
                   </span>
                   <button
                     onClick={(e) => handleRemoveSearch(index, e)}
-                    className="ml-1 text-gray-400 hover:text-[#A20013] opacity-0 group-hover:opacity-100 transition-opacity"
+                    className="ml-1 text-gray-400 hover:text-[#A20013] dark:hover:text-[#A20013] opacity-0 group-hover:opacity-100 transition-opacity"
                     aria-label={`Remove search: ${search}`}
                     type="button"
                   >

@@ -30,6 +30,9 @@ export const FastestRoute: Story = {
       routes: [
         {
           id: '1',
+          name: 'IC 8',
+          departure: '08:00',
+          arrival: '08:57',
           duration: '57min',
           transfers: 0,
           price: 52,
@@ -39,6 +42,9 @@ export const FastestRoute: Story = {
         },
         {
           id: '2',
+          name: 'IR 15',
+          departure: '08:15',
+          arrival: '09:27',
           duration: '1h 12min',
           transfers: 1,
           price: 45,
@@ -48,6 +54,9 @@ export const FastestRoute: Story = {
         },
         {
           id: '3',
+          name: 'RE 4',
+          departure: '08:30',
+          arrival: '09:55',
           duration: '1h 25min',
           transfers: 2,
           price: 38,
@@ -78,6 +87,9 @@ export const FewestChanges: Story = {
       routes: [
         {
           id: '1',
+          name: 'EC 51',
+          departure: '09:00',
+          arrival: '11:45',
           duration: '2h 45min',
           transfers: 0,
           price: 89,
@@ -86,6 +98,9 @@ export const FewestChanges: Story = {
         },
         {
           id: '2',
+          name: 'IC 2',
+          departure: '09:30',
+          arrival: '12:00',
           duration: '2h 30min',
           transfers: 1,
           price: 82,
@@ -111,6 +126,9 @@ export const BalancedComparison: Story = {
       routes: [
         {
           id: '1',
+          name: 'IC 1',
+          departure: '07:15',
+          arrival: '10:05',
           duration: '2h 50min',
           transfers: 0,
           price: 78,
@@ -120,6 +138,9 @@ export const BalancedComparison: Story = {
         },
         {
           id: '2',
+          name: 'IC 5',
+          departure: '07:45',
+          arrival: '10:27',
           duration: '2h 42min',
           transfers: 1,
           price: 65,
@@ -129,6 +150,9 @@ export const BalancedComparison: Story = {
         },
         {
           id: '3',
+          name: 'IR 90',
+          departure: '08:00',
+          arrival: '11:15',
           duration: '3h 15min',
           transfers: 2,
           price: 52,
@@ -138,6 +162,9 @@ export const BalancedComparison: Story = {
         },
         {
           id: '4',
+          name: 'IC 3',
+          departure: '08:15',
+          arrival: '10:53',
           duration: '2h 38min',
           transfers: 1,
           price: 85,
@@ -169,6 +196,9 @@ export const EarliestArrival: Story = {
       routes: [
         {
           id: '1',
+          name: 'IR 35',
+          departure: '06:00',
+          arrival: '07:58',
           duration: '1h 58min',
           transfers: 1,
           price: 38,
@@ -177,6 +207,9 @@ export const EarliestArrival: Story = {
         },
         {
           id: '2',
+          name: 'PE',
+          departure: '06:30',
+          arrival: '08:45',
           duration: '2h 15min',
           transfers: 2,
           price: 32,
@@ -202,6 +235,9 @@ export const German: Story = {
       routes: [
         {
           id: '1',
+          name: 'IC 8',
+          departure: '08:00',
+          arrival: '08:57',
           duration: '57min',
           transfers: 0,
           price: 52,
@@ -210,6 +246,9 @@ export const German: Story = {
         },
         {
           id: '2',
+          name: 'IR 15',
+          departure: '08:15',
+          arrival: '09:27',
           duration: '1h 12min',
           transfers: 1,
           price: 45,

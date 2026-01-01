@@ -48,7 +48,7 @@ export default function SettingsPage() {
 
 
   return (
-    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100">
+    <div className="min-h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-black transition-colors duration-300">
       <Navbar
         language={language}
         onLanguageChange={setLanguage}
@@ -69,27 +69,27 @@ export default function SettingsPage() {
       />
 
       <main className="max-w-4xl mx-auto pt-20 px-4 pb-8">
-        <h1 className="text-3xl font-black text-anthracite mb-6 tracking-tight">{translations[language].settings.title}</h1>
+        <h1 className="text-3xl font-black text-anthracite dark:text-gray-100 mb-6 tracking-tight">{translations[language].settings.title}</h1>
 
         <div className="space-y-4">
           {/* Two Column Layout for Saved Trips and Commute Preferences */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Saved Trips */}
-            <section className="bg-white rounded-3xl shadow-xl border border-white/50 p-6 backdrop-blur-sm" aria-labelledby="saved-trips-heading">
-              <h2 id="saved-trips-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                <span className="text-2xl p-2 bg-blue-50 rounded-xl" aria-hidden="true">🎫</span> {translations[language].settings.mySavedTrips}
+            <section className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-white/50 dark:border-gray-700/50 p-6 backdrop-blur-sm transition-colors" aria-labelledby="saved-trips-heading">
+              <h2 id="saved-trips-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
+                <span className="text-2xl p-2 bg-blue-50 dark:bg-blue-900/30 rounded-xl" aria-hidden="true">🎫</span> {translations[language].settings.mySavedTrips}
               </h2>
               <SavedTripsList />
             </section>
 
             {/* Commute Settings */}
-            <section className="bg-white rounded-3xl shadow-xl border border-white/50 p-6 backdrop-blur-sm" aria-labelledby="commute-heading">
-              <h2 id="commute-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                <span className="text-2xl p-2 bg-red-50 rounded-xl" aria-hidden="true">🚉</span> {translations[language].settings.commutePreferences}
+            <section className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-white/50 dark:border-gray-700/50 p-6 backdrop-blur-sm transition-colors" aria-labelledby="commute-heading">
+              <h2 id="commute-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
+                <span className="text-2xl p-2 bg-red-50 dark:bg-red-900/30 rounded-xl" aria-hidden="true">🚉</span> {translations[language].settings.commutePreferences}
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="home-station" className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label htmlFor="home-station" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     {translations[language].settings.homeStation}
                   </label>
                   <input
@@ -98,11 +98,11 @@ export default function SettingsPage() {
                     value={homeStation || ''}
                     onChange={(e) => updateSettings({ homeStation: e.target.value })}
                     placeholder={translations[language].settings.homeStationPlaceholder}
-                    className="w-full px-4 py-2.5 bg-gray-50/80 border-0 rounded-xl focus:ring-2 focus:ring-sbb-red focus:bg-white transition-all text-gray-900 placeholder-gray-400 text-sm"
+                    className="w-full px-4 py-2.5 bg-gray-50/80 dark:bg-gray-900/50 border-0 rounded-xl focus:ring-2 focus:ring-sbb-red focus:bg-white dark:focus:bg-gray-900 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
                   />
                 </div>
                 <div>
-                  <label htmlFor="work-station" className="block text-sm font-semibold text-gray-700 mb-2">
+                  <label htmlFor="work-station" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
                     {translations[language].settings.workStation}
                   </label>
                   <input
@@ -111,7 +111,7 @@ export default function SettingsPage() {
                     value={workStation || ''}
                     onChange={(e) => updateSettings({ workStation: e.target.value })}
                     placeholder={translations[language].settings.workStationPlaceholder}
-                    className="w-full px-4 py-2.5 bg-gray-50/80 border-0 rounded-xl focus:ring-2 focus:ring-sbb-red focus:bg-white transition-all text-gray-900 placeholder-gray-400 text-sm"
+                    className="w-full px-4 py-2.5 bg-gray-50/80 dark:bg-gray-900/50 border-0 rounded-xl focus:ring-2 focus:ring-sbb-red focus:bg-white dark:focus:bg-gray-900 transition-all text-gray-900 dark:text-white placeholder-gray-400 dark:placeholder-gray-500 text-sm"
                   />
                 </div>
               </div>
@@ -122,13 +122,13 @@ export default function SettingsPage() {
           {/* Two Column Layout for Appearance and Developer */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Appearance Settings */}
-            <section className="bg-white rounded-3xl shadow-xl border border-white/50 p-6 backdrop-blur-sm" aria-labelledby="appearance-heading">
-              <h2 id="appearance-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                <span className="text-2xl p-2 bg-orange-50 rounded-xl" aria-hidden="true">🎨</span> {translations[language].settings.appearance}
+            <section className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-white/50 dark:border-gray-700/50 p-6 backdrop-blur-sm transition-colors" aria-labelledby="appearance-heading">
+              <h2 id="appearance-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
+                <span className="text-2xl p-2 bg-orange-50 dark:bg-orange-900/30 rounded-xl" aria-hidden="true">🎨</span> {translations[language].settings.appearance}
               </h2>
               <div>
-                <label id="theme-label" className="block text-sm font-semibold text-gray-700 mb-2">{translations[language].settings.theme}</label>
-                <div role="group" aria-labelledby="theme-label" className="flex flex-wrap gap-2 p-1 bg-gray-100/50 rounded-xl border border-gray-100/80">
+                <label id="theme-label" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{translations[language].settings.theme}</label>
+                <div role="group" aria-labelledby="theme-label" className="flex flex-wrap gap-2 p-1 bg-gray-100/50 dark:bg-gray-900/50 rounded-xl border border-gray-100/80 dark:border-gray-700/50">
                   {(['system', 'light', 'dark'] as const).map((mode) => (
                     <button
                       key={mode}
@@ -136,8 +136,8 @@ export default function SettingsPage() {
                       aria-pressed={theme === mode}
                       className={`flex-1 px-3 py-1.5 rounded-lg text-xs font-bold transition-all ${
                         theme === mode
-                          ? 'bg-white text-gray-900 shadow-sm ring-1 ring-black/5'
-                          : 'text-gray-500 hover:text-gray-700 hover:bg-black/5'
+                          ? 'bg-white dark:bg-gray-700 text-gray-900 dark:text-white shadow-sm ring-1 ring-black/5 dark:ring-white/10'
+                          : 'text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 hover:bg-black/5 dark:hover:bg-white/5'
                       }`}
                     >
                       {translations[language].settings[`theme${mode.charAt(0).toUpperCase() + mode.slice(1)}` as 'themeSystem' | 'themeLight' | 'themeDark']}
@@ -148,18 +148,18 @@ export default function SettingsPage() {
             </section>
 
             {/* Developer Settings */}
-            <section className="bg-white rounded-3xl shadow-xl border border-white/50 p-6 backdrop-blur-sm" aria-labelledby="developer-heading">
-              <h2 id="developer-heading" className="text-xl font-bold text-gray-900 mb-4 flex items-center gap-3">
-                <span className="text-2xl p-2 bg-slate-50 rounded-xl" aria-hidden="true">🔧</span> {translations[language].settings.developer}
+            <section className="bg-white dark:bg-gray-800 rounded-3xl shadow-xl border border-white/50 dark:border-gray-700/50 p-6 backdrop-blur-sm transition-colors" aria-labelledby="developer-heading">
+              <h2 id="developer-heading" className="text-xl font-bold text-gray-900 dark:text-white mb-4 flex items-center gap-3">
+                <span className="text-2xl p-2 bg-slate-50 dark:bg-slate-800 rounded-xl" aria-hidden="true">🔧</span> {translations[language].settings.developer}
               </h2>
               <div>
-                <label htmlFor="mcp-server-select" className="block text-sm font-semibold text-gray-700 mb-2">{translations[language].settings.mcpServerEnvironment}</label>
+                <label htmlFor="mcp-server-select" className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">{translations[language].settings.mcpServerEnvironment}</label>
                 <select
                   id="mcp-server-select"
                   value={mcpServerUrl}
                   onChange={(e) => handleMcpServerChange(e.target.value)}
                   aria-label="Select MCP server environment"
-                  className="w-full px-4 py-2.5 bg-gray-50/80 border-0 rounded-xl focus:ring-2 focus:ring-sbb-red focus:bg-white transition-all text-gray-900 text-sm"
+                  className="w-full px-4 py-2.5 bg-gray-50/80 dark:bg-gray-900/50 border-0 rounded-xl focus:ring-2 focus:ring-sbb-red focus:bg-white dark:focus:bg-gray-900 transition-all text-gray-900 dark:text-white text-sm"
                 >
                   {mcpServers.map((server) => (
                     <option key={server.value} value={server.value}>
@@ -167,12 +167,12 @@ export default function SettingsPage() {
                     </option>
                   ))}
                 </select>
-                <p className="mt-2 text-[11px] text-gray-500" role="note">{translations[language].settings.mcpServerNote}</p>
+                <p className="mt-2 text-[11px] text-gray-500 dark:text-gray-400" role="note">{translations[language].settings.mcpServerNote}</p>
               </div>
             </section>
           </div>
 
-          <div className="text-center pt-6 text-xs text-gray-400">
+          <div className="text-center pt-6 text-xs text-gray-400 dark:text-gray-500">
             {translations[language].settings.versionInfo}
           </div>
         </div>

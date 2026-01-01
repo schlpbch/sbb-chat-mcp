@@ -1,6 +1,8 @@
 {
   "name": "sbb-travel-companion",
   "version": "0.9.0",
+  "description": "SBB Travel Companion",
+  "author": "schlpbch@gmail.com",
   "private": true,
   "scripts": {
     "dev": "next dev",

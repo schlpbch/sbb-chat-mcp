@@ -47,7 +47,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
             className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
               selectedCategory === null
                 ? 'bg-[#A20013] text-white shadow-md'
-                : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
+                : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:border-[#A20013] dark:hover:border-[#A20013]'
             }`}
             type="button"
             aria-pressed={selectedCategory === null}
@@ -64,7 +64,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
                 className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
                   selectedCategory === category.id
                     ? 'bg-[#A20013] text-white shadow-md'
-                    : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-200 border border-gray-200 dark:border-gray-700 hover:border-[#A20013] dark:hover:border-[#A20013]'
                 }`}
                 type="button"
                 aria-pressed={selectedCategory === category.id}
