@@ -85,21 +85,21 @@ export default function LandingPage() {
 
         {/* Footer */}
         <footer
-          className="py-8 px-4 border-t border-gray-200 bg-white"
+          className="py-6 sm:py-8 px-4 border-t border-gray-200 bg-white"
           role="contentinfo"
           aria-label="Site footer"
         >
           <div className="max-w-6xl mx-auto text-center">
-            <p className="text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-600">
               {t.landing.footer.copyright}
-              <span className="mx-2">•</span>
+              <span className="mx-1.5 sm:mx-2">•</span>
               <a
                 href="/privacy"
                 className="hover:text-[#A20013] transition-colors"
               >
                 {t.landing.footer.privacy}
               </a>
-              <span className="mx-2">•</span>
+              <span className="mx-1.5 sm:mx-2">•</span>
               <a
                 href="/terms"
                 className="hover:text-[#A20013] transition-colors"
@@ -108,8 +108,8 @@ export default function LandingPage() {
               </a>
             </p>
           </div>
-          <div className="text-center">
-            <p className="text-sm text-gray-600">
+          <div className="text-center mt-2">
+            <p className="text-xs sm:text-sm text-gray-600">
               built in Switzerland by{' '}
               <a
                 href="https://linkedin.com/in/andreas-schlapbach/"

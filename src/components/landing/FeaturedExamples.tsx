@@ -31,9 +31,12 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
   ];
 
   return (
-    <section className="py-16 px-4" aria-label="Example queries">
+    <section
+      className="py-8 sm:py-12 lg:py-16 px-4"
+      aria-label="Example queries"
+    >
       {/* Category Filter */}
-      <div className="max-w-6xl mx-auto mb-8">
+      <div className="max-w-6xl mx-auto mb-6 sm:mb-8">
         <nav
           className="flex flex-wrap gap-2 justify-center"
           aria-label="Category filters"
@@ -41,7 +44,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
         >
           <button
             onClick={() => setSelectedCategory(null)}
-            className={`px-4 py-2 rounded-lg font-medium transition-all ${
+            className={`px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
               selectedCategory === null
                 ? 'bg-[#A20013] text-white shadow-md'
                 : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
@@ -58,7 +61,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
               <button
                 key={category.id}
                 onClick={() => setSelectedCategory(category.id)}
-                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                className={`inline-flex items-center gap-1.5 sm:gap-2 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg font-medium text-xs sm:text-sm transition-all ${
                   selectedCategory === category.id
                     ? 'bg-[#A20013] text-white shadow-md'
                     : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
@@ -67,7 +70,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
                 aria-pressed={selectedCategory === category.id}
                 aria-label={category.label}
               >
-                <IconComponent className="w-4 h-4" />
+                <IconComponent className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
                 {category.label}
               </button>
             );
@@ -76,7 +79,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
       </div>
 
       {/* Examples Grid */}
-      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {examples.map((example) => (
           <ExampleQueryCard
             key={example.id}
