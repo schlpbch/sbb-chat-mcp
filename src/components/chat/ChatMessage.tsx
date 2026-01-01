@@ -1,11 +1,23 @@
 import type { Message } from './ChatPanel';
+import type { Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
+import TTSControls from './TTSControls';
+import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 
 interface ChatMessageProps {
   message: Message;
+  language: Language;
 }
 
-export default function ChatMessage({ message }: ChatMessageProps) {
+export default function ChatMessage({ message, language }: ChatMessageProps) {
   const isUser = message.role === 'user';
+  const t = translations[language];
+
+  // Initialize TTS for assistant messages
+  const tts = useTextToSpeech({
+    language,
+    onError: (error) => console.error('TTS error:', error),
+  });
 
   return (
     <div
@@ -26,18 +38,36 @@ export default function ChatMessage({ message }: ChatMessageProps) {
             {isUser ? 'You' : 'Companion'}
           </span>
         </div>
-        <p className="text-sm font-medium whitespace-pre-wrap leading-relaxed" style={{ userSelect: 'text' }}>
+        <p
+          className="text-sm font-medium whitespace-pre-wrap leading-relaxed"
+          style={{ userSelect: 'text' }}
+        >
           {message.content}
         </p>
         <div
-          className={`text-[10px] mt-2 font-bold uppercase tracking-tighter opacity-70 flex items-center ${
-            isUser ? 'justify-end' : 'justify-start'
-          }`}
+          className={`flex items-center ${
+            isUser ? 'justify-end' : 'justify-between'
+          } mt-2`}
         >
-          {message.timestamp.toLocaleTimeString([], {
-            hour: '2-digit',
-            minute: '2-digit',
-          })}
+          <div className="text-[10px] font-bold uppercase tracking-tighter opacity-70">
+            {message.timestamp.toLocaleTimeString([], {
+              hour: '2-digit',
+              minute: '2-digit',
+            })}
+          </div>
+          {!isUser && (
+            <TTSControls
+              messageId={message.id}
+              state={tts.state}
+              isCurrentMessage={tts.currentMessageId === message.id}
+              onPlay={() => tts.play(message.id, message.content)}
+              onPause={tts.pause}
+              onResume={tts.resume}
+              onStop={tts.stop}
+              language={language}
+              error={tts.error}
+            />
+          )}
         </div>
       </div>
     </div>
