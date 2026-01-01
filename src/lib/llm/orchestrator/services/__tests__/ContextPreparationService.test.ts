@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { ContextPreparationService } from '../ContextPreparationService';
+import type { Intent } from '../../../context/types';
 
 // Mock dependencies
 vi.mock('../../../sessionManager', () => ({
@@ -8,15 +9,16 @@ vi.mock('../../../sessionManager', () => ({
 }));
 
 vi.mock('../../../contextManager', () => ({
-  extractIntent: vi.fn(),
   updateContextFromMessage: vi.fn(),
 }));
 
+vi.mock('../../../context/multiIntentExtractor', () => ({
+  extractMultipleIntents: vi.fn(),
+}));
+
 import { getSessionContext, setSessionContext } from '../../../sessionManager';
-import {
-  extractIntent,
-  updateContextFromMessage,
-} from '../../../contextManager';
+import { updateContextFromMessage } from '../../../contextManager';
+import { extractMultipleIntents } from '../../../context/multiIntentExtractor';
 
 describe('ContextPreparationService', () => {
   let service: ContextPreparationService;
@@ -42,13 +44,15 @@ describe('ContextPreparationService', () => {
         mentionedTrips: [],
       };
 
-      const mockExtractedIntent = {
-        type: 'trip_planning',
+      const mockExtractedIntent: Intent = {
+        type: 'trip_planning' as const,
         confidence: 0.8,
         extractedEntities: {
           origin: 'Zurich',
           destination: 'Bern',
         },
+        timestamp: new Date(),
+        priority: 1,
       };
 
       const mockUpdatedContext = {
@@ -57,7 +61,7 @@ describe('ContextPreparationService', () => {
       };
 
       vi.mocked(getSessionContext).mockReturnValue(mockSessionContext);
-      vi.mocked(extractIntent).mockResolvedValue(mockExtractedIntent);
+      vi.mocked(extractMultipleIntents).mockResolvedValue([mockExtractedIntent]);
       vi.mocked(updateContextFromMessage).mockReturnValue(mockUpdatedContext);
 
       const result = await service.prepareContext(
@@ -67,7 +71,7 @@ describe('ContextPreparationService', () => {
       );
 
       expect(getSessionContext).toHaveBeenCalledWith('test-session', 'en');
-      expect(extractIntent).toHaveBeenCalledWith(
+      expect(extractMultipleIntents).toHaveBeenCalledWith(
         'Find trips from Zurich to Bern',
         'en'
       );
@@ -78,7 +82,7 @@ describe('ContextPreparationService', () => {
       );
 
       expect(result.sessionContext).toEqual(mockSessionContext);
-      expect(result.mergedIntent).toEqual(mockExtractedIntent);
+      expect(result.intents).toEqual([mockExtractedIntent]);
       expect(result.updatedContext).toEqual(mockUpdatedContext);
     });
 
@@ -112,7 +116,7 @@ describe('ContextPreparationService', () => {
       };
 
       vi.mocked(getSessionContext).mockReturnValue(mockSessionContext);
-      vi.mocked(extractIntent).mockResolvedValue(mockExtractedIntent);
+      vi.mocked(extractMultipleIntents).mockResolvedValue([mockExtractedIntent]);
       vi.mocked(updateContextFromMessage).mockReturnValue(mockSessionContext);
 
       const result = await service.prepareContext(
@@ -122,7 +126,8 @@ describe('ContextPreparationService', () => {
         parsedIntent
       );
 
-      expect(result.mergedIntent).toEqual({
+      expect(result.intents).toHaveLength(1);
+      expect(result.intents[0]).toEqual({
         ...mockExtractedIntent,
         preferences: ['eco-friendly', 'fast'],
         subQueries: ['What are the connections?', 'How long does it take?'],
@@ -158,7 +163,7 @@ describe('ContextPreparationService', () => {
       };
 
       vi.mocked(getSessionContext).mockReturnValue(mockSessionContext);
-      vi.mocked(extractIntent).mockResolvedValue(mockExtractedIntent);
+      vi.mocked(extractMultipleIntents).mockResolvedValue([mockExtractedIntent]);
       vi.mocked(updateContextFromMessage).mockReturnValue(mockSessionContext);
 
       const result = await service.prepareContext(
@@ -169,8 +174,9 @@ describe('ContextPreparationService', () => {
       );
 
       // Should not merge when hasMarkdown is false
-      expect(result.mergedIntent).toEqual(mockExtractedIntent);
-      expect(result.mergedIntent).not.toHaveProperty('preferences');
+      expect(result.intents).toHaveLength(1);
+      expect(result.intents[0]).toEqual(mockExtractedIntent);
+      expect(result.intents[0]).not.toHaveProperty('preferences');
     });
 
     it('handles different languages', async () => {
@@ -193,14 +199,15 @@ describe('ContextPreparationService', () => {
           mentionedTrips: [],
         };
 
-        const mockExtractedIntent = {
-          type: 'trip_planning',
+        const mockExtractedIntent: Intent = {
+          type: 'trip_planning' as const,
           confidence: 0.8,
           extractedEntities: {},
+          timestamp: new Date(),
         };
 
         vi.mocked(getSessionContext).mockReturnValue(mockSessionContext);
-        vi.mocked(extractIntent).mockResolvedValue(mockExtractedIntent);
+        vi.mocked(extractMultipleIntents).mockResolvedValue([mockExtractedIntent]);
         vi.mocked(updateContextFromMessage).mockReturnValue(mockSessionContext);
 
         await service.prepareContext('Test message', 'test-session', language);
@@ -209,7 +216,7 @@ describe('ContextPreparationService', () => {
           'test-session',
           language
         );
-        expect(extractIntent).toHaveBeenCalledWith('Test message', language);
+        expect(extractMultipleIntents).toHaveBeenCalledWith('Test message', language);
       }
     });
   });

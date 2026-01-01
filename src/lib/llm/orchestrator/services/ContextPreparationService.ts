@@ -2,16 +2,18 @@
  * Context Preparation Service
  *
  * Handles intent extraction, merging, and context updates for orchestrated chat.
+ * Supports both single and multi-intent extraction.
  * Extracted from orchestratedChatMode.ts to improve testability and maintainability.
  */
 
 import { getSessionContext, setSessionContext } from '../../sessionManager';
-import { extractIntent, updateContextFromMessage } from '../../contextManager';
+import { updateContextFromMessage } from '../../contextManager';
+import { extractMultipleIntents } from '../../context/multiIntentExtractor';
 import type { ConversationContext, Intent } from '../../context/types';
 
 export interface ContextPreparationResult {
   sessionContext: ConversationContext;
-  mergedIntent: Intent;
+  intents: Intent[]; // Changed from mergedIntent to intents array
   updatedContext: ConversationContext;
 }
 
@@ -34,28 +36,39 @@ export class ContextPreparationService {
     // Get existing session context
     const sessionContext = getSessionContext(sessionId, language);
 
-    // Extract intent from the message
-    const extractedIntent = await extractIntent(message, language as any);
+    // Extract multiple intents from the message
+    const extractedIntents = await extractMultipleIntents(
+      message,
+      language as any
+    );
 
-    // Merge parsed markdown intent with extracted intent
-    const mergedIntent = parsedIntent?.hasMarkdown
-      ? {
-          ...extractedIntent,
+    // Merge parsed markdown intent with extracted intents
+    const intents = parsedIntent?.hasMarkdown
+      ? extractedIntents.map((intent) => ({
+          ...intent,
           // Add markdown-parsed structured data (preferences, sub-queries)
           preferences: parsedIntent.structuredData?.preferences || [],
           subQueries: parsedIntent.subQueries || [],
-        }
-      : extractedIntent;
+        }))
+      : extractedIntents;
 
-    console.log('[ContextPreparationService] Merged intent:', mergedIntent);
+    console.log(
+      `[ContextPreparationService] Extracted ${intents.length} intent(s):`
+    );
+    intents.forEach((intent, idx) => {
+      console.log(
+        `  [${idx + 1}] ${intent.type} (priority: ${intent.priority}, confidence: ${(intent.confidence * 100).toFixed(0)}%)`
+      );
+    });
 
-    // Update context with extracted entities
+    // Update context with extracted entities from primary intent (first one)
+    const primaryIntent = intents[0];
     const updatedContext = updateContextFromMessage(sessionContext, message, {
-      intent: mergedIntent,
-      origin: mergedIntent.extractedEntities?.origin,
-      destination: mergedIntent.extractedEntities?.destination,
-      date: mergedIntent.extractedEntities?.date,
-      time: mergedIntent.extractedEntities?.time,
+      intent: primaryIntent,
+      origin: primaryIntent.extractedEntities?.origin,
+      destination: primaryIntent.extractedEntities?.destination,
+      date: primaryIntent.extractedEntities?.date,
+      time: primaryIntent.extractedEntities?.time,
     });
 
     // Persist updated context to session
@@ -63,7 +76,7 @@ export class ContextPreparationService {
 
     return {
       sessionContext,
-      mergedIntent,
+      intents,
       updatedContext,
     };
   }

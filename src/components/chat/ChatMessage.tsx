@@ -7,13 +7,14 @@ import { useTextToSpeech } from '@/hooks/useTextToSpeech';
 interface ChatMessageProps {
   message: Message;
   language: Language;
+  voiceOutputEnabled?: boolean;
 }
 
-export default function ChatMessage({ message, language }: ChatMessageProps) {
+export default function ChatMessage({ message, language, voiceOutputEnabled = true }: ChatMessageProps) {
   const isUser = message.role === 'user';
   const t = translations[language];
 
-  // Initialize TTS for assistant messages
+  // Initialize TTS for assistant messages only if voice output is enabled
   const tts = useTextToSpeech({
     language,
     onError: (error) => console.error('TTS error:', error),
@@ -55,7 +56,7 @@ export default function ChatMessage({ message, language }: ChatMessageProps) {
               minute: '2-digit',
             })}
           </div>
-          {!isUser && (
+          {!isUser && voiceOutputEnabled && (
             <TTSControls
               messageId={message.id}
               state={tts.state}

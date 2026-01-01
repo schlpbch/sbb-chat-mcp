@@ -1,13 +1,28 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import StationCard from './StationCard';
+import { ToastProvider } from '@/components/ui/Toast';
 
 const meta: Meta<typeof StationCard> = {
   title: 'Cards/StationCard',
   component: StationCard,
   parameters: {
     layout: 'centered',
+    docs: {
+      description: {
+        component: 'Station card displaying station information with favorites functionality.',
+      },
+    },
   },
   tags: ['autodocs'],
+  decorators: [
+    (Story) => (
+      <ToastProvider>
+        <div className="w-full max-w-md">
+          <Story />
+        </div>
+      </ToastProvider>
+    ),
+  ],
   argTypes: {
     language: {
       control: 'select',

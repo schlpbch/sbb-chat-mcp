@@ -86,6 +86,8 @@ export interface Intent {
   detectedLanguages?: string[]; // Languages detected in the message
   matchedKeywords?: string[]; // Keywords that matched (for debugging)
   translatedFrom?: 'zh' | 'hi' | null; // Track if query was translated
+  priority?: number; // For multi-intent: 1 = primary, 2 = secondary, etc.
+  segment?: string; // Original text segment for this intent
 }
 
 export interface ToolResultCache {

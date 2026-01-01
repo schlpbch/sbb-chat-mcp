@@ -80,7 +80,7 @@ describe('PlanCoordinatorService', () => {
       vi.mocked(formatPlanResults).mockReturnValue(mockFormattedResults);
 
       const result = await service.coordinatePlan(
-        mockIntent,
+        [mockIntent],
         mockContext,
         'en'
       );

@@ -1,5 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import TripCard from './TripCard';
+import { ToastProvider } from '@/components/ui/Toast';
+import { MapProvider } from '@/context/MapContext';
 
 const meta: Meta<typeof TripCard> = {
   title: 'Cards/TripCard',
@@ -8,16 +10,20 @@ const meta: Meta<typeof TripCard> = {
     layout: 'centered',
     docs: {
       description: {
-        component: 'Trip card showing journey details. Note: Some interactive features (save, map) may not work without required context providers.',
+        component: 'Trip card showing journey details with save and map functionality.',
       },
     },
   },
   tags: ['autodocs'],
   decorators: [
     (Story) => (
-      <div className="w-full max-w-2xl">
-        <Story />
-      </div>
+      <ToastProvider>
+        <MapProvider>
+          <div className="w-full max-w-2xl">
+            <Story />
+          </div>
+        </MapProvider>
+      </ToastProvider>
     ),
   ],
   argTypes: {

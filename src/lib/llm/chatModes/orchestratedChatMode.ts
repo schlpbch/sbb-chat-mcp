@@ -27,9 +27,9 @@ export async function sendOrchestratedChatMessage(
   context: ChatContext = { language: 'en' },
   parsedIntent?: unknown // Add parsed markdown intent
 ): Promise<ChatResponse> {
-  // 1. Prepare context and extract intent
+  // 1. Prepare context and extract intents
   const contextPrep = new ContextPreparationService();
-  const { updatedContext, mergedIntent } = await contextPrep.prepareContext(
+  const { updatedContext, intents } = await contextPrep.prepareContext(
     message,
     sessionId,
     context.language,
@@ -38,10 +38,7 @@ export async function sendOrchestratedChatMessage(
 
   // 2. Decide if orchestration is needed
   const decision = new OrchestrationDecisionService();
-  const { shouldOrchestrate } = decision.shouldOrchestrate(
-    message,
-    mergedIntent
-  );
+  const { shouldOrchestrate } = decision.shouldOrchestrate(message, intents);
 
   if (!shouldOrchestrate) {
     console.log(
@@ -53,7 +50,7 @@ export async function sendOrchestratedChatMessage(
   // 3. Coordinate plan execution
   const coordinator = new PlanCoordinatorService();
   const planResult = await coordinator.coordinatePlan(
-    mergedIntent,
+    intents,
     updatedContext,
     context.language
   );
@@ -79,7 +76,7 @@ export async function sendOrchestratedChatMessage(
     toolCalls:
       planResult.toolCalls.length > 0 ? planResult.toolCalls : undefined,
     debug: {
-      intent: mergedIntent,
+      intent: intents[0], // Primary intent for backward compatibility
       context: updatedContext,
     },
   };

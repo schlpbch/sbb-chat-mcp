@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import type { Language } from '@/lib/i18n';
@@ -29,6 +29,9 @@ export default function ChatPanel({
   const { handleExportChat } = useChatExport(messages);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  
+  // Voice output state
+  const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(true);
 
   // Auto-scroll to bottom
   useEffect(() => {
@@ -120,6 +123,42 @@ export default function ChatPanel({
         </div>
 
         <div className="flex items-center gap-2 relative z-10">
+          {/* Voice Output Toggle */}
+          <button
+            onClick={() => setVoiceOutputEnabled(!voiceOutputEnabled)}
+            className={`w-8 h-8 rounded-full transition-colors flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-white/50 ${
+              voiceOutputEnabled
+                ? 'bg-white/30 text-white'
+                : 'bg-white/10 text-white/50'
+            }`}
+            aria-label={voiceOutputEnabled ? 'Disable voice output' : 'Enable voice output'}
+            title={voiceOutputEnabled ? 'Voice output enabled' : 'Voice output disabled'}
+            aria-pressed={voiceOutputEnabled}
+          >
+            <svg
+              className="w-4 h-4"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+            >
+              {voiceOutputEnabled ? (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                />
+              ) : (
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm14.5-4.5l-3.5 3.5m0-3.5l3.5 3.5"
+                />
+              )}
+            </svg>
+          </button>
+          
           {messages.length > 0 && (
             <>
               <button
@@ -216,7 +255,12 @@ export default function ChatPanel({
           </div>
         )}
         {messages.map((message) => (
-          <ChatMessage key={message.id} message={message} language={language} />
+          <ChatMessage 
+            key={message.id} 
+            message={message} 
+            language={language}
+            voiceOutputEnabled={voiceOutputEnabled}
+          />
         ))}
         <div ref={messagesEndRef} />
       </div>

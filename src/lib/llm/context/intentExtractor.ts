@@ -27,197 +27,19 @@ import {
 } from '@/lib/translation/translationService';
 
 /**
- * Extract ALL intents from user message (multi-intent support)
+ * Extract multiple intents from user message (multi-intent support)
  *
  * @param message - User message to analyze
  * @param userLanguage - User's selected language preference (optional)
- * @param threshold - Minimum confidence threshold for including an intent (default: 0.5)
- * @returns Array of detected intents sorted by confidence (highest first)
+ * @returns Array of detected intents sorted by priority
  */
 export async function extractIntents(
   message: string,
-  userLanguage?: Language,
-  threshold: number = 0.5
+  userLanguage?: Language
 ): Promise<Intent[]> {
-  let processedMessage = message;
-  let translatedFrom: 'zh' | 'hi' | null = null;
-
-  // Translate ZH/HI to EN for intent extraction
-  if (requiresTranslation(userLanguage)) {
-    processedMessage = await translateToEnglish(message, userLanguage);
-    translatedFrom = userLanguage;
-    console.log(
-      `[intentExtractor] Translated ${userLanguage} → en:`,
-      processedMessage
-    );
-  }
-
-  const lowerMessage = processedMessage.toLowerCase();
-  console.log('[intentExtractor:multi] Extracting intents from:', message);
-  console.log(
-    '[intentExtractor:multi] User language:',
-    userLanguage || 'not specified'
-  );
-
-  // Detect language(s) in the message
-  const detectedLanguages = detectMessageLanguage(message, userLanguage);
-  console.log('[intentExtractor:multi] Detected languages:', detectedLanguages);
-
-  // Get keywords for detected languages
-  const tripKeywords = getAllKeywords('trip_planning', detectedLanguages);
-  const snowKeywords = getAllKeywords('snow_conditions', detectedLanguages);
-  const weatherKeywords = getAllKeywords('weather_check', detectedLanguages);
-  const stationKeywords = getAllKeywords('station_search', detectedLanguages);
-  const formationKeywords = getAllKeywords(
-    'train_formation',
-    detectedLanguages
-  );
-
-  // Calculate scores for ALL intent types
-  const intentScores: Array<{
-    type: Intent['type'];
-    confidence: number;
-    matchedKeywords: string[];
-  }> = [];
-
-  // Station search
-  if (hasKeyword(stationKeywords, lowerMessage)) {
-    const count = countMatchedKeywords(stationKeywords, lowerMessage);
-    const matched = stationKeywords.filter((k) =>
-      hasKeyword([k], lowerMessage)
-    );
-    intentScores.push({
-      type: 'station_search',
-      confidence: calculateBaseConfidence(count),
-      matchedKeywords: matched,
-    });
-  }
-
-  // Train formation
-  if (hasKeyword(formationKeywords, lowerMessage)) {
-    const count = countMatchedKeywords(formationKeywords, lowerMessage);
-    const matched = formationKeywords.filter((k) =>
-      hasKeyword([k], lowerMessage)
-    );
-    intentScores.push({
-      type: 'train_formation',
-      confidence: calculateBaseConfidence(count),
-      matchedKeywords: matched,
-    });
-  }
-
-  // Snow conditions (check before weather to prevent misclassification)
-  if (hasKeyword(snowKeywords, lowerMessage)) {
-    const count = countMatchedKeywords(snowKeywords, lowerMessage);
-    const matched = snowKeywords.filter((k) => hasKeyword([k], lowerMessage));
-    intentScores.push({
-      type: 'snow_conditions',
-      confidence: calculateBaseConfidence(count),
-      matchedKeywords: matched,
-    });
-  }
-
-  // Weather check
-  if (hasKeyword(weatherKeywords, lowerMessage)) {
-    const count = countMatchedKeywords(weatherKeywords, lowerMessage);
-    const matched = weatherKeywords.filter((k) =>
-      hasKeyword([k], lowerMessage)
-    );
-    intentScores.push({
-      type: 'weather_check',
-      confidence: calculateBaseConfidence(count),
-      matchedKeywords: matched,
-    });
-  }
-
-  // Trip planning
-  if (hasKeyword(tripKeywords, lowerMessage)) {
-    const count = countMatchedKeywords(tripKeywords, lowerMessage);
-    const matched = tripKeywords.filter((k) => hasKeyword([k], lowerMessage));
-    intentScores.push({
-      type: 'trip_planning',
-      confidence: calculateBaseConfidence(count),
-      matchedKeywords: matched,
-    });
-  }
-
-  // Check for implicit trip planning pattern (e.g., "Zurich to Bern")
-  const implicitTripPattern =
-    /\b\w+\s+(?:to|nach|bis|à|pour|vers|a|per)\s+\w+/i;
-  if (implicitTripPattern.test(lowerMessage)) {
-    // Only add if not already detected
-    const hasTripIntent = intentScores.some((s) => s.type === 'trip_planning');
-    if (!hasTripIntent) {
-      intentScores.push({
-        type: 'trip_planning',
-        confidence: 0.7, // Higher confidence than before since it's a clear pattern
-        matchedKeywords: ['implicit_trip_pattern'],
-      });
-    } else {
-      // Boost existing trip_planning confidence if we have implicit pattern
-      const tripScore = intentScores.find((s) => s.type === 'trip_planning');
-      if (tripScore) {
-        tripScore.confidence = Math.min(0.95, tripScore.confidence + 0.05);
-      }
-    }
-  }
-
-  // Filter by threshold and sort by confidence (highest first)
-  const filteredIntents = intentScores.filter((s) => s.confidence >= threshold);
-
-  // If no intents pass threshold, return general_info
-  if (filteredIntents.length === 0) {
-    console.log('[intentExtractor:multi] No intents above threshold, defaulting to general_info');
-    const entities = extractEntities(lowerMessage, detectedLanguages, 'general_info');
-    return [
-      {
-        type: 'general_info',
-        confidence: 0.5,
-        extractedEntities: entities,
-        timestamp: new Date(),
-        detectedLanguages,
-        matchedKeywords: [],
-        translatedFrom,
-      },
-    ];
-  }
-
-  // Sort by confidence (highest first)
-  filteredIntents.sort((a, b) => b.confidence - a.confidence);
-
-  console.log(
-    `[intentExtractor:multi] Found ${filteredIntents.length} intent(s):`,
-    filteredIntents.map((i) => `${i.type} (${(i.confidence * 100).toFixed(0)}%)`)
-  );
-
-  // Build Intent objects with entities for each detected intent
-  const intents: Intent[] = filteredIntents.map((intentScore) => {
-    const extractedEntities = extractEntities(
-      lowerMessage,
-      detectedLanguages,
-      intentScore.type
-    );
-
-    // Refine confidence based on extracted entities
-    const refinedConfidence = refineConfidence(
-      intentScore.type,
-      intentScore.confidence,
-      extractedEntities,
-      intentScore.matchedKeywords
-    );
-
-    return {
-      type: intentScore.type,
-      confidence: refinedConfidence,
-      extractedEntities,
-      timestamp: new Date(),
-      detectedLanguages,
-      matchedKeywords: intentScore.matchedKeywords.slice(0, 5),
-      translatedFrom,
-    };
-  });
-
-  return intents;
+  // Import here to avoid circular dependency
+  const { extractMultipleIntents } = await import('./multiIntentExtractor');
+  return extractMultipleIntents(message, userLanguage);
 }
 
 /**
@@ -232,7 +54,7 @@ export async function extractIntent(
   userLanguage?: Language
 ): Promise<Intent> {
   // Use multi-intent extraction and return the highest-confidence intent
-  const intents = await extractIntents(message, userLanguage, 0.0);
+  const intents = await extractIntents(message, userLanguage);
   return intents[0]; // Return highest confidence intent
 }
 

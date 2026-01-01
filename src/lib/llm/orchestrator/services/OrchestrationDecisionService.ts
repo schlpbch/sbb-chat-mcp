@@ -19,15 +19,29 @@ export class OrchestrationDecisionService {
    * Determine if orchestration should be triggered
    *
    * @param message - User's message
-   * @param intent - Extracted intent
+   * @param intents - Extracted intents (array)
    * @param confidenceThreshold - Minimum confidence required (default: 0.7)
    * @returns Decision with reasoning
    */
   shouldOrchestrate(
     message: string,
-    intent: Intent,
+    intents: Intent[],
     confidenceThreshold: number = 0.7
   ): OrchestrationDecision {
+    // Multi-intent queries ALWAYS require orchestration
+    if (intents.length > 1) {
+      console.log(
+        `[OrchestrationDecisionService] Multi-intent detected (${intents.length} intents) - orchestration required`
+      );
+      return {
+        shouldOrchestrate: true,
+        reason: `Multi-intent query detected (${intents.length} intents)`,
+        confidence: Math.max(...intents.map((i) => i.confidence)),
+      };
+    }
+
+    // Single intent - use existing logic
+    const intent = intents[0];
     const requiresOrch = requiresOrchestration(message);
     const hasConfidence = intent.confidence >= confidenceThreshold;
 
