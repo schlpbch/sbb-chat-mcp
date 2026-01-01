@@ -90,7 +90,7 @@ export function generateSystemPrompt(
    - "Temperature in Zurich" → getWeather({locationName: "Zurich"})
    - "Will it rain in Bern?" → getWeather({locationName: "Bern"})
 
-5. SKI/SNOW CONDITIONS → Use getSnowConditions
+5. SNOW CONDITIONS → Use getSnowConditions
    Triggers: "snow", "snow conditions", "ski", "skiing", "snowfall", "snow depth", "slopes", "powder", "ski resort"
    **CRITICAL: Use this for ANY query about skiing, snow conditions, or ski resorts!**
    **DO NOT use getWeather for snow queries - it won't have ski-specific data!**
