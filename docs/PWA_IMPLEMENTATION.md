@@ -2,21 +2,24 @@
 
 ## Overview
 
-The Swiss Travel Companion application now has full Progressive Web App (PWA) support, making it installable on devices and capable of working offline.
+The Swiss Travel Companion application now has full Progressive Web App (PWA)
+support, making it installable on devices and capable of working offline.
 
 ## Features Implemented
 
 ### ✅ Core PWA Features
 
 1. **Web App Manifest** (`/public/manifest.json`)
+
    - App name, description, and branding
    - Icon definitions for all platforms
    - Display mode: standalone
-   - Theme color: SBB Red (#EB0000)
+   - Theme color: SBB Red (#A5061C)
    - App shortcuts for quick actions
    - Share target support
 
 2. **Service Worker** (`/public/sw.js`)
+
    - Offline support with intelligent caching
    - Network-first strategy for API calls
    - Cache-first strategy for static assets
@@ -25,6 +28,7 @@ The Swiss Travel Companion application now has full Progressive Web App (PWA) su
    - Push notification support
 
 3. **Install Prompt** (`/src/components/PWAInstallPrompt.tsx`)
+
    - Native install prompt handling
    - Custom UI for install invitation
    - Dismissal with 7-day cooldown
@@ -67,10 +71,12 @@ The Swiss Travel Companion application now has full Progressive Web App (PWA) su
 ### For Users
 
 1. **Desktop (Chrome/Edge)**:
+
    - Click the install icon in the address bar
    - Or use the custom install prompt
 
 2. **Android**:
+
    - Tap "Add to Home Screen" from browser menu
    - Or use the custom install prompt
 
@@ -148,6 +154,7 @@ Edit `/src/components/PWAInstallPrompt.tsx` to customize:
    ```
 
 2. **Test in Chrome DevTools**:
+
    - Open DevTools → Application tab
    - Check Manifest
    - Check Service Workers
@@ -209,7 +216,7 @@ When updating the service worker:
 Check service worker status in browser:
 
 ```javascript
-navigator.serviceWorker.getRegistration().then(reg => {
+navigator.serviceWorker.getRegistration().then((reg) => {
   console.log('Service Worker:', reg);
 });
 ```
@@ -219,7 +226,7 @@ navigator.serviceWorker.getRegistration().then(reg => {
 View cached resources:
 
 ```javascript
-caches.keys().then(names => {
+caches.keys().then((names) => {
   console.log('Cache names:', names);
 });
 ```
@@ -229,7 +236,7 @@ caches.keys().then(names => {
 Check if app is installed:
 
 ```javascript
-window.matchMedia('(display-mode: standalone)').matches
+window.matchMedia('(display-mode: standalone)').matches;
 ```
 
 ## Troubleshooting
@@ -268,7 +275,8 @@ window.matchMedia('(display-mode: standalone)').matches
 - [MDN PWA Guide](https://developer.mozilla.org/en-US/docs/Web/Progressive_web_apps)
 - [web.dev PWA](https://web.dev/progressive-web-apps/)
 - [PWA Builder](https://www.pwabuilder.com/)
-- [Workbox](https://developers.google.com/web/tools/workbox) - Advanced SW library
+- [Workbox](https://developers.google.com/web/tools/workbox) - Advanced SW
+  library
 
 ## Next Steps
 

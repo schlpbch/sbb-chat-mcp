@@ -2,7 +2,10 @@
 
 ## Project Overview
 
-**sbb-travel-companion** is a Next.js 16 application that provides a Swiss travel Companion with MCP (Model Context Protocol) integration. It features an AI-powered chat interface, interactive map with tourist attractions, and tools for testing MCP servers.
+**sbb-travel-companion** is a Next.js 16 application that provides a Swiss
+travel Companion with MCP (Model Context Protocol) integration. It features an
+AI-powered chat interface, interactive map with tourist attractions, and tools
+for testing MCP servers.
 
 ## Tech Stack
 
@@ -91,7 +94,8 @@ Dark mode is configured via `@variant` in `globals.css`:
 @variant dark (&:where(.dark, .dark *));
 ```
 
-The `ThemeProvider` toggles the `.dark` class on `<html>`. Use `dark:` prefix for dark mode styles:
+The `ThemeProvider` toggles the `.dark` class on `<html>`. Use `dark:` prefix
+for dark mode styles:
 
 ```tsx
 <div className="bg-white dark:bg-gray-900">
@@ -121,9 +125,7 @@ export default function Page() {
         isOpen={isMenuOpen}
         onClose={() => setIsMenuOpen(false)}
       />
-      <main className="flex-1">
-        {/* Page content */}
-      </main>
+      <main className="flex-1">{/* Page content */}</main>
     </div>
   );
 }
@@ -135,13 +137,16 @@ Use the proxy routes to avoid CORS issues:
 
 ```typescript
 // Fetch tools
-fetch(`/api/mcp-proxy/tools?server=${encodeURIComponent(mcpServerUrl)}`)
+fetch(`/api/mcp-proxy/tools?server=${encodeURIComponent(mcpServerUrl)}`);
 
 // Execute a tool
-fetch(`/api/mcp-proxy/tools/${toolName}?server=${encodeURIComponent(mcpServerUrl)}`, {
-  method: 'POST',
-  body: JSON.stringify(params)
-})
+fetch(
+  `/api/mcp-proxy/tools/${toolName}?server=${encodeURIComponent(mcpServerUrl)}`,
+  {
+    method: 'POST',
+    body: JSON.stringify(params),
+  }
+);
 ```
 
 ### Internationalization
@@ -159,15 +164,18 @@ Supported languages: `en`, `de`, `fr`, `it`, `zh`, `hi`
 
 ## Branding
 
-- **SBB Red**: `#eb0000`
+- **SBB Red**: `#A5061C`
 - **Logo**: Red square with white "SBB" text
 - **App Name**: "Swiss Travel Companion"
 
 ## Known Issues
 
-1. **Local data files**: The `/api/mcp/sights` and `/api/mcp/resorts` routes expect data files that may not exist locally. These are fallback routes; primary data comes from the MCP server.
+1. **Local data files**: The `/api/mcp/sights` and `/api/mcp/resorts` routes
+   expect data files that may not exist locally. These are fallback routes;
+   primary data comes from the MCP server.
 
-2. **MCP Server Selection**: The selected MCP server URL is stored in `localStorage` under `mcpServerUrl`.
+2. **MCP Server Selection**: The selected MCP server URL is stored in
+   `localStorage` under `mcpServerUrl`.
 
 ## Testing Notes
 
