@@ -4,10 +4,10 @@ import type { TTSRequest, TTSResponse } from '@/types/tts';
 
 // Initialize Google Cloud TTS client
 const getClient = () => {
-  const apiKey = process.env.GOOGLE_GEMINI_API_KEY;
+  const apiKey = process.env.GOOGLE_CLOUD_KEY;
 
   if (!apiKey) {
-    throw new Error('GOOGLE_GEMINI_API_KEY environment variable is not set');
+    throw new Error('GOOGLE_CLOUD_KEY environment variable is not set');
   }
 
   return new TextToSpeechClient({
