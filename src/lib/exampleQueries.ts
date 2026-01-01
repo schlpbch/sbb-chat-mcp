@@ -207,10 +207,10 @@ export const exampleQueries: ExampleQuery[] = [
   {
     id: 'station-3',
     text: {
-      en: 'Next trains arriving at Genève-Aéroport',
-      de: 'Nächste Züge am Flughafen Genf',
-      fr: "Prochains trains arrivant à l'aéroport de Genève",
-      it: "Prossimi treni in arrivo all'aeroporto di Ginevra",
+      en: 'trains arriving at Genève-Aéroport',
+      de: 'Züge am Flughafen Genf',
+      fr: "trains arrivant à l'aéroport de Genève",
+      it: "treni in arrivo all'aeroporto di Ginevra",
       zh: '到达日内瓦机场的下一班火车',
       hi: 'जिनेवा हवाई अड्डे पर आने वाली अगली ट्रेनें',
     },
