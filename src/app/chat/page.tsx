@@ -165,6 +165,43 @@ function ChatContent() {
             <div className="px-3 sm:px-6 py-3 sm:py-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
               {/* Mode Toggle */}
               <div className="flex items-center gap-3 mb-2">
+                {/* Voice Output Toggle */}
+                <button
+                  onClick={() => setVoiceOutputEnabled(!voiceOutputEnabled)}
+                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border shadow-sm ${
+                    voiceOutputEnabled
+                      ? 'bg-sbb-red/10 dark:bg-sbb-red/20 border-sbb-red/30 dark:border-sbb-red/40 text-sbb-red dark:text-red-400'
+                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                  }`}
+                  aria-label={voiceOutputEnabled ? 'Disable voice output' : 'Enable voice output'}
+                  title={voiceOutputEnabled ? 'Voice output enabled - Click to disable' : 'Voice output disabled - Click to enable'}
+                  aria-pressed={voiceOutputEnabled}
+                >
+                  <svg
+                    className="w-4 h-4"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    {voiceOutputEnabled ? (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                      />
+                    ) : (
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm14.5-4.5l-3.5 3.5m0-3.5l3.5 3.5"
+                      />
+                    )}
+                  </svg>
+                  <span>{voiceOutputEnabled ? 'Voice On' : 'Voice Off'}</span>
+                </button>
+
                 <button
                   onClick={() => setTextOnlyMode(!textOnlyMode)}
                   className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
@@ -207,43 +244,6 @@ function ChatContent() {
                       <span className="text-purple-700 dark:text-purple-400">{t.chat.richMode}</span>
                     </>
                   )}
-                </button>
-
-                {/* Voice Output Toggle */}
-                <button
-                  onClick={() => setVoiceOutputEnabled(!voiceOutputEnabled)}
-                  className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border shadow-sm ${
-                    voiceOutputEnabled
-                      ? 'bg-sbb-red/10 dark:bg-sbb-red/20 border-sbb-red/30 dark:border-sbb-red/40 text-sbb-red dark:text-red-400'
-                      : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
-                  }`}
-                  aria-label={voiceOutputEnabled ? 'Disable voice output' : 'Enable voice output'}
-                  title={voiceOutputEnabled ? 'Voice output enabled - Click to disable' : 'Voice output disabled - Click to enable'}
-                  aria-pressed={voiceOutputEnabled}
-                >
-                  <svg
-                    className="w-4 h-4"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    {voiceOutputEnabled ? (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
-                      />
-                    ) : (
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15zm14.5-4.5l-3.5 3.5m0-3.5l3.5 3.5"
-                      />
-                    )}
-                  </svg>
-                  <span>{voiceOutputEnabled ? 'Voice On' : 'Voice Off'}</span>
                 </button>
 
                 <span className="text-xs text-gray-500 font-medium italic">

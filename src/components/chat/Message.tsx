@@ -54,8 +54,6 @@ export default function Message({
                 content={message.content}
                 variant="Companion"
                 timestamp={timestamp}
-                language={language}
-                voiceOutputEnabled={voiceOutputEnabled}
               />
             )}
           </div>

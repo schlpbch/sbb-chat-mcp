@@ -220,6 +220,15 @@ export const translations = {
       attendees: 'attendees',
       details: 'Event Details',
     },
+    transfer: {
+      title: 'Transfer Optimization',
+      noData: 'No transfer information available',
+      totalTransferTime: 'Total Transfer Time',
+      difficulty: 'Difficulty',
+      easy: 'Easy',
+      moderate: 'Moderate',
+      difficult: 'Difficult',
+    },
     errors: {
       network: 'No internet connection. Please check your network.',
       api: 'Service temporarily unavailable. Please try again.',
