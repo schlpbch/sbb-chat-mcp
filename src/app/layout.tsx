@@ -1,10 +1,12 @@
 import type { Metadata, Viewport } from 'next';
 import { Outfit } from 'next/font/google';
+import { headers } from 'next/headers';
 import './globals.css';
 import { ToastProvider } from '@/components/ui/Toast';
 
 import { SettingsProvider } from '@/context/SettingsContext';
 import { MapProvider } from '@/context/MapContext';
+import { detectLanguageFromHeaders } from '@/lib/detectLanguageFromHeaders';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -55,19 +57,28 @@ export const viewport: Viewport = {
   userScalable: true,
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Detect language from HTTP Accept-Language header
+  const headersList = await headers();
+  const acceptLanguage = headersList.get('accept-language');
+  const detectedLanguage = detectLanguageFromHeaders(acceptLanguage);
+
   return (
-    <html lang="en" className={outfit.variable} suppressHydrationWarning>
+    <html lang={detectedLanguage} className={outfit.variable} suppressHydrationWarning>
       <head>
         <script
           dangerouslySetInnerHTML={{
             __html: `
               (function() {
                 try {
+                  // Set detected language from server for client-side access
+                  window.__INITIAL_LANGUAGE__ = '${detectedLanguage}';
+                  
+                  // Apply dark mode based on saved settings
                   const settings = JSON.parse(localStorage.getItem('sbb-settings') || '{}');
                   const theme = settings.theme || 'system';
                   const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);

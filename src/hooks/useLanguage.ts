@@ -1,14 +1,19 @@
-'use client';
-
 import { useState, useCallback } from 'react';
 import type { Language } from '@/lib/i18n';
+
+// Extend Window interface to include server-provided language
+declare global {
+  interface Window {
+    __INITIAL_LANGUAGE__?: Language;
+  }
+}
 
 /**
  * Detects the user's preferred language from localStorage or browser settings
  * @returns The detected language code
  */
 function detectLanguage(): Language {
-  // Try localStorage first (user preference)
+  // Try localStorage first (user preference - highest priority)
   if (typeof window !== 'undefined') {
     try {
       const savedSettings = localStorage.getItem('sbb-settings');
@@ -20,6 +25,15 @@ function detectLanguage(): Language {
       }
     } catch (e) {
       console.error('Failed to parse saved settings:', e);
+    }
+
+    // Check for server-detected language (from HTTP Accept-Language header)
+    if (window.__INITIAL_LANGUAGE__) {
+      const serverLanguage = window.__INITIAL_LANGUAGE__;
+      const supportedLanguages: Language[] = ['en', 'de', 'fr', 'it', 'zh', 'hi'];
+      if (supportedLanguages.includes(serverLanguage)) {
+        return serverLanguage;
+      }
     }
 
     // Fall back to browser language
