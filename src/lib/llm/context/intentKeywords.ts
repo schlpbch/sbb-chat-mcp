@@ -233,8 +233,6 @@ export const INTENT_KEYWORDS: Record<string, MultilingualKeywords> = {
         'show arrivals',
         'show departure',
         'show arrival',
-        'next trains',
-        'next train',
       ],
       contextual: ['at', 'from', 'in'],
     },
