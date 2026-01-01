@@ -54,7 +54,7 @@ Timestamp: ${new Date(data.timestamp).toLocaleString()}
     const emailResponse = await resend.emails.send({
       from: process.env.RESEND_FROM_EMAIL || 'feedback@resend.dev',
       to: process.env.FEEDBACK_EMAIL || 'your-email@example.com',
-      subject: `[${data.type.toUpperCase()}] New Feedback from SBB Chat`,
+      subject: `[${data.type.toUpperCase()}] New Feedback from Swiss Travel Companion`,
       text: emailContent,
     });
 

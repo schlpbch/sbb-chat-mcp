@@ -221,7 +221,7 @@ export const translations = {
         'The route comparison returned too much data. This is a known issue with complex routes. Try using direct trip search instead.',
     },
     onboarding: {
-      welcome: 'Welcome to SBB Chat Companion!',
+      welcome: 'Welcome to Swiss Travel Companion!',
       welcomeDesc:
         'Your intelligent companion for Swiss public transport journeys and station information.',
       capabilities: 'I can help you with:',
@@ -251,7 +251,7 @@ export const translations = {
       touristCards: 'Tourist Info',
       touristCardsDesc: 'Attractions and activities',
       quickTips: 'Quick Tips',
-      quickTipsDesc: 'Make the most of your SBB Chat Companion experience.',
+      quickTipsDesc: 'Make the most of your Swiss Travel Companion experience.',
       tip1Title: 'Use Example Queries',
       tip1Desc:
         'Click any example on the welcome screen to get started quickly',
@@ -611,7 +611,7 @@ export const translations = {
         'Der Routenvergleich hat zu viele Daten zurückgegeben. Dies ist ein bekanntes Problem bei komplexen Routen. Versuchen Sie stattdessen eine direkte Reisesuche.',
     },
     onboarding: {
-      welcome: 'Willkommen beim SBB Chat-Assistenten!',
+      welcome: 'Willkommen beim Swiss Travel Companion!',
       welcomeDesc:
         'Ihr intelligenter Begleiter für Schweizer öffentliche Verkehrsreisen und Bahnhofsinformationen.',
       capabilities: 'Ich kann Ihnen helfen mit:',
@@ -642,8 +642,7 @@ export const translations = {
       touristCards: 'Touristeninfo',
       touristCardsDesc: 'Sehenswürdigkeiten und Aktivitäten',
       quickTips: 'Schnelle Tipps',
-      quickTipsDesc:
-        'Holen Sie das Beste aus Ihrem SBB Chat-Assistenten heraus.',
+      quickTipsDesc: 'Holen Sie das Beste aus Ihrem Swiss Travel Companion heraus.',
       tip1Title: 'Beispielabfragen verwenden',
       tip1Desc:
         'Klicken Sie auf ein Beispiel auf dem Willkommensbildschirm, um schnell zu beginnen',
@@ -1409,7 +1408,7 @@ export const translations = {
         'Il confronto degli itinerari ha restituito troppi dati. Questo è un problema noto con percorsi complessi. Prova invece una ricerca diretta del viaggio.',
     },
     onboarding: {
-      welcome: 'Benvenuti in SBB Chat Companion!',
+      welcome: 'Benvenuti in Swiss Travel Companion!',
       welcomeDesc:
         'Il vostro compagno intelligente per i viaggi in Svizzera e informazioni sulle stazioni.',
       capabilities: 'Posso aiutarvi con:',

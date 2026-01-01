@@ -12,18 +12,19 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: 'SBB Chat MCP - Swiss Travel Companion',
+  title: 'Swiss Travel Companion',
   description:
     'Your intelligent companion for Swiss public transport journeys, weather, and station information',
-  applicationName: 'SBB Chat MCP',
+  applicationName: 'Swiss Travel Companion',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
-    title: 'SBB Chat',
+    title: 'Swiss Travel Companion',
   },
   formatDetection: {
     telephone: false,
   },
+  themeColor: '#A5061C',
   manifest: '/manifest.json',
   icons: {
     icon: [{ url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' }],
@@ -31,14 +32,14 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    siteName: 'SBB Chat MCP',
-    title: 'SBB Chat MCP - Swiss Travel Companion',
+    siteName: 'Swiss Travel Companion',
+    title: 'Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
     images: ['/SBB-chat-MCP.png'],
   },
   twitter: {
     card: 'summary',
-    title: 'SBB Chat MCP',
+    title: 'Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
     images: ['/SBB-chat-MCP.png'],
   },
@@ -64,7 +65,7 @@ export default function RootLayout({
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="SBB Chat" />
+        <meta name="apple-mobile-web-app-title" content="Swiss Travel Companion" />
       </head>
       <body className="antialiased font-sans">
         <SettingsProvider>

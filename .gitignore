@@ -65,3 +65,5 @@ terraform.rc
 
 # Prevent duplicate project directory
 /sbb-chat-mcp
+*storybook.log
+storybook-static

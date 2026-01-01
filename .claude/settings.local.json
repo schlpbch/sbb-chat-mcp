@@ -44,7 +44,10 @@
       "Bash(node:*)",
       "Bash(pnpm test:*)",
       "Bash(pnpm vitest:*)",
-      "Bash(git reset:*)"
+      "Bash(git reset:*)",
+      "Bash(npx storybook@latest init:*)",
+      "Bash(pnpm run storybook:*)",
+      "Bash(pnpm install)"
     ]
   }
 }

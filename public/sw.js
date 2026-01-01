@@ -190,7 +190,7 @@ self.addEventListener('push', (event) => {
   const data = event.data ? event.data.json() : {};
 
   const options = {
-    body: data.body || 'New update from SBB Chat',
+    body: data.body || 'New update from Swiss Travel Companion',
     icon: '/icons/icon-192x192.png',
     badge: '/icons/badge-72x72.png',
     vibrate: [200, 100, 200],

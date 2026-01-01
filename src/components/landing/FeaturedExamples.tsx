@@ -1,6 +1,7 @@
 'use client';
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Train, Cloud, Building2, Sparkles } from 'lucide-react';
 import { getRandomExamples, getExamplesByCategory } from '@/lib/exampleQueries';
 import ExampleQueryCard from '@/components/ExampleQueryCard';
 import { translations, type Language } from '@/lib/i18n';
@@ -23,10 +24,10 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
   };
 
   const categories = [
-    { id: 'trips', label: `🚂 ${t.landing.categories.trips}` },
-    { id: 'weather', label: `🌤️ ${t.landing.categories.weather}` },
-    { id: 'stations', label: `🏢 ${t.landing.categories.stations}` },
-    { id: 'markdown', label: `✨ ${t.landing.categories.advanced}` },
+    { id: 'trips', label: t.landing.categories.trips, icon: Train },
+    { id: 'weather', label: t.landing.categories.weather, icon: Cloud },
+    { id: 'stations', label: t.landing.categories.stations, icon: Building2 },
+    { id: 'markdown', label: t.landing.categories.advanced, icon: Sparkles },
   ];
 
   return (
@@ -51,22 +52,26 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
           >
             {t.landing.categories.allExamples}
           </button>
-          {categories.map((category) => (
-            <button
-              key={category.id}
-              onClick={() => setSelectedCategory(category.id)}
-              className={`px-4 py-2 rounded-lg font-medium transition-all ${
-                selectedCategory === category.id
-                  ? 'bg-[#A20013] text-white shadow-md'
-                  : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
-              }`}
-              type="button"
-              aria-pressed={selectedCategory === category.id}
-              aria-label={category.label}
-            >
-              {category.label}
-            </button>
-          ))}
+          {categories.map((category) => {
+            const IconComponent = category.icon;
+            return (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`inline-flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-all ${
+                  selectedCategory === category.id
+                    ? 'bg-[#A20013] text-white shadow-md'
+                    : 'bg-white text-gray-700 border border-gray-200 hover:border-[#A20013]'
+                }`}
+                type="button"
+                aria-pressed={selectedCategory === category.id}
+                aria-label={category.label}
+              >
+                <IconComponent className="w-4 h-4" />
+                {category.label}
+              </button>
+            );
+          })}
         </nav>
       </div>
 
