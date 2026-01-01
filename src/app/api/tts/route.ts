@@ -1,19 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { TextToSpeechClient } from '@google-cloud/text-to-speech';
 import type { TTSRequest, TTSResponse } from '@/types/tts';
-
-// Initialize Google Cloud TTS client
-const getClient = () => {
-  const apiKey = process.env.GOOGLE_CLOUD_KEY;
-
-  if (!apiKey) {
-    throw new Error('GOOGLE_CLOUD_KEY environment variable is not set');
-  }
-
-  return new TextToSpeechClient({
-    apiKey,
-  });
-};
 
 // Voice mappings for each supported language
 const VOICE_MAP: Record<
@@ -52,34 +38,54 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Text cannot be empty' }, { status: 400 });
     }
 
+    // Get API key
+    const apiKey = process.env.GOOGLE_CLOUD_KEY;
+    if (!apiKey) {
+      throw new Error('GOOGLE_CLOUD_KEY environment variable is not set');
+    }
+
     // Get voice configuration for language
     const voice = VOICE_MAP[language] || VOICE_MAP.en;
 
-    // Initialize client
-    const client = getClient();
+    // Call Google Cloud Text-to-Speech REST API
+    const response = await fetch(
+      `https://texttospeech.googleapis.com/v1/text:synthesize?key=${apiKey}`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          input: { text },
+          voice: {
+            languageCode: voice.languageCode,
+            name: voice.name,
+            ssmlGender: voice.ssmlGender,
+          },
+          audioConfig: {
+            audioEncoding: 'MP3',
+            speakingRate: Math.max(0.5, Math.min(2.0, speechRate)),
+            pitch: Math.max(-20, Math.min(20, pitch)),
+          },
+        }),
+      }
+    );
 
-    // Call Google Cloud Text-to-Speech API
-    const [response] = await client.synthesizeSpeech({
-      input: { text },
-      voice: {
-        languageCode: voice.languageCode,
-        name: voice.name,
-        ssmlGender: voice.ssmlGender,
-      },
-      audioConfig: {
-        audioEncoding: 'MP3',
-        speakingRate: Math.max(0.5, Math.min(2.0, speechRate)),
-        pitch: Math.max(-20, Math.min(20, pitch)),
-      },
-    });
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => ({}));
+      console.error('TTS API error:', errorData);
+      throw new Error(errorData.error?.message || 'TTS API request failed');
+    }
 
-    if (!response.audioContent) {
+    const data = await response.json();
+
+    if (!data.audioContent) {
       throw new Error('No audio content received from TTS API');
     }
 
-    // Return audio as base64
+    // Return audio as base64 (it's already in base64 from the API)
     const result: TTSResponse = {
-      audioContent: Buffer.from(response.audioContent).toString('base64'),
+      audioContent: data.audioContent,
     };
 
     return NextResponse.json(result);
