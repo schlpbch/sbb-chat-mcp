@@ -43,7 +43,7 @@ export default function LandingPage() {
   const t = translations[language];
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navbar
         language={language}
         onLanguageChange={setLanguage}
@@ -85,12 +85,12 @@ export default function LandingPage() {
 
         {/* Footer */}
         <footer
-          className="py-6 sm:py-8 px-4 border-t border-gray-200 bg-white"
+          className="py-6 sm:py-8 px-4 border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800"
           role="contentinfo"
           aria-label="Site footer"
         >
           <div className="max-w-6xl mx-auto text-center">
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               {t.landing.footer.copyright}
               <span className="mx-1.5 sm:mx-2">•</span>
               <a
@@ -109,7 +109,7 @@ export default function LandingPage() {
             </p>
           </div>
           <div className="text-center mt-2">
-            <p className="text-xs sm:text-sm text-gray-600">
+            <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400">
               built in Switzerland by{' '}
               <a
                 href="https://linkedin.com/in/andreas-schlapbach/"

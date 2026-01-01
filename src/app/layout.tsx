@@ -59,13 +59,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={outfit.variable}>
+    <html lang="en" className={outfit.variable} suppressHydrationWarning>
       <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  const settings = JSON.parse(localStorage.getItem('sbb-settings') || '{}');
+                  const theme = settings.theme || 'system';
+                  const isDark = theme === 'dark' || (theme === 'system' && window.matchMedia('(prefers-color-scheme: dark)').matches);
+                  if (isDark) {
+                    document.documentElement.classList.add('dark');
+                  }
+                } catch (e) {}
+              })();
+            `,
+          }}
+        />
         <link rel="apple-touch-icon" href="/SBB-chat-MCP.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="Swiss Travel Companion" />
+        <meta
+          name="apple-mobile-web-app-title"
+          content="Swiss Travel Companion"
+        />
       </head>
       <body className="antialiased font-sans">
         <SettingsProvider>
