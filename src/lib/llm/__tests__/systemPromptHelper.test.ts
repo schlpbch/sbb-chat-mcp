@@ -104,28 +104,28 @@ describe('systemPromptHelper', () => {
       const context = { language: 'en' };
       const prompt = generateSystemPrompt(context, false);
 
-      expect(prompt).toContain('Always respond in English');
+      expect(prompt).toContain('You MUST respond in English');
     });
 
     it('should use correct language name for German', () => {
       const context = { language: 'de' };
       const prompt = generateSystemPrompt(context, false);
 
-      expect(prompt).toContain('Always respond in German');
+      expect(prompt).toContain('You MUST respond in German');
     });
 
     it('should use correct language name for French', () => {
       const context = { language: 'fr' };
       const prompt = generateSystemPrompt(context, false);
 
-      expect(prompt).toContain('Always respond in French');
+      expect(prompt).toContain('You MUST respond in French');
     });
 
     it('should use correct language name for Italian', () => {
       const context = { language: 'it' };
       const prompt = generateSystemPrompt(context, false);
 
-      expect(prompt).toContain('Always respond in Italian');
+      expect(prompt).toContain('You MUST respond in Italian');
     });
 
     it('should include weekend date in tool guidance examples', () => {

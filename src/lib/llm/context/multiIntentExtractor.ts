@@ -30,6 +30,8 @@ const CONJUNCTIONS: Record<Language, string[]> = {
   de: ['und', 'auch', 'dann', 'außerdem', 'zusätzlich'],
   fr: ['et', 'aussi', 'puis', 'également', 'en plus'],
   it: ['e', 'anche', 'poi', 'inoltre', 'in più'],
+  zh: ['\u548c', '\u4e5f', '\u7136\u540e', '\u8fd8\u6709', '\u53e6\u5916'],  // and, also, then, also have, additionally
+  hi: ['\u0914\u0930', '\u092d\u0940', '\u092b\u093f\u0930', '\u0938\u093e\u0925', '\u0905\u0924\u093f\u0930\u093f\u0915\u094d\u0924'],  // and, also, then, with, additionally
 };
 
 /**

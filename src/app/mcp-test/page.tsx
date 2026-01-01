@@ -2,10 +2,11 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Language, translations } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 import { getMcpServerUrl } from '@/config/env';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface McpTool {
   name: string;
@@ -35,7 +36,7 @@ interface McpPrompt {
 }
 
 export default function McpTestPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useLanguage();
   const [tools, setTools] = useState<McpTool[]>([]);
   const [resources, setResources] = useState<McpResource[]>([]);
   const [prompts, setPrompts] = useState<McpPrompt[]>([]);

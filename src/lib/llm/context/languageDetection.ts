@@ -15,6 +15,8 @@ const LANGUAGE_INDICATORS: Record<Language, RegExp> = {
   fr: /\b(train|depuis|demain|aujourd'hui|gare|genève|lausanne|météo|départ|arrivée)\b/i,
   it: /\b(treno|treni|viaggio|oggi|domani|stazione|zurigo|ginevra|meteo|partenza|arrivo)\b/i,
   en: /\b(train|trains|from|tomorrow|today|station|zurich|geneva|weather|departure|arrival)\b/i,
+  zh: /[\u4e00-\u9fff]+/,  // Matches Chinese characters
+  hi: /[\u0900-\u097f]+/,  // Matches Devanagari script (Hindi)
 };
 
 /**

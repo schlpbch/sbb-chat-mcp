@@ -19,6 +19,8 @@ export interface MultilingualKeywords {
   de: KeywordSet;
   fr: KeywordSet;
   it: KeywordSet;
+  zh?: KeywordSet;
+  hi?: KeywordSet;
 }
 
 /**

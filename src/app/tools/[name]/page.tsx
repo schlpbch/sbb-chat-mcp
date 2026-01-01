@@ -4,9 +4,10 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
-import { Language, translations } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 import { getToolDefaults } from '@/lib/toolDefaults';
 import { getMcpServerUrl } from '@/config/env';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ToolSchema {
  name: string;
@@ -23,7 +24,7 @@ export default function ToolTestPage() {
  const router = useRouter();
  const toolName = params.name as string;
 
- const [language, setLanguage] = useState<Language>('en');
+ const [language, setLanguage] = useLanguage();
  const [isMenuOpen, setIsMenuOpen] = useState(false);
  const [tool, setTool] = useState<ToolSchema | null>(null);
  const [loading, setLoading] = useState(true);

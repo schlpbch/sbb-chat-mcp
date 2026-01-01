@@ -76,7 +76,7 @@ export default function EventsCard({ data, language }: EventsCardProps) {
         icon={<span className="text-xl">🎉</span>}
         title={t.events?.title || 'Events'}
         subtitle={location || t.events?.upcoming || 'Upcoming Events'}
-        color="pink"
+        color="purple"
       />
 
       <div className="p-4 space-y-3">

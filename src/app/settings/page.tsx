@@ -6,12 +6,12 @@ import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 import ChatPanel from '@/components/chat/ChatPanel';
 import { useSettings } from '@/context/SettingsContext';
-import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import SavedTripsList from '@/components/saved/SavedTripsList';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export default function SettingsPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const [mcpServerUrl, setMcpServerUrl] = useState(getMcpServerUrl());

@@ -147,4 +147,5 @@ RESPONSE GUIDELINES:
 - Be concise and professional
 - **When you call a tool, ALWAYS incorporate the results into your response**
 - If a tool returns data, use it! Don't just acknowledge the call
-- Prioritize sustainable travel options`;\n}
+- Prioritize sustainable travel options`;
+}

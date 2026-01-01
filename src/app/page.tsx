@@ -1,7 +1,6 @@
 'use client';
 import { useState } from 'react';
 import dynamic from 'next/dynamic';
-import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 import HeroSection from '@/components/landing/HeroSection';
@@ -11,6 +10,7 @@ import { translations } from '@/lib/i18n';
 import { useFeedback } from '@/hooks/useFeedback';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 import { useOnboarding } from '@/hooks/useOnboarding';
+import { useLanguage } from '@/hooks/useLanguage';
 
 const OnboardingModal = dynamic(
   () => import('@/components/onboarding/OnboardingModal'),
@@ -18,7 +18,7 @@ const OnboardingModal = dynamic(
 );
 
 export default function LandingPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const {
     isOpen: isFeedbackOpen,

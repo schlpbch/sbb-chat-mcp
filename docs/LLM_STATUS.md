@@ -1,7 +1,9 @@
 # LLM Integration - Current Status & Next Steps
 
-**Date**: 2025-12-27  
-**Session Summary**: Phase 3 Complete - Production Ready
+**Date**: 2026-01-01  
+**Session Summary**: Phase 6 Complete - Multi-Intent Orchestration Operational
+
+> **Note**: For detailed orchestration status and known issues, see [LLM_ORCHESTRATION_STATUS.md](file:///home/schlpbch/code/sbb-chat-mcp/docs/LLM_ORCHESTRATION_STATUS.md)
 
 ---
 
@@ -60,6 +62,25 @@
    - ✅ Tool execution feedback with animations
    - ✅ Loading states and error handling
    - ✅ Accessibility improvements (ARIA labels, keyboard navigation)
+
+### Known Issues (2026-01-01)
+
+1. **Voice Output**
+   - ⚠️ TTS returns "ok" instead of meaningful summaries when voice + rich mode enabled
+   - Root cause: Orchestration prompt instructs brief responses for visual cards
+   - Status: Fix attempted but rolled back due to server error
+
+2. **Multilingual Support**
+   - ⚠️ System responds in English to non-English messages (Chinese, Hindi, etc.)
+   - Root cause: Fixed UI language setting, no auto-detection from message content
+   - Status: Fix attempted but rolled back due to server error
+
+3. **UI Language Persistence**
+   - ⚠️ Language selection not saved when navigating home → chat
+   - Root cause: Home page doesn't persist to localStorage
+   - Status: Minor UX issue, separate fix needed
+
+See [LLM_ORCHESTRATION_STATUS.md](file:///home/schlpbch/code/sbb-chat-mcp/docs/LLM_ORCHESTRATION_STATUS.md) for details.
 
 ---
 
@@ -146,6 +167,7 @@
 
 ---
 
-**Status**: ✅ Phase 3 Complete - Production Ready  
-**Last Updated**: 2025-12-27  
-**Next Phase**: Phase 4 - Advanced Interactivity & Discovery
+**Status**: ✅ Phase 6 Complete - Multi-Intent Orchestration Operational (with known issues)  
+**Last Updated**: 2026-01-01  
+**Next Phase**: Voice Output & Multilingual Fixes
+

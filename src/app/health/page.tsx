@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from 'react';
 import { getMcpServerUrl } from '@/config/env';
-import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface McpHealthDetails {
   status: string;
@@ -31,7 +31,7 @@ interface HealthCheck {
 export default function HealthPage() {
   const [healthData, setHealthData] = useState<HealthCheck | null>(null);
   const [loading, setLoading] = useState(true);
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {

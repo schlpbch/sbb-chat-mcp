@@ -4,8 +4,9 @@ import { useState, useEffect } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
-import { Language, translations } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 import { getMcpServerUrl } from '@/config/env';
+import { useLanguage } from '@/hooks/useLanguage';
 
 interface ResourceSchema {
  uri: string;
@@ -19,7 +20,7 @@ export default function ResourceTestPage() {
  const router = useRouter();
  const resourceUri = decodeURIComponent(params.uri as string);
 
- const [language, setLanguage] = useState<Language>('en');
+ const [language, setLanguage] = useLanguage();
  const [isMenuOpen, setIsMenuOpen] = useState(false);
  const [resource, setResource] = useState<ResourceSchema | null>(null);
  const [loading, setLoading] = useState(true);

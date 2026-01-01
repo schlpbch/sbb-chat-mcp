@@ -4,6 +4,7 @@ import { useRef, useEffect, useState } from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import type { Language } from '@/lib/i18n';
+import { translations } from '@/lib/i18n';
 import type { Message } from '@/types/chat';
 import { useStreamingChat } from '@/hooks/useStreamingChat';
 import { useChatExport } from '@/hooks/useChatExport';
@@ -29,6 +30,9 @@ export default function ChatPanel({
   const { handleExportChat } = useChatExport(messages);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  
+  // Get translations for current language
+  const t = translations[language];
   
   // Voice output state
   const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(true);
@@ -131,8 +135,8 @@ export default function ChatPanel({
                 ? 'bg-white/30 text-white'
                 : 'bg-white/10 text-white/50'
             }`}
-            aria-label={voiceOutputEnabled ? 'Disable voice output' : 'Enable voice output'}
-            title={voiceOutputEnabled ? 'Voice output enabled' : 'Voice output disabled'}
+            aria-label={voiceOutputEnabled ? t.voice.disableVoiceOutput : t.voice.enableVoiceOutput}
+            title={voiceOutputEnabled ? t.voice.voiceOutputEnabled : t.voice.voiceOutputDisabled}
             aria-pressed={voiceOutputEnabled}
           >
             <svg

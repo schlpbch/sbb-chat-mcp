@@ -2,18 +2,18 @@
 
 import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
-import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 import ChatPanel from '@/components/chat/ChatPanel';
 import { useFeedback } from '@/hooks/useFeedback';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
+import { useLanguage } from '@/hooks/useLanguage';
 
 // Dynamically import Map to avoid SSR issues with Leaflet
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
 export default function MapPage() {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
   const {

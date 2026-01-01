@@ -139,13 +139,23 @@ export async function extractIntent(
     });
   }
 
-  // If no keywords matched, default to trip_planning with low confidence
+  // Check for implicit "X to Y" pattern if no keywords matched
   if (intentScores.length === 0) {
-    intentScores.push({
-      type: 'trip_planning',
-      confidence: 0.3,
-      matchedKeywords: [],
-    });
+    const implicitTripPattern = /\b\w+\s+(?:to|nach|à|a)\s+\w+/i;
+    if (implicitTripPattern.test(lowerMessage)) {
+      intentScores.push({
+        type: 'trip_planning',
+        confidence: 0.6, // Lower confidence for implicit pattern
+        matchedKeywords: [],
+      });
+    } else {
+      // Default to general_info for truly unclear queries
+      intentScores.push({
+        type: 'general_info',
+        confidence: 0.3,
+        matchedKeywords: [],
+      });
+    }
   }
 
   // Sort by confidence (highest first) and take the best match

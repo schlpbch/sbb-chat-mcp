@@ -3,7 +3,6 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
-import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 
@@ -13,6 +12,7 @@ import { translations } from '@/lib/i18n';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useFeedback } from '@/hooks/useFeedback';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
+import { useLanguage } from '@/hooks/useLanguage';
 
 // Lazy load heavy components
 const MessageList = dynamic(() => import('@/components/chat/MessageList'), {
@@ -31,7 +31,7 @@ const OnboardingModal = dynamic(
 
 function ChatContent() {
   const searchParams = useSearchParams();
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const {
@@ -49,41 +49,6 @@ function ChatContent() {
 
   // Voice output state for TTS
   const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
-
-  // Detect language from localStorage or browser on mount
-  useEffect(() => {
-    const detectLanguage = (): Language => {
-      // Try localStorage first
-      const savedSettings = localStorage.getItem('sbb-settings');
-      if (savedSettings) {
-        try {
-          const settings = JSON.parse(savedSettings);
-          if (settings.language) {
-            return settings.language as Language;
-          }
-        } catch (e) {
-          console.error('Failed to parse saved settings:', e);
-        }
-      }
-
-      // Fall back to browser language
-      const browserLang = navigator.language.split('-')[0];
-      const supportedLanguages: Language[] = ['en', 'de', 'fr', 'it', 'zh', 'hi'];
-      return supportedLanguages.includes(browserLang as Language)
-        ? (browserLang as Language)
-        : 'en';
-    };
-
-    setLanguage(detectLanguage());
-  }, []);
-
-  // Save language to localStorage when it changes
-  useEffect(() => {
-    const savedSettings = localStorage.getItem('sbb-settings');
-    const settings = savedSettings ? JSON.parse(savedSettings) : {};
-    settings.language = language;
-    localStorage.setItem('sbb-settings', JSON.stringify(settings));
-  }, [language]);
 
   const {
     isOpen: isOnboardingOpen,
@@ -258,8 +223,8 @@ function ChatContent() {
                       ? 'bg-sbb-red/10 dark:bg-sbb-red/20 border-sbb-red/30 dark:border-sbb-red/40 text-sbb-red dark:text-red-400'
                       : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
-                  aria-label={voiceOutputEnabled ? 'Disable voice output' : 'Enable voice output'}
-                  title={voiceOutputEnabled ? 'Voice output enabled - Click to disable' : 'Voice output disabled - Click to enable'}
+                  aria-label={voiceOutputEnabled ? t.voice.disableVoiceOutput : t.voice.enableVoiceOutput}
+                  title={voiceOutputEnabled ? t.voice.voiceOutputEnabled : t.voice.voiceOutputDisabled}
                   aria-pressed={voiceOutputEnabled}
                 >
                   <svg
@@ -284,7 +249,7 @@ function ChatContent() {
                       />
                     )}
                   </svg>
-                  <span>{voiceOutputEnabled ? 'Voice On' : 'Voice Off'}</span>
+                  <span>{voiceOutputEnabled ? t.voice.voiceOn : t.voice.voiceOff}</span>
                 </button>
               </div>
 

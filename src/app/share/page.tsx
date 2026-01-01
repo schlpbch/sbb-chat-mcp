@@ -3,9 +3,9 @@
 import { Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useState } from 'react';
-import type { Language } from '@/lib/i18n';
 import Navbar from '@/components/Navbar';
 import Link from 'next/link';
+import { useLanguage } from '@/hooks/useLanguage';
 
 export default function SharePage() {
   return (
@@ -24,7 +24,7 @@ export default function SharePage() {
 function ShareContent() {
   const params = useSearchParams();
   const router = useRouter();
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguage] = useLanguage();
 
   const from = params.get('from');
   const to = params.get('to');
