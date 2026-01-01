@@ -48,7 +48,8 @@
       "Bash(npx storybook@latest init:*)",
       "Bash(pnpm run storybook:*)",
       "Bash(pnpm install)",
-      "Bash(git log:*)"
+      "Bash(git log:*)",
+      "Bash(npx tsx:*)"
     ]
   }
 }

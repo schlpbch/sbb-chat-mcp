@@ -286,9 +286,11 @@ function buildSimpleToPattern(languages: Language[]): RegExp {
     p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
   );
 
+  // Capture origin and destination, stopping at time/date indicators
+  // Improved to handle "X to Y at TIME" correctly
   const pattern = `^(.+?)\\s+(?:${escapedPreps.join(
     '|'
-  )})\\s+(.+?)(?=\\s+(?:at|um|à|alle|via)|$)`;
+  )})\\s+([^\\s]+(?:\\s+[^\\s]+)?)(?=\\s+(?:at|um|à|alle|via|on|tomorrow|today|morgen|demain|\\d)|$)`;
   return new RegExp(pattern, 'i');
 }
 

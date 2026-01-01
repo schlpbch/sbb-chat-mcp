@@ -156,26 +156,32 @@ export const DATE_PATTERNS: Record<Language, RegExp[]> = {
 
 /**
  * Time patterns for different languages
+ * IMPORTANT: Patterns are ordered from most specific to least specific
+ * to ensure proper matching (e.g., "2:30 pm" before "2:30")
  */
 export const TIME_PATTERNS: Record<Language, RegExp[]> = {
   en: [
-    /\b(\d{1,2}:\d{2})\b/,
-    /\bat\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm)?)\b/i,
+    // Match 12h format FIRST (most specific)
+    /\bat\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b/i,  // "at 2:30 pm"
+    /\b(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b/i,       // "2:30 pm" without "at"
+    // Then 24h format
+    /\b(\d{1,2}:\d{2})\b/,  // "14:30"
+    // Finally relative times
     /\b(morning|afternoon|evening|night)\b/i,
   ],
   de: [
+    /\bum\s+(\d{1,2}(?::\d{2})?)\s*uhr\b/i,  // "um 14:30 Uhr"
     /\b(\d{1,2}:\d{2})\b/,
-    /\bum\s+(\d{1,2}(?::\d{2})?)\s*uhr\b/i,
     /\b(morgens|vormittags|mittags|nachmittags|abends|nachts)\b/i,
   ],
   fr: [
+    /\bà\s+(\d{1,2}(?:[h:]\d{2})?)\b/i,  // "à 14h30"
     /\b(\d{1,2})[h:](\d{2})?\b/,
-    /\bà\s+(\d{1,2}(?:[h:]\d{2})?)\b/i,
     /\b(matin|après-midi|soir|nuit)\b/i,
   ],
   it: [
+    /\balle\s+(\d{1,2}(?::\d{2})?)\b/i,  // "alle 14:30"
     /\b(\d{1,2}:\d{2})\b/,
-    /\balle\s+(\d{1,2}(?::\d{2})?)\b/i,
     /\b(mattina|pomeriggio|sera|notte)\b/i,
   ],
 };
@@ -229,7 +235,9 @@ export function extractDate(
     for (const pattern of patterns) {
       const match = message.match(pattern);
       if (match) {
-        return match[1];
+        // Return full match to preserve modifiers like "next" or "this"
+        // e.g., "next Monday" instead of just "Monday"
+        return match[0];
       }
     }
   }

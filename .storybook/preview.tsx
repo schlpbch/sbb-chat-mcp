@@ -2,10 +2,16 @@ import type { Preview } from '@storybook/nextjs-vite';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import React from 'react';
 import '../src/app/globals.css';
+import { MapProvider } from '../src/context/MapContext';
+import { ToastProvider } from '../src/components/ui/Toast';
 
 // Mock providers for components that need context
 const MockProviders = ({ children }: { children: React.ReactNode }) => {
-  return <>{children}</>;
+  return (
+    <ToastProvider>
+      <MapProvider>{children}</MapProvider>
+    </ToastProvider>
+  );
 };
 
 // Mock hooks module

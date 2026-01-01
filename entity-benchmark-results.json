@@ -1,0 +1,62 @@
+{
+  "totalCases": 25,
+  "entityMetrics": {
+    "origin": {
+      "total": 17,
+      "correct": 15,
+      "incorrect": 0,
+      "missing": 2,
+      "accuracy": 0.8823529411764706
+    },
+    "destination": {
+      "total": 13,
+      "correct": 13,
+      "incorrect": 0,
+      "missing": 0,
+      "accuracy": 1
+    },
+    "date": {
+      "total": 5,
+      "correct": 4,
+      "incorrect": 1,
+      "missing": 0,
+      "accuracy": 0.8
+    },
+    "time": {
+      "total": 6,
+      "correct": 6,
+      "incorrect": 0,
+      "missing": 0,
+      "accuracy": 1
+    },
+    "eventType": {
+      "total": 3,
+      "correct": 3,
+      "incorrect": 0,
+      "missing": 0,
+      "accuracy": 1
+    }
+  },
+  "overallAccuracy": 0.9318181818181818,
+  "timestamp": "2026-01-01T17:27:44.901Z",
+  "failedExtractions": [
+    {
+      "text": "Geneva to Lausanne at 14:30",
+      "entity": "origin",
+      "expected": "Geneva",
+      "notes": "Missing origin"
+    },
+    {
+      "text": "Trains next Monday",
+      "entity": "date",
+      "expected": "next Monday",
+      "actual": "monday"
+    },
+    {
+      "text": "Zurich to Bern at 14:30",
+      "entity": "origin",
+      "expected": "Zurich",
+      "notes": "Missing origin"
+    }
+  ]
+}
