@@ -80,7 +80,7 @@ export function generateSystemPrompt(
    - "What stations are in Zurich?" → findStopPlacesByName({query: "Zurich"})
    - "Find stations near Matterhorn" → findStopPlacesByName({query: "Matterhorn"})
 
-4. GENERAL WEATHER → Use getWeather
+4. WEATHER → Use getWeather
    Triggers: "weather", "forecast", "temperature", "rain", "wind", "humidity", "next days"
    **Returns current weather AND 7-day forecast automatically.**
    **DO NOT use for ski/snow-specific queries - use getSnowConditions instead!**

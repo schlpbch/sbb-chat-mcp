@@ -181,18 +181,45 @@ function extractEntities(
   const toMatch = message.match(destinationRegex);
   const inMatch = message.match(locationRegex);
 
-  // For weather queries, prioritize location match over destination
+  // Helper function to capitalize location names
+  const capitalizeLocation = (text: string): string => {
+    return text
+      .split(/(\s+|-|'|')/g) // Split on spaces, hyphens, and apostrophes
+      .map((word) => {
+        // Don't capitalize separators
+        if (/^(\s+|-|'|')$/.test(word)) return word;
+
+        // Capitalize first letter of each word
+        return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      })
+      .join('');
+  };
+
+  // For weather/snow queries, prioritize location match over destination
   // (FR "à" and IT "a" appear in both destination and location prepositions)
+  // Also, for snow conditions, "de neige" (of snow) should not be treated as origin
   // Note: Using [2] because buildEntityRegex now captures preposition in [1] and entity in [2]
-  if (intentType === 'weather_check' && inMatch && !fromMatch) {
-    entities.origin = inMatch[2].replace(/\*\*|_|#/g, '').trim();
+  if (
+    (intentType === 'weather_check' || intentType === 'snow_conditions') &&
+    inMatch
+  ) {
+    // Use location match for weather/snow queries
+    entities.origin = capitalizeLocation(inMatch[2].replace(/\*\*|_|#/g, '').trim());
+  } else if (
+    intentType === 'station_search' &&
+    inMatch &&
+    !fromMatch &&
+    !toMatch
+  ) {
+    // For station queries, only use location if no destination match
+    entities.origin = capitalizeLocation(inMatch[2].replace(/\*\*|_|#/g, '').trim());
   } else {
-    // Standard extraction for other intent types
+    // Standard extraction for trip planning
     if (fromMatch) {
-      entities.origin = fromMatch[2].replace(/\*\*|_|#/g, '').trim();
+      entities.origin = capitalizeLocation(fromMatch[2].replace(/\*\*|_|#/g, '').trim());
     }
     if (toMatch) {
-      entities.destination = toMatch[2].replace(/\*\*|_|#/g, '').trim();
+      entities.destination = capitalizeLocation(toMatch[2].replace(/\*\*|_|#/g, '').trim());
     }
   }
 
@@ -203,22 +230,10 @@ function extractEntities(
     const simpleMatch = message.match(simplePattern);
 
     if (simpleMatch && simpleMatch[1].length < 30) {
-      entities.origin = simpleMatch[1].replace(/\*\*|_|#/g, '').trim();
+      entities.origin = capitalizeLocation(simpleMatch[1].replace(/\*\*|_|#/g, '').trim());
       if (!entities.destination) {
-        entities.destination = simpleMatch[2].replace(/\*\*|_|#/g, '').trim();
+        entities.destination = capitalizeLocation(simpleMatch[2].replace(/\*\*|_|#/g, '').trim());
       }
-    }
-  }
-
-  // For station/weather/snow queries like "arrivals in Zurich", "weather in Lucerne", or "snow in Zermatt",
-  // treat "in" as the origin (station/location)
-  if (inMatch && !fromMatch && !toMatch) {
-    if (
-      intentType === 'station_search' ||
-      intentType === 'weather_check' ||
-      intentType === 'snow_conditions'
-    ) {
-      entities.origin = inMatch[2].replace(/\*\*|_|#/g, '').trim();
     }
   }
 
