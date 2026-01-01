@@ -150,8 +150,8 @@ export function exportItineraryAsPDF(itinerary: Itinerary): void {
             line-height: 1.6;
           }
           h1 {
-            color: #eb0000;
-            border-bottom: 3px solid #eb0000;
+            color: #A5061C;
+            border-bottom: 3px solid #A5061C;
             padding-bottom: 10px;
           }
           h2 {
@@ -166,14 +166,14 @@ export function exportItineraryAsPDF(itinerary: Itinerary): void {
           }
           .leg {
             background: #fff;
-            border-left: 4px solid #eb0000;
+            border-left: 4px solid #A5061C;
             padding: 15px;
             margin: 10px 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           }
           .leg-title {
             font-weight: bold;
-            color: #eb0000;
+            color: #A5061C;
             margin-bottom: 10px;
           }
           .detail {

@@ -26,7 +26,7 @@ export const translations = {
         advanced: 'Advanced',
       },
       footer: {
-        copyright: '© 2024 Swiss Travel Companion',
+        copyright: '© 2025–2026 Swiss Travel Companion',
         privacy: 'Privacy',
         terms: 'Terms',
       },
@@ -413,7 +413,7 @@ export const translations = {
         advanced: 'Erweitert',
       },
       footer: {
-        copyright: '© 2024 Swiss Travel Companion',
+        copyright: '© 2025–2026 Swiss Travel Companion',
         privacy: 'Datenschutz',
         terms: 'Nutzungsbedingungen',
       },
@@ -813,7 +813,7 @@ export const translations = {
         advanced: 'Avancé',
       },
       footer: {
-        copyright: '© 2024 Swiss Travel Companion',
+        copyright: '© 2025–2026 Swiss Travel Companion',
         privacy: 'Confidentialité',
         terms: 'Conditions',
       },
@@ -1212,7 +1212,7 @@ export const translations = {
         advanced: 'Avanzato',
       },
       footer: {
-        copyright: '© 2024 Swiss Travel Companion',
+        copyright: '© 2025–2026 Swiss Travel Companion',
         privacy: 'Privacy',
         terms: 'Termini',
       },
@@ -1606,7 +1606,7 @@ export const translations = {
         advanced: '高级',
       },
       footer: {
-        copyright: '© 2024 SBB 出行助手',
+        copyright: '© 2025–2026 Swiss Travel Companion',
         privacy: '隐私政策',
         terms: '使用条款',
       },
@@ -1987,7 +1987,7 @@ export const translations = {
         advanced: 'उन्नत',
       },
       footer: {
-        copyright: '© 2024 SBB यात्रा सहायक',
+        copyright: '© 2025–2026 Swiss Travel Companion',
         privacy: 'गोपनीयता',
         terms: 'शर्तें',
       },

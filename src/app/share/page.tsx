@@ -45,7 +45,7 @@ function ShareContent() {
             </p>
             <a
               href="/"
-              className="inline-block px-6 py-3 bg-sbb-red text-white rounded-lg font-semibold hover:bg-sbb-red-125 transition-colors"
+              className="inline-block px-6 py-3 bg-sbb-red text-white rounded-lg font-semibold hover:bg-sbb-red transition-colors"
             >
               Go to Home
             </a>
@@ -118,7 +118,7 @@ function ShareContent() {
               <div className="pt-4 border-t border-gray-200">
                 <button
                   onClick={handleOpenInApp}
-                  className="w-full px-6 py-3 bg-sbb-red text-white rounded-lg font-bold hover:bg-sbb-red-125 transition-all duration-200 shadow-md hover:shadow-lg"
+                  className="w-full px-6 py-3 bg-sbb-red text-white rounded-lg font-bold hover:bg-sbb-red transition-all duration-200 shadow-md hover:shadow-lg"
                 >
                   Open in Swiss Travel Companion
                 </button>

@@ -264,7 +264,7 @@ function ChatContent() {
                       ? t.accessibility.sendingMessage
                       : t.accessibility.sendMessage
                   }
-                  className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#EC0000] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
+                  className="shrink-0 h-[52px] px-4 sm:px-6 bg-[#A20013] text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 flex items-center justify-center gap-2"
                 >
                   {isLoading ? (
                     <>
