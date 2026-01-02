@@ -2,6 +2,8 @@
 
 import { translations, type Language } from '@/lib/i18n';
 import CardHeader from './CardHeader';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableGeneric } from '@/lib/shareUtils';
 
 interface FormationCardProps {
   data: any;
@@ -39,6 +41,13 @@ export default function FormationCard({ data, language }: FormationCardProps) {
     );
   }
 
+  // Prepare shareable formation data
+  const shareableFormation: ShareableGeneric = {
+    title: t.formation.title,
+    subtitle: t.formation.liveData,
+    description: `${trainUnits.length} train units`,
+  };
+
   return (
     <article className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200">
       <CardHeader
@@ -46,6 +55,13 @@ export default function FormationCard({ data, language }: FormationCardProps) {
         title={t.formation.title}
         subtitle={t.formation.liveData}
         color="purple"
+        rightContent={
+          <ShareButton
+            data={shareableFormation}
+            className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+            iconClassName="w-5 h-5 text-white"
+          />
+        }
       />
 
       {/* Composition View */}

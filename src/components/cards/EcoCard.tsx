@@ -6,10 +6,20 @@ import { translations } from '@/lib/i18n';
 import { formatCO2 } from '@/lib/formatters';
 import CardHeader from './CardHeader';
 import { Train, Car, Plane, TreePine } from 'lucide-react';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableEco } from '@/lib/shareUtils';
 
 function EcoCard({ data, language }: EcoCardProps) {
   const t = translations[language];
   const { route, trainCO2, carCO2, planeCO2, savings, treesEquivalent } = data;
+
+  // Prepare shareable eco data
+  const shareableEco: ShareableEco = {
+    route,
+    trainCO2,
+    carCO2,
+    savings,
+  };
 
   return (
     <article
@@ -37,6 +47,13 @@ function EcoCard({ data, language }: EcoCardProps) {
         title={t.eco.ecoImpact}
         subtitle={route || t.eco.yourJourney}
         color="green"
+        rightContent={
+          <ShareButton
+            data={shareableEco}
+            className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+            iconClassName="w-5 h-5 text-white"
+          />
+        }
       />
 
       {/* Compact Content */}

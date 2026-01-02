@@ -4,6 +4,8 @@ import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
 import { Calendar, Clock, MapPin, Users, ExternalLink } from 'lucide-react';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableGeneric } from '@/lib/shareUtils';
 
 interface Event {
   id?: string;
@@ -67,6 +69,13 @@ export default function EventsCard({ data, language }: EventsCardProps) {
     }
   };
 
+  // Prepare shareable events data
+  const shareableEvents: ShareableGeneric = {
+    title: t.events?.title || 'Events',
+    subtitle: location || t.events?.upcoming || 'Upcoming Events',
+    description: events.length > 0 ? `${events.length} events found` : undefined,
+  };
+
   return (
     <article
       className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-pink-500 dark:hover:border-pink-400"
@@ -77,6 +86,13 @@ export default function EventsCard({ data, language }: EventsCardProps) {
         title={t.events?.title || 'Events'}
         subtitle={location || t.events?.upcoming || 'Upcoming Events'}
         color="purple"
+        rightContent={
+          <ShareButton
+            data={shareableEvents}
+            className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+            iconClassName="w-5 h-5 text-white"
+          />
+        }
       />
 
       <div className="p-4 space-y-3">

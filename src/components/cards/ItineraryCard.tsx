@@ -11,6 +11,8 @@ import {
   Hotel,
   Train,
 } from 'lucide-react';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableGeneric } from '@/lib/shareUtils';
 
 interface ItineraryCardProps {
   data: {
@@ -55,6 +57,13 @@ export default function ItineraryCard({ data, language }: ItineraryCardProps) {
     return '📍';
   };
 
+  // Prepare shareable itinerary data
+  const shareableItinerary: ShareableGeneric = {
+    title: t.itinerary.itinerary,
+    subtitle: destination || '',
+    description: duration ? `Duration: ${duration}` : undefined,
+  };
+
   return (
     <article
       className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-indigo-500 dark:hover:border-indigo-400"
@@ -81,11 +90,18 @@ export default function ItineraryCard({ data, language }: ItineraryCardProps) {
         subtitle={destination || t.itinerary.yourTrip}
         color="purple"
         rightContent={
-          duration && (
-            <div className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-[10px] font-bold uppercase tracking-wider">
-              {duration}
-            </div>
-          )
+          <div className="flex items-center space-x-2">
+            {duration && (
+              <div className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-[10px] font-bold uppercase tracking-wider">
+                {duration}
+              </div>
+            )}
+            <ShareButton
+              data={shareableItinerary}
+              className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+              iconClassName="w-5 h-5 text-white"
+            />
+          </div>
         }
       />
 

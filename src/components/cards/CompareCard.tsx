@@ -19,6 +19,8 @@ import {
   Ticket,
   Info,
 } from 'lucide-react';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableGeneric } from '@/lib/shareUtils';
 
 function CompareCard({ data, language }: CompareCardProps) {
   const t = translations[language];
@@ -78,6 +80,13 @@ function CompareCard({ data, language }: CompareCardProps) {
 
   const maxPrice = routes.reduce((max, r) => Math.max(max, r.price || 0), 0);
 
+  // Prepare shareable compare data
+  const shareableCompare: ShareableGeneric = {
+    title: getCriteriaLabel(criteria),
+    subtitle: `${origin} → ${destination}`,
+    description: `Comparing ${routes.length} route options`,
+  };
+
   return (
     <article
       className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
@@ -94,12 +103,19 @@ function CompareCard({ data, language }: CompareCardProps) {
         subtitle={`${origin} → ${destination}`}
         color="purple"
         rightContent={
-          <>
-            <p className="text-xs opacity-90">{t.compare.comparing}</p>
-            <p className="text-lg font-bold">
-              {routes.length} {t.compare.options}
-            </p>
-          </>
+          <div className="flex items-center space-x-2">
+            <div className="text-right">
+              <p className="text-xs opacity-90">{t.compare.comparing}</p>
+              <p className="text-lg font-bold">
+                {routes.length} {t.compare.options}
+              </p>
+            </div>
+            <ShareButton
+              data={shareableCompare}
+              className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+              iconClassName="w-5 h-5 text-white"
+            />
+          </div>
         }
       />
 

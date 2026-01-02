@@ -4,6 +4,8 @@ import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
 import { Clock, MapPin, TrendingUp, AlertCircle, CheckCircle, Info } from 'lucide-react';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableGeneric } from '@/lib/shareUtils';
 
 interface Transfer {
   from: string;
@@ -82,6 +84,13 @@ export default function TransferCard({ data, language }: TransferCardProps) {
     return `${(meters / 1000).toFixed(1)}km`;
   };
 
+  // Prepare shareable transfer data
+  const shareableTransfer: ShareableGeneric = {
+    title: t.transfer?.title || 'Transfer Optimization',
+    subtitle: station,
+    description: totalTime ? `Total time: ${totalTime} minutes` : undefined,
+  };
+
   return (
     <article
       className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-orange-500 dark:hover:border-orange-400"
@@ -92,6 +101,13 @@ export default function TransferCard({ data, language }: TransferCardProps) {
         title={t.transfer?.title || 'Transfer Optimization'}
         subtitle={station}
         color="orange"
+        rightContent={
+          <ShareButton
+            data={shareableTransfer}
+            className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+            iconClassName="w-5 h-5 text-white"
+          />
+        }
       />
 
       <div className="p-4 space-y-4">
