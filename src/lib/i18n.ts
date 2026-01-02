@@ -19,6 +19,7 @@ export const translations = {
         howItWorks: 'How it Works',
         recentSearches: 'Recent searches:',
       },
+      examplesTitle: 'Try some of these examples',
       categories: {
         allExamples: 'All Examples',
         trips: 'Trips',
@@ -266,6 +267,18 @@ export const translations = {
       proTip: 'Pro Tip:',
       proTipDesc:
         'Use markdown formatting for complex queries with preferences and multiple questions!',
+      features: 'Features & Controls',
+      featuresDesc:
+        'Customize your experience with powerful interface controls.',
+      richModeTitle: 'Rich Mode vs Text-Only',
+      richModeDesc:
+        'Toggle between Rich Mode (interactive cards with visual data) and Text-Only Mode (faster, plain text responses). Text-only mode disables orchestration for quicker replies.',
+      voiceInputTitle: 'Voice Input',
+      voiceInputDesc:
+        'Click the microphone button to speak your query. Supports all 6 languages (EN, DE, FR, IT, ZH, HI) with automatic speech recognition.',
+      voiceOutputTitle: 'Voice Output',
+      voiceOutputDesc:
+        'Enable voice output to hear AI responses read aloud. Includes auto-play and playback controls (play, pause, resume) for each message.',
       richResponses: 'Rich Responses',
       richResponsesDesc:
         'Get beautiful, interactive cards with all the information you need.',
@@ -437,7 +450,8 @@ export const translations = {
       speechRate: 'Speech rate',
       pitch: 'Pitch',
       voice: 'Voice',
-      settingsInfo: 'Voice settings apply to all messages. Audio is generated on-demand and cached for the session.',
+      settingsInfo:
+        'Voice settings apply to all messages. Audio is generated on-demand and cached for the session.',
     },
   },
   de: {
@@ -461,6 +475,7 @@ export const translations = {
         howItWorks: 'So funktioniert es',
         recentSearches: 'Letzte Suchen:',
       },
+      examplesTitle: 'Probieren Sie einige dieser Beispiele aus',
       categories: {
         allExamples: 'Alle Beispiele',
         trips: 'Reisen',
@@ -712,6 +727,18 @@ export const translations = {
       proTip: 'Profi-Tipp:',
       proTipDesc:
         'Verwenden Sie Markdown-Formatierung für komplexe Anfragen mit Präferenzen und mehreren Fragen!',
+      features: 'Funktionen & Steuerung',
+      featuresDesc:
+        'Passen Sie Ihre Erfahrung mit leistungsstarken Oberflächensteuerelementen an.',
+      richModeTitle: 'Rich-Modus vs. Nur-Text',
+      richModeDesc:
+        'Wechseln Sie zwischen Rich-Modus (interaktive Karten mit visuellen Daten) und Nur-Text-Modus (schnellere, reine Textantworten). Der Nur-Text-Modus deaktiviert die Orchestrierung für schnellere Antworten.',
+      voiceInputTitle: 'Spracheingabe',
+      voiceInputDesc:
+        'Klicken Sie auf die Mikrofon-Schaltfläche, um Ihre Anfrage zu sprechen. Unterstützt alle 6 Sprachen (DE, EN, FR, IT, ZH, HI) mit automatischer Spracherkennung.',
+      voiceOutputTitle: 'Sprachausgabe',
+      voiceOutputDesc:
+        'Aktivieren Sie die Sprachausgabe, um KI-Antworten vorgelesen zu bekommen. Enthält Auto-Play und Wiedergabesteuerung (Abspielen, Pause, Fortsetzen) für jede Nachricht.',
       richResponses: 'Umfangreiche Antworten',
       richResponsesDesc:
         'Erhalten Sie schöne, interaktive Karten mit allen benötigten Informationen.',
@@ -892,7 +919,8 @@ export const translations = {
       speechRate: 'Sprechgeschwindigkeit',
       pitch: 'Tonhöhe',
       voice: 'Stimme',
-      settingsInfo: 'Spracheinstellungen gelten für alle Nachrichten. Audio wird bei Bedarf generiert und für die Sitzung zwischengespeichert.',
+      settingsInfo:
+        'Spracheinstellungen gelten für alle Nachrichten. Audio wird bei Bedarf generiert und für die Sitzung zwischengespeichert.',
     },
   },
   fr: {
@@ -916,6 +944,7 @@ export const translations = {
         howItWorks: 'Comment ça marche',
         recentSearches: 'Recherches récentes:',
       },
+      examplesTitle: 'Essayez quelques-uns de ces exemples',
       categories: {
         allExamples: 'Tous les exemples',
         trips: 'Voyages',
@@ -1102,11 +1131,11 @@ export const translations = {
     },
     attraction: {
       title: 'Attraction',
-      pointOfInterest: 'Point d\'intérêt',
+      pointOfInterest: "Point d'intérêt",
       centerOnMap: 'Centrer sur la carte',
       viewOnMap: 'Voir sur la carte',
       website: 'Site web',
-      openingHours: 'Heures d\'ouverture',
+      openingHours: "Heures d'ouverture",
       rating: 'Évaluation',
     },
     events: {
@@ -1116,7 +1145,7 @@ export const translations = {
       event: 'événement',
       events: 'événements',
       attendees: 'participants',
-      details: 'Détails de l\'\u00e9vénement',
+      details: "Détails de l'\u00e9vénement",
     },
     transfer: {
       title: 'Optimisation des correspondances',
@@ -1168,6 +1197,18 @@ export const translations = {
       proTip: 'Conseil de pro:',
       proTipDesc:
         'Utilisez le formatage Markdown pour des requêtes complexes avec des préférences et plusieurs questions!',
+      features: 'Fonctionnalités & Contrôles',
+      featuresDesc:
+        "Personnalisez votre expérience avec des contrôles d'interface puissants.",
+      richModeTitle: 'Mode enrichi vs Texte seul',
+      richModeDesc:
+        "Basculez entre le mode enrichi (cartes interactives avec données visuelles) et le mode texte seul (réponses en texte brut plus rapides). Le mode texte seul désactive l'orchestration pour des réponses plus rapides.",
+      voiceInputTitle: 'Entrée vocale',
+      voiceInputDesc:
+        'Cliquez sur le bouton microphone pour parler votre requête. Prend en charge les 6 langues (FR, EN, DE, IT, ZH, HI) avec reconnaissance vocale automatique.',
+      voiceOutputTitle: 'Sortie vocale',
+      voiceOutputDesc:
+        "Activez la sortie vocale pour entendre les réponses de l'IA lues à haute voix. Comprend la lecture automatique et les contrôles de lecture (lecture, pause, reprise) pour chaque message.",
       richResponses: 'Réponses enrichies',
       richResponsesDesc:
         'Obtenez de belles cartes interactives avec toutes les informations dont vous avez besoin.',
@@ -1323,7 +1364,7 @@ export const translations = {
     },
     voice: {
       listening: 'Écoute...',
-      stopRecording: 'Arrêter l\'enregistrement',
+      stopRecording: "Arrêter l'enregistrement",
       startVoiceInput: 'Démarrer la saisie vocale',
       voiceInput: 'Saisie vocale',
       disableVoiceOutput: 'Désactiver la sortie vocale',
@@ -1342,11 +1383,12 @@ export const translations = {
       error: 'Erreur',
       settings: 'Paramètres vocaux',
       autoPlay: 'Lecture automatique',
-      autoPlayDesc: 'Lire automatiquement les nouvelles réponses de l\'IA',
+      autoPlayDesc: "Lire automatiquement les nouvelles réponses de l'IA",
       speechRate: 'Vitesse de parole',
       pitch: 'Hauteur',
       voice: 'Voix',
-      settingsInfo: 'Les paramètres vocaux s\'appliquent à tous les messages. L\'audio est généré à la demande et mis en cache pour la session.',
+      settingsInfo:
+        "Les paramètres vocaux s'appliquent à tous les messages. L'audio est généré à la demande et mis en cache pour la session.",
     },
   },
   it: {
@@ -1370,6 +1412,7 @@ export const translations = {
         howItWorks: 'Come funziona',
         recentSearches: 'Ricerche recenti:',
       },
+      examplesTitle: 'Prova alcuni di questi esempi',
       categories: {
         allExamples: 'Tutti gli esempi',
         trips: 'Viaggi',
@@ -1621,6 +1664,18 @@ export const translations = {
       proTip: 'Suggerimento:',
       proTipDesc:
         'Usa la formattazione Markdown per query complesse con preferenze e domande multiple!',
+      features: 'Funzionalità & Controlli',
+      featuresDesc:
+        "Personalizza la tua esperienza con potenti controlli dell'interfaccia.",
+      richModeTitle: 'Modalità ricca vs Solo testo',
+      richModeDesc:
+        "Passa dalla modalità ricca (schede interattive con dati visivi) alla modalità solo testo (risposte in testo semplice più veloci). La modalità solo testo disabilita l'orchestrazione per risposte più rapide.",
+      voiceInputTitle: 'Input vocale',
+      voiceInputDesc:
+        'Fai clic sul pulsante microfono per parlare la tua query. Supporta tutte le 6 lingue (IT, EN, DE, FR, ZH, HI) con riconoscimento vocale automatico.',
+      voiceOutputTitle: 'Output vocale',
+      voiceOutputDesc:
+        "Abilita l'output vocale per ascoltare le risposte dell'IA lette ad alta voce. Include riproduzione automatica e controlli di riproduzione (riproduci, pausa, riprendi) per ogni messaggio.",
       richResponses: 'Risposte ricche',
       richResponsesDesc:
         'Ottieni belle schede interattive con tutte le informazioni di cui hai bisogno.',
@@ -1797,7 +1852,8 @@ export const translations = {
       speechRate: 'Velocità di parola',
       pitch: 'Tono',
       voice: 'Voce',
-      settingsInfo: 'Le impostazioni vocali si applicano a tutti i messaggi. L\'audio viene generato su richiesta e memorizzato nella cache per la sessione.',
+      settingsInfo:
+        "Le impostazioni vocali si applicano a tutti i messaggi. L'audio viene generato su richiesta e memorizzato nella cache per la sessione.",
     },
   },
   zh: {
@@ -1819,6 +1875,7 @@ export const translations = {
         howItWorks: '如何使用',
         recentSearches: '最近搜索:',
       },
+      examplesTitle: '试试这些示例',
       categories: {
         allExamples: '所有示例',
         trips: '行程',
@@ -2105,6 +2162,17 @@ export const translations = {
       example3: '显示日内瓦的出发信息',
       proTip: '专业提示：',
       proTipDesc: '对于包含偏好和多个问题的复杂查询，请使用 Markdown 格式！',
+      features: '功能与控制',
+      featuresDesc: '使用强大的界面控制自定义您的体验。',
+      richModeTitle: '富交互模式 vs 纯文本模式',
+      richModeDesc:
+        '在富交互模式（带有视觉数据的交互卡片）和纯文本模式（更快的纯文本响应）之间切换。纯文本模式禁用编排以获得更快的响应。',
+      voiceInputTitle: '语音输入',
+      voiceInputDesc:
+        '点击麦克风按钮说出您的查询。支持所有 6 种语言（ZH、EN、DE、FR、IT、HI），并具有自动语音识别功能。',
+      voiceOutputTitle: '语音输出',
+      voiceOutputDesc:
+        '启用语音输出以听取 AI 响应的朗读。包括自动播放和每条消息的播放控制（播放、暂停、继续）。',
       richResponses: '富交互响应',
       richResponsesDesc: '获取精美且可交互的信息卡片。',
       responses: '我提供丰富的视觉响应，包括：',
@@ -2255,6 +2323,7 @@ export const translations = {
         howItWorks: 'यह कैसे काम करता है',
         recentSearches: 'हाल की खोजें:',
       },
+      examplesTitle: 'इनमें से कुछ उदाहरण आज़माएं',
       categories: {
         allExamples: 'सभी उदाहरण',
         trips: 'यात्राएं',
@@ -2549,6 +2618,18 @@ export const translations = {
       proTip: 'प्रो टिप:',
       proTipDesc:
         'प्राथमिकताओं और कई सवालों के साथ जटिल प्रश्नों के लिए मार्कडाउन फ़ॉर्मेटिंग का उपयोग करें!',
+      features: 'सुविधाएं और नियंत्रण',
+      featuresDesc:
+        'शक्तिशाली इंटरफ़ेस नियंत्रणों के साथ अपने अनुभव को अनुकूलित करें।',
+      richModeTitle: 'रिच मोड vs केवल टेक्स्ट',
+      richModeDesc:
+        'रिच मोड (दृश्य डेटा के साथ इंटरैक्टिव कार्ड) और केवल-टेक्स्ट मोड (तेज़, सादा टेक्स्ट प्रतिक्रियाएं) के बीच टॉगल करें। केवल-टेक्स्ट मोड तेज़ प्रतिक्रियाओं के लिए ऑर्केस्ट्रेशन को अक्षम करता है।',
+      voiceInputTitle: 'वॉइस इनपुट',
+      voiceInputDesc:
+        'अपनी क्वेरी बोलने के लिए माइक्रोफ़ोन बटन पर क्लिक करें। स्वचालित वाक् पहचान के साथ सभी 6 भाषाओं (HI, EN, DE, FR, IT, ZH) का समर्थन करता है।',
+      voiceOutputTitle: 'वॉइस आउटपुट',
+      voiceOutputDesc:
+        'AI प्रतिक्रियाओं को ज़ोर से पढ़ा सुनने के लिए वॉइस आउटपुट सक्षम करें। प्रत्येक संदेश के लिए ऑटो-प्ले और प्लेबैक नियंत्रण (प्ले, पॉज़, फिर से शुरू करें) शामिल है।',
       richResponses: 'रिच प्रतिक्रियाएं',
       richResponsesDesc:
         'अपनी ज़रूरत की सभी जानकारी के साथ सुंदर, इंटरैक्टिव कार्ड प्राप्त करें।',
@@ -2679,7 +2760,8 @@ export const translations = {
       speechRate: 'बोलने की गति',
       pitch: 'स्वर',
       voice: 'आवाज़',
-      settingsInfo: 'आवाज़ सेटिंग्स सभी संदेशों पर लागू होती हैं। ऑडियो मांग पर उत्पन्न होता है और सत्र के लिए कैश किया जाता है।',
+      settingsInfo:
+        'आवाज़ सेटिंग्स सभी संदेशों पर लागू होती हैं। ऑडियो मांग पर उत्पन्न होता है और सत्र के लिए कैश किया जाता है।',
     },
   },
 };

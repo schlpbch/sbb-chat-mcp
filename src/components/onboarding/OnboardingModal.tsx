@@ -31,22 +31,32 @@ export default function OnboardingModal({
       description: t.onboarding.welcomeDesc,
       content: (
         <div className="space-y-4">
-          <p className="text-gray-700 dark:text-gray-300">{t.onboarding.capabilities}</p>
+          <p className="text-gray-700 dark:text-gray-300">
+            {t.onboarding.capabilities}
+          </p>
           <ul className="space-y-2 text-gray-700 dark:text-gray-300">
             <li className="flex items-start gap-2">
-              <span className="text-sbb-red dark:text-red-400"><TrainFront className="w-5 h-5" /></span>
+              <span className="text-sbb-red dark:text-red-400">
+                <TrainFront className="w-5 h-5" />
+              </span>
               <span>{t.onboarding.findTrains}</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-sbb-red dark:text-red-400"><CloudSun className="w-5 h-5" /></span>
+              <span className="text-sbb-red dark:text-red-400">
+                <CloudSun className="w-5 h-5" />
+              </span>
               <span>{t.onboarding.checkWeather}</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-sbb-red dark:text-red-400"><Building2 className="w-5 h-5" /></span>
+              <span className="text-sbb-red dark:text-red-400">
+                <Building2 className="w-5 h-5" />
+              </span>
               <span>{t.onboarding.stationInfo}</span>
             </li>
             <li className="flex items-start gap-2">
-              <span className="text-sbb-red dark:text-red-400"><Mountain className="w-5 h-5" /></span>
+              <span className="text-sbb-red dark:text-red-400">
+                <Mountain className="w-5 h-5" />
+              </span>
               <span>{t.onboarding.discoverAttractions}</span>
             </li>
           </ul>
@@ -64,15 +74,21 @@ export default function OnboardingModal({
             </p>
             <ul className="space-y-2 text-sm text-gray-700 dark:text-gray-300">
               <li className="flex items-start gap-2">
-                <span className="text-sbb-red"><Check className="w-4 h-4 mt-0.5" /></span>
+                <span className="text-sbb-red">
+                  <Check className="w-4 h-4 mt-0.5" />
+                </span>
                 <span>&quot;{t.onboarding.example1}&quot;</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-sbb-red"><Check className="w-4 h-4 mt-0.5" /></span>
+                <span className="text-sbb-red">
+                  <Check className="w-4 h-4 mt-0.5" />
+                </span>
                 <span>&quot;{t.onboarding.example2}&quot;</span>
               </li>
               <li className="flex items-start gap-2">
-                <span className="text-sbb-red"><Check className="w-4 h-4 mt-0.5" /></span>
+                <span className="text-sbb-red">
+                  <Check className="w-4 h-4 mt-0.5" />
+                </span>
                 <span>&quot;{t.onboarding.example3}&quot;</span>
               </li>
             </ul>
@@ -81,7 +97,105 @@ export default function OnboardingModal({
             <p className="font-semibold text-sbb-red dark:text-red-400 mb-2">
               {t.onboarding.proTip}
             </p>
-            <p className="text-sm text-red-900 dark:text-red-200">{t.onboarding.proTipDesc}</p>
+            <p className="text-sm text-red-900 dark:text-red-200">
+              {t.onboarding.proTipDesc}
+            </p>
+          </div>
+        </div>
+      ),
+    },
+    {
+      title: t.onboarding.features,
+      description: t.onboarding.featuresDesc,
+      content: (
+        <div className="space-y-4">
+          <div className="space-y-3">
+            {/* Rich Mode Toggle */}
+            <div className="bg-linear-to-br from-red-50 to-orange-50 dark:from-red-900/30 dark:to-orange-900/20 rounded-xl p-4 border border-red-200 dark:border-red-900/50">
+              <div className="flex items-start gap-3">
+                <div className="shrink-0 w-10 h-10 rounded-lg bg-sbb-red/10 dark:bg-sbb-red/20 flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-sbb-red dark:text-red-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                    {t.onboarding.richModeTitle}
+                  </h4>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    {t.onboarding.richModeDesc}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Voice Input */}
+            <div className="bg-linear-to-br from-blue-50 to-cyan-50 dark:from-blue-900/30 dark:to-cyan-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-900/50">
+              <div className="flex items-start gap-3">
+                <div className="shrink-0 w-10 h-10 rounded-lg bg-blue-500/10 dark:bg-blue-500/20 flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-blue-600 dark:text-blue-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                    {t.onboarding.voiceInputTitle}
+                  </h4>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    {t.onboarding.voiceInputDesc}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Voice Output */}
+            <div className="bg-linear-to-br from-purple-50 to-pink-50 dark:from-purple-900/30 dark:to-pink-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-900/50">
+              <div className="flex items-start gap-3">
+                <div className="shrink-0 w-10 h-10 rounded-lg bg-purple-500/10 dark:bg-purple-500/20 flex items-center justify-center">
+                  <svg
+                    className="w-6 h-6 text-purple-600 dark:text-purple-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+                    />
+                  </svg>
+                </div>
+                <div className="flex-1">
+                  <h4 className="font-semibold text-gray-900 dark:text-white mb-1">
+                    {t.onboarding.voiceOutputTitle}
+                  </h4>
+                  <p className="text-sm text-gray-700 dark:text-gray-300">
+                    {t.onboarding.voiceOutputDesc}
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       ),
@@ -91,10 +205,14 @@ export default function OnboardingModal({
       description: t.onboarding.richResponsesDesc,
       content: (
         <div className="space-y-4">
-          <p className="text-gray-700 dark:text-gray-300">{t.onboarding.responses}</p>
+          <p className="text-gray-700 dark:text-gray-300">
+            {t.onboarding.responses}
+          </p>
           <div className="grid grid-cols-2 gap-3">
             <div className="bg-linear-to-br from-red-50 to-red-100 dark:from-red-900/40 dark:to-red-900/20 rounded-xl p-4 border border-red-200 dark:border-red-900/50">
-              <div className="text-sbb-red dark:text-red-400 mb-2"><TrainFront className="w-8 h-8" /></div>
+              <div className="text-sbb-red dark:text-red-400 mb-2">
+                <TrainFront className="w-8 h-8" />
+              </div>
               <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
                 {t.onboarding.tripCards}
               </h4>
@@ -103,7 +221,9 @@ export default function OnboardingModal({
               </p>
             </div>
             <div className="bg-linear-to-br from-blue-50 to-blue-100 dark:from-blue-900/40 dark:to-blue-900/20 rounded-xl p-4 border border-blue-200 dark:border-blue-900/50">
-              <div className="text-sbb-red dark:text-red-400 mb-2"><CloudSun className="w-8 h-8" /></div>
+              <div className="text-sbb-red dark:text-red-400 mb-2">
+                <CloudSun className="w-8 h-8" />
+              </div>
               <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
                 {t.onboarding.weatherCards}
               </h4>
@@ -112,7 +232,9 @@ export default function OnboardingModal({
               </p>
             </div>
             <div className="bg-linear-to-br from-green-50 to-green-100 dark:from-green-900/40 dark:to-green-900/20 rounded-xl p-4 border border-green-200 dark:border-green-900/50">
-              <div className="text-sbb-red dark:text-red-400 mb-2"><Building2 className="w-8 h-8" /></div>
+              <div className="text-sbb-red dark:text-red-400 mb-2">
+                <Building2 className="w-8 h-8" />
+              </div>
               <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
                 {t.onboarding.stationCards}
               </h4>
@@ -121,7 +243,9 @@ export default function OnboardingModal({
               </p>
             </div>
             <div className="bg-linear-to-br from-purple-50 to-purple-100 dark:from-purple-900/40 dark:to-purple-900/20 rounded-xl p-4 border border-purple-200 dark:border-purple-900/50">
-              <div className="text-sbb-red dark:text-red-400 mb-2"><Mountain className="w-8 h-8" /></div>
+              <div className="text-sbb-red dark:text-red-400 mb-2">
+                <Mountain className="w-8 h-8" />
+              </div>
               <h4 className="font-semibold text-gray-900 dark:text-white text-sm">
                 {t.onboarding.touristCards}
               </h4>
@@ -147,7 +271,9 @@ export default function OnboardingModal({
                 <h4 className="font-semibold text-gray-900 dark:text-white">
                   {t.onboarding.tip1Title}
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{t.onboarding.tip1Desc}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {t.onboarding.tip1Desc}
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -158,7 +284,9 @@ export default function OnboardingModal({
                 <h4 className="font-semibold text-gray-900 dark:text-white">
                   {t.onboarding.tip2Title}
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{t.onboarding.tip2Desc}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {t.onboarding.tip2Desc}
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -169,7 +297,9 @@ export default function OnboardingModal({
                 <h4 className="font-semibold text-gray-900 dark:text-white">
                   {t.onboarding.tip3Title}
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{t.onboarding.tip3Desc}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {t.onboarding.tip3Desc}
+                </p>
               </div>
             </div>
             <div className="flex items-start gap-3">
@@ -180,7 +310,9 @@ export default function OnboardingModal({
                 <h4 className="font-semibold text-gray-900 dark:text-white">
                   {t.onboarding.tip4Title}
                 </h4>
-                <p className="text-sm text-gray-600 dark:text-gray-300">{t.onboarding.tip4Desc}</p>
+                <p className="text-sm text-gray-600 dark:text-gray-300">
+                  {t.onboarding.tip4Desc}
+                </p>
               </div>
             </div>
           </div>
