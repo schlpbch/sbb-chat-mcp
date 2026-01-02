@@ -8,6 +8,8 @@ import { logger } from '@/lib/logger';
 import { formatTime } from '@/lib/formatters';
 import { getTransportIconComponent } from '@/lib/iconMap';
 import CardHeader from './CardHeader';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableBoard } from '@/lib/shareUtils';
 
 interface BoardCardProps {
   data: unknown;
@@ -73,6 +75,13 @@ export default function BoardCard({ data, language }: BoardCardProps) {
     : finalConnections.slice(0, 5);
   const hasMore = finalConnections.length > 5;
 
+  // Prepare shareable board data
+  const shareableBoard: ShareableBoard = {
+    type: finalType,
+    station: finalStation || t.board.station,
+    connectionCount: finalConnections.length,
+  };
+
   return (
     <article
       className={`bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 ${
@@ -113,6 +122,13 @@ export default function BoardCard({ data, language }: BoardCardProps) {
         title={isDeparture ? t.board.departures : t.board.arrivals}
         subtitle={finalStation || t.board.station}
         color={isDeparture ? 'purple' : 'blue'}
+        rightContent={
+          <ShareButton
+            data={shareableBoard}
+            className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+            iconClassName="w-5 h-5 text-white"
+          />
+        }
       />
 
       {/* Compact Connections List */}

@@ -4,6 +4,8 @@ import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
 import { MapPin, Globe, Info, ExternalLink } from 'lucide-react';
+import ShareButton from '@/components/ui/ShareButton';
+import type { ShareableAttraction } from '@/lib/shareUtils';
 
 interface AttractionCardProps {
   data: {
@@ -78,6 +80,15 @@ export default function AttractionCard({ data, language }: AttractionCardProps) 
     return code || 'INT';
   };
 
+  // Prepare shareable attraction data
+  const shareableAttraction: ShareableAttraction = {
+    name: name || t.attraction?.title || 'Attraction',
+    type: category || type,
+    address,
+    latitude: location?.latitude,
+    longitude: location?.longitude,
+  };
+
   return (
     <article
       className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500 dark:hover:border-green-400"
@@ -88,6 +99,13 @@ export default function AttractionCard({ data, language }: AttractionCardProps) 
         title={name || t.attraction?.title || 'Attraction'}
         subtitle={category || type || t.attraction?.pointOfInterest || 'Point of Interest'}
         color="green"
+        rightContent={
+          <ShareButton
+            data={shareableAttraction}
+            className="p-1.5 hover:bg-white/20 rounded-full transition-colors"
+            iconClassName="w-5 h-5 text-white"
+          />
+        }
       />
 
       <div className="p-4 space-y-3">
