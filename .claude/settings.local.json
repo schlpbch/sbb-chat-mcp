@@ -49,7 +49,10 @@
       "Bash(pnpm run storybook:*)",
       "Bash(pnpm install)",
       "Bash(git log:*)",
-      "Bash(npx tsx:*)"
+      "Bash(npx tsx:*)",
+      "Bash(gh issue view:*)",
+      "Bash(gh issue close:*)",
+      "Bash(gcloud run services logs read:*)"
     ]
   }
 }

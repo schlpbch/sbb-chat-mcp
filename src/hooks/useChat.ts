@@ -32,20 +32,43 @@ export function useChat(language: Language) {
   const [textOnlyMode, setTextOnlyMode] = useState(false);
   const [error, setError] = useState<Message['error'] | null>(null);
   const [retryCount, setRetryCount] = useState(0);
-  
+
   // Prompt history state
   const [promptHistory, setPromptHistory] = useState<string[]>([]);
   const [historyIndex, setHistoryIndex] = useState(-1);
   const [currentDraft, setCurrentDraft] = useState('');
-  
+
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const { addSearch } = useRecentSearches();
   const abortControllerRef = useRef<AbortController | null>(null);
 
-  const [sessionId] = useState(
-    () => `session-${Date.now()}-${Math.random().toString(36).slice(2)}`
-  );
+  // Session ID - persist across component remounts using localStorage
+  // This ensures the same session is used for the entire conversation
+  const [sessionId] = useState(() => {
+    // Try to get existing session from localStorage
+    const stored =
+      typeof window !== 'undefined'
+        ? localStorage.getItem('chat-session-id')
+        : null;
+
+    if (stored) {
+      console.log('[useChat] Reusing existing session:', stored);
+      return stored;
+    }
+
+    // Create new session if none exists
+    const newSessionId = `session-${Date.now()}-${Math.random()
+      .toString(36)
+      .slice(2)}`;
+    console.log('[useChat] Created new session:', newSessionId);
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('chat-session-id', newSessionId);
+    }
+
+    return newSessionId;
+  });
 
   // Auto-scroll to bottom when messages change
   useEffect(() => {
@@ -62,15 +85,15 @@ export function useChat(language: Language) {
     // Track in recent searches (only for new messages, not retries)
     if (!isRetry) {
       addSearch(messageContent);
-      
+
       // Add to prompt history (avoid duplicates of last entry)
-      setPromptHistory(prev => {
+      setPromptHistory((prev) => {
         if (prev[prev.length - 1] === messageContent) {
           return prev;
         }
         return [...prev, messageContent];
       });
-      
+
       // Reset history navigation
       setHistoryIndex(-1);
       setCurrentDraft('');
@@ -87,7 +110,7 @@ export function useChat(language: Language) {
       setMessages((prev) => [...prev, userMessage]);
       setInput('');
     }
-    
+
     setIsLoading(true);
     setIsTyping(true);
 
@@ -116,7 +139,7 @@ export function useChat(language: Language) {
         useOrchestration: !textOnlyMode,
       };
       console.log('[useChat] Sending request:', requestBody);
-      
+
       const response = await fetch('/api/llm/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -128,10 +151,13 @@ export function useChat(language: Language) {
 
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}));
-        const errorMessage = errorData.error || `Server error: ${response.status}`;
-        
+        const errorMessage =
+          errorData.error || `Server error: ${response.status}`;
+
         if (response.status === 429) {
-          throw new Error('RATE_LIMIT: Too many requests. Please wait a moment.');
+          throw new Error(
+            'RATE_LIMIT: Too many requests. Please wait a moment.'
+          );
         } else if (response.status >= 500) {
           throw new Error(`SERVER_ERROR: ${errorMessage}`);
         } else if (response.status === 400) {
@@ -162,22 +188,33 @@ export function useChat(language: Language) {
     } catch (error) {
       console.error('Chat error:', error);
       clearTimeout(timeoutId);
-      
-      let errorType: 'network' | 'api' | 'timeout' | 'validation' | 'server' | 'general' = 'general';
+
+      let errorType:
+        | 'network'
+        | 'api'
+        | 'timeout'
+        | 'validation'
+        | 'server'
+        | 'general' = 'general';
       let errorMessage = 'Sorry, I encountered an error. Please try again.';
       let errorDetails = '';
       let retryable = true;
 
       if (error instanceof Error) {
         const errorString = error.message;
-        
+
         if (error.name === 'AbortError' || errorString.includes('TIMEOUT')) {
           errorType = 'timeout';
-          errorMessage = 'Request took too long. Please try a simpler query or check your connection.';
+          errorMessage =
+            'Request took too long. Please try a simpler query or check your connection.';
           retryable = true;
-        } else if (errorString.includes('NETWORK_ERROR') || errorString.includes('Failed to fetch')) {
+        } else if (
+          errorString.includes('NETWORK_ERROR') ||
+          errorString.includes('Failed to fetch')
+        ) {
           errorType = 'network';
-          errorMessage = 'No internet connection. Please check your network and try again.';
+          errorMessage =
+            'No internet connection. Please check your network and try again.';
           retryable = true;
         } else if (errorString.includes('RATE_LIMIT')) {
           errorType = 'api';
@@ -185,7 +222,8 @@ export function useChat(language: Language) {
           retryable = false;
         } else if (errorString.includes('SERVER_ERROR')) {
           errorType = 'server';
-          errorMessage = 'Travel data temporarily unavailable. Please try again in a moment.';
+          errorMessage =
+            'Travel data temporarily unavailable. Please try again in a moment.';
           retryable = true;
         } else if (errorString.includes('VALIDATION_ERROR')) {
           errorType = 'validation';
@@ -196,7 +234,7 @@ export function useChat(language: Language) {
           errorMessage = errorString.replace('API_ERROR: ', '');
           retryable = true;
         }
-        
+
         errorDetails = error.stack || error.message;
       }
 
@@ -230,17 +268,17 @@ export function useChat(language: Language) {
 
   const handleRetry = async () => {
     if (!error || !error.retryable) return;
-    
+
     // Exponential backoff
     const delay = Math.min(1000 * Math.pow(2, retryCount), 10000);
     setRetryCount((prev) => prev + 1);
-    
+
     // Remove last error message
     setMessages((prev) => prev.slice(0, -1));
-    
+
     // Wait before retrying
     await new Promise((resolve) => setTimeout(resolve, delay));
-    
+
     // Get the last user message
     const lastUserMessage = messages.findLast((m) => m.role === 'user');
     if (lastUserMessage) {
@@ -255,35 +293,36 @@ export function useChat(language: Language) {
       handleSendMessage();
       return;
     }
-    
+
     // Handle Arrow Up - navigate to previous prompt
     if (e.key === 'ArrowUp') {
       e.preventDefault();
-      
+
       if (promptHistory.length === 0) return;
-      
+
       // Save current draft if we're at the bottom
       if (historyIndex === -1) {
         setCurrentDraft(input);
       }
-      
-      const newIndex = historyIndex === -1 
-        ? promptHistory.length - 1 
-        : Math.max(0, historyIndex - 1);
-      
+
+      const newIndex =
+        historyIndex === -1
+          ? promptHistory.length - 1
+          : Math.max(0, historyIndex - 1);
+
       setHistoryIndex(newIndex);
       setInput(promptHistory[newIndex]);
       return;
     }
-    
+
     // Handle Arrow Down - navigate to next prompt
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      
+
       if (historyIndex === -1) return;
-      
+
       const newIndex = historyIndex + 1;
-      
+
       if (newIndex >= promptHistory.length) {
         // Restore draft and reset
         setHistoryIndex(-1);

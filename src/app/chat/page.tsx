@@ -13,6 +13,7 @@ import { useOnboarding } from '@/hooks/useOnboarding';
 import { useFeedback } from '@/hooks/useFeedback';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 import { useLanguage } from '@/hooks/useLanguage';
+import { useRef } from 'react';
 
 // Lazy load heavy components
 const MessageList = dynamic(() => import('@/components/chat/MessageList'), {
@@ -34,6 +35,7 @@ function ChatContent() {
   const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Use non-streaming chat hook
   const {
     messages,
     input,
@@ -101,14 +103,10 @@ function ChatContent() {
   return (
     <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 duration-300">
       {/* Skip Links for Accessibility */}
-      <a href="#main-content" className="skip-link sr-only-focusable">
+      <a href="#main-content" className="skip-link">
         {t.accessibility.skipToMain}
       </a>
-      <a
-        href="#chat-input"
-        className="skip-link sr-only-focusable"
-        style={{ left: '200px' }}
-      >
+      <a href="#chat-input" className="skip-link" style={{ left: '200px' }}>
         {t.accessibility.skipToChat}
       </a>
 
@@ -154,7 +152,6 @@ function ChatContent() {
                 <MessageList
                   messages={messages}
                   messagesEndRef={messagesEndRef}
-                  textOnlyMode={textOnlyMode}
                   language={language}
                   voiceOutputEnabled={voiceOutputEnabled}
                 />
@@ -163,56 +160,74 @@ function ChatContent() {
 
             {/* Input Area */}
             <div className="px-3 sm:px-6 py-3 sm:py-4 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700 transition-colors duration-300">
-              {/* Mode Toggle */}
+              {/* Controls Bar */}
               <div className="flex items-center justify-between mb-2">
                 <div className="flex items-center gap-3">
+                  {isLoading && (
+                    <button
+                      onClick={() => {
+                        /* Abort not available in non-streaming mode */
+                      }}
+                      className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 text-red-700 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/30"
+                      aria-label="Stop streaming"
+                    >
+                      <svg
+                        className="w-4 h-4"
+                        fill="none"
+                        stroke="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                      <span>Stop</span>
+                    </button>
+                  )}
+
+                  {/* Rich Mode Toggle */}
                   <button
                     onClick={() => setTextOnlyMode(!textOnlyMode)}
-                    className="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-sm hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors border shadow-sm ${
+                      textOnlyMode
+                        ? 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
+                        : 'bg-sbb-red/10 dark:bg-sbb-red/20 border-sbb-red/30 dark:border-sbb-red/40 text-sbb-red dark:text-red-400'
+                    }`}
                     aria-label={
-                      textOnlyMode ? t.chat.switchToRich : t.chat.switchToText
+                      textOnlyMode ? t.chat.switchToRich : t.chat.textOnlyMode
                     }
+                    title={textOnlyMode ? t.chat.richMode : t.chat.textOnly}
+                    aria-pressed={!textOnlyMode}
                   >
-                    {textOnlyMode ? (
-                      <>
-                        <svg
-                          className="w-4 h-4 text-gray-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                          />
-                        </svg>
-                        <span className="text-gray-700 dark:text-gray-300">{t.chat.textOnly}</span>
-                      </>
-                    ) : (
-                      <>
-                        <svg
-                          className="w-4 h-4 text-purple-600"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"
-                          />
-                        </svg>
-                        <span className="text-purple-700 dark:text-purple-400">{t.chat.richMode}</span>
-                      </>
-                    )}
+                    <svg
+                      className="w-4 h-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      {textOnlyMode ? (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                        />
+                      ) : (
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+                        />
+                      )}
+                    </svg>
+                    <span>
+                      {textOnlyMode ? t.chat.richMode : t.chat.textOnly}
+                    </span>
                   </button>
-
-                  <span className="text-xs text-gray-500 font-medium italic">
-                    {textOnlyMode ? t.chat.textOnlyDesc : t.chat.richModeDesc}
-                  </span>
                 </div>
 
                 {/* Voice Output Toggle - Aligned to the right */}
@@ -223,8 +238,16 @@ function ChatContent() {
                       ? 'bg-sbb-red/10 dark:bg-sbb-red/20 border-sbb-red/30 dark:border-sbb-red/40 text-sbb-red dark:text-red-400'
                       : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700'
                   }`}
-                  aria-label={voiceOutputEnabled ? t.voice.disableVoiceOutput : t.voice.enableVoiceOutput}
-                  title={voiceOutputEnabled ? t.voice.voiceOutputEnabled : t.voice.voiceOutputDisabled}
+                  aria-label={
+                    voiceOutputEnabled
+                      ? t.voice.disableVoiceOutput
+                      : t.voice.enableVoiceOutput
+                  }
+                  title={
+                    voiceOutputEnabled
+                      ? t.voice.voiceOutputEnabled
+                      : t.voice.voiceOutputDisabled
+                  }
                   aria-pressed={voiceOutputEnabled}
                 >
                   <svg
@@ -249,7 +272,9 @@ function ChatContent() {
                       />
                     )}
                   </svg>
-                  <span>{voiceOutputEnabled ? t.voice.voiceOn : t.voice.voiceOff}</span>
+                  <span>
+                    {voiceOutputEnabled ? t.voice.voiceOn : t.voice.voiceOff}
+                  </span>
                 </button>
               </div>
 

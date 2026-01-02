@@ -39,6 +39,8 @@ export function createExecutionPlan(
       return createFormationPlan(context);
     case 'weather_check':
       return createWeatherPlan(context);
+    case 'eco_comparison':
+      return createEcoComparisonPlan(context);
     default:
       return null;
   }
@@ -48,35 +50,39 @@ export function createExecutionPlan(
  * Create a plan for weather check
  */
 function createWeatherPlan(context: ConversationContext): ExecutionPlan {
-    const location = context.location.origin?.name || 
-                   context.intentHistory[context.intentHistory.length - 1]?.extractedEntities?.origin || 
-                   'Switzerland';
-    
-    return {
-        id: `weather-${Date.now()}`,
-        name: 'Weather Check',
-        description: `Get weather for ${location}`,
-        steps: [
-            {
-                id: 'get-weather',
-                toolName: 'getWeather',
-                params: { location }
-            }
-        ]
-    };
+  const location =
+    context.location.origin?.name ||
+    context.intentHistory[context.intentHistory.length - 1]?.extractedEntities
+      ?.origin ||
+    'Switzerland';
+
+  return {
+    id: `weather-${Date.now()}`,
+    name: 'Weather Check',
+    description: `Get weather for ${location}`,
+    steps: [
+      {
+        id: 'get-weather',
+        toolName: 'getWeather',
+        params: { location },
+      },
+    ],
+  };
 }
 
 /**
  * Create a plan for train formation/composition
  */
-function createFormationPlan(context: ConversationContext): ExecutionPlan | null {
+function createFormationPlan(
+  context: ConversationContext
+): ExecutionPlan | null {
   // Try to find a journeyId from recent tool results
   const eventsResult = context.recentToolResults.get('getPlaceEvents')?.result;
   const tripsResult = context.recentToolResults.get('findTrips')?.result;
-  
+
   const latestIntent = context.intentHistory[context.intentHistory.length - 1];
   const messageText = latestIntent?.extractedEntities?.query || ''; // Fallback
-  
+
   // Detect index (1st, 2nd, etc.)
   let index = 0;
   if (/second|2nd|#2/.test(messageText.toLowerCase())) index = 1;
@@ -89,7 +95,11 @@ function createFormationPlan(context: ConversationContext): ExecutionPlan | null
   let stopPlaceId = '';
 
   // 1. Try to find a journey from departures/arrivals board
-  if (eventsResult && typeof eventsResult === 'object' && !Array.isArray(eventsResult)) {
+  if (
+    eventsResult &&
+    typeof eventsResult === 'object' &&
+    !Array.isArray(eventsResult)
+  ) {
     const typedEvents = eventsResult as EventResult;
     const list = typedEvents.departures || typedEvents.arrivals || [];
     if (list.length > index) {
@@ -101,16 +111,20 @@ function createFormationPlan(context: ConversationContext): ExecutionPlan | null
       stopPlaceId = typedEvents.place || '';
     }
   }
-  
+
   // 2. Try to find a journey from trip search if no board results
   if (!journeyId && tripsResult && Array.isArray(tripsResult)) {
     const typedTrips = tripsResult as TripResult[];
     if (typedTrips.length > index) {
       journeyId = (typedTrips[index] as TripResult).id || '';
-      stopPlaceId = ((typedTrips[index] as TripResult).legs?.[0] as any)?.start?.place?.id || '';
+      stopPlaceId =
+        ((typedTrips[index] as TripResult).legs?.[0] as any)?.start?.place
+          ?.id || '';
     } else if (typedTrips.length > 0) {
       journeyId = (typedTrips[0] as TripResult).id || '';
-      stopPlaceId = ((typedTrips[0] as TripResult).legs?.[0] as any)?.start?.place?.id || '';
+      stopPlaceId =
+        ((typedTrips[0] as TripResult).legs?.[0] as any)?.start?.place?.id ||
+        '';
     }
   }
 
@@ -128,10 +142,10 @@ function createFormationPlan(context: ConversationContext): ExecutionPlan | null
         toolName: 'getTrainFormation',
         params: {
           journeyId,
-          stopPlaces: stopPlaceId ? [stopPlaceId] : []
-        }
-      }
-    ]
+          stopPlaces: stopPlaceId ? [stopPlaceId] : [],
+        },
+      },
+    ],
   };
 }
 
@@ -146,14 +160,16 @@ function createTripPlan(context: ConversationContext): ExecutionPlan {
   let destination = context.location.destination?.name;
   if (!origin || !destination) {
     const latest = context.intentHistory[context.intentHistory.length - 1];
-    if (latest?.extractedEntities?.origin) origin = latest.extractedEntities.origin;
-    if (latest?.extractedEntities?.destination) destination = latest.extractedEntities.destination;
+    if (latest?.extractedEntities?.origin)
+      origin = latest.extractedEntities.origin;
+    if (latest?.extractedEntities?.destination)
+      destination = latest.extractedEntities.destination;
   }
 
   // Fallback for "Departures from X" being misinterpreted as trip
   if (origin && !destination && !context.location.destination) {
-     // If we only have origin, maybe we can accept it if we are just searching connections?
-     // Or we return a "search destination" step? For now, we proceed to allow partial filling.
+    // If we only have origin, maybe we can accept it if we are just searching connections?
+    // Or we return a "search destination" step? For now, we proceed to allow partial filling.
   }
 
   if (!origin && !destination) {
@@ -193,7 +209,9 @@ function createTripPlan(context: ConversationContext): ExecutionPlan {
         toolName: 'getEcoComparison',
         params: (results) => {
           const tripsData = results.get('find-trips')?.data;
-          const firstTrip = Array.isArray(tripsData) ? (tripsData[0] as TripResult) : undefined;
+          const firstTrip = Array.isArray(tripsData)
+            ? (tripsData[0] as TripResult)
+            : undefined;
           return {
             tripId: firstTrip?.id || '',
           };
@@ -201,7 +219,11 @@ function createTripPlan(context: ConversationContext): ExecutionPlan {
         dependsOn: ['find-trips'],
         condition: (results) => {
           const tripsData = results.get('find-trips')?.data;
-          return Array.isArray(tripsData) && tripsData.length > 0 && !!(tripsData[0] as TripResult)?.id;
+          return (
+            Array.isArray(tripsData) &&
+            tripsData.length > 0 &&
+            !!(tripsData[0] as TripResult)?.id
+          );
         },
       },
     ],
@@ -215,6 +237,57 @@ export function createEcoFriendlyPlan(
   context: ConversationContext
 ): ExecutionPlan {
   return createTripPlan(context);
+}
+
+/**
+ * Create a plan for eco comparison
+ * Extracts tripId from recent findTrips results
+ */
+function createEcoComparisonPlan(
+  context: ConversationContext
+): ExecutionPlan | null {
+  console.log(
+    '[createEcoComparisonPlan] Called with session:',
+    context.sessionId
+  );
+  console.log(
+    '[createEcoComparisonPlan] Cache keys:',
+    Array.from(context.recentToolResults.keys())
+  );
+
+  // Try to get tripId from recent tool results
+  const tripsResult = context.recentToolResults.get('findTrips')?.result;
+  console.log(
+    '[createEcoComparisonPlan] findTrips result:',
+    tripsResult ? 'Found' : 'Not found'
+  );
+
+  let tripId = '';
+
+  if (tripsResult && Array.isArray(tripsResult)) {
+    const typedTrips = tripsResult as TripResult[];
+    if (typedTrips.length > 0) {
+      tripId = (typedTrips[0] as TripResult).id || '';
+    }
+  }
+
+  if (!tripId) {
+    // No recent trip results found
+    return null;
+  }
+
+  return {
+    id: `eco-${Date.now()}`,
+    name: 'Eco Comparison',
+    description: `Get environmental impact for trip ${tripId}`,
+    steps: [
+      {
+        id: 'eco-comparison',
+        toolName: 'getEcoComparison',
+        params: { tripId },
+      },
+    ],
+  };
 }
 
 /**
@@ -244,7 +317,8 @@ function createStationEventsPlan(context: ConversationContext): ExecutionPlan {
 
   // If we have access to the original message through intent history, check it
   if (context.intentHistory.length > 0) {
-    const latestIntent = context.intentHistory[context.intentHistory.length - 1];
+    const latestIntent =
+      context.intentHistory[context.intentHistory.length - 1];
     // Check if the intent has any metadata about event type
     if (latestIntent.extractedEntities?.eventType) {
       eventType = latestIntent.extractedEntities.eventType;
@@ -266,7 +340,9 @@ function createStationEventsPlan(context: ConversationContext): ExecutionPlan {
         toolName: 'getPlaceEvents',
         params: (results) => {
           const stationData = results.get('find-station')?.data;
-          const station = Array.isArray(stationData) ? (stationData[0] as StationResult) : undefined;
+          const station = Array.isArray(stationData)
+            ? (stationData[0] as StationResult)
+            : undefined;
           return {
             placeId: station?.id || '',
             eventType: eventType,

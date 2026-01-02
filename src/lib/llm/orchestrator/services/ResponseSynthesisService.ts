@@ -19,22 +19,25 @@ export class ResponseSynthesisService {
    * @param formattedResults - Formatted plan execution results
    * @param planSummary - Summary of plan execution
    * @param language - User's language preference
+   * @param voiceEnabled - Whether voice output is enabled
    * @returns Generated response text
    */
   async synthesizeResponse(
     message: string,
     formattedResults: string,
     planSummary: PlanSummary,
-    language: Language | string
+    language: Language | string,
+    voiceEnabled: boolean = false
   ): Promise<string> {
     const model = createModel(false);
 
-    // Build prompt for LLM
+    // Build prompt for LLM (use voice-friendly prompt if voice is enabled)
     const summaryPrompt = this.buildPrompt(
       message,
       formattedResults,
       planSummary,
-      language
+      language,
+      voiceEnabled
     );
 
     // Generate response
@@ -53,22 +56,25 @@ export class ResponseSynthesisService {
     message: string,
     formattedResults: string,
     planSummary: PlanSummary,
-    language: Language | string
+    language: Language | string,
+    voiceEnabled: boolean = false
   ): string {
-    const template = PromptLoader.getPrompt(
-      'orchestration',
-      'orchestration-response'
-    );
+    // Use voice-friendly prompt if voice is enabled
+    const promptName = voiceEnabled
+      ? 'orchestration-response-voice'
+      : 'orchestration-response';
+    const template = PromptLoader.getPrompt('orchestration', promptName);
 
     if (!template) {
       console.warn(
-        '[ResponseSynthesisService] Orchestration prompt not found, using fallback'
+        `[ResponseSynthesisService] ${promptName} prompt not found, using fallback`
       );
       return this.buildFallbackPrompt(
         message,
         formattedResults,
         planSummary,
-        language
+        language,
+        voiceEnabled
       );
     }
 
@@ -100,9 +106,23 @@ export class ResponseSynthesisService {
     message: string,
     formattedResults: string,
     planSummary: PlanSummary,
-    language: Language | string
+    language: Language | string,
+    voiceEnabled: boolean = false
   ): string {
     const languageName = getLanguageName(language);
+
+    if (voiceEnabled) {
+      return `You are a Swiss travel Companion. The user asked: "${message}"
+
+I have gathered the following information for you:
+
+${formattedResults}
+
+Raw data summary:
+${JSON.stringify(planSummary, null, 2)}
+
+IMPORTANT: The user has voice output enabled. Generate a natural, conversational 2-4 sentence summary highlighting the key findings. The information will also be displayed as visual cards. Respond in ${languageName}.`;
+    }
 
     return `You are a Swiss travel Companion. The user asked: "${message}"
 
@@ -115,5 +135,4 @@ ${JSON.stringify(planSummary, null, 2)}
 
 IMPORTANT: The information will be displayed as visual cards to the user. Do NOT repeat or summarize the trip details (times, stations, connections, etc.) in text form. Keep your response extremely brief - just a short greeting or acknowledgment if needed, or respond with an empty string. The cards will show all the details. Respond in ${languageName}.`;
   }
-
 }

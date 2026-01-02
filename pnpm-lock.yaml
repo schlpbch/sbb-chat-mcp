@@ -11,9 +11,6 @@ importers:
       '-':
         specifier: ^0.0.1
         version: 0.0.1
-      '@google-cloud/text-to-speech':
-        specifier: ^6.4.0
-        version: 6.4.0
       '@google-cloud/translate':
         specifier: ^9.3.0
         version: 9.3.0
@@ -530,10 +527,6 @@ packages:
 
   '@google-cloud/promisify@5.0.0':
     resolution: {integrity: sha512-N8qS6dlORGHwk7WjGXKOSsLjIjNINCPicsOX6gyyLiYk7mq3MtII96NZ9N2ahwA2vnkLmZODOIH9rlNniYWvCQ==}
-    engines: {node: '>=18'}
-
-  '@google-cloud/text-to-speech@6.4.0':
-    resolution: {integrity: sha512-KUnK+mBYz9aegxHrBbwEignOkGRqXvqOXs/EGY7CAJhMFKuNSieW02/PV/ipVRsJM11MP69qgTgEetoyAN0HAg==}
     engines: {node: '>=18'}
 
   '@google-cloud/translate@9.3.0':
@@ -4298,12 +4291,6 @@ snapshots:
   '@google-cloud/promisify@4.1.0': {}
 
   '@google-cloud/promisify@5.0.0': {}
-
-  '@google-cloud/text-to-speech@6.4.0':
-    dependencies:
-      google-gax: 5.0.6
-    transitivePeerDependencies:
-      - supports-color
 
   '@google-cloud/translate@9.3.0':
     dependencies:

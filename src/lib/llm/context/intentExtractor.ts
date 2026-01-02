@@ -44,7 +44,7 @@ export async function extractIntents(
 
 /**
  * Extract intent from user message (single intent - backward compatible)
- * 
+ *
  * This is the CORE implementation used by multiIntentExtractor.
  * DO NOT delegate to extractIntents to avoid circular dependency!
  *
@@ -75,7 +75,10 @@ export async function extractIntent(
   const snowKeywords = getAllKeywords('snow_conditions', detectedLanguages);
   const weatherKeywords = getAllKeywords('weather_check', detectedLanguages);
   const stationKeywords = getAllKeywords('station_search', detectedLanguages);
-  const formationKeywords = getAllKeywords('train_formation', detectedLanguages);
+  const formationKeywords = getAllKeywords(
+    'train_formation',
+    detectedLanguages
+  );
 
   // Calculate scores for ALL intent types
   const intentScores: Array<{
@@ -87,7 +90,9 @@ export async function extractIntent(
   // Station search
   if (hasKeyword(stationKeywords, lowerMessage)) {
     const count = countMatchedKeywords(stationKeywords, lowerMessage);
-    const matched = stationKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    const matched = stationKeywords.filter((k) =>
+      hasKeyword([k], lowerMessage)
+    );
     intentScores.push({
       type: 'station_search',
       confidence: calculateBaseConfidence(count),
@@ -98,7 +103,9 @@ export async function extractIntent(
   // Train formation
   if (hasKeyword(formationKeywords, lowerMessage)) {
     const count = countMatchedKeywords(formationKeywords, lowerMessage);
-    const matched = formationKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    const matched = formationKeywords.filter((k) =>
+      hasKeyword([k], lowerMessage)
+    );
     intentScores.push({
       type: 'train_formation',
       confidence: calculateBaseConfidence(count),
@@ -120,7 +127,9 @@ export async function extractIntent(
   // Weather check
   if (hasKeyword(weatherKeywords, lowerMessage)) {
     const count = countMatchedKeywords(weatherKeywords, lowerMessage);
-    const matched = weatherKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    const matched = weatherKeywords.filter((k) =>
+      hasKeyword([k], lowerMessage)
+    );
     intentScores.push({
       type: 'weather_check',
       confidence: calculateBaseConfidence(count),
@@ -134,6 +143,18 @@ export async function extractIntent(
     const matched = tripKeywords.filter((k) => hasKeyword([k], lowerMessage));
     intentScores.push({
       type: 'trip_planning',
+      confidence: calculateBaseConfidence(count),
+      matchedKeywords: matched,
+    });
+  }
+
+  // Eco comparison - check for environmental/CO2 keywords
+  const ecoKeywords = getAllKeywords('eco_comparison', detectedLanguages);
+  if (hasKeyword(ecoKeywords, lowerMessage)) {
+    const count = countMatchedKeywords(ecoKeywords, lowerMessage);
+    const matched = ecoKeywords.filter((k) => hasKeyword([k], lowerMessage));
+    intentScores.push({
+      type: 'eco_comparison',
       confidence: calculateBaseConfidence(count),
       matchedKeywords: matched,
     });
@@ -163,7 +184,11 @@ export async function extractIntent(
   const bestMatch = intentScores[0];
 
   // Extract entities based on detected intent
-  const entities = extractEntities(processedMessage, detectedLanguages, bestMatch.type);
+  const entities = extractEntities(
+    processedMessage,
+    detectedLanguages,
+    bestMatch.type
+  );
 
   // Refine confidence based on entities
   const finalConfidence = refineConfidence(
@@ -226,7 +251,9 @@ function extractEntities(
     inMatch
   ) {
     // Use location match for weather/snow queries
-    entities.origin = capitalizeLocation(inMatch[2].replace(/\*\*|_|#/g, '').trim());
+    entities.origin = capitalizeLocation(
+      inMatch[2].replace(/\*\*|_|#/g, '').trim()
+    );
   } else if (
     intentType === 'station_search' &&
     inMatch &&
@@ -234,14 +261,20 @@ function extractEntities(
     !toMatch
   ) {
     // For station queries, only use location if no destination match
-    entities.origin = capitalizeLocation(inMatch[2].replace(/\*\*|_|#/g, '').trim());
+    entities.origin = capitalizeLocation(
+      inMatch[2].replace(/\*\*|_|#/g, '').trim()
+    );
   } else {
     // Standard extraction for trip planning
     if (fromMatch) {
-      entities.origin = capitalizeLocation(fromMatch[2].replace(/\*\*|_|#/g, '').trim());
+      entities.origin = capitalizeLocation(
+        fromMatch[2].replace(/\*\*|_|#/g, '').trim()
+      );
     }
     if (toMatch) {
-      entities.destination = capitalizeLocation(toMatch[2].replace(/\*\*|_|#/g, '').trim());
+      entities.destination = capitalizeLocation(
+        toMatch[2].replace(/\*\*|_|#/g, '').trim()
+      );
     }
   }
 
@@ -254,9 +287,13 @@ function extractEntities(
     const simpleMatch = message.match(simplePattern);
 
     if (simpleMatch && simpleMatch[1].length < 30) {
-      entities.origin = capitalizeLocation(simpleMatch[1].replace(/\*\*|_|#/g, '').trim());
+      entities.origin = capitalizeLocation(
+        simpleMatch[1].replace(/\*\*|_|#/g, '').trim()
+      );
       if (!entities.destination) {
-        entities.destination = capitalizeLocation(simpleMatch[2].replace(/\*\*|_|#/g, '').trim());
+        entities.destination = capitalizeLocation(
+          simpleMatch[2].replace(/\*\*|_|#/g, '').trim()
+        );
       }
     }
   }

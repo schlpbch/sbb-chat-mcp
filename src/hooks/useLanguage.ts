@@ -15,8 +15,26 @@ declare global {
  * @returns The detected language code
  */
 function detectLanguage(): Language {
-  // Try localStorage first (user preference - highest priority)
   if (typeof window !== 'undefined') {
+    // CRITICAL: Check server-detected language FIRST to prevent hydration mismatch
+    // The server injects __INITIAL_LANGUAGE__ based on Accept-Language header
+    // We must use this during initial hydration to match server-rendered content
+    if (window.__INITIAL_LANGUAGE__) {
+      const serverLanguage = window.__INITIAL_LANGUAGE__;
+      const supportedLanguages: Language[] = [
+        'en',
+        'de',
+        'fr',
+        'it',
+        'zh',
+        'hi',
+      ];
+      if (supportedLanguages.includes(serverLanguage)) {
+        return serverLanguage;
+      }
+    }
+
+    // Then check localStorage (user preference - will apply after hydration)
     try {
       const savedSettings = localStorage.getItem('sbb-settings');
       if (savedSettings) {
@@ -29,15 +47,6 @@ function detectLanguage(): Language {
       console.error('Failed to parse saved settings:', e);
     }
 
-    // Check for server-detected language (from HTTP Accept-Language header)
-    if (window.__INITIAL_LANGUAGE__) {
-      const serverLanguage = window.__INITIAL_LANGUAGE__;
-      const supportedLanguages: Language[] = ['en', 'de', 'fr', 'it', 'zh', 'hi'];
-      if (supportedLanguages.includes(serverLanguage)) {
-        return serverLanguage;
-      }
-    }
-
     // Fall back to browser language
     const browserLang = navigator.language.split('-')[0];
     const supportedLanguages: Language[] = ['en', 'de', 'fr', 'it', 'zh', 'hi'];
@@ -46,7 +55,7 @@ function detectLanguage(): Language {
     }
   }
 
-  // Default to English
+  // Default to English (used during SSR when window is undefined)
   return 'en';
 }
 
@@ -69,20 +78,20 @@ function persistLanguage(language: Language): void {
 
 /**
  * Custom hook for managing language state with automatic detection and persistence
- * 
+ *
  * Features:
  * - Detects language from localStorage (user preference) on mount
  * - Falls back to browser language if no saved preference
  * - Defaults to English if browser language not supported
  * - Automatically persists language changes to localStorage
- * 
+ *
  * @returns A tuple of [language, setLanguage] matching the useState API
- * 
+ *
  * @example
  * ```tsx
  * function MyComponent() {
  *   const [language, setLanguage] = useLanguage();
- *   
+ *
  *   return (
  *     <select value={language} onChange={(e) => setLanguage(e.target.value as Language)}>
  *       <option value="en">English</option>
@@ -94,7 +103,9 @@ function persistLanguage(language: Language): void {
  */
 export function useLanguage(): [Language, (lang: Language) => void] {
   // Use lazy initialization to detect language only once on mount
-  const [language, setLanguageState] = useState<Language>(() => detectLanguage());
+  const [language, setLanguageState] = useState<Language>(() =>
+    detectLanguage()
+  );
 
   // Persist to localStorage on change
   const setLanguage = useCallback((lang: Language) => {

@@ -35,6 +35,13 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
       className="py-8 sm:py-12 lg:py-16 px-4"
       aria-label="Example queries"
     >
+      {/* Section Title */}
+      <div className="max-w-6xl mx-auto text-center mb-6 sm:mb-8">
+        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white">
+          {t.landing.examplesTitle}
+        </h2>
+      </div>
+
       {/* Category Filter */}
       <div className="max-w-6xl mx-auto mb-6 sm:mb-8">
         <nav

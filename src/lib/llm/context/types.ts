@@ -79,6 +79,7 @@ export interface Intent {
     | 'snow_conditions'
     | 'station_search'
     | 'train_formation'
+    | 'eco_comparison'
     | 'general_info';
   confidence: number;
   extractedEntities: ExtractedEntities;

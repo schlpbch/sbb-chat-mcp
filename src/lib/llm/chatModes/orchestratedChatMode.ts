@@ -68,7 +68,8 @@ export async function sendOrchestratedChatMessage(
     message,
     planResult.formattedResults,
     planResult.planResult.summary,
-    context.language
+    context.language,
+    context.voiceEnabled || false
   );
 
   return {

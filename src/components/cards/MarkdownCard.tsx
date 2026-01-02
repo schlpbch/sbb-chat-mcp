@@ -27,21 +27,23 @@ export default function MarkdownCard({
   messageId,
 }: MarkdownCardProps) {
   const isUser = variant === 'user';
-  
+
   // Initialize TTS for assistant messages only if voice output is enabled
   // Must be called before any early returns to comply with React Hook rules
   const tts = useTextToSpeech({
     language,
     onError: (error) => console.error('TTS error:', error),
   });
-  
+
   // Generate a message ID if not provided
-  const effectiveMessageId = messageId || `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
-  
+  const effectiveMessageId =
+    messageId || `msg-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+
   // Track if this message has been auto-played
   const hasAutoPlayed = useRef(false);
-  
+
   // Auto-play TTS for assistant messages when voice is enabled
+  // This will trigger when voiceOutputEnabled changes from false to true (after streaming)
   useEffect(() => {
     if (!isUser && voiceOutputEnabled && content && !hasAutoPlayed.current) {
       // Small delay to ensure the message is fully rendered
@@ -49,7 +51,7 @@ export default function MarkdownCard({
         tts.play(effectiveMessageId, content);
         hasAutoPlayed.current = true;
       }, 300);
-      
+
       return () => clearTimeout(timer);
     }
   }, [isUser, voiceOutputEnabled, content, effectiveMessageId, tts]);
@@ -297,14 +299,14 @@ export default function MarkdownCard({
         </ReactMarkdown>
 
         {/* Footer with Timestamp and TTS Controls */}
-        <div className={`flex items-center ${
-          isUser ? 'justify-end' : 'justify-between'
-        } mt-2`}>
+        <div
+          className={`flex items-center ${
+            isUser ? 'justify-end' : 'justify-between'
+          } mt-2`}
+        >
           {timestamp && (
             <span
-              className={`text-xs ${
-                isUser ? 'opacity-70' : 'text-gray-500'
-              }`}
+              className={`text-xs ${isUser ? 'opacity-70' : 'text-gray-500'}`}
             >
               {timestamp}
             </span>

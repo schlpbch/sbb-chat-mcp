@@ -85,8 +85,11 @@ describe('PromptLoader', () => {
     it('returns all orchestration prompts', () => {
       const prompts = PromptLoader.getAllPrompts('orchestration');
 
-      expect(prompts).toHaveLength(1);
-      expect(prompts[0].name).toBe('orchestration-response');
+      expect(prompts).toHaveLength(2);
+      expect(prompts.map((p) => p.name)).toContain('orchestration-response');
+      expect(prompts.map((p) => p.name)).toContain(
+        'orchestration-response-voice'
+      );
     });
 
     it('returns empty array for non-existent category', () => {

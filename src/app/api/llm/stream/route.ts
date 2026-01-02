@@ -40,11 +40,18 @@ export async function POST(request: NextRequest) {
 
   try {
     const body = await request.json();
-    const { message, history, context, sessionId } = body as {
+    const {
+      message,
+      history,
+      context,
+      sessionId,
+      useOrchestration = true,
+    } = body as {
       message: string;
       history?: ChatMessage[];
       context?: ChatContext;
       sessionId?: string;
+      useOrchestration?: boolean;
     };
 
     // Validate input
@@ -85,7 +92,8 @@ export async function POST(request: NextRequest) {
             message,
             sessionId || 'default',
             history,
-            context
+            context,
+            useOrchestration
           );
 
           for await (const chunk of generator) {

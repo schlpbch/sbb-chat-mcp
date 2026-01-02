@@ -102,11 +102,24 @@ export function generateSystemPrompt(
    - "Is there powder in Zermatt?" → getSnowConditions({locationName: "Zermatt"})
 
 6. ECO-FRIENDLY COMPARISON → Use getEcoComparison
-   Triggers: "eco friendly", "lowest emissions", "carbon footprint", "sustainability", "compare co2"
-   **Requires a tripId from previously returned findTrips results.**
-   AI should automatically extract the tripId (usually from the first option) to perform the comparison.
-   Example: 
-   - "Is there an eco-friendly option?" → getEcoComparison({tripId: <ID of Option 1>})
+   Triggers: "eco friendly", "lowest emissions", "carbon footprint", "sustainability", "compare co2", "environmental impact", "umwelt einfluss"
+   **CRITICAL: This tool requires a tripId parameter!**
+   
+   **How to get the tripId:**
+   - **If user just searched for trips**: Look in the conversation history for the most recent findTrips tool call result
+   - **Extract the Trip::id field** from the first trip in the results array
+   - **NEVER ask the user for a tripId** - always extract it from previous results
+   
+   **Example workflow:**
+   User: "Find trains from Zurich to Bern"
+   → You call: findTrips({origin: "Zurich", destination: "Bern", responseMode: "detailed"})
+   → Result contains: [{id: "Trip::0::8503000::8507000::2026-01-02::...", ...}, ...]
+   
+   User: "What's the environmental impact?" or "was ist der umwelt einfluss?"
+   → You call: getEcoComparison({tripId: "Trip::0::8503000::8507000::2026-01-02::..."})
+   → DO NOT ask user for Trip-ID!
+   
+   **If no previous trip results exist**, then ask the user which journey they want to compare.
 
 7. TRAIN FORMATION / COMPOSITION → Use getTrainFormation
    Triggers: "train formation", "train composition", "sector", "wagon", "composition of first trip"

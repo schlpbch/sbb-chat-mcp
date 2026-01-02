@@ -36,6 +36,17 @@ export function requiresOrchestration(message: string): boolean {
     'rain',
     'snow',
     'forecast',
+    // Eco/environmental keywords
+    'eco',
+    'environmental',
+    'carbon',
+    'co2',
+    'emissions',
+    'impact',
+    'umwelt',
+    'einfluss',
+    'sustainability',
+    'green',
   ];
 
   const lowerMessage = message.toLowerCase();

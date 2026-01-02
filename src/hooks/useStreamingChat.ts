@@ -8,7 +8,11 @@ const STREAM_TIMEOUT = 30000; // 30 seconds
 const TOOL_TIMEOUT = 10000; // 10 seconds per tool
 const CHUNK_BATCH_DELAY = 50; // Batch chunks every 50ms
 
-export function useStreamingChat(language: Language) {
+export function useStreamingChat(
+  language: Language,
+  textOnlyMode: boolean = false,
+  voiceOutputEnabled: boolean = false
+) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [isStreaming, setIsStreaming] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
@@ -143,7 +147,8 @@ export function useStreamingChat(language: Language) {
               return {
                 ...msg,
                 isStreaming: false,
-                toolCalls: toolCalls && toolCalls.length > 0 ? toolCalls : undefined,
+                toolCalls:
+                  toolCalls && toolCalls.length > 0 ? toolCalls : undefined,
               };
             })
           );
@@ -276,16 +281,21 @@ export function useStreamingChat(language: Language) {
       }, STREAM_TIMEOUT);
 
       try {
+        // Fetch streaming response
         const response = await fetch('/api/llm/stream', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            message: content.trim(),
+            message: content,
             history: history.map((m) => ({
               role: m.role,
               content: m.content,
             })),
-            context: { language },
+            context: {
+              language,
+              voiceEnabled: voiceOutputEnabled, // Pass actual voice state from UI
+            },
+            sessionId: `session-${Date.now()}`,
           }),
           signal: abortController.signal,
         });
@@ -341,7 +351,7 @@ export function useStreamingChat(language: Language) {
         }
       }
     },
-    [isStreaming, language, handleStreamEvent, handleStreamError]
+    [isStreaming, language, textOnlyMode, handleStreamEvent, handleStreamError]
   );
 
   const abortStream = useCallback(() => {

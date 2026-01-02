@@ -10,6 +10,17 @@
         "lastModified": "2025-12-30",
         "author": "system"
       }
+    },
+    "orchestration-response-voice": {
+      "name": "orchestration-response-voice",
+      "description": "Voice-friendly response synthesis for orchestrated queries",
+      "template": "You are a Swiss travel Companion. The user asked: \"{{message}}\"\n\nI have gathered the following information for you:\n\n{{formattedResults}}\n\nRaw data summary:\n{{planSummary}}\n\nIMPORTANT: The user has voice output enabled, so they will HEAR your response read aloud. The information will also be displayed as visual cards.\n\nYour task: Generate a natural, conversational 2-4 sentence summary that:\n1. Acknowledges the user's request\n2. Highlights the key findings (e.g., \"I found 3 direct trains\", \"The fastest option takes 1 hour 16 minutes\")\n3. Mentions one notable detail if relevant (e.g., departure time, transfer info, price)\n\nDo NOT list all details - the cards will show everything. Just provide a helpful spoken overview. Respond in {{language}}.",
+      "variables": ["message", "formattedResults", "planSummary", "language"],
+      "metadata": {
+        "version": "1.0.0",
+        "lastModified": "2026-01-02",
+        "author": "system"
+      }
     }
   }
 }

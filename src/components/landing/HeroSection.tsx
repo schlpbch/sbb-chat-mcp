@@ -71,10 +71,10 @@ export default function HeroSection({
           {t.landing.hero.subtitle}
         </p>
 
-        <div className="flex flex-row gap-2 sm:gap-4 justify-center items-center">
+        <div className="flex flex-row gap-4 sm:gap-6 justify-center items-center">
           <Link
             href="/chat?q=What+can+you+do+for+me+today%3F&autoSend=true"
-            className="inline-block bg-[#A20013] text-white px-4 sm:px-8 py-2.5 sm:py-4 rounded-lg font-semibold text-sm sm:text-lg hover:bg-[#D60000] transition-colors shadow-lg"
+            className="inline-block bg-[#A20013] text-white px-4 sm:px-6 py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base hover:bg-[#D60000] transition-colors shadow-lg"
           >
             {t.landing.hero.cta}
           </Link>

@@ -362,6 +362,83 @@ export const INTENT_KEYWORDS: Record<string, MultilingualKeywords> = {
     },
   },
 
+  eco_comparison: {
+    en: {
+      primary: [
+        'eco',
+        'environmental',
+        'carbon',
+        'co2',
+        'emissions',
+        'sustainability',
+        'green',
+      ],
+      variations: ['ecological', 'environment', 'sustainable', 'emission'],
+      phrases: [
+        'environmental impact',
+        'carbon footprint',
+        'co2 impact',
+        'eco friendly',
+        'eco impact',
+        'carbon emissions',
+        'environmental comparison',
+      ],
+      contextual: ['impact', 'comparison'],
+    },
+    de: {
+      primary: ['öko', 'umwelt', 'co2', 'emissionen', 'nachhaltigkeit', 'grün'],
+      variations: ['ökologisch', 'nachhaltig', 'emission'],
+      phrases: [
+        'umwelt einfluss',
+        'umwelteinfluss',
+        'co2 ausstoss',
+        'co2 impact',
+        'öko vergleich',
+        'umweltvergleich',
+        'co2 emissionen',
+      ],
+      contextual: ['einfluss', 'auswirkung', 'vergleich'],
+    },
+    fr: {
+      primary: [
+        'éco',
+        'environnemental',
+        'carbone',
+        'co2',
+        'émissions',
+        'durabilité',
+      ],
+      variations: ['écologique', 'environnement', 'durable', 'émission'],
+      phrases: [
+        'impact environnemental',
+        'empreinte carbone',
+        'impact co2',
+        'éco responsable',
+        'comparaison écologique',
+      ],
+      contextual: ['impact', 'comparaison'],
+    },
+    it: {
+      primary: [
+        'eco',
+        'ambientale',
+        'carbonio',
+        'co2',
+        'emissioni',
+        'sostenibilità',
+      ],
+      variations: ['ecologico', 'ambiente', 'sostenibile', 'emissione'],
+      phrases: [
+        'impatto ambientale',
+        'impronta di carbonio',
+        'impatto co2',
+        'eco sostenibile',
+        'confronto ecologico',
+      ],
+      contextual: ['impatto', 'confronto'],
+    },
+  },
+
   general_info: {
     en: {
       primary: [

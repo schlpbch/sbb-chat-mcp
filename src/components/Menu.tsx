@@ -199,15 +199,25 @@ export default function Menu({
           <div className="px-6 py-5 border-b border-gray-200 dark:border-gray-800">
             <div className="flex items-center justify-between">
               <div>
-                <h2 id="menu-title" className="text-lg font-bold text-gray-900 dark:text-white">
+                <h2
+                  id="menu-title"
+                  className="text-lg font-bold text-gray-900 dark:text-white"
+                  suppressHydrationWarning
+                >
                   {t.menu.menu}
                 </h2>
-                <p className="text-xs text-gray-500 dark:text-gray-300">{t.menu.navigation}</p>
+                <p
+                  className="text-xs text-gray-500 dark:text-gray-300"
+                  suppressHydrationWarning
+                >
+                  {t.menu.navigation}
+                </p>
               </div>
               <button
                 onClick={onClose}
                 className="p-2 rounded-lg text-gray-500 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label={t.accessibility.closeMenu}
+                suppressHydrationWarning
               >
                 <svg
                   className="w-5 h-5"
@@ -230,6 +240,7 @@ export default function Menu({
           <nav
             className="flex-1 overflow-y-auto p-4"
             aria-label={t.accessibility.mainNavigation}
+            suppressHydrationWarning
           >
             <ul className="space-y-2">
               {menuItems.map((item, index) => (
@@ -288,7 +299,9 @@ export default function Menu({
               >
                 Privacy Policy
               </a>
-              <span className="text-xs text-gray-300 dark:text-gray-400">•</span>
+              <span className="text-xs text-gray-300 dark:text-gray-400">
+                •
+              </span>
               <a
                 href="/terms"
                 className="text-xs text-gray-600 dark:text-gray-300 hover:text-sbb-red dark:hover:text-red-400 transition-colors"

@@ -16,22 +16,41 @@ export async function* sendStreamingChatMessage(
   message: string,
   sessionId: string,
   history: ChatMessage[] = [],
-  context: ChatContext = { language: 'en' }
+  context: ChatContext = { language: 'en' },
+  useOrchestration: boolean = true
 ): AsyncGenerator<any, void, unknown> {
   try {
     const sessionContext = getSessionContext(sessionId, context.language);
 
-    const model = createModel(true);
+    const model = createModel(useOrchestration);
+
+    // Build voice-aware system prompt
+    const voiceInstructions = context.voiceEnabled
+      ? `\n\nVOICE OUTPUT ENABLED:
+- The user has voice output enabled and will HEAR your response read aloud
+- After using tools, provide a natural 2-4 sentence spoken summary
+- Example: "I found 3 direct trains from Zurich to Bern. The fastest option takes 1 hour 16 minutes departing at 09:08."
+- Keep it conversational and highlight key findings
+- The visual cards will show all details, so don't list everything`
+      : `\n\nVISUAL OUTPUT:
+- The information will be displayed as visual cards
+- Keep your text response extremely brief or empty
+- The cards will show all the details`;
 
     const systemPrompt = `You are a helpful Swiss travel Companion.
 
 CONTEXT:
 - User's language: ${context.language}
 - Current time: ${new Date().toISOString()}
+${voiceInstructions}
 
 GUIDELINES:
-- **CRITICAL: You MUST respond in ${getLanguageName(context.language)}. This is non-negotiable.**
-- **If the user writes in ${getLanguageName(context.language)}, respond in ${getLanguageName(context.language)}.**
+- **CRITICAL: You MUST respond in ${getLanguageName(
+      context.language
+    )}. This is non-negotiable.**
+- **If the user writes in ${getLanguageName(
+      context.language
+    )}, respond in ${getLanguageName(context.language)}.**
 - **Never respond in English unless the user's language is English.**
 - Be concise and professional`;
 

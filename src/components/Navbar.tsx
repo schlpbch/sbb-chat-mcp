@@ -77,6 +77,7 @@ export default function Navbar({
                 onClick={onMenuToggle}
                 className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label={t.navbar.toggleMenu}
+                suppressHydrationWarning
               >
                 <svg
                   className="w-6 h-6"
@@ -99,11 +100,14 @@ export default function Navbar({
               href="/"
               className="flex items-center space-x-3"
               aria-label={t.navbar.appTitle}
+              suppressHydrationWarning
             >
-                <h1 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight">
-                  {t.navbar.travelCompanion}
-                </h1>
-
+              <h1
+                className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white leading-tight"
+                suppressHydrationWarning
+              >
+                {t.navbar.travelCompanion}
+              </h1>
             </Link>
           </div>
 
@@ -180,6 +184,7 @@ export default function Navbar({
                 className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label={t.help.needHelp}
                 title={t.help.helpTooltip}
+                suppressHydrationWarning
               >
                 <svg
                   className="w-5 h-5"
@@ -204,6 +209,7 @@ export default function Navbar({
                 className="p-2 rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
                 aria-label={t.feedback.sendFeedback}
                 title={t.feedback.sendFeedback}
+                suppressHydrationWarning
               >
                 <svg
                   className="w-5 h-5"
@@ -234,7 +240,10 @@ export default function Navbar({
                   </option>
                 ))}
               </select>
-              <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-lg">
+              <div
+                className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 text-lg"
+                suppressHydrationWarning
+              >
                 {languages.find((l) => l.code === language)?.flag}
               </div>
               <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">

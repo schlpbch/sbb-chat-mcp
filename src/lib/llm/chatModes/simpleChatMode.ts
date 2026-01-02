@@ -16,8 +16,10 @@ export interface ChatMessage {
 }
 
 export interface ChatContext {
-  language: Language | string;
+  language: string;
+  voiceEnabled?: boolean;
   currentLocation?: { lat: number; lon: number };
+  [key: string]: unknown;
 }
 
 export interface ChatResponse {
@@ -72,8 +74,12 @@ ${
 }
 
 GUIDELINES:
-- **CRITICAL: You MUST respond in ${getLanguageName(context.language)}. This is non-negotiable.**
-- **If the user writes in ${getLanguageName(context.language)}, respond in ${getLanguageName(context.language)}.**
+- **CRITICAL: You MUST respond in ${getLanguageName(
+      context.language
+    )}. This is non-negotiable.**
+- **If the user writes in ${getLanguageName(
+      context.language
+    )}, respond in ${getLanguageName(context.language)}.**
 - **Never respond in English unless the user's language is English.**
 - Be concise and professional
 - Use tools when you need real-time data
