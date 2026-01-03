@@ -148,10 +148,10 @@ function ChatContent() {
   return (
     <div className="flex flex-col h-screen bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 duration-300">
       {/* Skip Links for Accessibility */}
-      <a href="#main-content" className="skip-link">
+      <a href="#main-content" className="skip-link" suppressHydrationWarning>
         {t.accessibility.skipToMain}
       </a>
-      <a href="#chat-input" className="skip-link" style={{ left: '200px' }}>
+      <a href="#chat-input" className="skip-link" style={{ left: '200px' }} suppressHydrationWarning>
         {t.accessibility.skipToChat}
       </a>
 
