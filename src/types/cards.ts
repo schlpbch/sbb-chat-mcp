@@ -140,7 +140,7 @@ export interface WeatherCardProps {
 
 export interface EcoData {
   route?: string;
-  trainCO2?: number;
+  trainCO2: number;
   carCO2?: number;
   planeCO2?: number;
   savings?: number;

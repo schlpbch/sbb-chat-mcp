@@ -11,6 +11,8 @@ import {
   Hotel,
   Train,
 } from 'lucide-react';
+import ShareMenu from '@/components/ui/ShareMenu';
+import type { ShareableItinerary } from '@/lib/shareUtils';
 
 interface ItineraryCardProps {
   data: {
@@ -52,7 +54,16 @@ export default function ItineraryCard({ data, language }: ItineraryCardProps) {
     if (tLower.includes('hotel') || tLower.includes('accommodation'))
       return '🏨';
     if (tLower.includes('transport')) return '🚂';
+    if (tLower.includes('sightseeing') || tLower.includes('attraction'))
+      return '📸';
     return '📍';
+  };
+
+  const shareableItinerary: ShareableItinerary = {
+    type: 'itinerary',
+    destination: destination || t.itinerary.yourTrip,
+    duration,
+    activityCount: activities.length,
   };
 
   return (
@@ -81,11 +92,14 @@ export default function ItineraryCard({ data, language }: ItineraryCardProps) {
         subtitle={destination || t.itinerary.yourTrip}
         color="purple"
         rightContent={
-          duration && (
-            <div className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-[10px] font-bold uppercase tracking-wider">
-              {duration}
-            </div>
-          )
+          <div className="flex items-center space-x-2">
+            <ShareMenu content={shareableItinerary} />
+            {duration && (
+              <div className="px-2 py-0.5 bg-white/20 backdrop-blur-sm rounded text-[10px] font-bold uppercase tracking-wider">
+                {duration}
+              </div>
+            )}
+          </div>
         }
       />
 
@@ -160,7 +174,9 @@ export default function ItineraryCard({ data, language }: ItineraryCardProps) {
               <div key={idx} className="flex items-start space-x-3">
                 <div className="flex flex-col items-center shrink-0">
                   <div className="w-10 h-10 rounded-xl bg-gray-50 dark:bg-gray-700 border border-gray-100 dark:border-gray-600 flex items-center justify-center shadow-sm">
-                    <span className="text-xl">{getActivityIcon(activity.type)}</span>
+                    <span className="text-xl">
+                      {getActivityIcon(activity.type)}
+                    </span>
                   </div>
                   {idx < activities.length - 1 && (
                     <div className="w-0.5 h-full min-h-6 bg-gray-100 dark:bg-gray-700 mt-2"></div>

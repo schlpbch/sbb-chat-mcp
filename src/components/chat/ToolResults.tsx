@@ -33,7 +33,7 @@ export default function ToolResults({ toolCalls, language }: ToolResultsProps) {
   );
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full max-w-3xl">
       {toolCalls.map((toolCall, idx) => {
         const { toolName, result } = toolCall;
 

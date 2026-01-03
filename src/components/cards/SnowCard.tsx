@@ -5,6 +5,8 @@ import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
 import { Snowflake, CloudSnow, Calendar, Mountain } from 'lucide-react';
+import ShareMenu from '@/components/ui/ShareMenu';
+import type { ShareableSnow } from '@/lib/shareUtils';
 
 interface SnowCardProps {
   data: any;
@@ -63,6 +65,14 @@ function SnowCard({ data, language }: SnowCardProps) {
     hourlyKeys: hourly ? Object.keys(hourly) : [],
   });
 
+  const shareableSnow: ShareableSnow = {
+    type: 'snow',
+    location,
+    snowDepth,
+    temperature:
+      temperature !== undefined ? Math.round(temperature) : undefined,
+  };
+
   return (
     <article
       className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-blue-400 dark:hover:border-blue-400"
@@ -90,11 +100,14 @@ function SnowCard({ data, language }: SnowCardProps) {
         subtitle={location}
         color="blue"
         rightContent={
-          <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
-            <Snowflake
-              className="w-6 h-6 text-blue-600 dark:text-blue-400"
-              strokeWidth={2}
-            />
+          <div className="flex items-center space-x-2">
+            <ShareMenu content={shareableSnow} />
+            <div className="w-10 h-10 rounded-xl bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center">
+              <Snowflake
+                className="w-6 h-6 text-blue-600 dark:text-blue-400"
+                strokeWidth={2}
+              />
+            </div>
           </div>
         }
       />

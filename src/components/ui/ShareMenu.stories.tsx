@@ -5,6 +5,7 @@ import type { ShareableTrip } from '@/lib/shareUtils';
 
 // Sample trip data
 const sampleTrip: ShareableTrip = {
+  type: 'trip',
   from: 'Zürich HB',
   to: 'Bern',
   departure: '2026-01-01T14:00:00+01:00',
@@ -13,6 +14,7 @@ const sampleTrip: ShareableTrip = {
 };
 
 const internationalTrip: ShareableTrip = {
+  type: 'trip',
   from: 'Zürich HB',
   to: 'Milan Centrale',
   departure: '2026-01-01T09:00:00+01:00',
@@ -21,6 +23,7 @@ const internationalTrip: ShareableTrip = {
 };
 
 const complexTrip: ShareableTrip = {
+  type: 'trip',
   from: 'St. Gallen',
   to: 'Lugano',
   departure: '2026-01-01T08:30:00+01:00',
@@ -58,25 +61,25 @@ type Story = StoryObj<typeof ShareMenu>;
 
 export const DirectTrain: Story = {
   args: {
-    trip: sampleTrip,
+    content: sampleTrip,
   },
 };
 
 export const InternationalTrain: Story = {
   args: {
-    trip: internationalTrip,
+    content: internationalTrip,
   },
 };
 
 export const WithTransfers: Story = {
   args: {
-    trip: complexTrip,
+    content: complexTrip,
   },
 };
 
 export const InDarkMode: Story = {
   args: {
-    trip: sampleTrip,
+    content: sampleTrip,
   },
   parameters: {
     backgrounds: { default: 'dark' },
@@ -110,7 +113,7 @@ export const Playground: Story = {
           </ul>
 
           <div className="flex items-center justify-center p-6 bg-green-600 rounded-lg">
-            <ShareMenu trip={sampleTrip} />
+            <ShareMenu content={sampleTrip} />
           </div>
         </div>
 

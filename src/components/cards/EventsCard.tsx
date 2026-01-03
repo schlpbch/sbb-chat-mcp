@@ -4,6 +4,8 @@ import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
 import { Calendar, Clock, MapPin, Users, ExternalLink } from 'lucide-react';
+import ShareMenu from '@/components/ui/ShareMenu';
+import type { ShareableEvents } from '@/lib/shareUtils';
 
 interface Event {
   id?: string;
@@ -29,6 +31,12 @@ interface EventsCardProps {
 export default function EventsCard({ data, language }: EventsCardProps) {
   const t = translations[language];
   const { location, events = [] } = data;
+
+  const shareableEvents: ShareableEvents = {
+    type: 'events',
+    location: location || t.events?.upcoming || 'Location',
+    count: events.length,
+  };
 
   if (events.length === 0) {
     return (
@@ -77,6 +85,7 @@ export default function EventsCard({ data, language }: EventsCardProps) {
         title={t.events?.title || 'Events'}
         subtitle={location || t.events?.upcoming || 'Upcoming Events'}
         color="purple"
+        rightContent={<ShareMenu content={shareableEvents} />}
       />
 
       <div className="p-4 space-y-3">
@@ -170,7 +179,10 @@ export default function EventsCard({ data, language }: EventsCardProps) {
       {events.length > 0 && (
         <div className="px-4 py-2 border-t border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-900">
           <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-            {events.length} {events.length === 1 ? t.events?.event || 'event' : t.events?.events || 'events'}
+            {events.length}{' '}
+            {events.length === 1
+              ? t.events?.event || 'event'
+              : t.events?.events || 'events'}
           </p>
         </div>
       )}

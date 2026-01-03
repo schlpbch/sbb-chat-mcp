@@ -6,14 +6,14 @@ import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
 
-import VoiceButton from '@/components/ui/VoiceButton';
+import VoiceButton, { VoiceButtonRef } from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';
 import { translations } from '@/lib/i18n';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useFeedback } from '@/hooks/useFeedback';
 import FeedbackModal from '@/components/feedback/FeedbackModal';
 import { useLanguage } from '@/hooks/useLanguage';
-import { useRef } from 'react';
+import { useRef, useCallback } from 'react';
 
 // Lazy load heavy components
 const MessageList = dynamic(() => import('@/components/chat/MessageList'), {
@@ -51,6 +51,51 @@ function ChatContent() {
 
   // Voice output state for TTS
   const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
+
+  // Ref to clear voice transcript when manually sending
+  const voiceButtonRef = useRef<VoiceButtonRef>(null);
+
+  // Flag to prevent voice transcript from updating input after send
+  const allowVoiceInputRef = useRef(true);
+
+  // Wrapper for setInput that respects the allowVoiceInput flag
+  const handleTranscriptChange = useCallback((text: string) => {
+    if (allowVoiceInputRef.current) {
+      setInput(text);
+    } else {
+      console.log('[Chat] Blocked voice input, allowVoiceInput is false');
+    }
+  }, [setInput]);
+
+  // Wrapper to clear voice transcript when sending manually
+  const handleSendWithClear = useCallback(() => {
+    console.log('[Chat] handleSendWithClear called, input:', input);
+    // Disable voice input updates
+    allowVoiceInputRef.current = false;
+    // Send message
+    handleSendMessage();
+    console.log('[Chat] Calling clearTranscript');
+    // Clear voice transcript
+    voiceButtonRef.current?.clearTranscript();
+    // Re-enable after a short delay (after React has re-rendered)
+    setTimeout(() => {
+      allowVoiceInputRef.current = true;
+    }, 100);
+  }, [handleSendMessage, input]);
+
+  // Wrapper for key press that also clears voice transcript
+  const handleKeyPressWithClear = useCallback((e: React.KeyboardEvent) => {
+    // If Enter was pressed (and not Shift+Enter), disable voice input and clear
+    if (e.key === 'Enter' && !e.shiftKey) {
+      allowVoiceInputRef.current = false;
+      voiceButtonRef.current?.clearTranscript();
+      setTimeout(() => {
+        allowVoiceInputRef.current = true;
+      }, 100);
+    }
+    // Handle the key press (which may send the message)
+    handleKeyPress(e);
+  }, [handleKeyPress]);
 
   const {
     isOpen: isOnboardingOpen,
@@ -280,8 +325,9 @@ function ChatContent() {
 
               <div className="flex items-start gap-2 sm:gap-3">
                 <VoiceButton
+                  ref={voiceButtonRef}
                   language={language}
-                  onTranscript={setInput}
+                  onTranscript={handleTranscriptChange}
                   onAutoSend={handleSendMessage}
                 />
                 <div className="flex-1 min-w-0">
@@ -293,7 +339,7 @@ function ChatContent() {
                     ref={inputRef}
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
-                    onKeyDown={handleKeyPress}
+                    onKeyDown={handleKeyPressWithClear}
                     placeholder={t.chat.inputPlaceholder}
                     disabled={isLoading}
                     rows={1}
@@ -319,7 +365,7 @@ function ChatContent() {
                 </div>
                 <button
                   type="submit"
-                  onClick={() => handleSendMessage()}
+                  onClick={handleSendWithClear}
                   disabled={isLoading || !input.trim()}
                   aria-label={
                     isLoading

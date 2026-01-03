@@ -113,6 +113,7 @@ export default function TripCard({ data, language }: TripCardProps) {
 
   // Prepare shareable trip data
   const shareableTrip: ShareableTrip = {
+    type: 'trip',
     from: origin.name,
     to: destination.name,
     departure: origin.time ? formatTime(origin.time, language) : undefined,
@@ -241,7 +242,7 @@ export default function TripCard({ data, language }: TripCardProps) {
                 />
               </svg>
             </button>
-            <ShareMenu trip={shareableTrip} />
+            <ShareMenu content={shareableTrip} />
           </div>
         }
       />
@@ -508,7 +509,12 @@ export default function TripCard({ data, language }: TripCardProps) {
                     <div className="w-6 h-6 rounded bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
                       {(() => {
                         const IconComponent = getTripTransportIcon(leg);
-                        return <IconComponent className="w-4 h-4 text-gray-700 dark:text-gray-300" strokeWidth={2} />;
+                        return (
+                          <IconComponent
+                            className="w-4 h-4 text-gray-700 dark:text-gray-300"
+                            strokeWidth={2}
+                          />
+                        );
                       })()}
                     </div>
                     {lineName && (

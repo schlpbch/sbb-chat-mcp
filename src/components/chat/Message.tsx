@@ -28,7 +28,7 @@ export default function Message({
     <div
       className={`flex items-start ${isUser ? 'justify-end' : 'justify-start'}`}
     >
-      <div className="max-w-[85%] sm:max-w-[80%] w-full">
+      <div className="max-w-[85%] sm:max-w-[80%] md:max-w-3xl w-full">
         {isUser ? (
           <MarkdownCard
             content={message.content}

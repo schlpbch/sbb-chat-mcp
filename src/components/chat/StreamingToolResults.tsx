@@ -128,7 +128,7 @@ export default function StreamingToolResults({
   );
 
   return (
-    <div className="space-y-3">
+    <div className="space-y-3 w-full max-w-3xl">
       {streamingToolCalls.map((toolCall, idx) => {
         const { toolName, status, result, error } = toolCall;
 

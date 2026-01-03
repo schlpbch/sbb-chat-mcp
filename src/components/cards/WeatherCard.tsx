@@ -1,8 +1,8 @@
-'use client';
-
 import { memo } from 'react';
 import type { WeatherCardProps } from '@/types/cards';
 import { translations } from '@/lib/i18n';
+import ShareMenu from '@/components/ui/ShareMenu';
+import type { ShareableWeather } from '@/lib/shareUtils';
 import CardHeader from './CardHeader';
 import { languageToLocale } from '@/lib/formatters';
 import { getWeatherIcon, utilityIcons } from '@/lib/iconMap';
@@ -61,6 +61,14 @@ function WeatherCard({ data, language }: WeatherCardProps) {
   const PressureIcon = utilityIcons.pressure;
   const UVIcon = utilityIcons.uvIndex;
 
+  const shareableWeather: ShareableWeather = {
+    type: 'weather',
+    location,
+    temperature:
+      temperature !== undefined ? `${Math.round(temperature)}°` : undefined,
+    condition,
+  };
+
   return (
     <article
       className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-yellow-500 dark:hover:border-yellow-400"
@@ -88,11 +96,14 @@ function WeatherCard({ data, language }: WeatherCardProps) {
         subtitle={location}
         color="yellow"
         rightContent={
-          <div className="w-10 h-10 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
-            <WeatherIcon
-              className="w-6 h-6 text-yellow-600 dark:text-yellow-400"
-              strokeWidth={2}
-            />
+          <div className="flex items-center space-x-2">
+            <ShareMenu content={shareableWeather} />
+            <div className="w-10 h-10 rounded-xl bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center">
+              <WeatherIcon
+                className="w-6 h-6 text-yellow-600 dark:text-yellow-400"
+                strokeWidth={2}
+              />
+            </div>
           </div>
         }
       />

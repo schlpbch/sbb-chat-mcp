@@ -30,7 +30,7 @@ export default function StreamingChatMessage({
   if (isUser) {
     return (
       <div className="flex items-start justify-end animate-sbb-slide-up">
-        <div className="max-w-[85%] rounded-[24px] px-5 py-3.5 shadow-xl bg-linear-to-br from-sbb-red to-sbb-red-dark text-white rounded-tr-none border border-white/20 select-text">
+        <div className="max-w-[85%] sm:max-w-[80%] md:max-w-3xl w-full rounded-[24px] px-5 py-3.5 shadow-xl bg-linear-to-br from-sbb-red to-sbb-red-dark text-white rounded-tr-none border border-white/20 select-text">
           <div className="flex items-center gap-2 mb-1.5 opacity-60">
             <span className="text-[10px] font-black uppercase tracking-widest">
               You
@@ -60,7 +60,7 @@ export default function StreamingChatMessage({
 
   return (
     <div className="flex items-start justify-start animate-sbb-slide-up">
-      <div className="max-w-[85%] space-y-3">
+      <div className="max-w-[85%] sm:max-w-[80%] md:max-w-3xl w-full space-y-3">
         {/* Error State */}
         {hasError && (
           <div className="bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg p-4">

@@ -25,7 +25,13 @@ interface AttractionCardProps {
   language: Language;
 }
 
-export default function AttractionCard({ data, language }: AttractionCardProps) {
+import ShareMenu from '@/components/ui/ShareMenu';
+import type { ShareableAttraction } from '@/lib/shareUtils';
+
+export default function AttractionCard({
+  data,
+  language,
+}: AttractionCardProps) {
   const t = translations[language];
   const {
     name,
@@ -62,20 +68,43 @@ export default function AttractionCard({ data, language }: AttractionCardProps) 
   const getCategoryIcon = (cat?: string) => {
     const categoryLower = cat?.toLowerCase() || '';
     if (categoryLower.includes('museum')) return '🏛️';
-    if (categoryLower.includes('restaurant') || categoryLower.includes('food')) return '🍽️';
-    if (categoryLower.includes('hotel') || categoryLower.includes('lodging')) return '🏨';
-    if (categoryLower.includes('park') || categoryLower.includes('garden')) return '🌳';
-    if (categoryLower.includes('mountain') || categoryLower.includes('peak')) return '⛰️';
-    if (categoryLower.includes('lake') || categoryLower.includes('water')) return '🏞️';
-    if (categoryLower.includes('church') || categoryLower.includes('cathedral')) return '⛪';
-    if (categoryLower.includes('castle') || categoryLower.includes('fortress')) return '🏰';
-    if (categoryLower.includes('shopping') || categoryLower.includes('mall')) return '🛍️';
-    if (categoryLower.includes('station') || categoryLower.includes('transport')) return '🚉';
+    if (categoryLower.includes('restaurant') || categoryLower.includes('food'))
+      return '🍽️';
+    if (categoryLower.includes('hotel') || categoryLower.includes('lodging'))
+      return '🏨';
+    if (categoryLower.includes('park') || categoryLower.includes('garden'))
+      return '🌳';
+    if (categoryLower.includes('mountain') || categoryLower.includes('peak'))
+      return '⛰️';
+    if (categoryLower.includes('lake') || categoryLower.includes('water'))
+      return '🏞️';
+    if (categoryLower.includes('church') || categoryLower.includes('cathedral'))
+      return '⛪';
+    if (categoryLower.includes('castle') || categoryLower.includes('fortress'))
+      return '🏰';
+    if (categoryLower.includes('shopping') || categoryLower.includes('mall'))
+      return '🛍️';
+    if (
+      categoryLower.includes('station') ||
+      categoryLower.includes('transport')
+    )
+      return '🚉';
     return '📍';
   };
 
   const getCountryFlag = (code?: string) => {
     return code || 'INT';
+  };
+
+  const shareableAttraction: ShareableAttraction = {
+    type: 'attraction',
+    name: name || t.attraction?.title || 'Attraction',
+    category: category || type,
+    location:
+      address ||
+      (location?.latitude && location?.longitude
+        ? `${location.latitude}, ${location.longitude}`
+        : undefined),
   };
 
   return (
@@ -84,10 +113,18 @@ export default function AttractionCard({ data, language }: AttractionCardProps) 
       data-testid="attraction-card"
     >
       <CardHeader
-        icon={<span className="text-xl">{getCategoryIcon(category || type)}</span>}
+        icon={
+          <span className="text-xl">{getCategoryIcon(category || type)}</span>
+        }
         title={name || t.attraction?.title || 'Attraction'}
-        subtitle={category || type || t.attraction?.pointOfInterest || 'Point of Interest'}
+        subtitle={
+          category ||
+          type ||
+          t.attraction?.pointOfInterest ||
+          'Point of Interest'
+        }
         color="green"
+        rightContent={<ShareMenu content={shareableAttraction} />}
       />
 
       <div className="p-4 space-y-3">
