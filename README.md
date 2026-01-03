@@ -26,8 +26,18 @@ Model Context Protocol (MCP).
 - Context-aware conversation with preference tracking
 - Ask questions about Swiss attractions, ski resorts, and travel planning
 - Get personalized recommendations based on your preferences
-- Multi-language support (English, German, French, Italian)
+- **Automatic language detection** - Responds in the language of your message
+- Multi-language support (English, German, French, Italian, Chinese, Hindi)
 - 25-question evaluation framework for quality assurance
+
+### REST API (New!)
+
+- **Simple GET endpoint** for easy integration into any app or website
+- Query: `GET /api/v1/query?q=your_query&format=text&lang=en`
+- Supports plain text and markdown formats
+- 6 language support with automatic or forced language selection
+- Perfect for embedding Swiss travel intelligence in your applications
+- **[Full API Documentation](./docs/api/README.md)**
 
 ### MCP Integration
 
@@ -83,6 +93,11 @@ instructions.**
   features guide
 - **[LLM_ROADMAP_VISUAL.md](./docs/LLM_ROADMAP_VISUAL.md)** - Visual roadmap
 
+### REST API
+
+- **[API Documentation](./docs/api/README.md)** - Complete API guide with examples
+- **[OpenAPI Spec](./docs/api/openapi.yaml)** - OpenAPI 3.0 specification
+
 ### Architecture & Testing
 
 - **[ARCHITECTURE.md](./ARCHITECTURE.md)** - Detailed architecture documentation
@@ -132,8 +147,8 @@ sbb-chat-mcp/
 - **Framework**: Next.js 16 (App Router)
 - **UI**: React 19, Tailwind CSS 4
 - **Map**: Leaflet, React-Leaflet
-- **AI**: Google Gemini 1.5 Flash
-- **Testing**: Playwright
+- **AI**: Google Gemini 2.0 Flash
+- **Testing**: Playwright, Vitest
 - **Language**: TypeScript
 
 ## Available Scripts
@@ -177,6 +192,7 @@ Best of both worlds - easy DNS management with powerful Cloud Run deployment:
 - **Checklist**: [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)
 
 **Why this approach?**
+
 - ✅ Easy DNS management via Netlify dashboard
 - ✅ Powerful deployment on Google Cloud Run
 - ✅ Free DNS + existing Cloud Run costs

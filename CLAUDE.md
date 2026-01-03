@@ -4,8 +4,9 @@
 
 **sbb-travel-companion** is a Next.js 16 application that provides a Swiss
 travel Companion with MCP (Model Context Protocol) integration. It features an
-AI-powered chat interface, interactive map with tourist attractions, and tools
-for testing MCP servers.
+AI-powered chat interface with automatic language detection, a REST API for easy
+integration, an interactive map with tourist attractions, and comprehensive
+testing tools for MCP servers.
 
 ## Tech Stack
 
@@ -25,6 +26,7 @@ src/
 ├── app/                    # Next.js App Router pages
 │   ├── api/               # API routes
 │   │   ├── llm/chat/      # Gemini LLM chat endpoint
+│   │   ├── v1/query/      # REST API query endpoint (NEW)
 │   │   ├── mcp-proxy/     # MCP server proxy routes
 │   │   └── mcp/           # Local data routes (sights, resorts)
 │   ├── chat/              # AI Travel Companion page
