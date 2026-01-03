@@ -131,21 +131,13 @@ See [LLM_ORCHESTRATION_STATUS.md](file:///home/schlpbch/code/sbb-chat-mcp/docs/L
 
 ### Immediate Focus
 
-1. **Complete Card Suite**
-   - Implement `AttractionCard.tsx` for tourist sights
-   - Implement `EventsCard.tsx` for destination events
-   - Implement `FormationCard.tsx` for train composition
-   - Implement `TransferCard.tsx` for transfer optimization
-
-2. **Enhanced Interactivity**
+1. **Enhanced Interactivity**
    - Extend map control from chat (filter updates, route visualization)
    - Add "Ask AI about this" buttons to map markers
    - Implement trip route visualization on map
 
-3. **UX Enhancements**
+2. **UX Enhancements**
    - Chat persistence with localStorage
-   - Streaming responses for better UX
-   - Voice input support
    - Export itineraries (PDF/Calendar)
 
 ### Medium-Term Goals
