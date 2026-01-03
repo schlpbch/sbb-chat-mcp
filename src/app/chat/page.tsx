@@ -35,6 +35,9 @@ function ChatContent() {
   const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Voice output state for TTS
+  const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
+
   // Use non-streaming chat hook
   const {
     messages,
@@ -47,10 +50,7 @@ function ChatContent() {
     inputRef,
     handleSendMessage,
     handleKeyPress,
-  } = useChat(language);
-
-  // Voice output state for TTS
-  const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
+  } = useChat(language, voiceOutputEnabled);
 
   // Ref to clear voice transcript when manually sending
   const voiceButtonRef = useRef<VoiceButtonRef>(null);

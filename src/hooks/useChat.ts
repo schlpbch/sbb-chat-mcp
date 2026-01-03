@@ -23,7 +23,7 @@ export interface Message {
   };
 }
 
-export function useChat(language: Language) {
+export function useChat(language: Language, voiceEnabled: boolean = false) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -134,7 +134,7 @@ export function useChat(language: Language) {
         message: userMessage.content,
         intent,
         history: messages.map((m) => ({ role: m.role, content: m.content })),
-        context: { language },
+        context: { language, voiceEnabled },
         sessionId,
         useOrchestration: !textOnlyMode,
       };
