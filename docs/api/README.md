@@ -21,9 +21,9 @@ GET /query
 
 | Parameter | Type | Required | Default | Description |
 |-----------|------|----------|---------|-------------|
-| `q` | string | Yes | - | Natural language query |
+| `q` | string | Yes | - | Natural language query (can be in any language) |
 | `format` | string | No | `text` | Response format: `text` or `markdown` |
-| `lang` | string | No | `en` | Language: `en`, `de`, `fr`, `it`, `zh`, `hi` |
+| `lang` | string | No | `en` | **Output language**: `en`, `de`, `fr`, `it`, `zh`, `hi` - Forces response in this language |
 
 ## Examples
 
