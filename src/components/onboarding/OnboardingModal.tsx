@@ -340,7 +340,7 @@ export default function OnboardingModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50 backdrop-blur-md animate-fade-in">
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/30 backdrop-blur-md animate-fade-in">
       <div className="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-hidden animate-slide-up border border-gray-100 dark:border-gray-700">
         {/* Header */}
         <div className="bg-white dark:bg-gray-800 border-b border-gray-100 dark:border-gray-700 p-6 sm:p-8">
