@@ -1,0 +1,202 @@
+openapi: 3.0.0
+info:
+  title: Swiss Travel Companion API
+  description: REST API for querying Swiss travel information powered by AI
+  version: 1.0.0
+  contact:
+    name: Swiss Travel Companion
+    url: https://your-domain.com
+
+servers:
+  - url: http://localhost:3000/api/v1
+    description: Development server
+  - url: https://your-domain.com/api/v1
+    description: Production server
+
+paths:
+  /query:
+    get:
+      summary: Query Swiss travel information
+      description: |
+        Send a natural language query about Swiss travel and receive an AI-powered response.
+        Supports multiple languages and output formats.
+      operationId: queryTravel
+      tags:
+        - Query
+      parameters:
+        - name: q
+          in: query
+          required: true
+          description: The natural language query
+          schema:
+            type: string
+          examples:
+            trains:
+              value: 'trains from Zurich to Bern'
+              summary: Train query
+            weather:
+              value: 'weather in Geneva'
+              summary: Weather query
+            multilingual:
+              value: '从苏黎世到伯尔尼的火车'
+              summary: Chinese query
+
+        - name: format
+          in: query
+          required: false
+          description: Response format
+          schema:
+            type: string
+            enum: [text, markdown]
+            default: text
+          examples:
+            text:
+              value: 'text'
+              summary: Plain text format
+            markdown:
+              value: 'markdown'
+              summary: Markdown format
+
+        - name: lang
+          in: query
+          required: false
+          description: Response language
+          schema:
+            type: string
+            enum: [en, de, fr, it, zh, hi]
+            default: en
+          examples:
+            english:
+              value: 'en'
+              summary: English
+            german:
+              value: 'de'
+              summary: German
+            chinese:
+              value: 'zh'
+              summary: Chinese
+
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/SuccessResponse'
+              examples:
+                textResponse:
+                  summary: Plain text response
+                  value:
+                    success: true
+                    query: 'trains from Zurich to Bern'
+                    response:
+                      'I found 3 direct trains from Zurich HB to Bern. The
+                      fastest option takes 56 minutes.'
+                    format: 'text'
+                    language: 'en'
+                    timestamp: '2026-01-04T00:25:40Z'
+                    processingTime: '1234ms'
+
+                markdownResponse:
+                  summary: Markdown response
+                  value:
+                    success: true
+                    query: 'weather in Geneva'
+                    response:
+                      "**Weather in Geneva**\n\nCurrent: 5°C, Partly
+                      cloudy\nForecast: Light rain expected"
+                    format: 'markdown'
+                    language: 'en'
+                    timestamp: '2026-01-04T00:25:40Z'
+                    processingTime: '987ms'
+
+        '400':
+          description: Bad request - Invalid parameters
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                missingQuery:
+                  summary: Missing query parameter
+                  value:
+                    success: false
+                    error: "Query parameter 'q' is required"
+                    timestamp: '2026-01-04T00:25:40Z'
+
+                invalidFormat:
+                  summary: Invalid format
+                  value:
+                    success: false
+                    error:
+                      "Invalid format 'json'. Supported formats: text, markdown"
+                    timestamp: '2026-01-04T00:25:40Z'
+
+        '500':
+          description: Internal server error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
+components:
+  schemas:
+    SuccessResponse:
+      type: object
+      required:
+        - success
+        - query
+        - response
+        - format
+        - language
+        - timestamp
+      properties:
+        success:
+          type: boolean
+          example: true
+        query:
+          type: string
+          description: The original query
+          example: 'trains from Zurich to Bern'
+        response:
+          type: string
+          description: The AI-generated response
+          example: 'I found 3 direct trains...'
+        format:
+          type: string
+          enum: [text, markdown]
+          description: The response format
+          example: 'text'
+        language:
+          type: string
+          enum: [en, de, fr, it, zh, hi]
+          description: The response language
+          example: 'en'
+        timestamp:
+          type: string
+          format: date-time
+          description: ISO 8601 timestamp
+          example: '2026-01-04T00:25:40Z'
+        processingTime:
+          type: string
+          description: Processing duration
+          example: '1234ms'
+
+    ErrorResponse:
+      type: object
+      required:
+        - success
+        - error
+        - timestamp
+      properties:
+        success:
+          type: boolean
+          example: false
+        error:
+          type: string
+          description: Error message
+          example: "Query parameter 'q' is required"
+        timestamp:
+          type: string
+          format: date-time
+          example: '2026-01-04T00:25:40Z'
