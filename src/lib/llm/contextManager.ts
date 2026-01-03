@@ -22,7 +22,8 @@ export {
 } from './context/cacheManager';
 
 // Re-export intent extraction
-export { extractIntent } from './context/intentExtractor';
+// Re-export intent extraction - REMOVED to prevent server-only leakage
+// export { extractIntent } from './context/intentExtractor';
 
 // Re-export reference resolution
 export { resolveReference } from './context/referenceResolver';

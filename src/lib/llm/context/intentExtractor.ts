@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * Intent Extractor - Extracts user intent from messages
  *

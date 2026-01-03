@@ -1,0 +1,62 @@
+# Netlify Configuration for Next.js 16
+# Documentation: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Build command for Next.js
+  command = "pnpm run build"
+
+  # Output directory for Next.js standalone build
+  publish = ".next"
+
+  # Functions directory (for serverless functions)
+  functions = ".netlify/functions"
+
+[build.environment]
+  # Node version
+  NODE_VERSION = "24"
+
+  # Enable pnpm
+  NPM_FLAGS = "--version"
+  PNPM_FLAGS = "--shamefully-hoist"
+
+# Production environment variables
+# Add these in Netlify Dashboard > Site settings > Environment variables:
+# - GOOGLE_GEMINI_API_KEY
+# - MCP_SERVER_URL_STAGING
+# - NEXT_PUBLIC_MCP_ENV=staging
+
+# Redirect rules
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/images/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Plugin configuration for Next.js
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

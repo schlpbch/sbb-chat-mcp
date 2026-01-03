@@ -1,8 +1,12 @@
-import type { NextConfig } from "next";
+import type { NextConfig } from 'next';
 
 const nextConfig: NextConfig = {
   output: 'standalone', // Enable for Docker/Cloud Run deployment
   /* config options here */
 };
 
-export default nextConfig;
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+});
+
+export default withBundleAnalyzer(nextConfig);

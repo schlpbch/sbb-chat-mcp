@@ -156,7 +156,46 @@ pnpm test:headed      # Run tests in headed mode
 
 ## Deployment
 
-### Cloud Infrastructure (GCP Cloud Run)
+### Live Environments
+
+- **Staging**: [stage.swisstravelassistant.ch](https://stage.swisstravelassistant.ch)
+- **Production**: (Coming soon)
+
+### Deployment Options
+
+#### Option 1: Netlify DNS + Cloud Run (Recommended)
+
+Best of both worlds - easy DNS management with powerful Cloud Run deployment:
+
+```bash
+# Run the automated setup
+./scripts/setup-netlify-dns.sh
+```
+
+- **Quick Start**: [NETLIFY_DNS_QUICKSTART.md](NETLIFY_DNS_QUICKSTART.md)
+- **Full Guide**: [docs/NETLIFY_DNS_CLOUD_RUN.md](docs/NETLIFY_DNS_CLOUD_RUN.md)
+- **Checklist**: [DEPLOYMENT_CHECKLIST.md](DEPLOYMENT_CHECKLIST.md)
+
+**Why this approach?**
+- ✅ Easy DNS management via Netlify dashboard
+- ✅ Powerful deployment on Google Cloud Run
+- ✅ Free DNS + existing Cloud Run costs
+- ✅ Automatic SSL from Google
+
+#### Option 2: Netlify Full Deployment
+
+Easy deployment with automatic SSL and CDN:
+
+```bash
+pnpm install
+netlify login
+netlify deploy --prod
+```
+
+- **Quick Start**: [NETLIFY_QUICKSTART.md](NETLIFY_QUICKSTART.md)
+- **Full Guide**: [docs/NETLIFY_DEPLOYMENT.md](docs/NETLIFY_DEPLOYMENT.md)
+
+#### Option 3: Google Cloud Run Only
 
 This project uses **Terraform as the master infrastructure configuration**.
 
@@ -167,6 +206,10 @@ cd terraform
 terraform init
 terraform apply
 ```
+
+**Custom Domain Setup:**
+
+See [STAGING_DOMAIN.md](STAGING_DOMAIN.md) for Cloud Run domain setup, or [docs/CUSTOM_DOMAIN_SETUP.md](docs/CUSTOM_DOMAIN_SETUP.md) for detailed instructions.
 
 **Documentation:**
 
