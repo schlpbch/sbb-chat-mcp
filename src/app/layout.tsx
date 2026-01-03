@@ -31,21 +31,25 @@ export const metadata: Metadata = {
   },
   manifest: '/manifest.json',
   icons: {
-    icon: [{ url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' }],
-    apple: [{ url: '/SBB-chat-MCP.png', sizes: 'any', type: 'image/png' }],
+    icon: [
+      { url: '/swiss-travel-companion.png', sizes: 'any', type: 'image/png' },
+    ],
+    apple: [
+      { url: '/swiss-travel-companion.png', sizes: 'any', type: 'image/png' },
+    ],
   },
   openGraph: {
     type: 'website',
     siteName: 'Swiss Travel Companion',
     title: 'Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
-    images: ['/SBB-chat-MCP.png'],
+    images: ['/swiss-travel-companion.png'],
   },
   twitter: {
     card: 'summary',
     title: 'Swiss Travel Companion',
     description: 'Your intelligent companion for Swiss public transport',
-    images: ['/SBB-chat-MCP.png'],
+    images: ['/swiss-travel-companion.png'],
   },
 };
 
@@ -68,7 +72,11 @@ export default async function RootLayout({
   const detectedLanguage = detectLanguageFromHeaders(acceptLanguage);
 
   return (
-    <html lang={detectedLanguage} className={outfit.variable} suppressHydrationWarning>
+    <html
+      lang={detectedLanguage}
+      className={outfit.variable}
+      suppressHydrationWarning
+    >
       <head>
         <script
           dangerouslySetInnerHTML={{
@@ -90,7 +98,7 @@ export default async function RootLayout({
             `,
           }}
         />
-        <link rel="apple-touch-icon" href="/SBB-chat-MCP.png" />
+        <link rel="apple-touch-icon" href="/swiss-travel-companion.png" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
