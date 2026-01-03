@@ -1,6 +1,6 @@
 # LLM Orchestration - Current Status
 
-**Last Updated**: 2026-01-01  
+**Last Updated**: 2026-01-03  
 **Status**: Production (with known limitations)
 
 ---
@@ -12,6 +12,7 @@
 The orchestration system uses `ResponseSynthesisService` to generate final responses after multi-step plan execution.
 
 **Prompt Strategy** (as of 2026-01-01):
+
 ```
 IMPORTANT: The information will be displayed as visual cards to the user. 
 Do NOT repeat or summarize the trip details (times, stations, connections, etc.) 
@@ -21,6 +22,7 @@ all the details. Respond in {{language}}.
 ```
 
 **Files**:
+
 - Template: [`orchestration-prompts.json`](file:///home/schlpbch/code/sbb-chat-mcp/src/lib/llm/prompts/orchestration-prompts.json)
 - Service: [`ResponseSynthesisService.ts`](file:///home/schlpbch/code/sbb-chat-mcp/src/lib/llm/orchestrator/services/ResponseSynthesisService.ts)
 
@@ -42,7 +44,8 @@ all the details. Respond in {{language}}.
 
 **Problem**: When users type in Chinese, Hindi, or other languages while UI language is set to English, the system responds in English instead of the message language.
 
-**Root Cause**: 
+**Root Cause**:
+
 - UI language setting is fixed (not auto-detected from message)
 - Language context passed to LLM is the UI setting, not message language
 - Orchestration prompt has weak language enforcement: "Respond in {{language}}"
@@ -51,15 +54,19 @@ all the details. Respond in {{language}}.
 
 **Status**: ⚠️ Known issue, fix attempted but rolled back due to server error.
 
-### 3. UI Language Not Persisted
+### 3. UI Language Not Persisted (RESOLVED 2026-01-03)
 
-**Problem**: Language selection on home page is not saved to localStorage, so it resets to English when navigating to chat page.
+**Problem**: Language selection on home page was not saved to localStorage, so it reset to English when navigating to chat page.
 
-**Root Cause**: Home page (`page.tsx`) stores language only in component state, while chat page loads from localStorage.
+**Root Cause**: Documentation was outdated. Both pages now use `useLanguage` hook which implements localStorage persistence.
 
-**Impact**: Users must re-select language when switching pages.
+**Current Status**: ✅ **RESOLVED** - Both `src/app/page.tsx` and `src/app/chat/page.tsx` use the `useLanguage` hook, which automatically:
 
-**Status**: ⚠️ Minor UX issue, separate from multilingual regression.
+- Saves language to `localStorage.getItem('sbb-settings')`
+- Loads language from localStorage on mount
+- Persists across page navigation
+
+**Impact**: None - feature is working as expected.
 
 ---
 
@@ -68,12 +75,14 @@ all the details. Respond in {{language}}.
 ### 2026-01-01: Attempted Fixes (Rolled Back)
 
 **Attempted Changes**:
+
 1. Updated orchestration prompt to generate 2-4 sentence summaries for voice output
 2. Added critical language auto-detection instructions to respond in user's message language
 
 **Rollback Reason**: Server error occurred during testing. Root cause unknown - needs investigation of server logs.
 
 **Files Reverted**:
+
 - `orchestration-prompts.json` - back to brief response prompt
 - `ResponseSynthesisService.ts` - back to brief fallback prompt
 
@@ -120,16 +129,19 @@ Return generated response text
 ## Next Steps
 
 ### To Fix Voice Output
+
 1. Investigate server error from previous attempt
 2. Implement voice-friendly prompt that generates 2-4 sentence summaries
 3. Ensure TTS receives adequate content (>10 characters)
 
 ### To Fix Multilingual Support
+
 1. Implement language auto-detection from message content
 2. Update prompt to prioritize message language over UI language setting
 3. Test with Chinese, Hindi, German, French, Italian queries
 
 ### To Fix UI Language Persistence
+
 1. Add localStorage persistence to home page (`page.tsx`)
 2. Load language from localStorage on mount
 3. Sync language across all pages
@@ -139,6 +151,7 @@ Return generated response text
 ## Testing Recommendations
 
 ### Voice Output Test
+
 ```
 1. Enable voice output + rich mode
 2. Send: "Find trains from Zurich to Bern"
@@ -147,6 +160,7 @@ Return generated response text
 ```
 
 ### Multilingual Test
+
 ```
 1. UI language: English
 2. Send: "从日内瓦到卢加诺的最快路线" (Chinese)

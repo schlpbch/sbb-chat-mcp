@@ -10,15 +10,17 @@ import {
   PlanCoordinatorService,
   ResponseSynthesisService,
 } from '../orchestrator/services';
+import { detectMessageLanguage } from '../services/LanguageDetectionService';
 
 /**
  * Enhanced chat with orchestration support
  *
  * Coordinates multiple services to handle complex, multi-step queries:
- * 1. Context Preparation - Extract intent and update context
- * 2. Orchestration Decision - Determine if orchestration is needed
- * 3. Plan Coordination - Create and execute multi-step plans
- * 4. Response Synthesis - Generate final LLM response
+ * 1. Language Detection - Detect message language (auto-detect from content)
+ * 2. Context Preparation - Extract intent and update context
+ * 3. Orchestration Decision - Determine if orchestration is needed
+ * 4. Plan Coordination - Create and execute multi-step plans
+ * 5. Response Synthesis - Generate final LLM response in detected language
  */
 export async function sendOrchestratedChatMessage(
   message: string,
@@ -27,12 +29,21 @@ export async function sendOrchestratedChatMessage(
   context: ChatContext = { language: 'en' },
   parsedIntent?: unknown // Add parsed markdown intent
 ): Promise<ChatResponse> {
-  // 1. Prepare context and extract intents
+  // 1. Detect message language (prioritize message content over UI setting)
+  const messageLanguage = await detectMessageLanguage(
+    message,
+    context.language
+  );
+  console.log(
+    `[Orchestration] UI Language: ${context.language}, Message Language: ${messageLanguage}`
+  );
+
+  // 2. Prepare context and extract intents
   const contextPrep = new ContextPreparationService();
   const { updatedContext, intents } = await contextPrep.prepareContext(
     message,
     sessionId,
-    context.language,
+    messageLanguage, // Use detected language instead of UI language
     parsedIntent
   );
 
@@ -52,7 +63,7 @@ export async function sendOrchestratedChatMessage(
   const planResult = await coordinator.coordinatePlan(
     intents,
     updatedContext,
-    context.language
+    messageLanguage // Use detected language
   );
 
   if (!planResult) {
@@ -62,13 +73,13 @@ export async function sendOrchestratedChatMessage(
     return sendChatMessage(message, history, context, true);
   }
 
-  // 4. Synthesize response
+  // 4. Synthesize response in detected language
   const synthesis = new ResponseSynthesisService();
   const response = await synthesis.synthesizeResponse(
     message,
     planResult.formattedResults,
     planResult.planResult.summary,
-    context.language,
+    messageLanguage, // Use detected language for response
     context.voiceEnabled || false
   );
 
