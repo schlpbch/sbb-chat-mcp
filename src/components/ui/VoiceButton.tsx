@@ -20,6 +20,7 @@ export default function VoiceButton({
     transcript,
     startListening,
     stopListening,
+    clearTranscript,
     isSupported,
   } = useVoiceInput(language);
 
@@ -36,9 +37,11 @@ export default function VoiceButton({
       // Small delay to ensure transcript is final
       setTimeout(() => {
         onAutoSend(transcript);
+        // Clear transcript after sending to prevent re-population
+        clearTranscript();
       }, 100);
     }
-  }, [isListening, transcript, onAutoSend]);
+  }, [isListening, transcript, onAutoSend, clearTranscript]);
 
   if (!isSupported) {
     return null; // Hide button if not supported

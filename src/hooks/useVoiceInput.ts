@@ -85,5 +85,9 @@ export function useVoiceInput(language: Language) {
     }
   };
 
-  return { isListening, transcript, startListening, stopListening, isSupported };
+  const clearTranscript = () => {
+    setTranscript('');
+  };
+
+  return { isListening, transcript, startListening, stopListening, clearTranscript, isSupported };
 }

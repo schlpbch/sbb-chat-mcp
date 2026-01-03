@@ -2,15 +2,45 @@ import type { Preview } from '@storybook/nextjs-vite';
 import { withThemeByClassName } from '@storybook/addon-themes';
 import React from 'react';
 import '../src/app/globals.css';
-import { MapProvider } from '../src/context/MapContext';
+import { MapContext, MapRoute } from '../src/context/MapContext';
 import { ToastProvider } from '../src/components/ui/Toast';
+
+import {
+  AppRouterContext,
+  type AppRouterInstance,
+} from 'next/dist/shared/lib/app-router-context.shared-runtime';
 
 // Mock providers for components that need context
 const MockProviders = ({ children }: { children: React.ReactNode }) => {
+  const [activeRoute, setActiveRoute] = React.useState<MapRoute | null>(null);
+
+  const mockMapContextValue = {
+    activeRoute,
+    setRoute: setActiveRoute,
+    showTripOnMap: (points: [number, number][]) => {
+      console.log('Mock: Show trip on map', points);
+      setActiveRoute({ points, color: '#A20013' });
+    },
+  };
+
+  const mockRouter: AppRouterInstance = {
+    back: () => {},
+    forward: () => {},
+    push: () => {},
+    replace: () => {},
+    refresh: () => {},
+    prefetch: () => {},
+    maxAge: 0,
+  };
+
   return (
-    <ToastProvider>
-      <MapProvider>{children}</MapProvider>
-    </ToastProvider>
+    <AppRouterContext.Provider value={mockRouter}>
+      <ToastProvider>
+        <MapContext.Provider value={mockMapContextValue}>
+          {children}
+        </MapContext.Provider>
+      </ToastProvider>
+    </AppRouterContext.Provider>
   );
 };
 
@@ -25,13 +55,15 @@ if (typeof window !== 'undefined') {
       savedTrips: [],
     }),
     useMapContext: () => ({
-      showTripOnMap: (points: any[]) => console.log('Mock: Show trip on map', points),
+      showTripOnMap: (points: any[]) =>
+        console.log('Mock: Show trip on map', points),
       map: null,
       selectedMarker: null,
       setSelectedMarker: () => {},
     }),
     useToast: () => ({
-      showToast: (message: string, type?: string) => console.log('Mock Toast:', message, type),
+      showToast: (message: string, type?: string) =>
+        console.log('Mock Toast:', message, type),
     }),
     useFavoriteStations: () => ({
       isFavorite: () => false,

@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Train, Cloud, Building2, Sparkles } from 'lucide-react';
 import { getRandomExamples, getExamplesByCategory } from '@/lib/exampleQueries';
-import ExampleQueryCard from '@/components/ExampleQueryCard';
+import ExampleQuerySnippet from '@/components/ExampleQuerySnippet';
 import { translations, type Language } from '@/lib/i18n';
 
 interface FeaturedExamplesProps {
@@ -88,7 +88,7 @@ export default function FeaturedExamples({ language }: FeaturedExamplesProps) {
       {/* Examples Grid */}
       <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
         {examples.map((example) => (
-          <ExampleQueryCard
+          <ExampleQuerySnippet
             key={example.id}
             example={example}
             onClick={handleExampleClick}

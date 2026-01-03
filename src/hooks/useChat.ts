@@ -107,8 +107,8 @@ export function useChat(language: Language) {
     };
 
     if (!isRetry) {
-      setMessages((prev) => [...prev, userMessage]);
       setInput('');
+      setMessages((prev) => [...prev, userMessage]);
     }
 
     setIsLoading(true);

@@ -14,7 +14,7 @@ interface MapContextType {
   showTripOnMap: (points: [number, number][]) => void;
 }
 
-const MapContext = createContext<MapContextType | undefined>(undefined);
+export const MapContext = createContext<MapContextType | undefined>(undefined);
 
 export function MapProvider({ children }: { children: ReactNode }) {
   const [activeRoute, setActiveRoute] = useState<MapRoute | null>(null);
