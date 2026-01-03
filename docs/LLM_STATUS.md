@@ -101,6 +101,13 @@ See [LLM_ORCHESTRATION_STATUS.md](file:///home/schlpbch/code/sbb-chat-mcp/docs/L
    - ✅ Updated copyright years to 2025–2026
    - ✅ Fixed Menu component to use dynamic i18n values
 
+4. **Multilingual Support (2026-01-04)**
+   - ✅ Implemented automatic language detection from message content
+   - ✅ Created `LanguageDetectionService.ts` using Gemini LLM
+   - ✅ Updated orchestration to use detected language
+   - ✅ Strengthened prompts with critical language enforcement
+   - ✅ Non-English messages now receive responses in the correct language
+
 ---
 
 ## 📋 Implementation Status

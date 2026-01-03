@@ -40,19 +40,25 @@ all the details. Respond in {{language}}.
 
 **Status**: ⚠️ Known issue, fix attempted but rolled back due to server error.
 
-### 2. Multilingual Regression
+### 2. Multilingual Regression (RESOLVED 2026-01-04)
 
-**Problem**: When users type in Chinese, Hindi, or other languages while UI language is set to English, the system responds in English instead of the message language.
+**Problem**: When users type in Chinese, Hindi, or other languages while UI language is set to English, the system responded in English instead of the message language.
 
 **Root Cause**:
 
-- UI language setting is fixed (not auto-detected from message)
-- Language context passed to LLM is the UI setting, not message language
-- Orchestration prompt has weak language enforcement: "Respond in {{language}}"
+- UI language setting was fixed (not auto-detected from message)
+- Language context passed to LLM was the UI setting, not message language
+- Orchestration prompt had weak language enforcement
 
-**Impact**: Non-English users receive English responses even when typing in their native language.
+**Solution Implemented**:
 
-**Status**: ⚠️ Known issue, fix attempted but rolled back due to server error.
+- ✅ Created `LanguageDetectionService.ts` - Uses Gemini to detect message language
+- ✅ Updated `orchestratedChatMode.ts` - Detects language before orchestration
+- ✅ Strengthened prompts with "CRITICAL LANGUAGE INSTRUCTION" section
+
+**Impact**: Non-English users now receive responses in their message language.
+
+**Status**: ✅ **RESOLVED** (2026-01-04)
 
 ### 3. UI Language Not Persisted (RESOLVED 2026-01-03)
 

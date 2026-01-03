@@ -16,7 +16,7 @@ export interface ChatMessage {
 }
 
 export interface ChatContext {
-  language: string;
+  language: Language;
   voiceEnabled?: boolean;
   currentLocation?: { lat: number; lon: number };
   [key: string]: unknown;
