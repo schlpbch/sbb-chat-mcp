@@ -190,7 +190,7 @@ export default function Menu({
         aria-modal="true"
         aria-labelledby="menu-title"
         tabIndex={-1}
-        className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-2xl z-50 transform transition-transform duration-300 ${
+        className={`fixed left-0 top-0 h-full w-80 bg-white dark:bg-gray-900 border-r border-gray-200 dark:border-gray-800 shadow-2xl z-50 transition-transform duration-300 ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         }`}
       >
@@ -311,10 +311,10 @@ export default function Menu({
               </a>
             </div>
             <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
-              {t.version || 'v2.1.0'}
+              {t.version}
             </p>
             <p className="text-xs text-gray-400 dark:text-gray-400 text-center mt-1">
-              © 2024 {t.navbar.appTitle}
+              {t.landing.footer.copyright}
             </p>
           </div>
         </div>

@@ -13,9 +13,9 @@ echo ""
 # Configuration
 PROJECT_ID=${GCP_PROJECT_ID:-$(gcloud config get-value project 2>/dev/null)}
 REGION="europe-west6"
-SERVICE_NAME="sbb-chat-mcp-staging"
-DOMAIN="stage.swisstravelassistant.ch"
-ROOT_DOMAIN="swisstravelassistant.ch"
+SERVICE_NAME="swiss-travel-companion-staging"
+DOMAIN="stage.swisstravelcompanion.ch"
+ROOT_DOMAIN="swisstravelcompanion.ch"
 
 echo "Configuration:"
 echo "  GCP Project: ${PROJECT_ID:-[not set]}"

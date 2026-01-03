@@ -1,3 +1,8 @@
+// Mock server-only to prevent errors in client-side tests
+vi.mock('server-only', () => {
+  return {};
+});
+
 import '@testing-library/jest-dom';
 import { vi } from 'vitest';
 

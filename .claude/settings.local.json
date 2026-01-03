@@ -53,7 +53,8 @@
       "Bash(gh issue view:*)",
       "Bash(gh issue close:*)",
       "Bash(gcloud run services logs read:*)",
-      "Bash(gh issue create:*)"
+      "Bash(gh issue create:*)",
+      "Bash(gcloud run services delete:*)"
     ]
   }
 }

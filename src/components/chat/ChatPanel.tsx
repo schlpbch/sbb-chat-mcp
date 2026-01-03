@@ -30,10 +30,10 @@ export default function ChatPanel({
   const { handleExportChat } = useChatExport(messages);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  
+
   // Get translations for current language
   const t = translations[language];
-  
+
   // Voice output state
   const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(true);
 
@@ -94,7 +94,7 @@ export default function ChatPanel({
       aria-modal="true"
       aria-labelledby="chat-title"
       tabIndex={-1}
-      className={`fixed right-6 top-24 h-[calc(100vh-8rem)] w-[400px] backdrop-blur-xl bg-white/80 dark:bg-gray-900/90 rounded-[32px] shadow-2xl z-50 flex flex-col border border-white/40 dark:border-gray-700/40 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) transform ${
+      className={`fixed right-6 top-24 h-[calc(100vh-8rem)] w-[400px] backdrop-blur-xl bg-white/80 dark:bg-gray-900/90 rounded-[32px] shadow-2xl z-50 flex flex-col border border-white/40 dark:border-gray-700/40 ring-1 ring-black/5 dark:ring-white/5 transition-all duration-500 cubic-bezier(0.4, 0, 0.2, 1) ${
         isOpen
           ? 'translate-x-0 opacity-100'
           : 'translate-x-12 opacity-0 pointer-events-none'
@@ -135,8 +135,16 @@ export default function ChatPanel({
                 ? 'bg-white/30 text-white'
                 : 'bg-white/10 text-white/50'
             }`}
-            aria-label={voiceOutputEnabled ? t.voice.disableVoiceOutput : t.voice.enableVoiceOutput}
-            title={voiceOutputEnabled ? t.voice.voiceOutputEnabled : t.voice.voiceOutputDisabled}
+            aria-label={
+              voiceOutputEnabled
+                ? t.voice.disableVoiceOutput
+                : t.voice.enableVoiceOutput
+            }
+            title={
+              voiceOutputEnabled
+                ? t.voice.voiceOutputEnabled
+                : t.voice.voiceOutputDisabled
+            }
             aria-pressed={voiceOutputEnabled}
           >
             <svg
@@ -162,7 +170,7 @@ export default function ChatPanel({
               )}
             </svg>
           </button>
-          
+
           {messages.length > 0 && (
             <>
               <button
@@ -259,9 +267,9 @@ export default function ChatPanel({
           </div>
         )}
         {messages.map((message) => (
-          <ChatMessage 
-            key={message.id} 
-            message={message} 
+          <ChatMessage
+            key={message.id}
+            message={message}
             language={language}
             voiceOutputEnabled={voiceOutputEnabled}
           />

@@ -4,7 +4,7 @@ export const translations = {
     appDescription:
       'Your AI-powered journey planner for Swiss public transport',
     loading: 'Loading...',
-    version: 'v2.1.0',
+    version: 'v0.9.0',
     nav: {
       home: 'Home',
       chat: 'Chat',
@@ -405,7 +405,7 @@ export const translations = {
       developer: 'Developer',
       mcpServerEnvironment: 'MCP Server Environment',
       mcpServerNote: 'Changing this will reload the application.',
-      versionInfo: 'Swiss Travel Companion v2.2.0 • Local Data Only',
+      versionInfo: 'Swiss Travel Companion v0.9.0 • Local Data Only',
     },
     common: {
       close: 'Close',
@@ -459,7 +459,7 @@ export const translations = {
     appDescription:
       'Ihr KI-gestützter Reiseplaner für den öffentlichen Verkehr der Schweiz',
     loading: 'Wird geladen...',
-    version: 'v2.1.0',
+    version: 'v0.9.0',
     nav: {
       home: 'Startseite',
       chat: 'Chat',
@@ -874,7 +874,7 @@ export const translations = {
       developer: 'Entwickler',
       mcpServerEnvironment: 'MCP-Serverumgebung',
       mcpServerNote: 'Das Ändern dieser Einstellung lädt die Anwendung neu.',
-      versionInfo: 'Swiss Travel Companion v2.2.0 • Nur lokale Daten',
+      versionInfo: 'Swiss Travel Companion v0.9.0 • Nur lokale Daten',
     },
     common: {
       close: 'Schließen',
@@ -928,7 +928,7 @@ export const translations = {
     appDescription:
       'Votre planificateur de voyage alimenté par IA pour les transports publics suisses',
     loading: 'Chargement...',
-    version: 'v2.1.0',
+    version: 'v0.9.0',
     nav: {
       home: 'Accueil',
       chat: 'Chat',
@@ -1342,7 +1342,7 @@ export const translations = {
       developer: 'Développeur',
       mcpServerEnvironment: 'Environnement Serveur MCP',
       mcpServerNote: "Changer ceci rechargera l'application.",
-      versionInfo: 'Swiss Travel Companion v2.2.0 • Données locales uniquement',
+      versionInfo: 'Swiss Travel Companion v0.9.0 • Données locales uniquement',
     },
     common: {
       close: 'Fermer',
@@ -1396,7 +1396,7 @@ export const translations = {
     appDescription:
       'Il tuo pianificatore di viaggio basato su IA per i trasporti pubblici svizzeri',
     loading: 'Caricamento...',
-    version: 'v2.1.0',
+    version: 'v0.9.0',
     nav: {
       home: 'Home',
       chat: 'Chat',
@@ -1807,7 +1807,7 @@ export const translations = {
       mcpServerEnvironment: 'Ambiente Server MCP',
       mcpServerNote:
         "Modificare questa impostazione ricaricherà l'applicazione.",
-      versionInfo: 'Swiss Travel Companion v2.2.0 • Solo dati locali',
+      versionInfo: 'Swiss Travel Companion v0.9.0 • Solo dati locali',
     },
     common: {
       close: 'Chiudi',
@@ -1860,7 +1860,7 @@ export const translations = {
     appName: 'SBB 出行助手',
     appDescription: '您的AI智能瑞士公共交通行程规划助手',
     loading: '加载中...',
-    version: 'v2.1.0',
+    version: 'v0.9.0',
     nav: {
       home: '首页',
       chat: '聊天',
@@ -2254,7 +2254,7 @@ export const translations = {
       developer: '开发者',
       mcpServerEnvironment: 'MCP 服务器环境',
       mcpServerNote: '更改此设置将重新加载应用程序。',
-      versionInfo: 'Swiss Travel Companion v2.2.0 • 仅本地数据',
+      versionInfo: 'Swiss Travel Companion v0.9.0 • 仅本地数据',
     },
     common: {
       close: '关闭',
@@ -2307,7 +2307,7 @@ export const translations = {
     appDescription:
       'स्विस सार्वजनिक परिवहन के लिए आपका AI-संचालित यात्रा योजनाकार',
     loading: 'लोड हो रहा है...',
-    version: 'v2.1.0',
+    version: 'v0.9.0',
     nav: {
       home: 'होम',
       chat: 'चैट',
@@ -2715,7 +2715,7 @@ export const translations = {
       developer: 'डेवलपर',
       mcpServerEnvironment: 'MCP सर्वर वातावरण',
       mcpServerNote: 'इसे बदलने से एप्लिकेशन पुनः लोड होगा।',
-      versionInfo: 'Swiss Travel Companion v2.2.0 • केवल स्थानीय डेटा',
+      versionInfo: 'Swiss Travel Companion v0.9.0 • केवल स्थानीय डेटा',
     },
     common: {
       close: 'बंद करें',
