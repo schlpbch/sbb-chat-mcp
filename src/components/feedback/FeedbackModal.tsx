@@ -91,7 +91,9 @@ export default function FeedbackModal({
           <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-2">
             {t.feedback.thankYou}
           </h3>
-          <p className="text-gray-600 dark:text-gray-300">{t.feedback.successMessage}</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            {t.feedback.successMessage}
+          </p>
         </div>
       </div>
     );
@@ -126,7 +128,9 @@ export default function FeedbackModal({
               </svg>
             </button>
           </div>
-          <p className="text-gray-600 dark:text-gray-300">{t.feedback.feedbackDesc}</p>
+          <p className="text-gray-600 dark:text-gray-300">
+            {t.feedback.feedbackDesc}
+          </p>
         </div>
 
         {/* Form */}
@@ -141,9 +145,21 @@ export default function FeedbackModal({
             </label>
             <div className="grid grid-cols-3 gap-2">
               {[
-                { value: 'general', label: t.feedback.general, icon: <MessageSquare className="w-6 h-6" /> },
-                { value: 'bug', label: t.feedback.bug, icon: <Bug className="w-6 h-6" /> },
-                { value: 'feature', label: t.feedback.feature, icon: <Sparkles className="w-6 h-6" /> },
+                {
+                  value: 'general',
+                  label: t.feedback.general,
+                  icon: <MessageSquare className="w-6 h-6" />,
+                },
+                {
+                  value: 'bug',
+                  label: t.feedback.bug,
+                  icon: <Bug className="w-6 h-6" />,
+                },
+                {
+                  value: 'feature',
+                  label: t.feedback.feature,
+                  icon: <Sparkles className="w-6 h-6" />,
+                },
               ].map((option) => (
                 <button
                   key={option.value}
@@ -151,11 +167,19 @@ export default function FeedbackModal({
                   onClick={() => setType(option.value as FeedbackType)}
                   className={`px-4 py-3 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-1 ${
                     type === option.value
-                      ? 'border-sbb-red bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-100'
+                      ? 'border-[#A5061C] bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-100'
                       : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 text-gray-700 dark:text-gray-300'
                   }`}
                 >
-                  <div className={`text-xl mb-1 ${type === option.value ? 'text-sbb-red dark:text-red-400' : 'text-gray-500 dark:text-gray-400'}`}>{option.icon}</div>
+                  <div
+                    className={`text-xl mb-1 ${
+                      type === option.value
+                        ? 'text-[#A5061C] dark:text-red-400'
+                        : 'text-gray-500 dark:text-gray-400'
+                    }`}
+                  >
+                    {option.icon}
+                  </div>
                   <div className="text-xs font-medium">{option.label}</div>
                 </button>
               ))}
@@ -175,11 +199,17 @@ export default function FeedbackModal({
                     type="button"
                     onClick={() => setRating(star)}
                     className={`text-3xl transition-transform hover:scale-110 ${
-                       rating && star <= rating ? 'text-yellow-400 fill-current' : 'text-gray-300 dark:text-gray-600'
+                      rating && star <= rating
+                        ? 'text-yellow-400 fill-current'
+                        : 'text-gray-300 dark:text-gray-600'
                     }`}
                   >
                     <Star
-                      className={`w-8 h-8 ${rating && star <= rating ? 'fill-yellow-400 text-yellow-400' : ''}`}
+                      className={`w-8 h-8 ${
+                        rating && star <= rating
+                          ? 'fill-yellow-400 text-yellow-400'
+                          : ''
+                      }`}
                     />
                   </button>
                 ))}
@@ -209,7 +239,7 @@ export default function FeedbackModal({
               required
               maxLength={500}
               rows={4}
-              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-sbb-red focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 resize-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
+              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-[#A5061C] focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 resize-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {message.length}/500 {t.feedback.characterCount}
@@ -230,7 +260,7 @@ export default function FeedbackModal({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t.feedback.emailPlaceholder}
-              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-sbb-red focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
+              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-[#A5061C] focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
             />
           </div>
 
@@ -253,7 +283,7 @@ export default function FeedbackModal({
             <button
               type="submit"
               disabled={isSubmitting || !message.trim()}
-              className="flex-1 px-4 py-3 bg-sbb-red text-white rounded-xl font-semibold hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md active:scale-[0.98]"
+              className="flex-1 px-4 py-3 bg-[#A5061C] text-white rounded-xl font-semibold hover:bg-[#820415] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md active:scale-[0.98]"
             >
               {isSubmitting ? t.feedback.sending : t.feedback.submit}
             </button>
