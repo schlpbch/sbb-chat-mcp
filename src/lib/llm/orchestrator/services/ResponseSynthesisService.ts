@@ -63,6 +63,9 @@ export class ResponseSynthesisService {
     const promptName = voiceEnabled
       ? 'orchestration-response-voice'
       : 'orchestration-response';
+
+    console.log(`[ResponseSynthesisService] Using prompt: ${promptName}`);
+
     const template = PromptLoader.getPrompt('orchestration', promptName);
 
     if (!template) {
