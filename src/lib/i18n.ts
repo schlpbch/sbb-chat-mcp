@@ -453,6 +453,29 @@ export const translations = {
       settingsInfo:
         'Voice settings apply to all messages. Audio is generated on-demand and cached for the session.',
     },
+    location: {
+      enableLocation: 'Enable Location',
+      locationPermission: 'Location Permission',
+      locationPermissionDesc:
+        'Enable location to get personalized travel suggestions based on your current position',
+      enableLocationBtn: 'Enable Location',
+      noThanks: 'No thanks',
+      locationEnabled: 'Location enabled',
+      locationDisabled: 'Location disabled',
+      currentLocation: 'Current location',
+      nearestStation: 'Nearest station',
+      permissionDenied: 'Location permission denied',
+      permissionDeniedDesc: 'You can enable location in your browser settings',
+      locationUnavailable: 'Location unavailable',
+      locationUnavailableDesc:
+        'Your location could not be determined. Please try again.',
+      locationTimeout: 'Location request timed out',
+      locationTimeoutDesc: 'Please try again or enter your location manually',
+      notSupported: 'Location not supported',
+      notSupportedDesc: 'Your browser does not support geolocation',
+      detecting: 'Detecting location...',
+      accuracy: 'Accuracy',
+    },
   },
   de: {
     appName: 'Swiss Travel Companion',
@@ -922,6 +945,31 @@ export const translations = {
       settingsInfo:
         'Spracheinstellungen gelten für alle Nachrichten. Audio wird bei Bedarf generiert und für die Sitzung zwischengespeichert.',
     },
+    location: {
+      enableLocation: 'Standort aktivieren',
+      locationPermission: 'Standortberechtigung',
+      locationPermissionDesc:
+        'Aktivieren Sie den Standort, um personalisierte Reisevorschläge basierend auf Ihrer aktuellen Position zu erhalten',
+      enableLocationBtn: 'Standort aktivieren',
+      noThanks: 'Nein danke',
+      locationEnabled: 'Standort aktiviert',
+      locationDisabled: 'Standort deaktiviert',
+      currentLocation: 'Aktueller Standort',
+      nearestStation: 'Nächster Bahnhof',
+      permissionDenied: 'Standortberechtigung verweigert',
+      permissionDeniedDesc:
+        'Sie können den Standort in Ihren Browsereinstellungen aktivieren',
+      locationUnavailable: 'Standort nicht verfügbar',
+      locationUnavailableDesc:
+        'Ihr Standort konnte nicht ermittelt werden. Bitte versuchen Sie es erneut.',
+      locationTimeout: 'Standortanfrage abgelaufen',
+      locationTimeoutDesc:
+        'Bitte versuchen Sie es erneut oder geben Sie Ihren Standort manuell ein',
+      notSupported: 'Standort nicht unterstützt',
+      notSupportedDesc: 'Ihr Browser unterstützt keine Geolokalisierung',
+      detecting: 'Standort wird ermittelt...',
+      accuracy: 'Genauigkeit',
+    },
   },
   fr: {
     appName: 'Swiss Travel Companion',
@@ -1390,6 +1438,31 @@ export const translations = {
       settingsInfo:
         "Les paramètres vocaux s'appliquent à tous les messages. L'audio est généré à la demande et mis en cache pour la session.",
     },
+    location: {
+      enableLocation: 'Activer la localisation',
+      locationPermission: 'Permission de localisation',
+      locationPermissionDesc:
+        'Activez la localisation pour obtenir des suggestions de voyage personnalisées en fonction de votre position actuelle',
+      enableLocationBtn: 'Activer la localisation',
+      noThanks: 'Non merci',
+      locationEnabled: 'Localisation activée',
+      locationDisabled: 'Localisation désactivée',
+      currentLocation: 'Position actuelle',
+      nearestStation: 'Gare la plus proche',
+      permissionDenied: 'Permission de localisation refusée',
+      permissionDeniedDesc:
+        'Vous pouvez activer la localisation dans les paramètres de votre navigateur',
+      locationUnavailable: 'Localisation indisponible',
+      locationUnavailableDesc:
+        "Votre position n'a pas pu être déterminée. Veuillez réessayer.",
+      locationTimeout: 'Délai de localisation expiré',
+      locationTimeoutDesc:
+        'Veuillez réessayer ou entrer votre position manuellement',
+      notSupported: 'Localisation non supportée',
+      notSupportedDesc: 'Votre navigateur ne supporte pas la géolocalisation',
+      detecting: 'Détection de la position...',
+      accuracy: 'Précision',
+    },
   },
   it: {
     appName: 'Swiss Travel Companion',
@@ -1855,6 +1928,30 @@ export const translations = {
       settingsInfo:
         "Le impostazioni vocali si applicano a tutti i messaggi. L'audio viene generato su richiesta e memorizzato nella cache per la sessione.",
     },
+    location: {
+      enableLocation: 'Attiva posizione',
+      locationPermission: 'Permesso posizione',
+      locationPermissionDesc:
+        'Attiva la posizione per ricevere suggerimenti di viaggio personalizzati in base alla tua posizione attuale',
+      enableLocationBtn: 'Attiva posizione',
+      noThanks: 'No grazie',
+      locationEnabled: 'Posizione attivata',
+      locationDisabled: 'Posizione disattivata',
+      currentLocation: 'Posizione attuale',
+      nearestStation: 'Stazione più vicina',
+      permissionDenied: 'Permesso posizione negato',
+      permissionDeniedDesc:
+        'Puoi attivare la posizione nelle impostazioni del browser',
+      locationUnavailable: 'Posizione non disponibile',
+      locationUnavailableDesc:
+        'La tua posizione non può essere determinata. Riprova.',
+      locationTimeout: 'Timeout richiesta posizione',
+      locationTimeoutDesc: 'Riprova o inserisci la tua posizione manualmente',
+      notSupported: 'Posizione non supportata',
+      notSupportedDesc: 'Il tuo browser non supporta la geolocalizzazione',
+      detecting: 'Rilevamento posizione...',
+      accuracy: 'Precisione',
+    },
   },
   zh: {
     appName: 'SBB 出行助手',
@@ -2300,6 +2397,27 @@ export const translations = {
       pitch: '音调',
       voice: '声音',
       settingsInfo: '语音设置适用于所有消息。音频按需生成并为会话缓存。',
+    },
+    location: {
+      enableLocation: '启用位置',
+      locationPermission: '位置权限',
+      locationPermissionDesc: '启用位置以根据您的当前位置获取个性化旅行建议',
+      enableLocationBtn: '启用位置',
+      noThanks: '不用了',
+      locationEnabled: '位置已启用',
+      locationDisabled: '位置已禁用',
+      currentLocation: '当前位置',
+      nearestStation: '最近的车站',
+      permissionDenied: '位置权限被拒绝',
+      permissionDeniedDesc: '您可以在浏览器设置中启用位置',
+      locationUnavailable: '位置不可用',
+      locationUnavailableDesc: '无法确定您的位置。请重试。',
+      locationTimeout: '位置请求超时',
+      locationTimeoutDesc: '请重试或手动输入您的位置',
+      notSupported: '不支持位置',
+      notSupportedDesc: '您的浏览器不支持地理定位',
+      detecting: '正在检测位置...',
+      accuracy: '精度',
     },
   },
   hi: {
@@ -2762,6 +2880,31 @@ export const translations = {
       voice: 'आवाज़',
       settingsInfo:
         'आवाज़ सेटिंग्स सभी संदेशों पर लागू होती हैं। ऑडियो मांग पर उत्पन्न होता है और सत्र के लिए कैश किया जाता है।',
+    },
+    location: {
+      enableLocation: 'स्थान सक्षम करें',
+      locationPermission: 'स्थान अनुमति',
+      locationPermissionDesc:
+        'अपनी वर्तमान स्थिति के आधार पर व्यक्तिगत यात्रा सुझाव प्राप्त करने के लिए स्थान सक्षम करें',
+      enableLocationBtn: 'स्थान सक्षम करें',
+      noThanks: 'नहीं धन्यवाद',
+      locationEnabled: 'स्थान सक्षम है',
+      locationDisabled: 'स्थान अक्षम है',
+      currentLocation: 'वर्तमान स्थान',
+      nearestStation: 'निकटतम स्टेशन',
+      permissionDenied: 'स्थान अनुमति अस्वीकृत',
+      permissionDeniedDesc:
+        'आप अपने ब्राउज़र सेटिंग्स में स्थान सक्षम कर सकते हैं',
+      locationUnavailable: 'स्थान उपलब्ध नहीं',
+      locationUnavailableDesc:
+        'आपका स्थान निर्धारित नहीं किया जा सका। कृपया पुनः प्रयास करें।',
+      locationTimeout: 'स्थान अनुरोध समय समाप्त',
+      locationTimeoutDesc:
+        'कृपया पुनः प्रयास करें या अपना स्थान मैन्युअल रूप से दर्ज करें',
+      notSupported: 'स्थान समर्थित नहीं',
+      notSupportedDesc: 'आपका ब्राउज़र भूस्थान का समर्थन नहीं करता',
+      detecting: 'स्थान का पता लगाया जा रहा है...',
+      accuracy: 'सटीकता',
     },
   },
 };

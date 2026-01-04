@@ -5,9 +5,11 @@ import { useSearchParams } from 'next/navigation';
 import dynamic from 'next/dynamic';
 import Navbar from '@/components/Navbar';
 import Menu from '@/components/Menu';
+import { LocationPermissionBanner } from '@/components/LocationPermissionBanner';
 
 import VoiceButton, { VoiceButtonRef } from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';
+import { useGeolocation } from '@/hooks/useGeolocation';
 import { translations } from '@/lib/i18n';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useFeedback } from '@/hooks/useFeedback';
@@ -35,6 +37,24 @@ function ChatContent() {
   const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  // Geolocation state
+  const {
+    location,
+    error: locationError,
+    loading: locationLoading,
+    permissionState,
+    requestLocation,
+    clearError: clearLocationError,
+  } = useGeolocation();
+
+  // Show location banner if permission is prompt and no error
+  const [showLocationBanner, setShowLocationBanner] = useState(true);
+  const shouldShowBanner =
+    showLocationBanner &&
+    permissionState === 'prompt' &&
+    !location &&
+    !locationError;
+
   // Voice output state for TTS
   const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
 
@@ -59,13 +79,16 @@ function ChatContent() {
   const allowVoiceInputRef = useRef(true);
 
   // Wrapper for setInput that respects the allowVoiceInput flag
-  const handleTranscriptChange = useCallback((text: string) => {
-    if (allowVoiceInputRef.current) {
-      setInput(text);
-    } else {
-      console.log('[Chat] Blocked voice input, allowVoiceInput is false');
-    }
-  }, [setInput]);
+  const handleTranscriptChange = useCallback(
+    (text: string) => {
+      if (allowVoiceInputRef.current) {
+        setInput(text);
+      } else {
+        console.log('[Chat] Blocked voice input, allowVoiceInput is false');
+      }
+    },
+    [setInput]
+  );
 
   // Wrapper to clear voice transcript when sending manually
   const handleSendWithClear = useCallback(() => {
@@ -84,18 +107,21 @@ function ChatContent() {
   }, [handleSendMessage, input]);
 
   // Wrapper for key press that also clears voice transcript
-  const handleKeyPressWithClear = useCallback((e: React.KeyboardEvent) => {
-    // If Enter was pressed (and not Shift+Enter), disable voice input and clear
-    if (e.key === 'Enter' && !e.shiftKey) {
-      allowVoiceInputRef.current = false;
-      voiceButtonRef.current?.clearTranscript();
-      setTimeout(() => {
-        allowVoiceInputRef.current = true;
-      }, 100);
-    }
-    // Handle the key press (which may send the message)
-    handleKeyPress(e);
-  }, [handleKeyPress]);
+  const handleKeyPressWithClear = useCallback(
+    (e: React.KeyboardEvent) => {
+      // If Enter was pressed (and not Shift+Enter), disable voice input and clear
+      if (e.key === 'Enter' && !e.shiftKey) {
+        allowVoiceInputRef.current = false;
+        voiceButtonRef.current?.clearTranscript();
+        setTimeout(() => {
+          allowVoiceInputRef.current = true;
+        }, 100);
+      }
+      // Handle the key press (which may send the message)
+      handleKeyPress(e);
+    },
+    [handleKeyPress]
+  );
 
   const {
     isOpen: isOnboardingOpen,
@@ -151,7 +177,12 @@ function ChatContent() {
       <a href="#main-content" className="skip-link" suppressHydrationWarning>
         {t.accessibility.skipToMain}
       </a>
-      <a href="#chat-input" className="skip-link" style={{ left: '200px' }} suppressHydrationWarning>
+      <a
+        href="#chat-input"
+        className="skip-link"
+        style={{ left: '200px' }}
+        suppressHydrationWarning
+      >
         {t.accessibility.skipToChat}
       </a>
 
@@ -187,6 +218,49 @@ function ChatContent() {
               aria-atomic="false"
               aria-label={t.accessibility.chatConversation}
             >
+              {/* Location Permission Banner */}
+              {shouldShowBanner && (
+                <LocationPermissionBanner
+                  onEnable={requestLocation}
+                  onDismiss={() => setShowLocationBanner(false)}
+                  loading={locationLoading}
+                />
+              )}
+
+              {/* Location Status Badge (when enabled) */}
+              {location && (
+                <div className="flex justify-center">
+                  <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 text-green-700 dark:text-green-400 text-sm">
+                    <svg
+                      className="h-4 w-4"
+                      fill="none"
+                      stroke="currentColor"
+                      viewBox="0 0 24 24"
+                      aria-hidden="true"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                      />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                      />
+                    </svg>
+                    <span>{t.location.locationEnabled}</span>
+                    {location.accuracy && (
+                      <span className="text-xs opacity-75">
+                        (±{Math.round(location.accuracy)}m)
+                      </span>
+                    )}
+                  </div>
+                </div>
+              )}
+
               {messages.length === 0 ? (
                 <div className="flex justify-center items-center h-full px-3 sm:px-6 py-4">
                   <p className="text-gray-400 text-sm">
