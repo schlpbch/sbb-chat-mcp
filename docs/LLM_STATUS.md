@@ -71,9 +71,9 @@
    - Status: Fix attempted but rolled back due to server error
 
 2. **Multilingual Support**
-   - ⚠️ System responds in English to non-English messages (Chinese, Hindi, etc.)
-   - Root cause: Fixed UI language setting, no auto-detection from message content
-   - Status: Fix attempted but rolled back due to server error
+   - ✅ System now correctly detects language using Gemini LLM (`LanguageDetectionService`)
+   - ✅ Robust threshold tuning (5 chars) supports short queries (CN/ZH)
+   - ✅ Orchestration respects detected language
 
 3. **UI Language Persistence**
    - ⚠️ Language selection not saved when navigating home → chat
@@ -107,6 +107,12 @@ See [LLM_ORCHESTRATION_STATUS.md](file:///home/schlpbch/code/sbb-chat-mcp/docs/L
    - ✅ Updated orchestration to use detected language
    - ✅ Strengthened prompts with critical language enforcement
    - ✅ Non-English messages now receive responses in the correct language
+
+5. **Unit Test Stabilization (2026-01-04)**
+   - ✅ Resolved 12 failing unit tests across language detection, orchestration, and intent extraction
+   - ✅ Lowered language detection threshold for better short-query support
+   - ✅ Fixed async/await issues in intent extraction tests
+   - ✅ Enforced confidence thresholds in OrchestrationDecisionService
 
 ---
 
@@ -185,6 +191,6 @@ See [LLM_ORCHESTRATION_STATUS.md](file:///home/schlpbch/code/sbb-chat-mcp/docs/L
 
 ---
 
-**Status**: ✅ Phase 6 Complete - Multi-Intent Orchestration Operational (with known issues)  
-**Last Updated**: 2026-01-03  
-**Next Phase**: Voice Output & Multilingual Fixes
+**Status**: ✅ Phase 6 Complete - Multi-Intent Orchestration Operational  
+**Last Updated**: 2026-01-04  
+**Next Phase**: Voice Output Refinement

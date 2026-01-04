@@ -126,28 +126,16 @@ interface EntityPatterns {
 }
 ```
 
-### 3. Smart Language Detection
+### 3. Smart Language Detection (Implemented via LLM)
 
-Don't rely on user-selected language alone. Detect actual message language:
+**Status Update (2026-01-04):** Implemented using `LanguageDetectionService.ts` which utilizes Gemini LLM for robust detection, falling back to UI language for very short queries (< 5 chars).
+
+*Original Proposal (superceded):*
 
 ```typescript
+// Superceded by LLM-based detection in src/lib/llm/services/LanguageDetectionService.ts
 function detectMessageLanguage(message: string): Language[] {
-  const indicators = {
-    de: /\b(zug|bahn|nach|von|morgen|heute)\b/i,
-    fr: /\b(train|depuis|demain|aujourd'hui|gare)\b/i,
-    it: /\b(treno|viaggio|oggi|domani|stazione)\b/i,
-    en: /\b(train|from|tomorrow|today|station)\b/i,
-  };
-
-  const detectedLanguages: Language[] = [];
-  for (const [lang, pattern] of Object.entries(indicators)) {
-    if (pattern.test(message)) {
-      detectedLanguages.push(lang as Language);
-    }
-  }
-
-  // Return detected languages or fallback to ['en'] if none detected
-  return detectedLanguages.length > 0 ? detectedLanguages : ['en'];
+  // ... (original regex-based proposal)
 }
 ```
 

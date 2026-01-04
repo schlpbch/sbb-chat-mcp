@@ -142,9 +142,10 @@ src/
 │   │   ├── intentExtractor.ts           # ⭐ INTENT CLASSIFICATION
 │   │   ├── entityPatterns.ts            # ⭐ ENTITY EXTRACTION
 │   │   ├── intentKeywords.ts            # ⭐ KEYWORD DICTIONARIES
-│   │   ├── languageDetection.ts         # Language detection
 │   │   ├── types.ts                     # Type definitions
 │   │   ├── cacheManager.ts              # Tool result caching
+│   │   └── services/
+│   │       └── LanguageDetectionService.ts  # ⭐ LLM-BASED DETECTION
 │   │   ├── promptBuilder.ts             # Dynamic prompt building
 │   │   └── referenceResolver.ts         # Pronoun resolution
 │   │
@@ -183,6 +184,7 @@ src/
 Intent classification determines **what the user wants to do** from their message.
 
 **Example Inputs → Intents:**
+
 - "Find trains from Zurich to Bern" → `trip_planning`
 - "What's the weather in Zurich?" → `weather_check`
 - "Show departures from Bern station" → `station_search`
@@ -225,9 +227,10 @@ type IntentType =
                          ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 3. Language Detection                                      │
-│    detectedLanguages = detectMessageLanguage(message)      │
-│    → Checks for EN/DE/FR/IT keywords in message            │
-│    → Returns: ['en', 'de'] (if mixed language)             │
+│    LanguageDetectionService.detectLanguage(message)        │
+│    → Uses Gemini LLM to detect language                    │
+│    → Fallback to UI language for short inputs (<5 chars)   │
+│    → Returns: Language (e.g. 'de', 'fr', 'en')            │
 └────────────────────────┬────────────────────────────────────┘
                          │
                          ▼
@@ -422,6 +425,7 @@ if (implicitTripPattern.test(message)) {
 ```
 
 **Examples:**
+
 - ✅ "Zurich to Bern" → `trip_planning` (0.6 confidence)
 - ✅ "Von Zürich nach Bern" → `trip_planning` (0.6 confidence)
 - ✅ "De Zurich à Berne" → `trip_planning` (0.6 confidence)
@@ -457,44 +461,22 @@ if (hasKeyword(snowKeywords, message)) {
 
 ### Language Detection Algorithm
 
-**File:** `src/lib/llm/context/languageDetection.ts`
+**File:** `src/lib/llm/services/LanguageDetectionService.ts`
+
+Uses Gemini LLM to detect the language of the message, ensuring high accuracy even for complex or short queries. Considerably more robust than keyword matching.
 
 ```typescript
-function detectMessageLanguage(
-  message: string,
-  userLanguage?: Language
-): Language[] {
-  const lowerMessage = message.toLowerCase();
-  const detected: Set<Language> = new Set();
+export class LanguageDetectionService {
+  async detectMessageLanguage(message: string, uiLanguage: Language): Promise<Language> {
+    // 1. Check for short message skip (< 5 chars)
+    if (message.length < 5) return uiLanguage;
 
-  // Start with user's preferred language
-  if (userLanguage && ['en', 'de', 'fr', 'it'].includes(userLanguage)) {
-    detected.add(userLanguage);
+    // 2. Call Gemini LLM with classification prompt
+    // ...
+    // 3. Return detected language ('de', 'fr', 'it', 'en', etc.)
   }
-
-  // Detect other languages using sample keywords
-  const languageIndicators = {
-    de: ['zug', 'bahn', 'von', 'nach', 'zürich', 'wie', 'wetter'],
-    fr: ['train', 'à', 'de', 'comment', 'temps', 'météo'],
-    it: ['treno', 'da', 'a', 'come', 'tempo', 'meteo'],
-    en: ['train', 'from', 'to', 'how', 'weather', 'station'],
-  };
-
-  for (const [lang, indicators] of Object.entries(languageIndicators)) {
-    if (indicators.some(keyword => lowerMessage.includes(keyword))) {
-      detected.add(lang as Language);
-    }
-  }
-
-  // Default to English if nothing detected
-  return detected.size > 0 ? Array.from(detected) : ['en'];
 }
 ```
-
-**Mixed Language Example:**
-- Input: "Find trains from Zürich to Bern"
-- Detected: `['en', 'de']` (English words + Swiss city)
-- Keywords loaded: English + German dictionaries
 
 ---
 
@@ -503,6 +485,7 @@ function detectMessageLanguage(
 ### What is Entity Extraction?
 
 Entity extraction identifies **structured information** from the message:
+
 - **Origin**: Starting location
 - **Destination**: Ending location
 - **Date**: Travel date
@@ -588,6 +571,7 @@ function buildEntityRegex(
 ```
 
 **Example Pattern for Origin (EN + DE):**
+
 ```regex
 (?:^|\s)(starting from|leaving from|departing from|from|ausgehend von|abfahrt von|von|ab)\s+(.+?)(?=(?:^|\s)(?:to|nach|at|um|via|...)(?:\s|$)|$|[?!])
 ```
@@ -611,6 +595,7 @@ const STOP_WORDS = [
 ```
 
 **Why Stop Words?**
+
 - Input: "from Zurich to Bern at 14:30"
 - Without stop words: origin = "Zurich to Bern at 14:30" ❌
 - With stop words: origin = "Zurich" ✅
@@ -727,6 +712,7 @@ if (
 ```
 
 **Example:**
+
 - Input: "Quel temps à Zurich?" (What weather in Zurich?)
 - Without fix: destination = "Zurich" ❌
 - With fix: origin = "Zurich" ✅
@@ -751,6 +737,7 @@ if (!fromMatch && toMatch) {
 ```
 
 **Example:**
+
 - Input: "Zurich to Bern at 14:30"
 - Extracted: origin = "Zurich", destination = "Bern", time = "14:30" ✅
 
@@ -772,6 +759,7 @@ if (intentType === 'station_search') {
 ```
 
 **Extracted:**
+
 ```json
 {
   "origin": "Bern",
@@ -938,6 +926,7 @@ export function setSessionContext(
 ### What is Orchestration?
 
 Orchestration enables **multi-step planning** for complex queries:
+
 - Determines if a query needs multiple tool calls
 - Creates an execution plan with dependencies
 - Executes tools in correct order
@@ -970,6 +959,7 @@ function shouldOrchestrate(
 ```
 
 **Orchestration Keywords** (from `detectionUtils.ts`):
+
 ```typescript
 const ORCHESTRATION_KEYWORDS = [
   'plan', 'schedule', 'organize', 'recommend', 'suggest',
@@ -1251,6 +1241,7 @@ API-->User: ChatResponse
 Intent and entity extraction happens in **<10ms**, enabling real-time classification without noticeable delay.
 
 **Why it matters:**
+
 - No model loading time
 - No inference delay
 - Immediate response to user
@@ -1260,12 +1251,14 @@ Intent and entity extraction happens in **<10ms**, enabling real-time classifica
 Rule-based approach adds **~60KB** to bundle (keyword dictionaries + regex patterns).
 
 **Comparison:**
+
 - ML model: ~14MB (quantized) or ~55MB (full)
 - 233x smaller than ML approach
 
 ### ✅ 3. Deterministic & Debuggable
 
 Every decision is traceable:
+
 ```typescript
 {
   type: 'trip_planning',
@@ -1277,6 +1270,7 @@ Every decision is traceable:
 ```
 
 **Advantages:**
+
 - Easy to debug misclassifications
 - Clear audit trail
 - Reproducible behavior
@@ -1284,6 +1278,7 @@ Every decision is traceable:
 ### ✅ 4. No Training Required
 
 Add new keywords instantly:
+
 ```diff
  trip_planning: {
    en: {
@@ -1298,6 +1293,7 @@ Add new keywords instantly:
 ### ✅ 5. Perfect for Edge Cases
 
 Can add explicit rules for known edge cases:
+
 ```typescript
 // Handle "train station" → station_search, not trip_planning
 if (hasKeyword(stationKeywords, message)) {
@@ -1310,6 +1306,7 @@ if (hasKeyword(stationKeywords, message)) {
 ### ✅ 6. Privacy-Friendly
 
 All processing happens locally:
+
 - No data sent to third-party services (except Gemini LLM)
 - No model training on user data
 - GDPR compliant
@@ -1317,6 +1314,7 @@ All processing happens locally:
 ### ✅ 7. Multilingual Without Complexity
 
 Adding a new language requires only keyword translation:
+
 ```typescript
 // Add Spanish support
 trip_planning: {
@@ -1334,6 +1332,7 @@ No need to retrain models or create language-specific models.
 ### ✅ 8. Confidence Calibration
 
 Confidence scores are **manually calibrated** to reflect real accuracy:
+
 ```typescript
 // 3+ keyword matches → 90% confidence (empirically accurate)
 if (matchCount >= 3) return 0.9;
@@ -1350,6 +1349,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** Synonyms and paraphrasing not covered
 
 **Examples:**
+
 - ❌ "I want to commute to Bern" (no "train" keyword)
 - ❌ "Schedule my voyage to Geneva" (no "trip" keyword)
 - ❌ "What's the climate like in Zurich?" (no "weather" keyword)
@@ -1363,6 +1363,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** Relies on keyword presence, can misdetect
 
 **Examples:**
+
 - "Geneva to Zurich" → Detected as EN only (misses FR city "Genève")
 - Mixed language queries may miss one language
 
@@ -1373,6 +1374,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** Only matches surface-level keywords
 
 **Examples:**
+
 - "Find me a ride to Bern" → ❌ Not classified as `trip_planning`
   - "ride" not in trip keywords
 - "Show me how to reach Zurich" → ❌ Low confidence
@@ -1385,6 +1387,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** No context-aware disambiguation
 
 **Examples:**
+
 - "Zurich weather" → Could be:
   - `weather_check` with location="Zurich" ✅
   - `trip_planning` implicit (if previous context was trip) ❌
@@ -1398,6 +1401,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** French "à" and Italian "a" used for both `destination` and `location`
 
 **Examples:**
+
 - "Trains à Zurich" → Is "Zurich" destination or location?
 - Current workaround: Check intent type first (fragile)
 
@@ -1408,6 +1412,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** Every new synonym, phrase, or edge case requires manual code update
 
 **Process:**
+
 1. User reports misclassification
 2. Developer investigates
 3. Add keyword/pattern
@@ -1423,6 +1428,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** Doesn't learn from patterns
 
 **Examples:**
+
 - Added keyword "ride" to English
 - ❌ Doesn't automatically add "Fahrt" to German
 - ❌ Doesn't learn "commute", "journey" are similar
@@ -1432,6 +1438,7 @@ ML models can have overconfident or underconfident predictions that need post-pr
 ### ❌ 8. Multilingual Expansion Cost
 
 **Problem:** Adding language #5 requires:
+
 - Translating ~200+ keywords across 6 intent types
 - Creating preposition dictionaries
 - Defining date/time patterns
@@ -1446,9 +1453,11 @@ ML models can have overconfident or underconfident predictions that need post-pr
 **Problem:** "From Zurich via Bern to Geneva"
 
 **Current extraction:**
+
 - origin = "Zurich via Bern" ❌ (stops at "to", but includes "via")
 
 **Need complex logic:**
+
 ```typescript
 // Extract intermediate stops
 const viaPattern = /\bvia\s+([^to]+)/i;
@@ -1465,12 +1474,14 @@ const viaPattern = /\bvia\s+([^to]+)/i;
 **Problem:** Confidence scores are **estimated**, not learned
 
 **Current:**
+
 ```typescript
 // Is this really 90% accurate? 🤷
 if (matchCount >= 3) return 0.9;
 ```
 
 **Impact:**
+
 - Orchestration threshold (0.7) is arbitrary
 - Can't measure actual accuracy without ground truth data
 
@@ -1530,6 +1541,7 @@ See full plan: [NLP_ML_INTENT_CLASSIFICATION_PLAN.md](./NLP_ML_INTENT_CLASSIFICA
 ```
 
 **Why:**
+
 - ML handles semantic understanding (better accuracy)
 - Rules handle edge cases and low-confidence queries (reliability)
 - Entity extraction with regex is already good (no need to replace)
@@ -1537,17 +1549,20 @@ See full plan: [NLP_ML_INTENT_CLASSIFICATION_PLAN.md](./NLP_ML_INTENT_CLASSIFICA
 ### Migration Strategy
 
 **Phase 1: Add ML Intent Classification**
+
 - Train USE + Dense model
 - Deploy alongside existing system
 - Use ML if confidence > 0.7, otherwise fallback to rules
 - Monitor accuracy in production
 
 **Phase 2: Evaluate Entity Extraction**
+
 - Collect ground truth data for entities
 - Measure rule-based accuracy
 - Train BiLSTM-CRF if accuracy < 85%
 
 **Phase 3: Full ML (Optional)**
+
 - Remove rule-based fallback if ML accuracy > 95%
 - Keep rules for specific edge cases
 
@@ -1558,12 +1573,14 @@ See full plan: [NLP_ML_INTENT_CLASSIFICATION_PLAN.md](./NLP_ML_INTENT_CLASSIFICA
 ### Option 1: Keep Current System (Recommended for now)
 
 **When to choose:**
+
 - Accuracy is "good enough" for use case
 - Team bandwidth is limited
 - Bundle size is critical
 - Simplicity > Sophistication
 
 **Improvements to make:**
+
 1. Add more keywords based on user feedback
 2. Improve confidence calibration with real data
 3. Add telemetry to track misclassifications
@@ -1572,12 +1589,14 @@ See full plan: [NLP_ML_INTENT_CLASSIFICATION_PLAN.md](./NLP_ML_INTENT_CLASSIFICA
 ### Option 2: Hybrid System (Recommended for future)
 
 **When to choose:**
+
 - Want better accuracy without major rewrite
 - Have time to train ML models
 - Can afford 14MB bundle increase
 - Want self-improving system
 
 **Implementation:**
+
 1. Collect training data (500+ examples per intent)
 2. Train USE + Dense classifier
 3. Deploy with fallback to rules
@@ -1588,6 +1607,7 @@ See full plan: [NLP_ML_INTENT_CLASSIFICATION_PLAN.md](./NLP_ML_INTENT_CLASSIFICA
 ### Option 3: Full ML Replacement
 
 **When to choose:**
+
 - Accuracy is critical (>90% required)
 - Multilingual expansion planned (10+ languages)
 - Have ML expertise in team
@@ -1631,12 +1651,14 @@ async function extractIntentWithLLM(message: string): Promise<Intent> {
 ```
 
 **Pros:**
+
 - ✅ High accuracy (LLM is smart)
 - ✅ No training required
 - ✅ Multilingual out of box
 - ✅ Handles edge cases well
 
 **Cons:**
+
 - ❌ Latency (+500ms per request)
 - ❌ Cost (API call per message)
 - ❌ Less deterministic
@@ -1661,18 +1683,21 @@ async function extractIntentWithLLM(message: string): Promise<Intent> {
 ### Final Recommendation
 
 **Short-term (0-3 months):**
+
 - ✅ **Keep current rule-based system**
 - ✅ Add telemetry to measure actual accuracy
 - ✅ Expand keyword dictionaries based on user feedback
 - ✅ Consider LLM-based extraction for complex queries only
 
 **Mid-term (3-6 months):**
+
 - ✅ **Implement hybrid system** (ML + Rules)
 - ✅ Collect training data from production traffic
 - ✅ Train USE + Dense classifier
 - ✅ Deploy with fallback to rules
 
 **Long-term (6-12 months):**
+
 - ✅ Evaluate full ML replacement based on hybrid results
 - ✅ Consider BiLSTM-CRF for entity extraction
 - ✅ Implement continuous learning pipeline
