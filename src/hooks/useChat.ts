@@ -6,6 +6,8 @@ import { useRecentSearches } from './useRecentSearches';
 import { parseMarkdownIntent } from '@/lib/intentParser';
 import type { GeolocationCoordinates } from './useGeolocation';
 import type { NearestStation } from '@/lib/locationUtils';
+import type { MCPToolExecutionParams } from '@/types/mcp';
+import type { ToolResultData } from '@/lib/llm/types/common';
 
 export interface Message {
   id: string;

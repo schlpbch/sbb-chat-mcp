@@ -6,6 +6,10 @@ import type { FunctionCallParams } from './functionDefinitions';
 import type { ToolResultData, WeatherResult } from './types/common';
 import { withRetry } from './retryHandler';
 import { toolResolverRegistry } from './toolResolvers';
+import type {
+  FindStopPlacesResponse,
+  FindTripsResponse,
+} from '../../types/mcp-responses';
 
 export interface ToolExecutionResult {
   success: boolean;
@@ -82,9 +86,9 @@ export async function executeTool(
           } catch {
             errorData = { error: errorText };
           }
-          const error: any = new Error(
+          const error = new Error(
             errorData.error || `Tool execution failed: ${response.statusText}`
-          );
+          ) as Error & { status?: number };
           error.status = response.status;
           throw error;
         }
