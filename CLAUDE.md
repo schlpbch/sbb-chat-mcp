@@ -194,11 +194,54 @@ console.log(t.chat.send); // Translated string
 - TypeScript enforces structural equality at compile time
 - The `Translation` type is derived from English translations
 
-## Branding
+## Branding & Theme
 
-- **SBB Red**: `#A5061C`
+### Brand Colors
+
+All brand colors are centralized in `src/config/theme.ts`:
+
+- **SBB Red (Primary)**: `#A5061C` - Main brand color
+- **SBB Red (Hover)**: `#820415` - Darker shade for hover states
 - **Logo**: Red square with white "SBB" text
 - **App Name**: "Swiss Travel Companion"
+
+### Usage
+
+**In Components (TypeScript/TSX):**
+
+```typescript
+import { COLORS } from '@/config/theme';
+
+// Use in inline styles
+<div style={{ color: COLORS.brand.primary }} />
+
+// Or prefer Tailwind classes
+<button className="bg-sbb-red hover:bg-sbb-red-hover" />
+```
+
+**In Tailwind Config:**
+
+The theme constants are already imported and used in `tailwind.config.ts`:
+
+- `bg-sbb-red` - Primary red background
+- `bg-sbb-red-hover` - Darker hover state
+- `bg-sbb-red-light` - Light tint
+- `bg-sbb-red-dark` - Dark shade
+
+**Available Theme Constants:**
+
+- `COLORS` - Brand, semantic, and neutral colors
+- `SPACING` - Consistent spacing scale (xs to 5xl)
+- `RADIUS` - Border radius values
+- `TYPOGRAPHY` - Font families, sizes, weights
+- `SHADOWS` - Box shadow presets
+- `Z_INDEX` - Layering scale
+- `BREAKPOINTS` - Responsive breakpoints
+- `TRANSITIONS` - Animation timing
+- `LAYOUT` - Layout constraints
+- `APP_CONSTANTS` - App-specific magic numbers
+
+See `src/config/theme.ts` for the complete theme configuration.
 
 ## Known Issues
 

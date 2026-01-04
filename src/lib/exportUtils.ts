@@ -2,6 +2,8 @@
  * Utility functions for exporting itineraries and chat data
  */
 
+import { COLORS } from '@/config/theme';
+
 export interface ExportableMessage {
   role: 'user' | 'Companion';
   content: string;
@@ -150,8 +152,8 @@ export function exportItineraryAsPDF(itinerary: Itinerary): void {
             line-height: 1.6;
           }
           h1 {
-            color: #A5061C;
-            border-bottom: 3px solid #A5061C;
+            color: ${COLORS.brand.primary};
+            border-bottom: 3px solid ${COLORS.brand.primary};
             padding-bottom: 10px;
           }
           h2 {
@@ -166,14 +168,14 @@ export function exportItineraryAsPDF(itinerary: Itinerary): void {
           }
           .leg {
             background: #fff;
-            border-left: 4px solid #A5061C;
+            border-left: 4px solid ${COLORS.brand.primary};
             padding: 15px;
             margin: 10px 0;
             box-shadow: 0 2px 4px rgba(0,0,0,0.1);
           }
           .leg-title {
             font-weight: bold;
-            color: #A5061C;
+            color: ${COLORS.brand.primary};
             margin-bottom: 10px;
           }
           .detail {

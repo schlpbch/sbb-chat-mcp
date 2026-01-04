@@ -7,6 +7,7 @@ import { ToastProvider } from '@/components/ui/Toast';
 import { SettingsProvider } from '@/context/SettingsContext';
 import { MapProvider } from '@/context/MapContext';
 import { detectLanguageFromHeaders } from '@/lib/detectLanguageFromHeaders';
+import { COLORS } from '@/config/theme';
 
 const outfit = Outfit({
   subsets: ['latin'],
@@ -54,7 +55,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#A5061C',
+  themeColor: COLORS.brand.primary,
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,

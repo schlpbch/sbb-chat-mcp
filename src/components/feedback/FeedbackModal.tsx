@@ -167,14 +167,14 @@ export default function FeedbackModal({
                   onClick={() => setType(option.value as FeedbackType)}
                   className={`px-4 py-3 rounded-xl border-2 transition-all flex flex-col items-center justify-center gap-1 ${
                     type === option.value
-                      ? 'border-[#A5061C] bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-100'
+                      ? 'border-sbb-red bg-red-50 dark:bg-red-900/20 text-red-900 dark:text-red-100'
                       : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 text-gray-700 dark:text-gray-300'
                   }`}
                 >
                   <div
                     className={`text-xl mb-1 ${
                       type === option.value
-                        ? 'text-[#A5061C] dark:text-red-400'
+                        ? 'text-sbb-red dark:text-red-400'
                         : 'text-gray-500 dark:text-gray-400'
                     }`}
                   >
@@ -239,7 +239,7 @@ export default function FeedbackModal({
               required
               maxLength={500}
               rows={4}
-              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-[#A5061C] focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 resize-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
+              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-sbb-red focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 resize-none transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
             />
             <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               {message.length}/500 {t.feedback.characterCount}
@@ -260,7 +260,7 @@ export default function FeedbackModal({
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder={t.feedback.emailPlaceholder}
-              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-[#A5061C] focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
+              className="w-full px-4 py-3 bg-white dark:bg-gray-700 border border-gray-300 dark:border-gray-600 rounded-xl focus:outline-none focus:border-sbb-red focus:ring-1 focus:ring-red-100 dark:focus:ring-red-900/30 transition-all placeholder:text-gray-400 dark:placeholder:text-gray-500 text-gray-900 dark:text-white"
             />
           </div>
 
@@ -283,7 +283,7 @@ export default function FeedbackModal({
             <button
               type="submit"
               disabled={isSubmitting || !message.trim()}
-              className="flex-1 px-4 py-3 bg-[#A5061C] text-white rounded-xl font-semibold hover:bg-[#820415] disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md active:scale-[0.98]"
+              className="flex-1 px-4 py-3 bg-sbb-red text-white rounded-xl font-semibold hover:bg-sbb-red-hover disabled:opacity-50 disabled:cursor-not-allowed transition-all shadow-md active:scale-[0.98]"
             >
               {isSubmitting ? t.feedback.sending : t.feedback.submit}
             </button>

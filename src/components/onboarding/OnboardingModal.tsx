@@ -419,14 +419,14 @@ export default function OnboardingModal({
               {isLastStep ? (
                 <button
                   onClick={onComplete}
-                  className="px-6 py-2 bg-[#A5061C] text-white rounded-xl font-semibold hover:bg-[#820415] transition-all shadow-md active:scale-95"
+                  className="px-6 py-2 bg-sbb-red text-white rounded-xl font-semibold hover:bg-sbb-red-hover transition-all shadow-md active:scale-95"
                 >
                   {t.onboarding.startChatting} →
                 </button>
               ) : (
                 <button
                   onClick={onNext}
-                  className="px-6 py-2 bg-[#A5061C] text-white rounded-xl font-semibold hover:bg-[#820415] transition-all shadow-md active:scale-95"
+                  className="px-6 py-2 bg-sbb-red text-white rounded-xl font-semibold hover:bg-sbb-red-hover transition-all shadow-md active:scale-95"
                 >
                   {t.onboarding.next} →
                 </button>
