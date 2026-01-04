@@ -44,7 +44,8 @@ export async function sendOrchestratedChatMessage(
     message,
     sessionId,
     messageLanguage, // Use detected language instead of UI language
-    parsedIntent
+    parsedIntent,
+    context // Pass chat context for USER_LOCATION replacement
   );
 
   // 2. Decide if orchestration is needed

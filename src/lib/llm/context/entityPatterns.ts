@@ -66,8 +66,39 @@ export const ENTITY_PREPOSITIONS: EntityPrepositions = {
 };
 
 /**
+ * Location keywords that indicate user's current location
+ * These words mean "here" in different languages
+ */
+export const LOCATION_KEYWORDS: Record<Language, string[]> = {
+  en: ['here'],
+  de: ['hier'],
+  fr: ['ici'],
+  it: ['qui', 'qua'],
+  zh: ['这里', '此处'],
+  hi: ['यहाँ', 'यहां'],
+};
+
+/**
+ * Check if a word is a location keyword (meaning "here")
+ */
+export function isLocationKeyword(
+  word: string,
+  languages: Language[]
+): boolean {
+  const lowerWord = word.toLowerCase().trim();
+  return languages.some((lang) =>
+    LOCATION_KEYWORDS[lang]?.some(
+      (keyword) => keyword.toLowerCase() === lowerWord
+    )
+  );
+}
+
+/**
  * Stop words used to terminate entity extraction
  * These words indicate the end of an entity name
+ *
+ * NOTE: "hier" is both a German location keyword ("here") and French date word ("yesterday").
+ * Context-aware filtering in buildEntityRegex handles this ambiguity.
  */
 export const STOP_WORDS = [
   // Time indicators
@@ -103,7 +134,7 @@ export const STOP_WORDS = [
   'oggi',
   'yesterday',
   'gestern',
-  'hier',
+  'hier', // Also a German location keyword - handled contextually
   'ieri',
   // Weekend expressions
   'weekend',
@@ -189,25 +220,25 @@ export const DATE_PATTERNS: Record<Language, RegExp[]> = {
 export const TIME_PATTERNS: Record<Language, RegExp[]> = {
   en: [
     // Match 12h format FIRST (most specific)
-    /\bat\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b/i,  // "at 2:30 pm"
-    /\b(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b/i,       // "2:30 pm" without "at"
+    /\bat\s+(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b/i, // "at 2:30 pm"
+    /\b(\d{1,2}(?::\d{2})?\s*(?:am|pm))\b/i, // "2:30 pm" without "at"
     // Then 24h format
-    /\b(\d{1,2}:\d{2})\b/,  // "14:30"
+    /\b(\d{1,2}:\d{2})\b/, // "14:30"
     // Finally relative times
     /\b(morning|afternoon|evening|night)\b/i,
   ],
   de: [
-    /\bum\s+(\d{1,2}(?::\d{2})?)\s*uhr\b/i,  // "um 14:30 Uhr"
+    /\bum\s+(\d{1,2}(?::\d{2})?)\s*uhr\b/i, // "um 14:30 Uhr"
     /\b(\d{1,2}:\d{2})\b/,
     /\b(morgens|vormittags|mittags|nachmittags|abends|nachts)\b/i,
   ],
   fr: [
-    /\bà\s+(\d{1,2}(?:[h:]\d{2})?)\b/i,  // "à 14h30"
+    /\bà\s+(\d{1,2}(?:[h:]\d{2})?)\b/i, // "à 14h30"
     /\b(\d{1,2})[h:](\d{2})?\b/,
     /\b(matin|après-midi|soir|nuit)\b/i,
   ],
   it: [
-    /\balle\s+(\d{1,2}(?::\d{2})?)\b/i,  // "alle 14:30"
+    /\balle\s+(\d{1,2}(?::\d{2})?)\b/i, // "alle 14:30"
     /\b(\d{1,2}:\d{2})\b/,
     /\b(mattina|pomeriggio|sera|notte)\b/i,
   ],

@@ -148,9 +148,9 @@ Lausanne: 8501120, Lucerne: 8505000, Thun: 8507100, Interlaken Ost: 8507492`;
     if (context.nearestStation) {
       const distanceKm = (context.nearestStation.distance / 1000).toFixed(1);
       locationContext += ` (Nearest station: ${context.nearestStation.name}, ${distanceKm}km away)`;
-      locationInstructions = `\n- **IMPORTANT**: When user asks "How do I get to X?" or similar journey queries WITHOUT specifying a starting point, AUTOMATICALLY use "${context.nearestStation.name}" as the origin. DO NOT ask for the starting location.`;
+      locationInstructions = `\n- **IMPORTANT**: When user asks "How do I get to X?" or similar journey queries WITHOUT specifying a starting point, AUTOMATICALLY use "${context.nearestStation.name}" as the origin. DO NOT ask for the starting location.\n- **IMPORTANT**: When you see "USER_LOCATION" in extracted entities (from queries like "from here", "von hier", "de ici", "da qui"), REPLACE it with "${context.nearestStation.name}" in your tool calls.`;
     } else {
-      locationInstructions = `\n- **IMPORTANT**: User's location is available at coordinates (${context.currentLocation.lat}, ${context.currentLocation.lon}). When they ask for journey planning without specifying origin, use findPlacesByLocation to find their nearest station first, then use that as origin.`;
+      locationInstructions = `\n- **IMPORTANT**: User's location is available at coordinates (${context.currentLocation.lat}, ${context.currentLocation.lon}). When they ask for journey planning without specifying origin, use findPlacesByLocation to find their nearest station first, then use that as origin.\n- **IMPORTANT**: When you see "USER_LOCATION" in extracted entities (from queries like "from here", "von hier", "de ici", "da qui"), use findPlacesByLocation to find their nearest station first, then use that as the origin.`;
     }
   }
 

@@ -16,6 +16,7 @@ import {
   extractDate,
   extractTime,
   ENTITY_PREPOSITIONS,
+  isLocationKeyword,
 } from './entityPatterns';
 import {
   detectMessageLanguage,
@@ -268,15 +269,55 @@ function extractEntities(
   } else {
     // Standard extraction for trip planning
     if (fromMatch) {
-      entities.origin = capitalizeLocation(
-        fromMatch[2].replace(/\*\*|_|#/g, '').trim()
-      );
+      const rawOrigin = fromMatch[2].replace(/\*\*|_|#/g, '').trim();
+      // Check if it's a location keyword BEFORE capitalizing
+      if (isLocationKeyword(rawOrigin, languages)) {
+        entities.origin = 'USER_LOCATION';
+        entities.requiresUserLocation = true;
+        console.log(
+          `[intentExtractor] 🎯 Detected location keyword in origin: "${rawOrigin}" → marking as USER_LOCATION`
+        );
+      } else {
+        entities.origin = capitalizeLocation(rawOrigin);
+      }
     }
     if (toMatch) {
-      entities.destination = capitalizeLocation(
-        toMatch[2].replace(/\*\*|_|#/g, '').trim()
-      );
+      const rawDestination = toMatch[2].replace(/\*\*|_|#/g, '').trim();
+      // Check if it's a location keyword BEFORE capitalizing
+      if (isLocationKeyword(rawDestination, languages)) {
+        entities.destination = 'USER_LOCATION';
+        entities.requiresUserLocation = true;
+        console.log(
+          `[intentExtractor] 🎯 Detected location keyword in destination: "${rawDestination}" → marking as USER_LOCATION`
+        );
+      } else {
+        entities.destination = capitalizeLocation(rawDestination);
+      }
     }
+  }
+
+  // Remove the duplicate check below since we're now doing it inline above
+  /*
+
+  // Check if extracted origin or destination is a location keyword (meaning "here")
+  // If so, mark it with a special value that the LLM will recognize
+  if (entities.origin && isLocationKeyword(entities.origin, languages)) {
+    console.log(
+      `[intentExtractor] 🎯 Detected location keyword in origin: "${entities.origin}" → marking as USER_LOCATION`
+    );
+    entities.origin = 'USER_LOCATION';
+    entities.requiresUserLocation = true;
+  }
+  */
+  if (
+    entities.destination &&
+    isLocationKeyword(entities.destination, languages)
+  ) {
+    console.log(
+      `[intentExtractor] 🎯 Detected location keyword in destination: "${entities.destination}" → marking as USER_LOCATION`
+    );
+    entities.destination = 'USER_LOCATION';
+    entities.requiresUserLocation = true;
   }
 
   // Implicit "X to Y" pattern (e.g., "Zurich to Bern", "Geneva to Lausanne at 14:30")
