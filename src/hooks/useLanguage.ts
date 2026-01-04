@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { Language } from '@/lib/i18n';
 
 // Extend Window interface to include server-provided language
@@ -102,10 +102,16 @@ function persistLanguage(language: Language): void {
  * ```
  */
 export function useLanguage(): [Language, (lang: Language) => void] {
-  // Use lazy initialization to detect language only once on mount
-  const [language, setLanguageState] = useState<Language>(() =>
-    detectLanguage()
-  );
+  // Initialize with 'en' to match server-side rendering and avoid hydration mismatch
+  const [language, setLanguageState] = useState<Language>('en');
+
+  // Detect and set language after mount
+  useEffect(() => {
+    const detected = detectLanguage();
+    if (detected !== 'en') {
+      setLanguageState(detected);
+    }
+  }, []);
 
   // Persist to localStorage on change
   const setLanguage = useCallback((lang: Language) => {
