@@ -477,4 +477,11 @@ export const en = {
   },
 } as const;
 
-export type Translation = typeof en;
+// Extract the structure type (without literal string values)
+type DeepString<T> = T extends string
+  ? string
+  : T extends object
+    ? { [K in keyof T]: DeepString<T[K]> }
+    : T;
+
+export type Translation = DeepString<typeof en>;

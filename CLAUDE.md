@@ -51,7 +51,14 @@ src/
 ├── hooks/                 # Custom React hooks
 ├── lib/
 │   ├── llm/               # LLM integration (Gemini service, tools)
-│   ├── i18n.ts            # Internationalization (6 languages)
+│   ├── i18n/              # Internationalization (6 languages, split by language)
+│   │   ├── index.ts       # Barrel export with types
+│   │   ├── en.ts          # English translations (type source)
+│   │   ├── de.ts          # German translations
+│   │   ├── fr.ts          # French translations
+│   │   ├── it.ts          # Italian translations
+│   │   ├── zh.ts          # Chinese translations
+│   │   └── hi.ts          # Hindi translations
 │   ├── mcp-client.ts      # MCP client utilities
 │   └── toolDefaults.ts    # Default values for MCP tools
 └── tests/                 # Playwright test files
@@ -159,10 +166,33 @@ Import translations from `@/lib/i18n`:
 import { Language, translations } from '@/lib/i18n';
 
 const t = translations[language];
-console.log(t.title); // Translated string
+console.log(t.chat.send); // Translated string
 ```
 
-Supported languages: `en`, `de`, `fr`, `it`, `zh`, `hi`
+**File Structure:**
+
+- `src/lib/i18n/index.ts` - Barrel export with types
+- `src/lib/i18n/en.ts` - English (type source, ~490 lines)
+- `src/lib/i18n/de.ts` - German (~490 lines)
+- `src/lib/i18n/fr.ts` - French (~490 lines)
+- `src/lib/i18n/it.ts` - Italian (~490 lines)
+- `src/lib/i18n/zh.ts` - Chinese (~490 lines)
+- `src/lib/i18n/hi.ts` - Hindi (~490 lines)
+
+**Supported languages:** `en`, `de`, `fr`, `it`, `zh`, `hi`
+
+**Adding a New Language:**
+
+1. Create `src/lib/i18n/[code].ts`
+2. Import `Translation` type from `en.ts`
+3. Export const with type annotation: `export const [code]: Translation = {...}`
+4. Add to `translations` object in `index.ts`
+
+**Type Safety:**
+
+- All translations must match the English structure
+- TypeScript enforces structural equality at compile time
+- The `Translation` type is derived from English translations
 
 ## Branding
 
