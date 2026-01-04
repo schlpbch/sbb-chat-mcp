@@ -85,12 +85,67 @@ pnpm run lint         # Run ESLint
 
 ## Environment Variables
 
-Create `.env.local` with:
+**All environment variables are validated on startup using Zod.** The app will fail fast with clear error messages if any required variables are missing or invalid.
+
+### Required Variables
+
+Create `.env.local` with these **required** variables:
+
+```bash
+# Google Gemini API (Required)
+GOOGLE_CLOUD_KEY=AIza...  # Must start with 'AIza'
+GEMINI_MODEL=gemini-2.0-flash
+
+# MCP Server Configuration (Public - accessible in browser)
+NEXT_PUBLIC_MCP_SERVER_URL_DEV=http://localhost:8080
+NEXT_PUBLIC_MCP_SERVER_URL_STAGING=https://journey-service-mcp-staging-xxx.run.app
+NEXT_PUBLIC_MCP_ENV=staging  # 'dev' or 'staging'
+```
+
+### Optional Variables
+
+```bash
+# Resend Email (Optional - for feedback feature)
+RESEND_API_KEY=re_...  # Must start with 're_'
+RESEND_FROM_EMAIL=feedback@yourdomain.com
+FEEDBACK_EMAIL=your-email@example.com
+
+# App URL (Optional - for metadata)
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+### Validation
+
+Environment variables are validated using [instrumentation.ts](instrumentation.ts):
+
+- **On server startup**: Validates all variables before the app starts
+- **Fail-fast**: App exits immediately with helpful error messages
+- **Type-safe**: Uses Zod schemas for runtime validation
+- **Helpful errors**: Shows exactly which variables are missing/invalid
+
+**Example error message:**
 
 ```
-GOOGLE_GEMINI_API_KEY=your_gemini_api_key
-MCP_SERVER_URL_STAGING=https://journey-service-mcp-staging-xxx.run.app
-MCP_SERVER_URL_DEV=http://localhost:8080
+❌ Environment validation failed!
+
+Missing or invalid environment variables:
+  - GOOGLE_CLOUD_KEY: Required
+  - RESEND_API_KEY: RESEND_API_KEY must be a valid Resend API key (starts with re_)
+
+Please check your .env.local file and ensure all required variables are set.
+See .env.example for reference.
+```
+
+### Usage in Code
+
+Import validated environment variables from [src/config/env.ts](src/config/env.ts):
+
+```typescript
+import { env } from '@/config/env';
+
+// Type-safe access to environment variables
+const apiKey = env.GOOGLE_CLOUD_KEY;  // Validated at startup
+const mcpUrl = env.NEXT_PUBLIC_MCP_SERVER_URL_STAGING;
 ```
 
 ## Important Patterns

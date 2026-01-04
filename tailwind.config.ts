@@ -1,5 +1,3 @@
-import { COLORS } from './src/config/theme';
-
 /** @type {import('tailwindcss').Config} */
 export default {
   darkMode: 'class',
@@ -13,10 +11,10 @@ export default {
       colors: {
         // SBB Primary Brand Colors
         sbb: {
-          red: COLORS.brand.primary,
-          'red-hover': COLORS.brand.primaryHover,
-          'red-light': COLORS.brand.primaryLight,
-          'red-dark': COLORS.brand.primaryDark,
+          red: '#A5061C',
+          'red-hover': '#820415',
+          'red-light': '#FFF1F1',
+          'red-dark': '#5C000C',
         },
         // SBB Grayscale Palette
         milk: '#F6F6F6',
