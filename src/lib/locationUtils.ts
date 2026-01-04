@@ -6,6 +6,7 @@
  */
 
 import type { GeolocationCoordinates } from '@/hooks/useGeolocation';
+import type { FindPlacesByLocationResponse } from '@/types/mcp-responses';
 
 export interface NearestStation {
   name: string;
@@ -36,7 +37,7 @@ export async function findNearestStation(
       body: JSON.stringify({
         latitude: location.lat,
         longitude: location.lon,
-        limit: 1,
+        limit: 5, // Get multiple stations to choose the best one
       }),
     });
 
@@ -67,20 +68,166 @@ export async function findNearestStation(
       return null;
     }
 
-    const station = stations[0];
+    // Prefer major hubs or more important stations if they're within reasonable distance
+    // Sort by: majorHub first, then importance (lower is better), then distance
+    const stationsWithDistance = stations.map((station: any) => {
+      const stationLat = station.location?.latitude || 0;
+      const stationLon = station.location?.longitude || 0;
+      const distance = calculateDistance(
+        location.lat,
+        location.lon,
+        stationLat,
+        stationLon
+      );
+      return { station, distance };
+    });
+
+    // Sort: major hubs first, then by importance, then by distance
+    stationsWithDistance.sort((a, b) => {
+      // Prioritize major hubs
+      if (a.station.majorHub && !b.station.majorHub) return -1;
+      if (!a.station.majorHub && b.station.majorHub) return 1;
+
+      // Then by importance (lower number = more important)
+      const importanceDiff =
+        (a.station.importance || 10) - (b.station.importance || 10);
+      if (importanceDiff !== 0) return importanceDiff;
+
+      // Finally by distance
+      return a.distance - b.distance;
+    });
+
+    const best = stationsWithDistance[0];
+    const station = best.station;
+    const stationDistance = best.distance;
+
+    console.log(
+      '[LocationUtils] Selected station from',
+      stationsWithDistance.length,
+      'options:',
+      {
+        name: station.name,
+        distance: stationDistance,
+        importance: station.importance,
+        majorHub: station.majorHub,
+        allOptions: stationsWithDistance.map((s) => ({
+          name: s.station.name,
+          distance: s.distance,
+          importance: s.station.importance,
+          majorHub: s.station.majorHub,
+        })),
+      }
+    );
     console.log('[LocationUtils] Found station:', station);
+    console.log('[LocationUtils] Station keys:', Object.keys(station));
+    console.log(
+      '[LocationUtils] Full station object:',
+      JSON.stringify(station, null, 2)
+    );
+    console.log('[LocationUtils] Station structure:', {
+      hasCoordinates: !!station.coordinates,
+      hasLocation: !!station.location,
+      hasCentroid: !!station.centroid,
+      hasLat: !!station.lat,
+      coordinatesValue: station.coordinates,
+      locationValue: station.location,
+      centroidValue: station.centroid,
+      latValue: station.lat,
+      lonValue: station.lon,
+    });
 
     // Extract coordinates - try multiple possible formats
-    const stationLat =
-      station.coordinates?.latitude ||
-      station.location?.lat ||
-      station.lat ||
-      0;
-    const stationLon =
-      station.coordinates?.longitude ||
-      station.location?.lon ||
-      station.lon ||
-      0;
+    // Priority 1: GeoJSON centroid (used by findPlacesByLocation)
+    let stationLat = 0;
+    let stationLon = 0;
+
+    console.log('[LocationUtils] Checking centroid:', {
+      hasCentroid: !!station.centroid,
+      centroidType: typeof station.centroid,
+      hasCoordinates: !!station.centroid?.coordinates,
+      coordinatesType: typeof station.centroid?.coordinates,
+      isArray: Array.isArray(station.centroid?.coordinates),
+      coordinatesLength: station.centroid?.coordinates?.length,
+      coordinatesRaw: station.centroid?.coordinates,
+      coord0: station.centroid?.coordinates?.[0],
+      coord1: station.centroid?.coordinates?.[1],
+    });
+
+    if (
+      station.centroid?.coordinates &&
+      Array.isArray(station.centroid.coordinates) &&
+      station.centroid.coordinates.length >= 2
+    ) {
+      // GeoJSON format: coordinates is [lon, lat] - need to swap!
+      const lon = Number(station.centroid.coordinates[0]);
+      const lat = Number(station.centroid.coordinates[1]);
+      console.log('[LocationUtils] Parsed centroid values:', {
+        lon,
+        lat,
+        lonIsNaN: isNaN(lon),
+        latIsNaN: isNaN(lat),
+      });
+      if (!isNaN(lon) && !isNaN(lat)) {
+        stationLat = lat; // Second element is latitude
+        stationLon = lon; // First element is longitude
+        console.log(
+          '[LocationUtils] Using centroid GeoJSON coordinates (swapped from [lon,lat]):',
+          { lat, lon }
+        );
+      } else {
+        console.error('[LocationUtils] Centroid coordinates are NaN!', {
+          lon,
+          lat,
+        });
+      }
+    } else {
+      console.warn('[LocationUtils] Centroid check failed - trying fallbacks');
+    }
+
+    // Fallback to other formats if centroid didn't work
+    if (stationLat === 0 && stationLon === 0) {
+      console.log(
+        '[LocationUtils] Centroid extraction failed, trying fallbacks...'
+      );
+      if (station.coordinates?.latitude && station.coordinates?.longitude) {
+        // Standard coordinates object
+        stationLat = Number(station.coordinates.latitude);
+        stationLon = Number(station.coordinates.longitude);
+        console.log('[LocationUtils] Using coordinates object');
+      } else if (station.location?.latitude && station.location?.longitude) {
+        // Location object (MCP findPlacesByLocation format)
+        stationLat = Number(station.location.latitude);
+        stationLon = Number(station.location.longitude);
+        console.log('[LocationUtils] Using location.latitude/longitude');
+      } else if (station.location?.lat && station.location?.lon) {
+        // Location object (alternative format)
+        stationLat = Number(station.location.lat);
+        stationLon = Number(station.location.lon);
+        console.log('[LocationUtils] Using location.lat/lon');
+      } else if (station.lat && station.lon) {
+        // Direct lat/lon properties
+        stationLat = Number(station.lat);
+        stationLon = Number(station.lon);
+        console.log('[LocationUtils] Using direct lat/lon');
+      } else {
+        console.error(
+          '[LocationUtils] All coordinate extraction methods failed!'
+        );
+      }
+    }
+
+    console.log('[LocationUtils] Extracted coordinates:', {
+      stationLat,
+      stationLon,
+      userLat: location.lat,
+      userLon: location.lon,
+    });
+
+    // Validate coordinates
+    if (stationLat === 0 && stationLon === 0) {
+      console.error('[LocationUtils] Station has invalid coordinates (0, 0)');
+      return null;
+    }
 
     // Calculate distance using Haversine formula
     const distance = calculateDistance(
@@ -89,6 +236,8 @@ export async function findNearestStation(
       stationLat,
       stationLon
     );
+
+    console.log('[LocationUtils] Calculated distance:', distance, 'meters');
 
     const result = {
       name: station.name || station.label || 'Unknown Station',
