@@ -12,8 +12,9 @@ export default function Map({}: MapProps) {
   const mapRef = useRef<L.Map | null>(null);
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
-  const { activeRoute } = useMapContext();
+  const { activeRoute, markers, onAskAI } = useMapContext();
   const routeLayerRef = useRef<L.Polyline | null>(null);
+  const markersRef = useRef<L.Marker[]>([]);
 
   useEffect(() => {
     if (!mapContainerRef.current || mapRef.current) return;
@@ -108,6 +109,90 @@ export default function Map({}: MapProps) {
       });
     }
   }, [activeRoute]);
+
+  // Effect to handle markers
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    // Clear existing markers
+    markersRef.current.forEach((marker) => marker.remove());
+    markersRef.current = [];
+
+    // Add new markers
+    markers.forEach((marker) => {
+      // Define icon based on type
+      let iconColor = '#3b82f6'; // blue default
+      if (marker.type === 'start') iconColor = '#22c55e'; // green
+      if (marker.type === 'end') iconColor = '#ef4444'; // red
+      if (marker.type === 'transfer') iconColor = '#f59e0b'; // amber
+
+      const iconHtml = `
+        <div style="
+          background-color: ${iconColor};
+          width: 24px;
+          height: 24px;
+          border-radius: 50%;
+          border: 2px solid white;
+          box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-weight: bold;
+          font-size: 12px;
+        ">
+          ${marker.type === 'transfer' ? '⇄' : ''}
+        </div>
+      `;
+
+      const icon = L.divIcon({
+        className: 'custom-marker',
+        html: iconHtml,
+        iconSize: [24, 24],
+        iconAnchor: [12, 12],
+        popupAnchor: [0, -12],
+      });
+
+      const leafletMarker = L.marker(marker.position, { icon }).addTo(
+        mapRef.current!
+      );
+
+      // Create popup content with "Ask AI" button
+      const popupContent = document.createElement('div');
+      popupContent.innerHTML = `
+        <div class="p-1">
+          <h3 class="font-bold text-sm mb-1">${marker.title}</h3>
+          <button 
+            id="ask-ai-${marker.id}" 
+            class="mt-2 text-xs bg-blue-600 text-white px-2 py-1 rounded hover:bg-blue-700 transition-colors flex items-center gap-1 w-full justify-center"
+          >
+            <span>✨</span> Ask AI about this
+          </button>
+        </div>
+      `;
+
+      // Handle button click
+      // We need to attach event listener after popup opens or use event delegation
+      // Leaflet binds string content directly, so we use bindPopup with DOM element
+      leafletMarker.bindPopup(popupContent);
+
+      // Add event listener when popup opens
+      leafletMarker.on('popupopen', () => {
+        const btn = document.getElementById(`ask-ai-${marker.id}`);
+        if (btn) {
+          btn.onclick = (e) => {
+            e.preventDefault();
+            // Close popup
+            leafletMarker.closePopup();
+            // Trigger Ask AI action
+            onAskAI(`Tell me about ${marker.title}`);
+          };
+        }
+      });
+
+      markersRef.current.push(leafletMarker);
+    });
+  }, [markers, onAskAI]);
 
   return (
     <div className="relative w-full h-full overflow-hidden">

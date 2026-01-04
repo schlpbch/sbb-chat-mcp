@@ -17,12 +17,16 @@ interface ChatPanelProps {
   language: Language;
   isOpen: boolean;
   onClose: () => void;
+  initialQuery?: string | null;
+  onQueryHandled?: () => void;
 }
 
 export default function ChatPanel({
   language,
   isOpen,
   onClose,
+  initialQuery,
+  onQueryHandled,
 }: ChatPanelProps) {
   // Use streaming chat hook (always-on streaming)
   const { messages, isStreaming, sendMessage, abortStream } =
@@ -76,6 +80,16 @@ export default function ChatPanel({
     const history = messages.filter((m) => !m.isStreaming);
     await sendMessage(content, history);
   };
+
+  // Handle initial query from props (e.g. from Map)
+  useEffect(() => {
+    if (isOpen && initialQuery) {
+      handleSendMessage(initialQuery);
+      if (onQueryHandled) {
+        onQueryHandled();
+      }
+    }
+  }, [isOpen, initialQuery]);
 
   // Debug: Log when component renders
   logger.debug('ChatPanel', `render - isOpen: ${isOpen}`);

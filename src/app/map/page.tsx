@@ -16,6 +16,7 @@ export default function MapPage() {
   const [language, setLanguage] = useLanguage();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [activeQuery, setActiveQuery] = useState<string | null>(null);
   const {
     isOpen: isFeedbackOpen,
     isSubmitting: isFeedbackSubmitting,
@@ -25,6 +26,25 @@ export default function MapPage() {
     closeFeedback,
     submitFeedback,
   } = useFeedback();
+
+  // Listen for Ask AI events from the map
+  useEffect(() => {
+    const handleTriggerChat = (e: CustomEvent<{ query: string }>) => {
+      setActiveQuery(e.detail.query);
+      setIsChatOpen(true);
+    };
+
+    window.addEventListener(
+      'TRIGGER_CHAT_QUERY',
+      handleTriggerChat as EventListener
+    );
+    return () => {
+      window.removeEventListener(
+        'TRIGGER_CHAT_QUERY',
+        handleTriggerChat as EventListener
+      );
+    };
+  }, []);
 
   return (
     <div className="flex flex-col h-screen w-screen overflow-hidden bg-linear-to-br from-gray-50 to-gray-100 dark:from-gray-900 dark:to-gray-800 transition-colors duration-300">
@@ -58,6 +78,8 @@ export default function MapPage() {
         language={language}
         isOpen={isChatOpen}
         onClose={() => setIsChatOpen(false)}
+        initialQuery={activeQuery}
+        onQueryHandled={() => setActiveQuery(null)}
       />
 
       <div className="flex flex-1 overflow-hidden pt-16 relative z-0">

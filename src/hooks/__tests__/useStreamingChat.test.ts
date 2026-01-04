@@ -9,10 +9,35 @@ import { useStreamingChat } from '../useStreamingChat';
 // Mock fetch globally
 global.fetch = vi.fn();
 
+// Mock useChatStorage
+const mockSetMessages = vi.fn();
+const mockClearHistory = vi.fn();
+const mockMessages: any[] = [];
+
+vi.mock('../useChatStorage', () => ({
+  useChatStorage: () => ({
+    messages: mockMessages,
+    setMessages: mockSetMessages,
+    clearHistory: mockClearHistory,
+  }),
+}));
+
 describe('useStreamingChat', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     vi.useFakeTimers();
+    // Reset mock values
+    mockMessages.length = 0;
+    mockSetMessages.mockImplementation((update) => {
+      if (typeof update === 'function') {
+        const newMessages = update(mockMessages);
+        mockMessages.length = 0;
+        mockMessages.push(...newMessages);
+      } else {
+        mockMessages.length = 0;
+        mockMessages.push(...update);
+      }
+    });
   });
 
   afterEach(() => {

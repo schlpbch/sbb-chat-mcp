@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import type { Language } from '@/lib/i18n';
 import { useRecentSearches } from './useRecentSearches';
+import { useChatStorage } from './useChatStorage';
 import { parseMarkdownIntent } from '@/lib/intentParser';
 import type { GeolocationCoordinates } from './useGeolocation';
 import type { NearestStation } from '@/lib/locationUtils';
@@ -33,7 +34,12 @@ export function useChat(
   currentLocation?: GeolocationCoordinates | null,
   nearestStation?: NearestStation | null
 ) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  // Use custom hook for persistent message storage
+  // We use a unique storage key that can optionally include the session ID if we want per-session storage,
+  // but for now we'll use a global 'chat-history' key to persist across sessions as requested.
+  const { messages, setMessages, clearHistory } =
+    useChatStorage('chat-history');
+
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [isTyping, setIsTyping] = useState(false);
@@ -376,5 +382,6 @@ export function useChat(
     handleSendMessage,
     handleKeyPress,
     handleRetry,
+    clearHistory,
   };
 }

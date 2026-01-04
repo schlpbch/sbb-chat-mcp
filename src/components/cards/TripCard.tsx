@@ -7,6 +7,7 @@ import type { ShareableTrip } from '@/lib/shareUtils';
 import { useSavedTrips } from '@/hooks/useSavedTrips';
 import { useMapContext } from '@/context/MapContext';
 import { extractTripCoordinates } from '@/lib/mapUtils';
+import type { MapMarker } from '@/context/MapContext';
 import { formatTime, formatDuration } from '@/lib/formatters';
 import { getTransportIconComponent } from '@/lib/iconMap';
 import { PersonStanding } from 'lucide-react';
@@ -187,7 +188,57 @@ export default function TripCard({ data, language }: TripCardProps) {
                     points.length,
                     'points'
                   );
-                  showTripOnMap(points);
+
+                  // Create markers from trip data
+                  const markers: MapMarker[] = [];
+
+                  // Origin Marker
+                  if (data.origin?.name || data.start?.place?.name) {
+                    const name = data.origin?.name || data.start?.place?.name;
+                    // First point is usually origin
+                    if (points.length > 0) {
+                      markers.push({
+                        id: `origin-${Date.now()}`,
+                        position: points[0],
+                        title: name,
+                        type: 'start',
+                      });
+                    }
+                  }
+
+                  // Destination Marker
+                  if (data.destination?.name || data.end?.place?.name) {
+                    const name =
+                      data.destination?.name || data.end?.place?.name;
+                    // Last point is usually destination
+                    if (points.length > 0) {
+                      markers.push({
+                        id: `dest-${Date.now()}`,
+                        position: points[points.length - 1],
+                        title: name,
+                        type: 'end',
+                      });
+                    }
+                  }
+
+                  // Transfer Markers
+                  // Iterate through legs to find transfers
+                  if (data.legs) {
+                    data.legs.forEach((leg: any) => {
+                      if (
+                        leg.end?.place?.name &&
+                        leg !== data.legs[data.legs.length - 1]
+                      ) {
+                        // This determines if it's a transfer point (end of one leg, start of next)
+                        // Simple heuristic: if it's an end point of a leg that isn't the last leg
+                        // Ideally we'd map coordinates from leg end
+                        // For now we skip exact coord extraction for transfers to avoid complexity overhead
+                        // unless we strictly rely on leg.end.place.longitude/latitude if available
+                      }
+                    });
+                  }
+
+                  showTripOnMap(points, markers);
                 } else {
                   console.warn(
                     '[TripCard] No coordinates found for trip. Cannot display on map.'

@@ -3,6 +3,7 @@
 import { useState, useRef, useCallback } from 'react';
 import type { Language } from '@/lib/i18n';
 import type { Message, StreamingToolCall } from '@/types/chat';
+import { useChatStorage } from './useChatStorage';
 
 const STREAM_TIMEOUT = 30000; // 30 seconds
 const TOOL_TIMEOUT = 10000; // 10 seconds per tool
@@ -13,7 +14,8 @@ export function useStreamingChat(
   textOnlyMode: boolean = false,
   voiceOutputEnabled: boolean = false
 ) {
-  const [messages, setMessages] = useState<Message[]>([]);
+  const { messages, setMessages, clearHistory } =
+    useChatStorage('chat-history');
   const [isStreaming, setIsStreaming] = useState(false);
   const abortControllerRef = useRef<AbortController | null>(null);
   const toolTimeoutsRef = useRef<Map<string, NodeJS.Timeout>>(new Map());
@@ -365,5 +367,6 @@ export function useStreamingChat(
     isStreaming,
     sendMessage,
     abortStream,
+    clearHistory,
   };
 }
