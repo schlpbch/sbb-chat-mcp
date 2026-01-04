@@ -28,6 +28,8 @@ export async function findNearestStation(
   location: GeolocationCoordinates
 ): Promise<NearestStation | null> {
   try {
+    console.log('[LocationUtils] Finding nearest station for:', location);
+
     const response = await fetch('/api/mcp-proxy/tools/findPlacesByLocation', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -39,40 +41,67 @@ export async function findNearestStation(
     });
 
     if (!response.ok) {
+      const errorText = await response.text();
       console.error(
         '[LocationUtils] Failed to find nearest station:',
-        response.statusText
+        response.status,
+        response.statusText,
+        errorText
       );
       return null;
     }
 
     const data = await response.json();
+    console.log('[LocationUtils] MCP response:', JSON.stringify(data, null, 2));
 
-    // The response should be an array of stations
-    if (!data || !Array.isArray(data.stations) || data.stations.length === 0) {
-      console.warn('[LocationUtils] No stations found near location');
+    // The MCP proxy returns the parsed result directly as an array of stations
+    // Check if data is an array (direct stations array) or has a stations property
+    const stations = Array.isArray(data) ? data : data.stations;
+
+    if (!stations || !Array.isArray(stations) || stations.length === 0) {
+      console.warn('[LocationUtils] No stations found. Response structure:', {
+        isArray: Array.isArray(data),
+        keys: Object.keys(data || {}),
+        dataType: typeof data,
+      });
       return null;
     }
 
-    const station = data.stations[0];
+    const station = stations[0];
+    console.log('[LocationUtils] Found station:', station);
+
+    // Extract coordinates - try multiple possible formats
+    const stationLat =
+      station.coordinates?.latitude ||
+      station.location?.lat ||
+      station.lat ||
+      0;
+    const stationLon =
+      station.coordinates?.longitude ||
+      station.location?.lon ||
+      station.lon ||
+      0;
 
     // Calculate distance using Haversine formula
     const distance = calculateDistance(
       location.lat,
       location.lon,
-      station.coordinates?.latitude || station.location?.lat || 0,
-      station.coordinates?.longitude || station.location?.lon || 0
+      stationLat,
+      stationLon
     );
 
-    return {
-      name: station.name || 'Unknown Station',
+    const result = {
+      name: station.name || station.label || 'Unknown Station',
       distance,
       coordinates: {
-        lat: station.coordinates?.latitude || station.location?.lat || 0,
-        lon: station.coordinates?.longitude || station.location?.lon || 0,
+        lat: stationLat,
+        lon: stationLon,
       },
       stopId: station.stopId || station.id,
     };
+
+    console.log('[LocationUtils] Returning nearest station:', result);
+    return result;
   } catch (error) {
     console.error('[LocationUtils] Error finding nearest station:', error);
     return null;

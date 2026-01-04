@@ -141,11 +141,16 @@ Lausanne: 8501120, Lucerne: 8505000, Thun: 8507100, Interlaken Ost: 8507492`;
 
   // Build location context string
   let locationContext = 'Unknown';
+  let locationInstructions = '';
+
   if (context.currentLocation) {
     locationContext = `${context.currentLocation.lat}, ${context.currentLocation.lon}`;
     if (context.nearestStation) {
       const distanceKm = (context.nearestStation.distance / 1000).toFixed(1);
       locationContext += ` (Nearest station: ${context.nearestStation.name}, ${distanceKm}km away)`;
+      locationInstructions = `\n- **IMPORTANT**: When user asks "How do I get to X?" or similar journey queries WITHOUT specifying a starting point, AUTOMATICALLY use "${context.nearestStation.name}" as the origin. DO NOT ask for the starting location.`;
+    } else {
+      locationInstructions = `\n- **IMPORTANT**: User's location is available at coordinates (${context.currentLocation.lat}, ${context.currentLocation.lon}). When they ask for journey planning without specifying origin, use findPlacesByLocation to find their nearest station first, then use that as origin.`;
     }
   }
 
@@ -155,11 +160,7 @@ CONTEXT:
 - User's language: ${context.language}
 - Current time: ${currentTime.toISOString()} (${currentTime.toLocaleString()})
 - Next Saturday ("this weekend"): ${weekendDate}
-- Current location: ${locationContext}${
-    context.nearestStation
-      ? `\n- When user asks "How do I get to X?" without specifying origin, use "${context.nearestStation.name}" as the origin automatically.`
-      : ''
-  }
+- Current location: ${locationContext}${locationInstructions}
 
 CRITICAL TOOL USAGE RULES:
 ${toolGuidance}
