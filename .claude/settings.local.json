@@ -54,7 +54,8 @@
       "Bash(gh issue close:*)",
       "Bash(gcloud run services logs read:*)",
       "Bash(gh issue create:*)",
-      "Bash(gcloud run services delete:*)"
+      "Bash(gcloud run services delete:*)",
+      "Bash(git push)"
     ]
   }
 }
