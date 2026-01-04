@@ -64,7 +64,7 @@ function CompareCard({ data, language }: CompareCardProps) {
   // Safety check: ensure routes is defined and is an array
   if (!routes || !Array.isArray(routes) || routes.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-gray-200 p-4">
+      <div className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 p-4">
         <p className="text-gray-500 text-center">{t.compare.noRoutes}</p>
       </div>
     );
@@ -80,7 +80,7 @@ function CompareCard({ data, language }: CompareCardProps) {
 
   return (
     <article
-      className="bg-white rounded-lg border border-gray-200 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
+      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-purple-500"
       data-testid="compare-card"
       aria-label={`${t.compare.routeComparison} ${origin} → ${destination}`}
     >

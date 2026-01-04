@@ -3,7 +3,14 @@
 import type { Language } from '@/lib/i18n';
 import { translations } from '@/lib/i18n';
 import CardHeader from './CardHeader';
-import { Clock, MapPin, TrendingUp, AlertCircle, CheckCircle, Info } from 'lucide-react';
+import {
+  Clock,
+  MapPin,
+  TrendingUp,
+  AlertCircle,
+  CheckCircle,
+  Info,
+} from 'lucide-react';
 
 interface Transfer {
   from: string;
@@ -37,7 +44,7 @@ export default function TransferCard({ data, language }: TransferCardProps) {
 
   if (transfers.length === 0) {
     return (
-      <article className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-md">
+      <article className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-md">
         <p className="text-gray-500 dark:text-gray-400 text-sm">
           {t.transfer?.noData || 'No transfer information available.'}
         </p>
@@ -84,7 +91,7 @@ export default function TransferCard({ data, language }: TransferCardProps) {
 
   return (
     <article
-      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-orange-500 dark:hover:border-orange-400"
+      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-orange-500 dark:hover:border-orange-400"
       data-testid="transfer-card"
     >
       <CardHeader
@@ -122,9 +129,13 @@ export default function TransferCard({ data, language }: TransferCardProps) {
                 </div>
                 {(transfer.platform || transfer.targetPlatform) && (
                   <p className="text-xs text-gray-600 dark:text-gray-300 mt-1 ml-6">
-                    {transfer.platform && `${t.cards?.platform || 'Pl.'} ${transfer.platform}`}
+                    {transfer.platform &&
+                      `${t.cards?.platform || 'Pl.'} ${transfer.platform}`}
                     {transfer.platform && transfer.targetPlatform && ' → '}
-                    {transfer.targetPlatform && `${t.cards?.platform || 'Pl.'} ${transfer.targetPlatform}`}
+                    {transfer.targetPlatform &&
+                      `${t.cards?.platform || 'Pl.'} ${
+                        transfer.targetPlatform
+                      }`}
                   </p>
                 )}
               </div>
@@ -146,7 +157,9 @@ export default function TransferCard({ data, language }: TransferCardProps) {
             <div className="flex flex-wrap gap-3 text-xs text-gray-600 dark:text-gray-300 ml-6">
               <div className="flex items-center gap-1">
                 <Clock className="w-3.5 h-3.5" />
-                <span className="font-medium">{formatDuration(transfer.duration)}</span>
+                <span className="font-medium">
+                  {formatDuration(transfer.duration)}
+                </span>
               </div>
 
               {transfer.distance && (

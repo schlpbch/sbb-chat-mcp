@@ -40,7 +40,7 @@ export default function EventsCard({ data, language }: EventsCardProps) {
 
   if (events.length === 0) {
     return (
-      <article className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-md">
+      <article className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 p-4 shadow-md">
         <p className="text-gray-500 dark:text-gray-400 text-sm">
           {t.events?.noEvents || 'No events found for this location.'}
         </p>
@@ -77,7 +77,7 @@ export default function EventsCard({ data, language }: EventsCardProps) {
 
   return (
     <article
-      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-pink-500 dark:hover:border-pink-400"
+      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-pink-500 dark:hover:border-pink-400"
       data-testid="events-card"
     >
       <CardHeader

@@ -30,7 +30,6 @@ const MockProviders = ({ children }: { children: React.ReactNode }) => {
     replace: () => {},
     refresh: () => {},
     prefetch: () => {},
-    maxAge: 0,
   };
 
   return (
@@ -92,6 +91,14 @@ const preview: Preview = {
         {
           name: 'dark',
           value: '#111827',
+        },
+        {
+          name: 'blue',
+          value: '#3b82f6',
+        },
+        {
+          name: 'purple',
+          value: '#7e22ce',
         },
       ],
     },

@@ -63,7 +63,7 @@ export default function MarkdownCard({
       className={`rounded-lg overflow-hidden transition-all duration-200 select-text ${
         isUser
           ? 'bg-[#A20013] text-white rounded-2xl shadow-md'
-          : 'bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg'
+          : 'bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm border border-gray-200 dark:border-gray-700 shadow-md hover:shadow-lg'
       }`}
       data-testid="markdown-card"
     >

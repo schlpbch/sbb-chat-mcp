@@ -140,7 +140,7 @@ export default function TripCard({ data, language }: TripCardProps) {
 
   return (
     <article
-      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500 dark:hover:border-green-400"
+      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-green-500 dark:hover:border-green-400"
       data-testid="trip-card"
       aria-label={`${t.common.tripFrom} ${origin.name} ${t.common.to} ${destination.name}, ${t.cards.duration} ${durationStr}`}
     >
@@ -248,7 +248,7 @@ export default function TripCard({ data, language }: TripCardProps) {
       />
 
       {/* Additional Trip Info Bar */}
-      <div className="px-3 sm:px-4 py-2 bg-gray-50 dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700">
+      <div className="px-3 sm:px-4 py-2 bg-gray-50/50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-xs">
           <div className="flex flex-wrap items-center gap-2 sm:gap-3">
             {/* Price */}

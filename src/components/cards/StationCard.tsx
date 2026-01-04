@@ -85,7 +85,7 @@ export default function StationCard({ data, language }: StationCardProps) {
 
   return (
     <article
-      className="bg-white dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-blue-500 dark:hover:border-blue-400"
+      className="bg-white/90 dark:bg-gray-800/90 backdrop-blur-sm rounded-lg border border-gray-200 dark:border-gray-700 overflow-hidden shadow-md hover:shadow-lg transition-all duration-200 hover:border-blue-500 dark:hover:border-blue-400"
       data-testid="station-card"
       aria-label={`${t.station.stationLabel}: ${name || t.common.unknown}`}
     >
