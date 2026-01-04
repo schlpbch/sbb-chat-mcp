@@ -4,6 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import type { Language } from '@/lib/i18n';
 import { useRecentSearches } from './useRecentSearches';
 import { parseMarkdownIntent } from '@/lib/intentParser';
+import type { GeolocationCoordinates } from './useGeolocation';
+import type { NearestStation } from '@/lib/locationUtils';
 
 export interface Message {
   id: string;
@@ -23,7 +25,12 @@ export interface Message {
   };
 }
 
-export function useChat(language: Language, voiceEnabled: boolean = false) {
+export function useChat(
+  language: Language,
+  voiceEnabled: boolean = false,
+  currentLocation?: GeolocationCoordinates | null,
+  nearestStation?: NearestStation | null
+) {
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -134,7 +141,24 @@ export function useChat(language: Language, voiceEnabled: boolean = false) {
         message: userMessage.content,
         intent,
         history: messages.map((m) => ({ role: m.role, content: m.content })),
-        context: { language, voiceEnabled },
+        context: {
+          language,
+          voiceEnabled,
+          currentLocation: currentLocation
+            ? {
+                lat: currentLocation.lat,
+                lon: currentLocation.lon,
+                accuracy: currentLocation.accuracy,
+              }
+            : undefined,
+          nearestStation: nearestStation
+            ? {
+                name: nearestStation.name,
+                distance: nearestStation.distance,
+                stopId: nearestStation.stopId,
+              }
+            : undefined,
+        },
         sessionId,
         useOrchestration: !textOnlyMode,
       };

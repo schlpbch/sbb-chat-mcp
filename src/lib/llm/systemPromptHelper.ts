@@ -8,6 +8,7 @@ export function generateSystemPrompt(
   context: {
     language: Language | string;
     currentLocation?: { lat: number; lon: number };
+    nearestStation?: { name: string; distance: number; stopId?: string };
   },
   enableFunctionCalling: boolean
 ): string {
@@ -138,16 +139,26 @@ Zurich HB: 8503000, Bern: 8507000, Geneva: 8501008, Basel SBB: 8500010
 Lausanne: 8501120, Lucerne: 8505000, Thun: 8507100, Interlaken Ost: 8507492`;
   }
 
+  // Build location context string
+  let locationContext = 'Unknown';
+  if (context.currentLocation) {
+    locationContext = `${context.currentLocation.lat}, ${context.currentLocation.lon}`;
+    if (context.nearestStation) {
+      const distanceKm = (context.nearestStation.distance / 1000).toFixed(1);
+      locationContext += ` (Nearest station: ${context.nearestStation.name}, ${distanceKm}km away)`;
+    }
+  }
+
   return `You are a helpful Swiss travel Companion integrated into the Swiss Travel Companion app.
 
 CONTEXT:
 - User's language: ${context.language}
 - Current time: ${currentTime.toISOString()} (${currentTime.toLocaleString()})
 - Next Saturday ("this weekend"): ${weekendDate}
-- Current location: ${
-    context.currentLocation
-      ? `${context.currentLocation.lat}, ${context.currentLocation.lon}`
-      : 'Unknown'
+- Current location: ${locationContext}${
+    context.nearestStation
+      ? `\n- When user asks "How do I get to X?" without specifying origin, use "${context.nearestStation.name}" as the origin automatically.`
+      : ''
   }
 
 CRITICAL TOOL USAGE RULES:

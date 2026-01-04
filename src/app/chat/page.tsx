@@ -10,6 +10,11 @@ import { LocationPermissionBanner } from '@/components/LocationPermissionBanner'
 import VoiceButton, { VoiceButtonRef } from '@/components/ui/VoiceButton';
 import { useChat } from '@/hooks/useChat';
 import { useGeolocation } from '@/hooks/useGeolocation';
+import {
+  findNearestStation,
+  formatDistance,
+  type NearestStation,
+} from '@/lib/locationUtils';
 import { translations } from '@/lib/i18n';
 import { useOnboarding } from '@/hooks/useOnboarding';
 import { useFeedback } from '@/hooks/useFeedback';
@@ -55,6 +60,45 @@ function ChatContent() {
     !location &&
     !locationError;
 
+  // Nearest station state
+  const [nearestStation, setNearestStation] = useState<NearestStation | null>(
+    null
+  );
+  const [loadingNearestStation, setLoadingNearestStation] = useState(false);
+
+  // Find nearest station when location changes
+  useEffect(() => {
+    if (!location) {
+      setNearestStation(null);
+      return;
+    }
+
+    let cancelled = false;
+
+    const fetchNearestStation = async () => {
+      setLoadingNearestStation(true);
+      try {
+        const station = await findNearestStation(location);
+        if (!cancelled && station) {
+          setNearestStation(station);
+          console.log('[Chat] Found nearest station:', station);
+        }
+      } catch (error) {
+        console.error('[Chat] Error finding nearest station:', error);
+      } finally {
+        if (!cancelled) {
+          setLoadingNearestStation(false);
+        }
+      }
+    };
+
+    fetchNearestStation();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [location]);
+
   // Voice output state for TTS
   const [voiceOutputEnabled, setVoiceOutputEnabled] = useState(false);
 
@@ -70,7 +114,7 @@ function ChatContent() {
     inputRef,
     handleSendMessage,
     handleKeyPress,
-  } = useChat(language, voiceOutputEnabled);
+  } = useChat(language, voiceOutputEnabled, location, nearestStation);
 
   // Ref to clear voice transcript when manually sending
   const voiceButtonRef = useRef<VoiceButtonRef>(null);
@@ -251,12 +295,22 @@ function ChatContent() {
                         d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                       />
                     </svg>
-                    <span>{t.location.locationEnabled}</span>
-                    {location.accuracy && (
-                      <span className="text-xs opacity-75">
-                        (±{Math.round(location.accuracy)}m)
-                      </span>
-                    )}
+                    <span>
+                      {loadingNearestStation
+                        ? t.location.detecting
+                        : nearestStation
+                        ? `${t.location.nearestStation}: ${
+                            nearestStation.name
+                          } (${formatDistance(nearestStation.distance)})`
+                        : t.location.locationEnabled}
+                    </span>
+                    {location.accuracy &&
+                      !loadingNearestStation &&
+                      !nearestStation && (
+                        <span className="text-xs opacity-75">
+                          (±{Math.round(location.accuracy)}m)
+                        </span>
+                      )}
                   </div>
                 </div>
               )}
