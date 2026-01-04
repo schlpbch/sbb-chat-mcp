@@ -16,9 +16,9 @@ export async function detectMessageLanguage(
   message: string,
   uiLanguage: Language
 ): Promise<Language> {
-  // Skip detection for very short messages (< 10 chars)
+  // Skip detection for very short messages (< 5 chars)
   // Short messages like "Hi", "Ok" are ambiguous
-  if (message.trim().length < 10) {
+  if (message.trim().length < 5) {
     console.log(
       '[LanguageDetection] Message too short, using UI language:',
       uiLanguage

@@ -42,17 +42,30 @@ export class OrchestrationDecisionService {
 
     // Single intent - check if it's a type that always requires orchestration
     const intent = intents[0];
+    const hasConfidence = intent.confidence >= confidenceThreshold;
 
-    // Always orchestrate for these intent types
+    // Always orchestrate for these intent types if they have sufficient confidence
     const orchestrableIntents = [
       'trip_planning',
       'station_search',
       'train_formation',
       'eco_comparison',
     ];
+
     if (orchestrableIntents.includes(intent.type)) {
+      if (!hasConfidence) {
+        console.log(
+          `[OrchestrationDecisionService] Intent "${intent.type}" below confidence threshold (${intent.confidence} < ${confidenceThreshold})`
+        );
+        return {
+          shouldOrchestrate: false,
+          reason: `Intent confidence (${intent.confidence}) below threshold (${confidenceThreshold})`,
+          confidence: intent.confidence,
+        };
+      }
+
       console.log(
-        `[OrchestrationDecisionService] Intent "${intent.type}" always requires orchestration`
+        `[OrchestrationDecisionService] Intent "${intent.type}" with sufficient confidence requires orchestration`
       );
       return {
         shouldOrchestrate: true,
@@ -63,7 +76,6 @@ export class OrchestrationDecisionService {
 
     // For other intents, use keyword-based detection
     const requiresOrch = requiresOrchestration(message);
-    const hasConfidence = intent.confidence >= confidenceThreshold;
 
     console.log(
       '[OrchestrationDecisionService] requiresOrchestration:',
